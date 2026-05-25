@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:factwise.io)"
+      "WebFetch(domain:factwise.io)",
+      "Bash(node -e ' *2)"
     ]
   }
 }
