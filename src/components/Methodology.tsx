@@ -97,6 +97,7 @@ export default function MethodologySection() {
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
+<<<<<<< Updated upstream
       // ~0.85 viewport of scroll per transition (was 1.25vh per panel + a dead
       // 1.25vh tail). Advancing to the next feature is now one short flick.
       end: () => `+=${segments * 85}%`,
@@ -112,15 +113,53 @@ export default function MethodologySection() {
           pages.length,
           Math.max(1, Math.round(self.progress * segments) + 1)
         );
+=======
+      // Was (pages.length + 1) * 100% = 500vh which left a 150vh dead zone
+      // after the last page where the section stayed pinned but nothing
+      // changed on screen — that's the "scroll stuck after Collaborate
+      // Seamlessly" feeling. Now one viewport per page, exactly.
+      end: () => `+=${pages.length * 100}%`,
+      pin: true,
+      // Scrub 1 added a 1s lerp on top of native scroll — felt sluggish.
+      // 0.3 keeps a subtle smoothing without the lag.
+      scrub: 0.3,
+      onUpdate: (self) => {
+        const progress  = self.progress;
+        const direction = self.direction;
+
+        // Equal quarters now that the pin distance is pages.length × 100vh.
+        // Small hysteresis on the reverse direction prevents flicker.
+        let page: number;
+        if (direction === 1) {
+          if      (progress < 0.25) page = 1;
+          else if (progress < 0.50) page = 2;
+          else if (progress < 0.75) page = 3;
+          else                      page = 4;
+        } else {
+          if      (progress < 0.18) page = 1;
+          else if (progress < 0.43) page = 2;
+          else if (progress < 0.68) page = 3;
+          else                      page = 4;
+        }
+
+>>>>>>> Stashed changes
         if (page !== lastPage) {
           lastPage = page;
           setCurrentPage(page);
         }
       },
       snap: {
+<<<<<<< Updated upstream
         snapTo: snapPoints,
         duration: { min: 0.2, max: 0.4 },
         delay: 0.05,
+=======
+        // Added 1.0 so the section snaps cleanly out after the last page
+        // instead of dragging through any leftover pixels.
+        snapTo: [0, 0.25, 0.50, 0.75, 1.0],
+        duration: { min: 0.15, max: 0.4 },
+        delay: 0.1,
+>>>>>>> Stashed changes
         ease: "power1.inOut",
         directional: true,
       },
