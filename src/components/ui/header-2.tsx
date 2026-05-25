@@ -184,6 +184,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 					})} />
 					<Button
 						variant="ghost"
+						onClick={() => { window.location.href = 'https://apps.factwise.io'; }}
 						className={cn("text-[14px] font-medium transition-colors duration-500", {
 							"text-white/80 hover:text-white": !scrolled && !open && theme === 'dark',
 							"text-black/60 hover:text-black": scrolled || open || theme === 'light',
@@ -259,7 +260,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 						})}
 					</div>
 					<div className="flex flex-col gap-4 pt-10 border-t border-black/[0.07]">
-						<Button variant="outline" className="w-full h-12 text-lg border-black/[0.1] hover:bg-black/[0.04]">
+						<Button variant="outline" onClick={() => { window.location.href = 'https://apps.factwise.io'; }} className="w-full h-12 text-lg border-black/[0.1] hover:bg-black/[0.04]">
 							Login
 						</Button>
 						<MagicButton
