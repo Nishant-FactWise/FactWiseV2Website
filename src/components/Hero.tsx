@@ -74,9 +74,8 @@ export default function Hero() {
 
             <div className="col-span-12 lg:col-span-8">
               <h1
-                className="font-medium leading-[0.8] tracking-[-0.05em] text-[15vw] sm:text-[13vw] md:text-[11vw] lg:text-[10vw] xl:text-[9vw] mb-12 md:mb-20"
+                className="font-medium leading-[0.8] tracking-[-0.05em] text-[15vw] sm:text-[13vw] md:text-[11vw] lg:text-[10vw] xl:text-[9vw] mb-20 md:mb-32 relative -translate-y-4 md:-translate-y-6"
                 style={{ color: "#E1E0CC", fontFamily: "var(--font-display)" }}
-                data-speed="1.1"
               >
                 FactWise
               </h1>
