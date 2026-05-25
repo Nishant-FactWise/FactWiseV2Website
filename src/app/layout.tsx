@@ -86,7 +86,7 @@ export const metadata: Metadata = {
     canonical: "https://factwise.io",
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: { url: "/Factwisesvglogo.svg", type: "image/svg+xml" },
     apple: "/apple-touch-icon.png",
   },
 };

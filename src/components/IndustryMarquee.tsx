@@ -131,12 +131,7 @@ const industriesRow2: IndustryData[] = [
 export default function IndustryMarquee() {
     const [isPaused, setIsPaused] = useState(false);
     const sectionRef = useRef<HTMLElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ['start end', 'end start'],
-    });
 
-    const headingY = useTransform(scrollYProgress, [0, 1], [50, -20]);
 
     return (
         <section
@@ -147,8 +142,8 @@ export default function IndustryMarquee() {
             <div className="absolute inset-0 bg-gradient-to-tr from-slate-50/50 via-transparent to-transparent pointer-events-none" />
 
             {/* Section heading */}
-            <motion.div
-                style={{ y: headingY, position: 'relative', zIndex: 20, textAlign: 'center', marginBottom: 60, padding: '0 40px' }}
+            <div
+                style={{ position: 'relative', zIndex: 20, textAlign: 'center', marginBottom: 60, padding: '0 40px' }}
             >
                 <div style={{ textAlign: 'center', marginBottom: '60px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
                     <div className="section-badge" style={{ marginBottom: 0, fontWeight: 500, letterSpacing: '0.05em' }}>Industries We Serve</div>
@@ -179,7 +174,7 @@ export default function IndustryMarquee() {
                         From automotive to pharma, FactWise adapts to your sector&apos;s unique sourcing complexity.
                     </p>
                 </div>
-            </motion.div>
+            </div>
 
             <div className="relative min-h-[500px] mt-10">
                 <div className="flex flex-col gap-12">

@@ -73,15 +73,13 @@ export default function Hero() {
           <div className="grid grid-cols-12 items-end gap-6">
 
             <div className="col-span-12 lg:col-span-8">
-              <ScrollReveal type="split-chars" stagger={0.03}>
-                <h1
-                  className="font-medium leading-[0.8] tracking-[-0.05em] text-[15vw] sm:text-[13vw] md:text-[11vw] lg:text-[10vw] xl:text-[9vw]"
-                  style={{ color: "#E1E0CC", fontFamily: "var(--font-display)" }}
-                  data-speed="1.1"
-                >
-                  FactWise
-                </h1>
-              </ScrollReveal>
+              <h1
+                className="font-medium leading-[0.8] tracking-[-0.05em] text-[15vw] sm:text-[13vw] md:text-[11vw] lg:text-[10vw] xl:text-[9vw] mb-12 md:mb-20"
+                style={{ color: "#E1E0CC", fontFamily: "var(--font-display)" }}
+                data-speed="1.1"
+              >
+                FactWise
+              </h1>
             </div>
 
             <div className="col-span-12 flex flex-col gap-6 pb-4 lg:col-span-4 lg:pb-4">

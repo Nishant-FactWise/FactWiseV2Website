@@ -193,7 +193,7 @@ export function ExpandingIndustrySection() {
             background: 'radial-gradient(circle, rgba(54, 102, 255, 0.2) 0%, rgba(54, 102, 255, 0.1) 40%, transparent 80%)',
           }} 
         />
-        <div className="absolute inset-0 noise opacity-20 pointer-events-none mix-blend-overlay" />
+        <div className="absolute inset-0 noise opacity-20 pointer-events-none" />
 
 
 

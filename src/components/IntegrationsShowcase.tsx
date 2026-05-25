@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from './SectionHeader';
 
 // Sub-modules revealed (3-way branch style) when a suite pill is clicked
@@ -55,12 +55,7 @@ export default function IntegrationsShowcase() {
   };
   const hideTip = () => setTip(null);
   
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start']
-  });
 
-  const contentY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   // Staggered node entrance
   useEffect(() => {
@@ -180,7 +175,7 @@ export default function IntegrationsShowcase() {
         className="absolute -right-32 -bottom-32 w-[800px] h-[800px] rounded-full pointer-events-none opacity-40"
         style={{ 
           background: 'radial-gradient(circle, rgba(54, 102, 255, 0.2) 0%, rgba(54, 102, 255, 0.05) 30%, transparent 70%)',
-          willChange: 'opacity'
+          willChange: 'transform'
         }} 
       />
       <div 
@@ -191,8 +186,7 @@ export default function IntegrationsShowcase() {
       />
       <div className="absolute inset-0 noise opacity-20 pointer-events-none" />
 
-      <motion.div 
-        style={{ y: contentY }}
+      <div 
         className="max-w-[1440px] mx-auto px-6 lg:px-10 relative z-10"
       >
         <div className="mb-24">
@@ -533,7 +527,7 @@ export default function IntegrationsShowcase() {
             </svg>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
