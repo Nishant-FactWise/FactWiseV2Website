@@ -43,8 +43,21 @@ export default function IntegrationsShowcase() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const diagramRef = useRef<HTMLDivElement>(null);
-  const [expandedSuite, setExpandedSuite] = useState<string | null>('procure');
+  const [expandedSuite, setExpandedSuite] = useState<string | null>('source');
   const [tip, setTip] = useState<Tip>(null);
+
+  // Auto-cycle through Source → Procure → Pay so the diagram is alive even
+  // before the user interacts. A manual click just resets the rotation cadence.
+  useEffect(() => {
+    const order = ['source', 'procure', 'pay'] as const;
+    const id = setInterval(() => {
+      setExpandedSuite(prev => {
+        const i = order.indexOf(prev as typeof order[number]);
+        return order[(i + 1) % order.length];
+      });
+    }, 2600);
+    return () => clearInterval(id);
+  }, [expandedSuite]);
 
   // Position a tooltip above the hovered SVG node, relative to the diagram container
   const showTip = (el: SVGGraphicsElement, body: string, kind: 'factwise' | 'external', title: string) => {
