@@ -23,6 +23,13 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   useGSAP(() => {
     if (!isClient || isAboutPage) return;
 
+    // Honour the OS-level "reduce motion" setting — heavy lerping is the
+    // first thing accessibility users want disabled.
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
     let ScrollSmoother: any = null;
     try {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -41,8 +48,17 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       smootherRef.current = ScrollSmoother.create({
         wrapper: '#smooth-wrapper',
         content: '#smooth-content',
-        smooth: 1.2,
-        effects: true,
+        // smooth was 1.2 → made every scroll-linked animation lag ~1s
+        // behind the user. 0.55 keeps the smoothing feel without the lag.
+        smooth: 0.55,
+        // Touch devices: keep near-native feel
+        smoothTouch: 0.05,
+        // effects:true walks every node each frame looking for
+        // data-speed / data-lag attrs. We don't use them — disable.
+        effects: false,
+        // Normalises wheel deltas across browsers (Mac trackpad vs mouse)
+        // so scroll feel is consistent and ScrollTriggers stay accurate.
+        normalizeScroll: true,
         ignoreMobileResize: true,
       });
     } catch (e) {
