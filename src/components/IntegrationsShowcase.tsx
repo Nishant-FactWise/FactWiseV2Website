@@ -77,12 +77,12 @@ export default function IntegrationsShowcase() {
     { d: "M 192,64  H 736",               dur: 3.8, begin: 0,    begin2: 1.9 },
     { d: "M 334,64  V 150",               dur: 1.0, begin: 0.3 },
     { d: "M 730,64  V 150",               dur: 1.0, begin: 0.7 },
-    { d: "M 334,186 V 270 H 468",         dur: 2.0, begin: 0.5 },
-    { d: "M 730,186 V 270 H 594",         dur: 2.0, begin: 0.9 },
-    { d: "M 392,270 H 468",               dur: 1.4, begin: 0.6 },
-    { d: "M 594,270 H 670",               dur: 1.1, begin: 0.2 },
+    { d: "M 334,186 V 270 H 498",         dur: 2.0, begin: 0.5 },
+    { d: "M 730,186 V 270 H 562",         dur: 2.0, begin: 0.9 },
+    { d: "M 392,270 H 498",               dur: 1.4, begin: 0.6 },
+    { d: "M 562,270 H 670",               dur: 1.1, begin: 0.2 },
     { d: "M 832,270 H 876",               dur: 0.8, begin: 1.4 },
-    { d: "M 530,308 V 352",               dur: 1.0, begin: 0.8 },
+    { d: "M 530,302 V 352",               dur: 1.0, begin: 0.8 },
     { d: "M 530,388 V 418 H 444 V 438",   dur: 1.3, begin: 0.4 },
     { d: "M 530,388 V 438",               dur: 1.0, begin: 0.8 },
     { d: "M 530,388 V 418 H 616 V 438",   dur: 1.3, begin: 1.1 },
@@ -93,7 +93,7 @@ export default function IntegrationsShowcase() {
   // variant "factwise" = solid blue accent (FactWise's own modules) — default
   const Pill = ({ x, y, w, h = 36, label, rx = 9, large = false, variant = "factwise", onClick, active = false, tooltip, iconSrc }: { x: number, y: number, w: number, h?: number, label: string, rx?: number, large?: boolean, variant?: "factwise" | "external", onClick?: () => void, active?: boolean, tooltip?: string, iconSrc?: string }) => {
     const isExternal = variant === "external";
-    const defaultFill = large ? "#3666ff" : (active ? "#3666ff" : "#FFFFFF");
+    const defaultFill = large ? "#FFFFFF" : (active ? "#3666ff" : "#FFFFFF");
     const defaultStroke = large ? "none" : (active ? "#3666ff" : (isExternal ? "#CBD5E1" : "#BFD0FF"));
     const defaultText = large ? "#FFFFFF" : (active ? "#FFFFFF" : (isExternal ? "#94A3B8" : "#3666ff"));
     const fontSize = large ? 19 : 13;
@@ -153,7 +153,7 @@ export default function IntegrationsShowcase() {
         )}
         {iconSrc ? (
           (() => {
-            const iconH = h * 0.62;
+            const iconH = large ? h * 0.8 : h * 0.62;
             const iconW = iconH;
             return (
               <image
@@ -323,13 +323,13 @@ export default function IntegrationsShowcase() {
                 <path d="M 192,64  H 736" />
                 <path d="M 334,64  V 150" />
                 <path d="M 730,64  V 150" />
-                <path d="M 334,186 V 270 H 468" />
-                <path d="M 730,186 V 270 H 594" />
+                <path d="M 334,186 V 270 H 498" />
+                <path d="M 730,186 V 270 H 562" />
                 <path d="M 132,270 H 172" />
-                <path d="M 392,270 H 468" />
-                <path d="M 594,270 H 670" />
+                <path d="M 392,270 H 498" />
+                <path d="M 562,270 H 670" />
                 <path d="M 832,270 H 876" />
-                <path d="M 530,308 V 352" />
+                <path d="M 530,302 V 352" />
                 <path d="M 530,388 V 418 H 444 V 438" />
                 <path d="M 530,388 V 438" />
                 <path d="M 530,388 V 418 H 616 V 438" />
@@ -448,7 +448,7 @@ export default function IntegrationsShowcase() {
               <Pill x={172}  y={270} w={220} label="Custom AI Agent Marketplace ↗" tooltip="FactWise capability — build & install custom AI agents on top of FactWise." />
 
               {/* CENTER HUB — FactWise */}
-              <Pill x={456} y={270} w={148} h={76} rx={18} label="FactWise" large iconSrc="/Factwisesvglogo.svg" tooltip="The Source-to-Pay platform that runs on top of the systems you already have." />
+              <Pill x={498} y={270} w={64} h={64} rx={16} label="FactWise" large iconSrc="/Factwisesvglogo.svg" tooltip="The Source-to-Pay platform that runs on top of the systems you already have." />
 
               <Pill x={670}  y={270} w={162} label="Analytics" tooltip="FactWise capability — built-in procurement dashboards & savings reporting." />
 
