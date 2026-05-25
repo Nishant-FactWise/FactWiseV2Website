@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from './SectionHeader';
 
-// Sub-modules revealed (3-way branch style) when a suite pill is clicked
+// Sub revealed (3-way branch style) when a suite pill is clicked
 const SUITE_SUBMODULES: Record<string, { cx: number; items: { label: string; tip: string }[] }> = {
   source: {
     cx: 444,
