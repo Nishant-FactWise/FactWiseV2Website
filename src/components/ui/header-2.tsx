@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { MenuToggleIcon } from '@/components/ui/menu-toggle-icon';
@@ -19,6 +19,28 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 	const [open, setOpen] = React.useState(false);
 	const [mounted, setMounted] = React.useState(false);
 	const scrolled = useScroll(20);
+
+	// Dropdown hover-intent: keeps the menu open as the cursor crosses the
+	// invisible gap between the trigger and the panel. Pure CSS group-hover
+	// closes the moment the cursor leaves the trigger rect — on slower
+	// machines / Windows Edge that gap is unforgiving and the menu flickers
+	// or refuses to open. JS-driven state with a short close-delay is robust.
+	const [openMenu, setOpenMenu] = useState<number | null>(null);
+	const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const openDropdown = useCallback((i: number) => {
+		if (closeTimer.current) {
+			clearTimeout(closeTimer.current);
+			closeTimer.current = null;
+		}
+		setOpenMenu(i);
+	}, []);
+	const scheduleClose = useCallback(() => {
+		if (closeTimer.current) clearTimeout(closeTimer.current);
+		closeTimer.current = setTimeout(() => setOpenMenu(null), 160);
+	}, []);
+	useEffect(() => () => {
+		if (closeTimer.current) clearTimeout(closeTimer.current);
+	}, []);
 
 	React.useEffect(() => {
 		setMounted(true);
@@ -116,6 +138,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 					{links.map((link, i) => {
 						const darkMode = !scrolled && !open && theme === 'dark';
 						const active = isLinkActive(link);
+						const isOpen = openMenu === i;
 						const linkClass = cn(
 							'relative transition-colors duration-500 flex items-center gap-1.5 text-[14px] font-medium cursor-pointer',
 							darkMode
@@ -127,21 +150,27 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 								className={cn(
 									'pointer-events-none absolute bottom-[3px] left-3 right-3 h-[2px] rounded-full origin-center transition-transform duration-300 ease-out',
 									darkMode ? 'bg-white' : 'bg-[#3666ff]',
-									active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100',
+									active || (link.subLinks && isOpen) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100',
 								)}
 							/>
 						);
 						return (
-							<div key={i} className="relative group">
+							<div
+								key={i}
+								className="relative group"
+								onMouseEnter={link.subLinks ? () => openDropdown(i) : undefined}
+								onMouseLeave={link.subLinks ? scheduleClose : undefined}
+							>
 								{link.subLinks ? (
-									<button
+									<a
 										className={buttonVariants({ variant: 'ghost', className: linkClass })}
-										type="button"
+										href={link.href}
+										onFocus={() => openDropdown(i)}
 									>
 										{link.label}
-										<ChevronDown size={14} className="group-hover:rotate-180 transition-transform opacity-50" />
+										<ChevronDown size={14} className={cn('transition-transform opacity-50', isOpen && 'rotate-180')} />
 										{underline}
-									</button>
+									</a>
 								) : (
 									<a
 										className={buttonVariants({ variant: 'ghost', className: linkClass })}
@@ -153,8 +182,13 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 								)}
 
 								{(link as any).subLinks && (
-									<div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-										<div className="w-64 bg-white border border-black/[0.08] rounded-2xl p-2 shadow-xl backdrop-blur-xl">
+									<div
+										className={cn(
+											'absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-200',
+											isOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-2 pointer-events-none',
+										)}
+									>
+										<div className="w-64 bg-white border border-black/[0.08] rounded-2xl p-2 shadow-xl">
 											{(link as any).subLinks.map((sub: any, j: number) => {
 												const subActive = pathname === sub.href || pathname.startsWith(sub.href + '/');
 												return (
@@ -182,16 +216,31 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 						"bg-white/20": !scrolled && !open && theme === 'dark',
 						"bg-black/10": scrolled || open || theme === 'light',
 					})} />
-					<Button
-						variant="ghost"
-						onClick={() => { window.location.href = 'https://apps.factwise.io'; }}
-						className={cn("text-[14px] font-medium transition-colors duration-500", {
-							"text-white/80 hover:text-white": !scrolled && !open && theme === 'dark',
-							"text-black/60 hover:text-black": scrolled || open || theme === 'light',
-						})}
-					>
-						Login
-					</Button>
+					{(() => {
+						const darkMode = !scrolled && !open && theme === 'dark';
+						const loginClass = cn(
+							'relative transition-colors duration-500 flex items-center text-[14px] font-medium cursor-pointer',
+							darkMode
+								? 'text-white/80 hover:text-white hover:bg-white/10'
+								: 'text-black/60 hover:text-black hover:bg-black/5',
+						);
+						return (
+							<div className="relative group">
+								<a
+									href="https://apps.factwise.io"
+									className={buttonVariants({ variant: 'ghost', className: loginClass })}
+								>
+									Login
+									<span
+										className={cn(
+											'pointer-events-none absolute bottom-[3px] left-3 right-3 h-[2px] rounded-full origin-center transition-transform duration-300 ease-out scale-x-0 group-hover:scale-x-100',
+											darkMode ? 'bg-white' : 'bg-[#3666ff]',
+										)}
+									/>
+								</a>
+							</div>
+						);
+					})()}
 					<MagicButton
 						label1="Request Demo"
 						label2="Join Us"
