@@ -6,12 +6,12 @@ import SectionHeader from './SectionHeader';
 
 // Sub revealed (3-way branch style) when a suite pill is clicked
 const SUITE_SUBMODULES: Record<string, { cx: number; items: { label: string; tip: string }[] }> = {
-  source: {
+  quote: {
     cx: 444,
     items: [
       { label: 'RFQ / RFI / RFP', tip: 'Run sourcing events and collect structured bids from vendors.' },
       { label: 'Bid Analytics',   tip: 'Compare bids, run scenarios, and pick the best landed cost.' },
-      { label: 'Quote',           tip: 'Generate the customer-facing quote in one click.' },
+      { label: 'Quote Sheet',     tip: 'Generate the customer-facing quote sheet in one click.' },
       { label: 'BOM Cost',        tip: 'Roll up BOM costs with live prices and alternates.' },
       { label: 'Contracts',       tip: 'Store, search and track contract terms and expiry.' },
     ],
@@ -43,8 +43,21 @@ export default function IntegrationsShowcase() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const diagramRef = useRef<HTMLDivElement>(null);
-  const [expandedSuite, setExpandedSuite] = useState<string | null>('procure');
+  const [expandedSuite, setExpandedSuite] = useState<string | null>('quote');
   const [tip, setTip] = useState<Tip>(null);
+
+  // Auto-cycle through Quote → Procure → Pay so the diagram is alive even
+  // before the user interacts. A manual click just resets the rotation cadence.
+  useEffect(() => {
+    const order = ['quote', 'procure', 'pay'] as const;
+    const id = setInterval(() => {
+      setExpandedSuite(prev => {
+        const i = order.indexOf(prev as typeof order[number]);
+        return order[(i + 1) % order.length];
+      });
+    }, 2600);
+    return () => clearInterval(id);
+  }, [expandedSuite]);
 
   // Position a tooltip above the hovered SVG node, relative to the diagram container
   const showTip = (el: SVGGraphicsElement, body: string, kind: 'factwise' | 'external', title: string) => {
@@ -478,7 +491,7 @@ export default function IntegrationsShowcase() {
               <Pill x={468} y={370} w={124} label="AI Workflows" tooltip="FactWise engine — AI automates RFQs, bid analysis, approvals & invoice matching." />
 
               {/* ── 3 FactWise solution suites (cy=456) — click to expand sub-modules ── */}
-              <Pill x={406} y={456} w={76} label="Source"  tooltip="FactWise module — Source-to-Contract. Click to see what's inside." onClick={() => setExpandedSuite(s => s === 'source'  ? null : 'source')}  active={expandedSuite === 'source'} />
+              <Pill x={406} y={456} w={76} label="Quote"   tooltip="FactWise module — Inquiry-to-Quote. Click to see what's inside."   onClick={() => setExpandedSuite(s => s === 'quote'   ? null : 'quote')}   active={expandedSuite === 'quote'} />
               <Pill x={492} y={456} w={76} label="Procure" tooltip="FactWise module — Procure-to-Pay. Click to see what's inside."     onClick={() => setExpandedSuite(s => s === 'procure' ? null : 'procure')} active={expandedSuite === 'procure'} />
               <Pill x={578} y={456} w={76} label="Pay"     tooltip="FactWise module — Invoice-to-Pay. Click to see what's inside."     onClick={() => setExpandedSuite(s => s === 'pay'     ? null : 'pay')}     active={expandedSuite === 'pay'} />
 
