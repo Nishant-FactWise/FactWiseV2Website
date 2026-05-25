@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { Inter, Geist } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { ScrollProgressIndicator } from "@/components/ui/ScrollProgressIndicator";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import { Header } from "@/components/ui/header-2";
+
+const GTM_ID = "GTM-K6XQZW7";
+const GA4_ID = "G-EY6WGL7RC2";
+const UA_ID = "UA-197708066-1";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -336,7 +341,35 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${geist.variable}`}>
+      <head>
+        <Script id="gtm" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');`}
+        </Script>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${UA_ID}');
+            gtag('config', '${GA4_ID}');`}
+        </Script>
+      </head>
       <body className={inter.className} suppressHydrationWarning>
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
