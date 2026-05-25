@@ -43,7 +43,7 @@ export default function IntegrationsShowcase() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const diagramRef = useRef<HTMLDivElement>(null);
-  const [expandedSuite, setExpandedSuite] = useState<string | null>(null);
+  const [expandedSuite, setExpandedSuite] = useState<string | null>('procure');
   const [tip, setTip] = useState<Tip>(null);
 
   // Position a tooltip above the hovered SVG node, relative to the diagram container
@@ -96,7 +96,7 @@ export default function IntegrationsShowcase() {
   // Pill node helper
   // variant "external" = dashed grey outline (systems FactWise connects to)
   // variant "factwise" = solid blue accent (FactWise's own modules) — default
-  const Pill = ({ x, y, w, h = 36, label, rx = 9, large = false, variant = "factwise", onClick, active = false, tooltip }: { x: number, y: number, w: number, h?: number, label: string, rx?: number, large?: boolean, variant?: "factwise" | "external", onClick?: () => void, active?: boolean, tooltip?: string }) => {
+  const Pill = ({ x, y, w, h = 36, label, rx = 9, large = false, variant = "factwise", onClick, active = false, tooltip, iconSrc }: { x: number, y: number, w: number, h?: number, label: string, rx?: number, large?: boolean, variant?: "factwise" | "external", onClick?: () => void, active?: boolean, tooltip?: string, iconSrc?: string }) => {
     const isExternal = variant === "external";
     const defaultFill = large ? "#3666ff" : (active ? "#3666ff" : "#FFFFFF");
     const defaultStroke = large ? "none" : (active ? "#3666ff" : (isExternal ? "#CBD5E1" : "#BFD0FF"));
@@ -156,16 +156,36 @@ export default function IntegrationsShowcase() {
           <rect x={x + 1} y={y - h / 2 + 1} width={w - 2} height={h * 0.35} rx={rx}
             fill="rgba(255,255,255,0.12)" pointerEvents="none" />
         )}
-        <text
-          x={x + w / 2} y={y}
-          dominantBaseline="central" textAnchor="middle"
-          fill={defaultText} fontSize={fontSize}
-          fontFamily="Inter, sans-serif" fontWeight={fontWeight}
-          letterSpacing="-0.015em"
-          style={{ transition: "all 0.3s cubic-bezier(0.22, 1, 0.36, 1)", pointerEvents: "none" }}
-        >
-          {label}
-        </text>
+        {iconSrc ? (
+          (() => {
+            const iconH = h * 0.62;
+            const iconW = iconH;
+            return (
+              <image
+                href={iconSrc}
+                x={x + (w - iconW) / 2}
+                y={y - iconH / 2}
+                width={iconW}
+                height={iconH}
+                preserveAspectRatio="xMidYMid meet"
+                style={{ pointerEvents: "none" }}
+              >
+                <title>{label}</title>
+              </image>
+            );
+          })()
+        ) : (
+          <text
+            x={x + w / 2} y={y}
+            dominantBaseline="central" textAnchor="middle"
+            fill={defaultText} fontSize={fontSize}
+            fontFamily="Inter, sans-serif" fontWeight={fontWeight}
+            letterSpacing="-0.015em"
+            style={{ transition: "all 0.3s cubic-bezier(0.22, 1, 0.36, 1)", pointerEvents: "none" }}
+          >
+            {label}
+          </text>
+        )}
       </g>
     );
   };
@@ -434,7 +454,7 @@ export default function IntegrationsShowcase() {
               <Pill x={172}  y={270} w={220} label="Custom AI Agent Marketplace ↗" tooltip="FactWise capability — build & install custom AI agents on top of FactWise." />
 
               {/* CENTER HUB — FactWise */}
-              <Pill x={456} y={270} w={148} h={76} rx={18} label="FactWise" large tooltip="The Source-to-Pay platform that runs on top of the systems you already have." />
+              <Pill x={456} y={270} w={148} h={76} rx={18} label="FactWise" large iconSrc="/Factwisesvglogo.svg" tooltip="The Source-to-Pay platform that runs on top of the systems you already have." />
 
               <Pill x={670}  y={270} w={162} label="Analytics" tooltip="FactWise capability — built-in procurement dashboards & savings reporting." />
 
