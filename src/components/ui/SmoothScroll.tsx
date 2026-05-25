@@ -1,67 +1,72 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useSyncExternalStore } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollSmoother } from 'gsap/ScrollSmoother';
 import { useGSAP } from '@gsap/react';
 import { usePathname } from 'next/navigation';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+
+// Routes that run their own smooth scrolling via Lenis (ReactLenis root) —
+// ScrollSmoother must stand down there or the two libraries fight over the scroll.
+const LENIS_ROUTES = ['/about', '/careers'];
+
+// Client-mount detector. Server snapshot is `false`, client is `true`, so the
+// first client render matches the server HTML (no hydration mismatch) and only
+// then do we mount ScrollSmoother's wrapper divs. No subscription is needed —
+// the value never changes after mount.
+const NOOP_SUBSCRIBE = () => () => {};
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const isAboutPage = pathname === '/about';
-  const smootherRef = useRef<any>(null);
-  // Track whether we're on the client — avoids SSR/client HTML mismatch
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const usesLenis = LENIS_ROUTES.includes(pathname);
+  const smootherRef = useRef<ScrollSmoother | null>(null);
+  const isClient = useSyncExternalStore(NOOP_SUBSCRIBE, () => true, () => false);
 
   useGSAP(() => {
-    if (!isClient || isAboutPage) return;
+    if (!isClient || usesLenis) return;
 
-    let ScrollSmoother: any = null;
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      ScrollSmoother = require('gsap/ScrollSmoother').ScrollSmoother;
-      gsap.registerPlugin(ScrollSmoother);
-    } catch {
-      // Club plugin not available — native scroll is already working
-      return;
-    }
+    smootherRef.current = ScrollSmoother.create({
+      wrapper: '#smooth-wrapper',
+      content: '#smooth-content',
+      smooth: 1.0, // catch-up time (s). Lower = tighter response, higher = floatier.
+      effects: true, // honours data-speed / data-lag (e.g. the hero subtext parallax)
+      ignoreMobileResize: true,
+    });
 
-    try {
-      if (smootherRef.current) {
-        smootherRef.current.kill();
-        smootherRef.current = null;
-      }
-      smootherRef.current = ScrollSmoother.create({
-        wrapper: '#smooth-wrapper',
-        content: '#smooth-content',
-        smooth: 1.2,
-        effects: true,
-        ignoreMobileResize: true,
-      });
-    } catch (e) {
-      console.warn('ScrollSmoother failed, using native scroll.', e);
-    }
-  }, { scope: wrapperRef, dependencies: [isClient] });
-
-  useEffect(() => {
-    return () => {
-      if (smootherRef.current) {
-        smootherRef.current.kill();
-        smootherRef.current = null;
-      }
+    // Most homepage sections are dynamically imported with ssr:false, so they mount
+    // *after* the smoother is created and grow the page height. Without a refresh,
+    // ScrollSmoother's scroll length stays stuck at the initial (short) height and
+    // scrolling breaks near the bottom. Watch the content box and refresh on growth.
+    let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+    const scheduleRefresh = () => {
+      if (refreshTimer) clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
     };
-  }, []);
 
-  // On server (and first client render before hydration): render children directly.
-  // This ensures server HTML === initial client HTML → no hydration mismatch.
-  if (!isClient || isAboutPage) {
+    const content = document.querySelector('#smooth-content');
+    const ro = content ? new ResizeObserver(scheduleRefresh) : null;
+    if (content && ro) ro.observe(content);
+
+    // Late-loading media (hero video, images) can also change layout height.
+    window.addEventListener('load', scheduleRefresh);
+
+    return () => {
+      if (refreshTimer) clearTimeout(refreshTimer);
+      ro?.disconnect();
+      window.removeEventListener('load', scheduleRefresh);
+      smootherRef.current?.kill();
+      smootherRef.current = null;
+    };
+  }, { scope: wrapperRef, dependencies: [isClient, pathname] });
+
+  // On server (and the first client render before hydration) render children directly
+  // so server HTML === initial client HTML → no hydration mismatch. Lenis routes also
+  // render plain so ScrollSmoother never wraps them.
+  if (!isClient || usesLenis) {
     return <>{children}</>;
   }
 

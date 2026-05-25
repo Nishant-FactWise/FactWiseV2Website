@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, Clock, TrendingUp, Zap, BarChart3, ShieldCheck } from 'lucide-react';
 import { cn } from "@/lib/utils";
-import ScrollReveal from "./ui/ScrollReveal";
 
 interface Metric {
   label: string;
@@ -39,7 +38,7 @@ const CASE_STUDIES: CaseStudy[] = [
     ],
     readTime: '8 min read',
     color: '#000000',
-    visual: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80'
+    visual: 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80'
   },
   {
     id: 'customer-c',
@@ -54,7 +53,7 @@ const CASE_STUDIES: CaseStudy[] = [
     ],
     readTime: '5 min read',
     color: '#000000',
-    visual: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&q=80'
+    visual: 'https://images.unsplash.com/photo-1580951950482-1d5b3a62817d?auto=format&fit=crop&q=80'
   },
   {
     id: 'customer-a',
@@ -69,7 +68,7 @@ const CASE_STUDIES: CaseStudy[] = [
     ],
     readTime: '6 min read',
     color: '#000000',
-    visual: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80'
+    visual: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&q=80'
   },
   {
     id: 'logi-flow',
@@ -84,7 +83,7 @@ const CASE_STUDIES: CaseStudy[] = [
     ],
     readTime: '7 min read',
     color: '#000000',
-    visual: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80'
+    visual: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80'
   }
 ];
 
@@ -115,7 +114,7 @@ export default function ModernCaseStudies() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mx-auto max-w-3xl text-center mb-12"
         >
@@ -136,7 +135,7 @@ export default function ModernCaseStudies() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.4 }}
             className="flex flex-wrap gap-2"
           >
@@ -145,7 +144,7 @@ export default function ModernCaseStudies() {
                 key={cat}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: 0.5 + (i * 0.05) }}
                 onClick={() => setActiveTab(cat)}
                 className={cn(
@@ -164,7 +163,7 @@ export default function ModernCaseStudies() {
           <motion.button
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="group flex items-center gap-3 p-1.5 pr-5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200 text-slate-900 transition-all duration-500 hover:bg-white hover:border-blue-300 hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.1)] active:scale-95 whitespace-nowrap"
           >
@@ -195,7 +194,7 @@ export default function ModernCaseStudies() {
                     y: -5,
                     boxShadow: "0 20px 40px -12px rgba(0, 0, 0, 0.06)",
                   }}
-                  viewport={{ once: false, margin: "0px" }}
+                  viewport={{ once: true, margin: "0px" }}
                   transition={{
                     duration: 0.4,
                     ease: [0.23, 1, 0.32, 1],

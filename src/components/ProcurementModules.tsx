@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const modules = [
   {
-    tag: "SOURCE TO CONTRACT",
+    tag: "QUOTE AUTOMATION",
     title: "Inquiry to Quote",
     description: "From BOM to customer quote in record time — intelligent sourcing, automated negotiations, and true landed-cost analytics.",
     imageUrl: "/images/quote-order.png",
@@ -23,7 +23,7 @@ const modules = [
     icon: BarChart3
   },
   {
-    tag: "PROCURE TO PAY",
+    tag: "SOURCING AUTOMATION",
     title: "Requisition to PO",
     description: "Raise, approve, source, and issue purchase orders in one seamless flow — without the back and forth.",
     imageUrl: "/images/req-po.png",
@@ -103,25 +103,16 @@ const CARDS_STYLE = `
     will-change: transform;
   }
 
+  .fw-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+  }
+
   .fw-card.featured {
     border-color: var(--blue-600);
   }
 
-  /* Shimmer on hover */
-  .fw-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%);
-    transform: translateX(-100%);
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    pointer-events: none;
-    z-index: 2;
-  }
 
-  .fw-card:hover::before {
-    transform: translateX(100%);
-  }
 
   /* Card top color bar */
   .fw-card-bar {
@@ -317,23 +308,6 @@ const CARDS_STYLE = `
 
 function Card({ module, index }: { module: typeof modules[0], index: number }) {
   const router = useRouter();
-  const [tilt, setTilt] = React.useState({ x: 0, y: 0, isHovered: false });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: x * 5, y: -y * 5, isHovered: true });
-  };
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0, isHovered: false });
-  };
-
-  const transformStyle = tilt.isHovered
-    ? `translateY(-6px) scale(1.012) rotateY(${tilt.x}deg) rotateX(${tilt.y}deg)`
-    : '';
 
   // Theme configuration
   const t = {
@@ -349,9 +323,6 @@ function Card({ module, index }: { module: typeof modules[0], index: number }) {
   return (
     <div
       className={`fw-card fw-card-${t.colorKey} ${isFeatured ? "featured" : ""}`}
-      style={{ transform: transformStyle }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       onClick={() => router.push(module.href)}
     >
       <div className="fw-card-bar"></div>

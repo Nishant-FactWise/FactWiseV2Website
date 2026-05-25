@@ -81,15 +81,13 @@ export default function Hero() {
             </div>
 
             <div className="col-span-12 flex flex-col gap-6 pb-4 lg:col-span-4 lg:pb-4">
-              <ScrollReveal type="split-words" delay={0.5} stagger={0.01}>
-                <p
-                  className="text-sm text-[#E1E0CC]/80 sm:text-base md:text-lg max-w-[380px]"
-                  style={{ lineHeight: 1.4, fontFamily: "var(--font-inter)" }}
-                  data-speed="0.9"
-                >
-                  Procurement is just the beginning. FactWise connects every workflow — from customer quotes and vendor RFQs to POs, payments, and beyond — in one platform built for manufacturers.
-                </p>
-              </ScrollReveal>
+              <p
+                className="text-sm text-[#E1E0CC]/80 sm:text-base md:text-lg max-w-[380px]"
+                style={{ lineHeight: 1.4, fontFamily: "var(--font-inter)" }}
+                data-speed="0.9"
+              >
+                Procurement is just the beginning. FactWise connects every workflow — from customer quotes and vendor RFQs to POs, payments, and beyond — in one platform built for manufacturers.
+              </p>
 
 
               <ScrollReveal delay={0.8} y={20}>

@@ -84,6 +84,11 @@ export default function MethodologySection() {
   const containerRef    = useRef<HTMLDivElement>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
+  // N panels share N-1 transitions. Snap points are spread evenly across the whole
+  // [0,1] range (last panel lands at progress 1.0) so there is no dead scroll tail.
+  const segments = pages.length - 1;
+  const snapPoints = pages.map((_, i) => i / segments); // e.g. [0, 1/3, 2/3, 1]
+
   useGSAP(() => {
     if (!containerRef.current) return;
 
@@ -92,35 +97,30 @@ export default function MethodologySection() {
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: () => `+=${(pages.length + 1) * 100}%`,
+      // ~0.85 viewport of scroll per transition (was 1.25vh per panel + a dead
+      // 1.25vh tail). Advancing to the next feature is now one short flick.
+      end: () => `+=${segments * 85}%`,
       pin: true,
-      scrub: 1,
+      // Small scrub only — nothing is continuously tied to scroll here (panels swap
+      // at discrete thresholds), so a large scrub is pure dead-time: you scroll, then
+      // ~1s later the panel moves. 0.3 keeps it smooth but responsive.
+      scrub: 0.3,
       onUpdate: (self) => {
-        const progress  = self.progress;
-        const direction = self.direction;
-
-        let page: number;
-        if (direction === 1) {
-          if      (progress < 0.20) page = 1;
-          else if (progress < 0.45) page = 2;
-          else if (progress < 0.70) page = 3;
-          else                      page = 4;
-        } else {
-          if      (progress < 0.12) page = 1;
-          else if (progress < 0.37) page = 2;
-          else if (progress < 0.62) page = 3;
-          else                      page = 4;
-        }
-
+        // Round progress to the nearest panel so the active panel and the snap
+        // target always agree — no lingering between snaps.
+        const page = Math.min(
+          pages.length,
+          Math.max(1, Math.round(self.progress * segments) + 1)
+        );
         if (page !== lastPage) {
           lastPage = page;
           setCurrentPage(page);
         }
       },
       snap: {
-        snapTo: [0, 0.25, 0.50, 0.75],
-        duration: { min: 0.2, max: 0.5 },
-        delay: 0.15,
+        snapTo: snapPoints,
+        duration: { min: 0.2, max: 0.4 },
+        delay: 0.05,
         ease: "power1.inOut",
         directional: true,
       },
@@ -133,11 +133,10 @@ export default function MethodologySection() {
   }, { scope: containerRef });
 
   const handleDotClick = (index: number) => {
-    if (!scrollTriggerRef.current) return;
     const st = scrollTriggerRef.current;
-    const snapPoints = [0, 0.25, 0.50, 0.75];
+    if (!st) return;
     const targetScroll = st.start + (st.end - st.start) * snapPoints[index];
-    gsap.to(window, { scrollTo: targetScroll, duration: 1, ease: "power2.inOut" });
+    gsap.to(window, { scrollTo: targetScroll, duration: 0.8, ease: "power2.inOut" });
   };
 
   return (
@@ -225,7 +224,7 @@ export default function MethodologySection() {
             <div key={idx} className="absolute inset-0">
               {/* Left Half */}
               <div
-                className="absolute top-0 left-0 w-full lg:w-1/2 h-full transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] z-10"
+                className="absolute top-0 left-0 w-full lg:w-1/2 h-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] z-10"
                 style={{ transform: leftTrans }}
               >
                 {isLeftText
@@ -235,7 +234,7 @@ export default function MethodologySection() {
 
               {/* Right Half */}
               <div
-                className="absolute top-0 right-0 lg:left-1/2 w-full lg:w-1/2 h-full transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] z-10"
+                className="absolute top-0 right-0 lg:left-1/2 w-full lg:w-1/2 h-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] z-10"
                 style={{ transform: rightTrans }}
               >
                 {!isLeftText
