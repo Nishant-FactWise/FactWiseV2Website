@@ -90,10 +90,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://factwise.io",
   },
-  icons: {
-    icon: { url: "/Factwisesvglogo.svg", type: "image/svg+xml" },
-    apple: "/apple-touch-icon.png",
-  },
+  // Icons are picked up automatically from src/app/icon.png, apple-icon.png
+  // and favicon.ico via Next's file-based metadata convention. Regenerate
+  // with `node scripts/build-favicon.js` after replacing public/logo.png.
 };
 
 // ── Global JSON-LD schemas injected on every page ──────────────────────────
