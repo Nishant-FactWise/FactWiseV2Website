@@ -53,7 +53,7 @@ const CASE_STUDIES: CaseStudy[] = [
     ],
     readTime: '5 min read',
     color: '#000000',
-    visual: 'https://images.unsplash.com/photo-1580951950482-1d5b3a62817d?auto=format&fit=crop&q=80'
+    visual: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&q=80'
   },
   {
     id: 'customer-a',

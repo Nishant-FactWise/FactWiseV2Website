@@ -230,7 +230,7 @@ export default function IntegrationsShowcase() {
                 FactWise runs Source-to-Pay. <span className="text-[#3666ff]">It plugs into the systems you already have.</span>
               </>
             }
-            description="FactWise owns the Source → Procure → Pay workflow end-to-end — RFQs, quotes, requisitions, POs, goods receipt, quality checks, invoice matching and payments. It connects to your existing ERP, CRM, BOM, inventory and supplier systems via APIs, MCP and pre-built integrations — so you keep your systems of record and FactWise orchestrates the procurement on top."
+            description="FactWise connects seamlessly to your existing ERP, CRM, BOM, inventory, and supplier systems via APIs and MCP. Keep your systems of record while FactWise orchestrates the entire procurement workflow on top."
             align="center"
           />
         </div>

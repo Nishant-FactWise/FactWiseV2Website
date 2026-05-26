@@ -55,7 +55,10 @@ export default function SectionHeader({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-base md:text-lg text-slate-500 max-w-2xl font-medium leading-relaxed"
+          className={cn(
+            "text-base md:text-lg text-slate-500 font-medium",
+            isCenter ? "max-w-2xl mx-auto" : "max-w-2xl"
+          )}
         >
           {description}
         </motion.p>

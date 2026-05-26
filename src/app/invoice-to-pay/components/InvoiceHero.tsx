@@ -146,7 +146,7 @@ export default function InvoiceHero() {
 
   return (
     <>
-    <section style={{ position:'relative', width:'100%', minHeight:'100vh', overflow:'hidden', background:'#020617', color:'white' }}>
+    <section className="fw-hero-section" style={{ position:'relative', width:'100%', minHeight:'100vh', overflow:'hidden', background:'#020617', color:'white' }}>
       <div style={{ position:'absolute', inset:0, overflow:'hidden', pointerEvents:'none' }}>
         <div style={{ position:'absolute', top:'-10%', right:'-10%', width:'60%', height:'60%', borderRadius:'50%', background:'rgba(59,130,246,0.1)', filter:'blur(120px)' }}/>
         <div style={{ position:'absolute', bottom:'-10%', left:'-10%', width:'60%', height:'60%', borderRadius:'50%', background:'rgba(99,102,241,0.05)', filter:'blur(120px)' }}/>
@@ -158,7 +158,7 @@ export default function InvoiceHero() {
         }}/>
       </div>
 
-      <div style={{
+      <div className="fw-hero-grid" style={{
         position:'relative', zIndex:5,
         maxWidth:1440, margin:'0 auto',
         padding:'130px 56px 80px',
@@ -229,6 +229,7 @@ export default function InvoiceHero() {
           initial={{ opacity:0, y:20 }}
           animate={{ opacity:1, y:0 }}
           transition={{ duration:0.8, delay:0.35, ease:[0.16,1,0.3,1] }}
+          className="fw-hero-visual"
           style={{ position:'relative', height:520 }}
         >
           <div style={{

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { CheckCircle2, BarChart3, Users, Scale, Calculator } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import dynamic from 'next/dynamic';
@@ -84,13 +84,28 @@ export default function MethodologySection() {
   const containerRef    = useRef<HTMLDivElement>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
+  // The pinned split-screen is a desktop interaction. Below lg (1024px) we render a
+  // plain vertical stack instead, so both the copy and the animation show for every
+  // feature. This component is dynamically imported with ssr:false, so reading
+  // matchMedia in the initializer is safe (no SSR/hydration mismatch).
+  const [isDesktop, setIsDesktop] = useState(
+    () => (typeof window === 'undefined' ? true : window.matchMedia('(min-width: 1024px)').matches)
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const apply = () => setIsDesktop(mq.matches);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
+
   // N panels share N-1 transitions. Snap points are spread evenly across the whole
   // [0,1] range (last panel lands at progress 1.0) so there is no dead scroll tail.
   const segments = pages.length - 1;
   const snapPoints = pages.map((_, i) => i / segments); // e.g. [0, 1/3, 2/3, 1]
 
   useGSAP(() => {
-    if (!containerRef.current) return;
+    if (!isDesktop || !containerRef.current) return;
 
     let lastPage = 1;
 
@@ -101,6 +116,7 @@ export default function MethodologySection() {
       // 1.25vh tail). Advancing to the next feature is now one short flick.
       end: () => `+=${segments * 85}%`,
       pin: true,
+      pinType: "transform",
       // Small scrub only — nothing is continuously tied to scroll here (panels swap
       // at discrete thresholds), so a large scrub is pure dead-time: you scroll, then
       // ~1s later the panel moves. 0.3 keeps it smooth but responsive.
@@ -130,7 +146,7 @@ export default function MethodologySection() {
     });
 
     return () => { scrollTriggerRef.current?.kill(); };
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [isDesktop] });
 
   const handleDotClick = (index: number) => {
     const st = scrollTriggerRef.current;
@@ -160,8 +176,12 @@ export default function MethodologySection() {
         </motion.div>
       </div>
 
-      {/* Scroll adventure */}
-      <div ref={containerRef} className="relative overflow-hidden h-screen bg-white">
+      {/* DESKTOP (lg+): pinned split-screen scroll experience.
+          Always mounted, just CSS-hidden below lg — never unmounted by React. While
+          ScrollTrigger's pin is active it wraps this node in a pin-spacer (re-parenting
+          it), so unmounting it from React throws "removeChild ... not a child of this
+          node". The pin is created/reverted by the useGSAP hook (gated on isDesktop). */}
+      <div ref={containerRef} className="relative hidden h-screen overflow-hidden bg-white lg:block">
         {pages.map((page, i) => {
           const idx      = i + 1;
           const isActive = currentPage === idx;
@@ -211,8 +231,10 @@ export default function MethodologySection() {
             );
           };
 
-          // Only mount the animation component when this panel is active (or adjacent for pre-loading)
-          const shouldMountAnimation = Math.abs(currentPage - idx) <= 1;
+          // Only mount the animation when this panel is active (or adjacent, for
+          // pre-loading) — and only on desktop, where this block is visible. The mobile
+          // stack below renders its own animations.
+          const shouldMountAnimation = isDesktop && Math.abs(currentPage - idx) <= 1;
 
           const animPanel = (
             <div className="w-full h-full relative overflow-hidden">
@@ -256,6 +278,63 @@ export default function MethodologySection() {
           ))}
         </div>
       </div>
+
+      {/* MOBILE / TABLET (<lg): plain vertical stack so BOTH the copy and the
+          animation are visible for every feature — the pinned split-screen above
+          overlaps its two halves on narrow screens and hides one of them. Always
+          mounted, CSS-hidden at lg+. */}
+      <div className="flex flex-col gap-5 px-4 pb-16 sm:px-6 lg:hidden">
+        {pages.map((page, i) => (
+          <MobileFeature key={page.id} page={page} idx={i + 1} />
+        ))}
+      </div>
     </section>
+  );
+}
+
+function MobileFeature({ page, idx }: { page: (typeof pages)[number]; idx: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  // Mount the (looping) animation only while the card is near the viewport, so four
+  // animations don't all run off-screen at once and drag on mobile.
+  const inView = useInView(ref, { margin: '200px 0px' });
+
+  return (
+    <div
+      ref={ref}
+      className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm"
+    >
+      {/* Copy */}
+      <div className="relative p-6 sm:p-8">
+        <div className="pointer-events-none absolute right-5 top-4 select-none font-mono text-6xl font-black tracking-tighter text-slate-500/[0.05]">
+          0{idx}
+        </div>
+        <h3 className="relative z-10 mb-4 bg-gradient-to-r from-[#0b1322] to-[#3666ff] bg-clip-text text-2xl font-extrabold leading-tight tracking-tight text-transparent sm:text-3xl">
+          {page.title}
+        </h3>
+        <p className="relative z-10 mb-6 text-base leading-relaxed text-slate-600">
+          {page.description}
+        </p>
+        <div className="relative z-10 grid grid-cols-1 gap-3">
+          {page.details.map((detail, dIdx) => (
+            <div
+              key={dIdx}
+              className="flex items-start gap-3 rounded-xl border border-blue-50/60 bg-[#F8FAFF] p-3.5"
+            >
+              <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                <CheckCircle2 className="h-3.5 w-3.5" />
+              </div>
+              <span className="text-sm font-medium leading-relaxed text-slate-700">
+                {detail}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Animation */}
+      <div className="relative h-[360px] w-full overflow-hidden border-t border-slate-100 bg-slate-50/50 sm:h-[440px]">
+        {inView && <page.Animation />}
+      </div>
+    </div>
   );
 }

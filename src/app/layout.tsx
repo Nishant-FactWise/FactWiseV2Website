@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Geist } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import { ScrollProgressIndicator } from "@/components/ui/ScrollProgressIndicator";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import { Header } from "@/components/ui/header-2";
 
@@ -386,7 +385,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqSchema) }}
         />
         <div className="noise-bg" />
-        <ScrollProgressIndicator />
         <Header />
         <SmoothScroll>
           {children}

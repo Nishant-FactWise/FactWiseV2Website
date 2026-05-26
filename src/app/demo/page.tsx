@@ -38,11 +38,11 @@ export default function DemoPage() {
               Our solutions team will reach out to confirm your custom demo time within 24 hours.
             </p>
             <div className="space-y-4 relative z-10">
-              <a href="/platform/sourcing" className="block p-5 rounded-2xl bg-black/[0.04] border border-black/[0.08] hover:bg-black/[0.07] transition-all text-sm font-bold uppercase tracking-widest text-[#808080] hover:text-[#000000]">
-                Explore Sourcing
+              <a href="/inquiry-to-quote" className="block p-5 rounded-2xl bg-black/[0.04] border border-black/[0.08] hover:bg-black/[0.07] transition-all text-sm font-bold uppercase tracking-widest text-[#808080] hover:text-[#000000]">
+                Explore Inquiry to Quote
               </a>
-              <a href="/platform/pricing-intelligence" className="block p-5 rounded-2xl bg-[#3666ff]/10 border border-[#3666ff]/20 hover:bg-[#3666ff]/20 transition-all text-sm font-bold uppercase tracking-widest text-[#3666ff]">
-                Pricing Intelligence
+              <a href="/requisitions-to-po" className="block p-5 rounded-2xl bg-[#3666ff]/10 border border-[#3666ff]/20 hover:bg-[#3666ff]/20 transition-all text-sm font-bold uppercase tracking-widest text-[#3666ff]">
+                Requisitions to PO
               </a>
             </div>
           </motion.div>

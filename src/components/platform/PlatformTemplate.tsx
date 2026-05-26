@@ -144,7 +144,7 @@ export default function PlatformTemplate({
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2, ease: "circOut" }}
-              className="relative"
+              className="relative hidden lg:block"
             >
               <div className="absolute inset-0 bg-[#3666ff]/10 blur-[80px] rounded-full scale-90" />
               <div className="relative glass-card rounded-[32px] overflow-hidden aspect-[4/3] shadow-2xl border-white/10">

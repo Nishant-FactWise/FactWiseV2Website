@@ -15,11 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/invoice-to-pay`,                 lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     // /solutions permanently redirects to /inquiry-to-quote — excluded from sitemap
 
-    // Platform module pages
-    { url: `${base}/platform`,                       lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/platform/sourcing`,              lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/platform/purchase-orders`,       lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/platform/pricing-intelligence`,  lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+
 
     // Commercial
     { url: `${base}/pricing`,                        lastModified: now, changeFrequency: "monthly", priority: 0.8 },

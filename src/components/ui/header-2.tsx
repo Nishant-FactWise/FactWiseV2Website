@@ -53,7 +53,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 		},
 		{
 			label: 'Product',
-			href: '/platform',
+			href: '#',
 			subLinks: [
 				{ label: 'Inquiry to Quote', href: '/inquiry-to-quote' },
 				{ label: 'Requisitions to PO', href: '/requisitions-to-po' },
@@ -166,6 +166,11 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 										className={buttonVariants({ variant: 'ghost', className: linkClass })}
 										href={link.href}
 										onFocus={() => openDropdown(i)}
+										onClick={(e) => {
+											e.preventDefault();
+											if (isOpen) scheduleClose();
+											else openDropdown(i);
+										}}
 									>
 										{link.label}
 										<ChevronDown size={14} className={cn('transition-transform opacity-50', isOpen && 'rotate-180')} />

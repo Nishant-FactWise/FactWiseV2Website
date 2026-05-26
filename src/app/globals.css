@@ -620,3 +620,19 @@
   .font-serif {
     font-family: var(--font-instrument), serif;
   }
+
+/* ── Product-page hero: mobile = copy only ──────────────────────────────
+   Below lg the dashboard mockup is hidden and the split grid collapses to a
+   single full-width column, so the hero shows just heading/subhead/CTAs.
+   Desktop (>=1024px) is untouched. Hooks live on the inline-styled product
+   heroes (SolutionsHero / InvoiceHero / ReqHero). */
+@media (max-width: 1023px) {
+  .fw-hero-section { min-height: auto !important; }
+  .fw-hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    padding: 104px 24px 56px !important;
+    min-height: auto !important;
+  }
+  .fw-hero-visual { display: none !important; }
+}
