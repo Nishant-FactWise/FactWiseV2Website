@@ -49,15 +49,24 @@ export default function Hero() {
     <section className="h-screen w-full relative pt-16 md:pt-0">
       <div className="relative h-full w-full overflow-hidden">
 
-        {/* Background video */}
+        {/* Background video — compressed from a 29 MB MOV (H.264 @ 19 Mbps,
+            1080p) to a 1.1 MB WebM + 2.9 MB MP4 fallback at 720p / ~1.5-2 Mbps.
+            poster gives an instant first paint; preload="metadata" stops the
+            browser from greedily downloading the whole file before the user
+            actually arrives at the hero. WebM ships to Chrome / Firefox /
+            Edge first; Safari falls through to the MP4. */}
         <video
           autoPlay
           loop
           muted
           playsInline
+          preload="metadata"
+          poster="/factwise-hero-poster.jpg"
           className="absolute inset-0 h-full w-full object-cover"
-          src="/factwise-hero.mp4.mov"
-        />
+        >
+          <source src="/factwise-hero.webm" type="video/webm" />
+          <source src="/factwise-hero.mp4"  type="video/mp4" />
+        </video>
 
         {/* Noise overlay — disabled for performance reasons (feTurbulence lag) */}
         <div
