@@ -13,7 +13,12 @@ import {
   HeartPulse,
   ShoppingBag,
   Cpu,
-  Globe
+  Globe,
+  Wrench,
+  Car,
+  TestTube,
+  Factory,
+  Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils"; 
 import { motion } from "framer-motion";
@@ -142,42 +147,58 @@ ExpandingCards.displayName = "ExpandingCards";
 const industryItems: CardItem[] = [
   {
     id: 1,
-    title: "Manufacturing",
-    description: "Digitalize direct procurement, manage complex BOMs, and ensure supply chain resilience with automated workflows.",
-    imgSrc: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80",
-    icon: <Building className="size-8" />,
+    title: "MRO",
+    description: "Manage indirect spend, simplify maintenance, repair, and operations procurement, and track tool lifecycle costs.",
+    imgSrc: "/images/industries/mro.png",
+    icon: <Wrench className="size-8" />,
     linkHref: "#"
   },
   {
     id: 2,
-    title: "Retail & CPG",
-    description: "Streamline indirect spend, manage thousands of SKUs, and optimize vendor relationships for maximum margin.",
-    imgSrc: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80",
-    icon: <ShoppingBag className="size-8" />,
+    title: "Electronic Manufacturing",
+    description: "Streamline component sourcing, manage complex PCB BOMs, and ensure supply chain resilience.",
+    imgSrc: "/images/industries/electronic.png",
+    icon: <Cpu className="size-8" />,
     linkHref: "#"
   },
   {
     id: 3,
-    title: "Healthcare",
-    description: "Ensure compliance, manage critical medical supplies, and achieve zero-error procurement for life-saving operations.",
-    imgSrc: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80",
-    icon: <HeartPulse className="size-8" />,
+    title: "Automotive",
+    description: "Optimize direct spend for tier-1 suppliers, manage multi-level BOMs, and source quality components seamlessly.",
+    imgSrc: "/images/industries/automotive.png",
+    icon: <Car className="size-8" />,
     linkHref: "#"
   },
   {
     id: 4,
-    title: "Logistics",
-    description: "Optimize transportation spend, manage freight tenders, and gain real-time visibility into global shipping costs.",
-    imgSrc: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80",
-    icon: <Truck className="size-8" />,
+    title: "Pharmaceutical",
+    description: "Ensure compliance, manage critical lab supplies, and achieve zero-error procurement for life-saving operations.",
+    imgSrc: "/images/industries/pharma.png",
+    icon: <HeartPulse className="size-8" />,
     linkHref: "#"
   },
   {
     id: 5,
-    title: "Technology",
-    description: "Scale rapidly with cloud-native procurement tools that integrate seamlessly with your modern tech stack.",
-    imgSrc: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80",
-    icon: <Cpu className="size-8" />,
+    title: "Chemicals",
+    description: "Source raw materials reliably, track global commodity prices, and manage large-scale industrial supplier networks.",
+    imgSrc: "/images/teamwork-dim-modern-lab.jpg",
+    icon: <TestTube className="size-8" />,
+    linkHref: "#"
+  },
+  {
+    id: 6,
+    title: "Manufacturing",
+    description: "Digitalize direct procurement, manage complex bills of materials, and secure raw materials with automated workflows.",
+    imgSrc: "/images/portrait-male-engineer-working-field-engineers-day-celebration.jpg",
+    icon: <Factory className="size-8" />,
+    linkHref: "#"
+  },
+  {
+    id: 7,
+    title: "Electrical Switchboards",
+    description: "Simplify procurement of complex electrical components, manage multi-vendor bids, and ensure spec compliance for switchboard assembly.",
+    imgSrc: "/images/industries/switchboard.png",
+    icon: <Zap className="size-8" />,
     linkHref: "#"
   }
 ];

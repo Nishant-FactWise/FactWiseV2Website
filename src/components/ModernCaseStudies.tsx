@@ -28,24 +28,24 @@ const CASE_STUDIES: CaseStudy[] = [
   {
     id: 'customer-b',
     category: 'Manufacturing',
-    company: 'Customer B',
-    logo: 'CB',
+    company: 'Electronic Manufacturing',
+    logo: 'EM',
     industry: 'Electronics manufacturing',
-    title: 'Achieved 14% annual profit increase by automating multi-currency RfQs and sourcing workflows',
+    title: 'Achieved 3% annual profit increase by automating multi-currency RfQs and sourcing workflows',
     metrics: [
-      { label: 'Profit increase', value: '14%' },
+      { label: 'Profit increase', value: '3%' },
       { label: 'Process speed', value: '3x' },
       { label: 'Cost saved', value: '$1.2M' },
     ],
     readTime: '8 min read',
     color: '#000000',
-    visual: 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80'
+    visual: '/images/electrinic manufacturing.png'
   },
   {
     id: 'customer-c',
-    category: 'Automotive',
-    company: 'Customer C',
-    logo: 'CC',
+    category: 'Automotive Components',
+    company: 'Automotive Components',
+    logo: 'AC',
     industry: 'Automotive components',
     title: 'Enabled 18x ROI within the first year by automating complex landed cost calculations',
     metrics: [
@@ -54,14 +54,14 @@ const CASE_STUDIES: CaseStudy[] = [
     ],
     readTime: '5 min read',
     color: '#000000',
-    visual: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&q=80'
+    visual: '/images/industries/cs_automotive.png'
   },
   {
     id: 'customer-a',
-    category: 'Electronics',
-    company: 'Customer A',
-    logo: 'CA',
-    industry: 'Semiconductor manufacturing',
+    category: 'MRO',
+    company: 'MRO',
+    logo: 'MR',
+    industry: 'Maintenance & Operations',
     title: 'Streamlined manual quoting workflows into a high-speed automated multi-currency process',
     metrics: [
       { label: 'Faster quoting', value: '4x' },
@@ -69,26 +69,26 @@ const CASE_STUDIES: CaseStudy[] = [
     ],
     readTime: '6 min read',
     color: '#000000',
-    visual: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&q=80'
+    visual: '/images/industries/cs_mro.png'
   },
   {
     id: 'logi-flow',
-    category: 'Logistics',
-    company: 'LogiFlow Systems',
-    logo: 'LS',
+    category: 'Chemicals',
+    company: 'Chemicals',
+    logo: 'CH',
     industry: 'Global Supply Chain',
-    title: 'Reduced freight procurement cycle time by 60% with automated lane bidding and selection',
+    title: 'Reduced procurement cycle time by 60% with automated index based pricing',
     metrics: [
       { label: 'Cycle reduction', value: '60%' },
-      { label: 'Freight savings', value: '22%' },
+      { label: 'Cost savings', value: '22%' },
     ],
     readTime: '7 min read',
     color: '#000000',
-    visual: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80'
+    visual: '/images/pharmaceutical-factory-woman-worker-protective-clothing-operating-production-line-sterile-environment.jpg'
   }
 ];
 
-const CATEGORIES = ['All', 'Manufacturing', 'Automotive', 'Electronics', 'Logistics'];
+const CATEGORIES = ['All', 'Manufacturing', 'Automotive Components', 'MRO', 'Chemicals'];
 
 export default function ModernCaseStudies() {
   const [activeTab, setActiveTab] = useState('All');

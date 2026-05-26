@@ -213,7 +213,7 @@ export default function MethodologySection() {
                   {page.title}
                 </h3>
                 
-                <p className="text-base lg:text-lg mb-8 leading-relaxed text-slate-600 max-w-xl relative z-10">
+                <p className="text-base lg:text-[17.5px] mb-8 leading-relaxed text-slate-600 max-w-xl relative z-10">
                   {page.description}
                 </p>
                 
@@ -245,16 +245,14 @@ export default function MethodologySection() {
           const shouldMountAnimation = isDesktop && Math.abs(currentPage - idx) <= 1;
 
           const animPanel = (
-            <div className="w-full h-full relative overflow-hidden">
-              {shouldMountAnimation && <page.Animation />}
-            </div>
+            <DesktopAnim Animation={page.Animation} mount={shouldMountAnimation} />
           );
 
           return (
             <div key={idx} className="absolute inset-0">
               {/* Left Half */}
               <div
-                className="absolute top-0 left-0 w-full lg:w-1/2 h-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] z-10"
+                className="absolute top-0 left-0 w-full lg:w-1/2 h-full pt-20 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] z-10"
                 style={{ transform: leftTrans }}
               >
                 {isLeftText
@@ -264,7 +262,7 @@ export default function MethodologySection() {
 
               {/* Right Half */}
               <div
-                className="absolute top-0 right-0 lg:left-1/2 w-full lg:w-1/2 h-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] z-10"
+                className="absolute top-0 right-0 lg:left-1/2 w-full lg:w-1/2 h-full pt-20 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] z-10"
                 style={{ transform: rightTrans }}
               >
                 {!isLeftText
@@ -307,6 +305,39 @@ export default function MethodologySection() {
 // unaffected (this component only renders on the mobile/tablet branch).
 const ANIM_DESIGN_W = 700;
 const ANIM_DESIGN_H = 580;
+
+// Desktop split-screen: on laptops where the right/left half is narrower than the
+// dashboard's ~700px design width (common at 1280–1366px or 125–150% display scaling),
+// the fixed-size dashboard used to overflow and clip. Render it at native size and
+// scale it down to fit the half — full content stays visible, just slightly smaller.
+function DesktopAnim({ Animation, mount }: { Animation: (typeof pages)[number]['Animation']; mount: boolean }) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(0);
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const apply = () => setScale(Math.min(1, el.clientWidth / ANIM_DESIGN_W));
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <div ref={boxRef} className="w-full h-full relative overflow-hidden flex items-center justify-center">
+      <div
+        className="shrink-0"
+        style={{
+          width: ANIM_DESIGN_W,
+          height: ANIM_DESIGN_H,
+          transform: `scale(${scale || 1})`,
+          transformOrigin: 'center center',
+        }}
+      >
+        {mount && scale > 0 && <Animation />}
+      </div>
+    </div>
+  );
+}
 
 function MobileFeature({ page, idx }: { page: (typeof pages)[number]; idx: number }) {
   const ref = useRef<HTMLDivElement>(null);

@@ -151,11 +151,13 @@ export default function Navbar() {
           {/* ── Logo + desktop nav ── */}
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1">
-              <img 
-                src="/logo.webp" 
-                alt="FactWise Logo" 
-                className="h-8 w-auto" 
-              />
+              <div className="relative h-8 w-8 overflow-hidden rounded-tl-sm rounded-br-sm shrink-0">
+                <img 
+                  src="/logo.webp" 
+                  alt="FactWise Logo" 
+                  className="absolute -top-[2%] -left-[2%] w-[102%] h-[102%] max-w-none" 
+                />
+              </div>
               <span className="text-[17px] font-semibold tracking-[-0.02em] text-[#000000]">
                 FactWise
               </span>
