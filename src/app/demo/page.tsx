@@ -38,7 +38,7 @@ export default function DemoPage() {
       {/* Dark Navbar */}
       <header className="relative z-20 w-full px-6 py-6 flex items-center justify-between max-w-[1400px] mx-auto">
         <div className="flex items-center gap-2 text-white font-bold text-xl tracking-tight">
-          <img src="/logowhite.png" alt="FactWise Logo" className="h-7 w-auto rounded-tl-[15%] rounded-br-[15%]" style={{ clipPath: 'inset(2% 0 0 2%)' }} />
+          <img src="/logowhite.webp" alt="FactWise Logo" className="h-7 w-auto rounded-tl-[15%] rounded-br-[15%]" style={{ clipPath: 'inset(2% 0 0 2%)' }} />
           <span>FactWise</span>
         </div>
         <Link 
