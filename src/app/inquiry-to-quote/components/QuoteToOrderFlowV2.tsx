@@ -105,6 +105,21 @@ export default function QuoteToOrderFlowV2() {
         });
         triggerStartPx = trigger.start;
 
+        // Snap the full-screen section into place on approach so it can never rest
+        // half-shown. Without this, ScrollSmoother momentum lets the page stop
+        // mid-pin — cutting the panel and leaving the navbar over the content.
+        const snapTrigger = ScrollTrigger.create({
+            trigger: containerRef.current,
+            start: 'top 85%',
+            end: 'top top',
+            snap: {
+                snapTo: [0, 1],
+                duration: { min: 0.2, max: 0.5 },
+                ease: 'power2.inOut',
+                directional: true,
+            },
+        });
+
         const onKey = (e: KeyboardEvent) => {
             if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
                 !animating && gotoPanel(currentIndexRef.current + 1, true);
@@ -117,6 +132,7 @@ export default function QuoteToOrderFlowV2() {
 
         return () => {
             trigger.kill();
+            snapTrigger.kill();
             intentObserver.kill();
             window.removeEventListener('keydown', onKey);
         };

@@ -391,7 +391,7 @@ export default function ImplementationRoadmap() {
                 <Rocket className="w-3 h-3" /><span>Implementation Journey</span>
               </div>
             </ScrollReveal>
-            <ScrollReveal type="split-chars" stagger={0.02}>
+            <ScrollReveal>
               <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-4 leading-[1.1]">
                 From Sign-Up to Savings.{" "}<span className="italic text-[#3666ff]">Faster Than You Think.</span>
               </h2>

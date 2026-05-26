@@ -120,7 +120,7 @@ export default function Testimonials() {
                         </div>
                     </ScrollReveal>
 
-                    <ScrollReveal type="split-chars" stagger={0.02}>
+                    <ScrollReveal>
                         <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]">
                             Trusted by the <span className="text-[#3666ff]">Best in the Business.</span>
                         </h2>
