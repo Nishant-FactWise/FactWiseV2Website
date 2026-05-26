@@ -45,7 +45,7 @@ const VALUES = [
 
 export const ValuesGrid = () => {
   return (
-    <section className="py-32 px-6 md:px-14 bg-white relative">
+    <section className="py-20 md:py-32 px-6 md:px-14 bg-white relative">
       <div className="max-w-7xl mx-auto relative z-10">
 
         {/* Badge */}
@@ -66,13 +66,13 @@ export const ValuesGrid = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="text-4xl md:text-5xl font-bold text-slate-900 leading-[1.05] tracking-tighter mb-12"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.05] tracking-tighter mb-12"
           >
             The Values <span className="font-instrument italic font-medium text-[#3666ff]">That Ship</span> With Every Line Of Code.
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           {VALUES.map((value, index) => (
             <motion.article
               key={index}
@@ -81,7 +81,7 @@ export const ValuesGrid = () => {
               viewport={{ once: false }}
               transition={{ delay: index * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -14, scale: 1.02 }}
-              className="group relative bg-white border border-slate-100 rounded-[32px] p-8 min-h-[380px] flex flex-col justify-between overflow-hidden"
+              className="group relative bg-white border border-slate-100 rounded-[28px] md:rounded-[32px] p-6 md:p-8 min-h-[300px] md:min-h-[380px] flex flex-col justify-between overflow-hidden"
               style={{
                 boxShadow:
                   '0 2px 6px rgba(0,0,0,0.04), 0 6px 24px rgba(54,102,255,0.07), 0 0 0 1px rgba(54,102,255,0.05)',
@@ -113,7 +113,7 @@ export const ValuesGrid = () => {
 
               <div className="relative z-10">
                 {/* Animated blue gradient icon */}
-                <div className="size-16 rounded-2xl flex items-center justify-center shadow-[0_4px_18px_rgba(54,102,255,0.38)] group-hover:shadow-[0_6px_26px_rgba(54,102,255,0.55)] group-hover:scale-110 transition-all duration-500"
+                <div className="size-12 md:size-16 rounded-2xl flex items-center justify-center shadow-[0_4px_18px_rgba(54,102,255,0.38)] group-hover:shadow-[0_6px_26px_rgba(54,102,255,0.55)] group-hover:scale-110 transition-all duration-500"
                   style={{ background: 'linear-gradient(135deg, #3666ff 0%, #6690ff 100%)' }}
                 >
                   <motion.div
@@ -121,11 +121,11 @@ export const ValuesGrid = () => {
                     transition={value.iconTransition as any}
                     className="text-white"
                   >
-                    <value.icon className="size-7" strokeWidth={2} />
+                    <value.icon className="size-6 md:size-7" strokeWidth={2} />
                   </motion.div>
                 </div>
 
-                <h3 className="text-2xl font-bold text-slate-900 mt-10 mb-4 tracking-tight leading-snug">
+                <h3 className="text-xl md:text-2xl font-bold text-slate-900 mt-6 md:mt-10 mb-3 md:mb-4 tracking-tight leading-snug">
                   {value.title}
                 </h3>
                 <p className="text-slate-500 text-sm md:text-base leading-relaxed">
@@ -133,7 +133,7 @@ export const ValuesGrid = () => {
                 </p>
               </div>
 
-              <div className="relative z-10 pt-8 mt-auto flex items-center border-t border-slate-100">
+              <div className="relative z-10 pt-5 md:pt-8 mt-auto flex items-center border-t border-slate-100">
                 <div className="flex items-center gap-2">
                   <div className="size-2 rounded-full bg-[#3666ff]/30 group-hover:bg-[#3666ff] transition-colors duration-500" />
                   <span className="text-[10px] font-bold text-[#3666ff] uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-x-[-8px] group-hover:translate-x-0 transition-all duration-500">

@@ -286,7 +286,7 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
     const activeMenu = stepToMenu(step);
 
     return (
-        <div id="quote-section-3-3" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-40 scroll-mt-24">
+        <div id="quote-section-3-3" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             {/* LEFT */}
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -303,9 +303,8 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                     Know your True Landed Cost. <br />
                     <span className="text-[#3666ff]">Before you Quote.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     FactWise automatically applies your custom landed cost formulas across every bid — normalizing currencies and factoring in duties, freight, insurance, and packaging. Drill into vendor performance at a glance — competitive, non-competitive, and excluded bids per supplier. FactWise Recommended Analytics surfaces the best bid per item based on your own criteria — so when you quote your customer, every number is backed by true cost, not guesswork.
-
                 </p>
 
                 <div className="flex flex-col gap-2 mt-8 text-left">

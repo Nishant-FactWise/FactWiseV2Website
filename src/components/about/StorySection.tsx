@@ -6,9 +6,9 @@ import { Check } from 'lucide-react';
 
 export const StorySection = () => {
   return (
-    <section className="py-24 px-6 md:px-14 bg-white overflow-hidden">
+    <section className="py-16 md:py-24 px-6 md:px-14 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-12 gap-16 xl:gap-24 items-center">
+        <div className="grid md:grid-cols-12 gap-10 md:gap-16 xl:gap-24 items-center">
           
           {/* Left: Interactive Visual */}
           <motion.div
@@ -99,7 +99,7 @@ export const StorySection = () => {
               </div>
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 leading-[1.1] tracking-tighter mb-8 md:mb-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.1] tracking-tighter mb-8 md:mb-10">
               A Platform Built For The <span className="text-[#3666ff] font-instrument italic font-medium">Complexity</span> Of Real Procurement.
             </h2>
             

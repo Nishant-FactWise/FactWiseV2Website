@@ -30,11 +30,21 @@ export default function QuoteToOrderFlowV2() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [activePanel, setActivePanel] = useState(-1); // -1 = not entered; 0-3 → panels
 
+    const [isDesktop, setIsDesktop] = useState(true);
+    useEffect(() => {
+        const mq = window.matchMedia('(min-width: 1024px)');
+        const apply = () => setIsDesktop(mq.matches);
+        apply();
+        mq.addEventListener('change', apply);
+        return () => mq.removeEventListener('change', apply);
+    }, []);
+
     const gotoPanelRef = useRef<((index: number, isDown: boolean) => void) | null>(null);
     const currentIndexRef = useRef(-1);
 
     useEffect(() => {
         if (typeof window === 'undefined' || !containerRef.current) return;
+        if (!isDesktop) return; // no swipe on mobile
 
         const panels = gsap.utils.toArray<HTMLElement>('.qtof-panel');
         let animating = false;
@@ -136,7 +146,7 @@ export default function QuoteToOrderFlowV2() {
             intentObserver.kill();
             window.removeEventListener('keydown', onKey);
         };
-    }, []);
+    }, [isDesktop]);
 
     const navPrev = useCallback(() => {
         if (gotoPanelRef.current) {
@@ -200,12 +210,9 @@ export default function QuoteToOrderFlowV2() {
                 </div>
             </section>
 
-            {/* ══════════════════════════════
-                PINNED SWIPE CONTAINER
-            ══════════════════════════════ */}
             <div
                 ref={containerRef}
-                className="qtof-container"
+                className="qtof-container hidden lg:block"
                 style={{
                     position: 'relative',
                     height: '100vh',
@@ -266,9 +273,10 @@ export default function QuoteToOrderFlowV2() {
                     STEP PROGRESS BAR (bottom)
                 ══════════════════════════════ */}
                 <div
+                    className="hidden lg:flex"
                     style={{
                         position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)',
-                        zIndex: 100, display: 'flex', alignItems: 'center', gap: 8,
+                        zIndex: 100, alignItems: 'center', gap: 8,
                         background: 'white', border: '1px solid rgba(15,23,42,0.08)',
                         borderRadius: 100, padding: '8px 16px',
                         boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
@@ -303,11 +311,12 @@ export default function QuoteToOrderFlowV2() {
                 <button
                     onClick={navPrev}
                     aria-label="Previous step"
+                    className="hidden lg:flex"
                     style={{
                         position: 'absolute', left: 20, top: '50%', transform: 'translateY(-50%)',
                         zIndex: 100, width: 40, height: 40, borderRadius: '50%',
                         background: 'white', border: '1px solid rgba(15,23,42,0.1)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        alignItems: 'center', justifyContent: 'center',
                         cursor: 'pointer', boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
                         transition: 'all .2s ease',
                         opacity: activePanel === 0 ? 0 : 1,
@@ -323,12 +332,13 @@ export default function QuoteToOrderFlowV2() {
                 <button
                     onClick={navNext}
                     aria-label="Next step"
+                    className="hidden lg:flex"
                     style={{
                         position: 'absolute', right: 20, top: '50%', transform: 'translateY(-50%)',
                         zIndex: 100, width: 40, height: 40, borderRadius: '50%',
                         background: activePanel === STEPS.length - 1 ? 'rgba(0,184,132,0.1)' : 'white',
                         border: `1px solid ${activePanel === STEPS.length - 1 ? 'rgba(0,184,132,0.3)' : 'rgba(15,23,42,0.1)'}`,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        alignItems: 'center', justifyContent: 'center',
                         cursor: 'pointer', boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
                         transition: 'all .2s ease',
                         color: activePanel === STEPS.length - 1 ? '#00b884' : '#64748b',
@@ -342,7 +352,15 @@ export default function QuoteToOrderFlowV2() {
             </div>
 
             {/* Spacer so page content after this section scrolls normally */}
-            <div style={{ height: 1 }} aria-hidden="true" />
+            {isDesktop && <div style={{ height: 1 }} aria-hidden="true" />}
+
+            {/* MOBILE / TABLET (<lg): all steps stacked vertically, normal scroll */}
+            <div className="block lg:hidden bg-[#ffffff]">
+                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><BomCostSection /></div>
+                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section32SourceAINegotiate isActive /></div>
+                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section33LandedCostXRay isActive /></div>
+                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section34QuoteAIInsight isActive /></div>
+            </div>
 
             <style>{`
                 @keyframes qtof-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }

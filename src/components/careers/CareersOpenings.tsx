@@ -13,10 +13,10 @@ export const CareersOpenings = () => {
     activeCategory === 'all' ? JOBS : JOBS.filter((job) => job.category === activeCategory);
 
   return (
-    <section id="openings" className="py-32 px-6 md:px-14 bg-slate-50/50">
+    <section id="openings" className="py-20 md:py-32 px-6 md:px-14 bg-slate-50/50">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl text-center md:text-left mx-auto md:mx-0">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -43,13 +43,13 @@ export const CareersOpenings = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="flex flex-wrap gap-3 mb-12"
+          className="flex overflow-x-auto md:flex-wrap gap-3 mb-12 pb-3 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
+              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border shrink-0 whitespace-nowrap ${
                 activeCategory === cat.id
                   ? 'bg-slate-900 border-slate-900 text-white shadow-lg'
                   : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400'
@@ -89,7 +89,7 @@ export const CareersOpenings = () => {
                     <p className="text-slate-500 text-base leading-relaxed max-w-xl">{job.desc}</p>
                   </div>
 
-                  <div className="flex flex-col md:items-end gap-2 text-right mx-6">
+                  <div className="flex flex-col items-start md:items-end gap-2 text-left md:text-right md:mx-6">
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#3666ff] bg-blue-50 px-3 py-1 rounded-full">
                       {job.team}
                     </span>
@@ -102,6 +102,11 @@ export const CareersOpenings = () => {
                       {job.employmentType}
                     </div>
                   </div>
+
+                  {/* Mobile-only tap affordance — the desktop arrow-circle is hidden on phones */}
+                  <span className="md:hidden mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#3666ff] text-white text-sm font-semibold self-start">
+                    View Role <ArrowRight className="size-4" />
+                  </span>
 
                   <div className="hidden md:flex size-13 rounded-full border border-slate-200 items-center justify-center group-hover:bg-[#3666ff] group-hover:border-[#3666ff] group-hover:text-white group-hover:-rotate-45 transition-all duration-500 flex-shrink-0">
                     <ArrowRight className="size-5" />

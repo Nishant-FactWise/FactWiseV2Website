@@ -274,12 +274,7 @@ export default function ReqToPoFeatures() {
               </span>
             </h2>
 
-            <p
-              className="text-[17px] md:text-[18px] text-slate-400 max-w-2xl leading-[1.65] font-normal"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              Every tool your team needs to move faster and decide smarter — built into the flow, not bolted on.
-            </p>
+           
           </div>
 
           {/* Right-side meta count */}

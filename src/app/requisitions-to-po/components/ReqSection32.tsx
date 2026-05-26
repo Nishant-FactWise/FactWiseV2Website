@@ -11,7 +11,7 @@ const APPROVAL_FLOW = [
     { id: 'REQ-1044', item: 'Pressure Gauges × 30',   dept: 'Quality',      value: '$3,450',  status: 'Approved' },
 ];
 
-const VENDORS = ['Apex Ind.', 'FluidTech', 'SealPro', 'Meridian', 'HydroMfg', 'PrecParts'];
+const VENDORS = ['Vendor A', 'Vendor B', 'Vendor C', 'Vendor D', 'Vendor E', 'Vendor F'];
 
 export default function ReqSection32({ isActive = true }: { isActive?: boolean }) {
     const [phase, setPhase] = useState(1);
@@ -118,11 +118,11 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
     ];
 
     return (
-        <div id="req-section-3-2" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-40 scroll-mt-24">
+        <div id="req-section-3-2" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{ __html: `
             .s32-stage {
               flex:1; background:#fbfcfe; border:1px solid rgba(15,23,42,0.06);
-              border-radius:16px; padding:18px; position:relative; overflow:hidden; min-height:440px;
+              border-radius:16px; padding:18px; position:relative; overflow:hidden; min-height:400px;
             }
             .s32-scene { position:absolute; top:18px; left:18px; right:18px; bottom:84px; opacity:0; transition:opacity .4s ease; pointer-events:none; overflow:hidden; }
             .s32-scene.on { opacity:1; pointer-events:auto; }
@@ -198,8 +198,7 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
                 className="lg:col-span-6 order-2 lg:order-1 relative"
             >
                 <div
-                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.28),0_15px_40px_-10px_rgba(54,102,255,0.2)] overflow-hidden flex flex-col justify-between select-none"
-                    style={{ height: 549, minHeight: 549, maxHeight: 549 }}
+                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.28),0_15px_40px_-10px_rgba(54,102,255,0.2)] overflow-hidden flex flex-col justify-between select-none min-h-[510px] lg:h-[510px] w-full"
                 >
                     <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -208,8 +207,6 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
                             </div>
                             <div className="flex items-center gap-1.5">
                                 <span className="text-[12px] font-bold text-slate-800 tracking-tight">Purchaser Inbound</span>
-                                <span className="text-slate-300 text-[10px]">/</span>
-                                <span className="text-[11px] font-medium text-slate-500">RFQ-2026-0204</span>
                             </div>
                         </div>
                         <div className="flex items-center gap-2 bg-slate-50 border border-slate-100 px-2.5 py-0.5 rounded-full">
@@ -330,7 +327,7 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
                                     <div style={{ display:'flex', justifyContent:'space-around', padding:'4px 0' }}>
                                         {VENDORS.map((v, i) => (
                                             <div key={v} className={`s32-vendorChip ${vendorN > i ? 'in' : ''}`} style={{ transitionDelay:`${i*0.08}s` }}>
-                                                <div className="s32-chipLogo">{v.slice(0,2).toUpperCase()}</div>
+                                                <div className="s32-chipLogo">{v.split(' ')[1]}</div>
                                                 <span style={{ fontSize:8, fontWeight:700, color:'#475569', maxWidth:44, textAlign:'center', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{v}</span>
                                                 {vendorN > i && <span style={{ fontSize:7, fontWeight:800, color:'#00b884', fontFamily:"'JetBrains Mono',monospace" }}>HIST</span>}
                                             </div>
@@ -380,19 +377,15 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
                         <div className={`s32-scene ${phase === 4 ? 'on' : ''}`}>
                             <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', height:'100%', gap:16, padding:'0 8px' }}>
                                 <div className={`s32-rfqCard ${rfqLive ? 'in' : ''}`} style={{ width:'100%', maxWidth:320 }}>
-                                    <div style={{ fontSize:9, fontWeight:800, color:'#3666ff', fontFamily:"'JetBrains Mono',monospace", letterSpacing:'0.08em', marginBottom:6 }}>
-                                        RFQ-2026-0204
-                                    </div>
                                     <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:7, marginBottom:6 }}>
                                         <div style={{ width:8, height:8, borderRadius:'50%', background:'#00b884', animation:'s32-pulse 1.4s infinite' }} />
                                         <span style={{ fontSize:14, fontWeight:800, color:'#0b1322' }}>Event Live · Vendors Notified</span>
                                     </div>
                                     <div style={{ fontSize:10, color:'#64748b', marginBottom:12 }}>Hydraulic Procurement · 3 items · 6 vendors</div>
-                                    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8 }}>
+                                    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                                         {[
                                             { label:'Items', value:'3' },
                                             { label:'Vendors', value:'6' },
-                                            { label:'Reqs merged', value:'4' },
                                         ].map(k => (
                                             <div key={k.label} style={{ background:'#f8fafc', borderRadius:8, padding:'8px 6px', textAlign:'center' }}>
                                                 <div style={{ fontSize:16, fontWeight:800, color:'#0b1322' }}>{k.value}</div>
@@ -407,7 +400,6 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
                                         {[
                                             { ic: Send,      text: 'RFQ dispatched to 6 vendors simultaneously', time:'0 min' },
                                             { ic: Zap,       text: 'Target prices pre-loaded · Allocation tracked', time:'0 min' },
-                                            { ic: Mail,      text: 'Auto-reminders scheduled (Day 2, Day 4)',     time:'Queued' },
                                         ].map((row, i) => (
                                             <div key={i} style={{ display:'flex', alignItems:'center', gap:10, padding:'9px 12px', background:'white', border:'1px solid rgba(15,23,42,0.07)', borderRadius:10, fontSize:11, color:'#475569', animation:`s32-slideIn .4s ease ${i*0.15}s both` }}>
                                                 <div style={{ width:24, height:24, borderRadius:6, background:'rgba(54,102,255,0.1)', color:'#3666ff', display:'grid', placeItems:'center', flexShrink:0 }}>
@@ -455,17 +447,14 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-pulse" />
-                    Step 02 · Sourcing Trigger
+                    Sourcing Trigger
                 </div>
-                <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="text-[28px] md:text-[36px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     From Requisition to RFQ.<br />
                     <span className="text-[#3666ff]">Automated in Minutes, Not Days.</span>
                 </h3>
-                <p className="text-slate-400 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Once approved, requisitions land directly in the assigned purchaser's inbound list. From there, create an RFQ from one or multiple requisitions in a single action.
-                </p>
-                <p className="text-slate-400 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    FactWise automatically combines requisitions for the same item — giving you volume advantage and better pricing leverage. Approved vendors are auto-selected, target prices are pre-filled from historical and current market data, and every requisition allocation is recorded per item.
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                    Once approved, requisitions land in the assigned purchaser's inbound list — turn RFQ in a single action. FactWise auto-combines requisitions for the same item for volume advantage and better pricing, auto-selects approved vendors, and pre-fills target prices from historical and market data, with every allocation tracked per item.
                 </p>
 
                 <div className="flex flex-col gap-2 mt-8 mb-8 text-left">

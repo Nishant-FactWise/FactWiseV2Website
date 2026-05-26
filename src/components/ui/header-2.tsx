@@ -253,9 +253,11 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 						onClick={() => window.location.href = '/demo'}
 					/>
 				</div>
-				<Button size="icon" variant="ghost" onClick={() => setOpen(!open)} className={cn("md:hidden transition-colors duration-500", {
-					"text-white hover:bg-white/10": !scrolled && !open && theme === 'dark',
-					"text-black hover:bg-black/5": scrolled || open || theme === 'light',
+				<Button size="icon" variant="ghost" onClick={() => setOpen(!open)} className={cn("md:hidden rounded-full border transition-colors duration-500", {
+					// Glassy chip so the menu button stays clearly visible over the hero
+					// from the start (not just a bare white icon lost in the image).
+					"text-white bg-white/15 border-white/25 backdrop-blur-md hover:bg-white/25": !scrolled && !open && theme === 'dark',
+					"text-black bg-black/5 border-black/10 hover:bg-black/10": scrolled || open || theme === 'light',
 				})}>
 					<MenuToggleIcon open={open} className="size-5" duration={300} />
 				</Button>

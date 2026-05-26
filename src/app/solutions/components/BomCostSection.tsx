@@ -37,20 +37,18 @@ export default function BomCostSection() {
                 transition={{ duration: 0.6 }}
                 className="lg:col-span-6 space-y-6 text-left"
             >
-                <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
+                {/* <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
                     BOM & Cost Intelligence
-                </div>
+                </div> */}
                 <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     Know Your BOM. Know Your Costs. <br />
                     <span className="text-[#3666ff]">Before You Source.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Build complex multi-level BOMs with alternates in a single import. FactWise surfaces accurate line-item costs — distributor, past PO, quote, and contract prices — before any RFQ goes out.
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                    Build complex multi-level BOMs with alternates in a single import. FactWise surfaces accurate line-item costs — distributor, past PO, quote, and contract prices — before any RFQ goes out.  Every revision is tracked automatically. Compare versions side by side and ask AI any question about cost changes or sourcing insights — no spreadsheet digging.
                 </p>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Every revision is tracked automatically. Compare versions side by side and ask AI any question about cost changes or sourcing insights — no spreadsheet digging.
-                </p>
+                
 
                 <div className="flex flex-col gap-2 mt-8 text-left">
                     {[

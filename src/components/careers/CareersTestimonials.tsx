@@ -65,7 +65,7 @@ const TESTIMONIALS: TestimonialItem[] = [
 
 export const CareersTestimonials = () => {
   return (
-    <section className="py-32 px-6 md:px-14 bg-slate-950 relative overflow-hidden">
+    <section className="py-20 md:py-32 px-6 md:px-14 bg-slate-950 relative overflow-hidden">
       {/* Background Glows */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-600/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4 pointer-events-none" />
@@ -73,7 +73,7 @@ export const CareersTestimonials = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl text-center md:text-left mx-auto md:mx-0">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

@@ -5,11 +5,10 @@ import { motion } from 'framer-motion';
 import { Check, Play, Pause, Zap, Mail, RefreshCw, TrendingDown } from 'lucide-react';
 
 const VENDORS_BIDS = [
-    { code:'AX', name:'Apex Industrial',   r1:'$44.20', r2:'$41.80', r3:'$39.50', best:true  },
-    { code:'FT', name:'FluidTech Co.',      r1:'$45.80', r2:'$43.20', r3:'$41.00', best:false },
-    { code:'SP', name:'SealPro Intl.',      r1:'$47.10', r2:'$44.50', r3:'$43.20', best:false },
-    { code:'MR', name:'Meridian Mfg.',      r1:'$46.50', r2:'$45.00', r3:null,     best:false },
-    { code:'HM', name:'HydroMfg Ltd.',      r1:'$48.20', r2:null,     r3:null,     best:false },
+    { code:'A', name:'Vendor A', r1:'$44.20', r2:'$41.80', r3:'$39.50', best:true  },
+    { code:'B', name:'Vendor B', r1:'$45.80', r2:'$43.20', r3:'$41.00', best:false },
+    { code:'C', name:'Vendor C', r1:'$47.10', r2:'$44.50', r3:'$43.20', best:false },
+    { code:'D', name:'Vendor D', r1:'$48.20', r2:null,     r3:null,     best:false },
 ];
 
 export default function ReqSection33({ isActive = true }: { isActive?: boolean }) {
@@ -44,7 +43,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                 await sleep(300);
 
                 // Phase 1: Bids arriving
-                for (let i = 1; i <= 5; i++) {
+                for (let i = 1; i <= 4; i++) {
                     if (cancel) return;
                     setBidN(i);
                     await sleep(500);
@@ -75,7 +74,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                     setNegoRound(r);
                     setRoundBids(0);
                     await sleep(300);
-                    for (let b = 1; b <= 5; b++) {
+                    for (let b = 1; b <= 4; b++) {
                         if (cancel) return;
                         setRoundBids(b);
                         await sleep(200);
@@ -89,7 +88,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                 setPhase(4);
                 setNegoRound(0); setRoundBids(0);
                 await sleep(400);
-                for (let i = 1; i <= 4; i++) {
+                for (let i = 1; i <= 3; i++) {
                     if (cancel) return;
                     setCounterStep(i);
                     await sleep(700);
@@ -106,10 +105,10 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
         setIsAuto(false);
         setPhase(p);
         resetAll();
-        if (p === 1) { setBidN(5); }
+        if (p === 1) { setBidN(4); }
         if (p === 2) { setReminderStep(3); setReminderLog(3); }
-        if (p === 3) { setNegoRound(3); setRoundBids(5); }
-        if (p === 4) { setCounterStep(4); }
+        if (p === 3) { setNegoRound(3); setRoundBids(4); }
+        if (p === 4) { setCounterStep(3); }
     };
 
     const steps = [
@@ -127,9 +126,9 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
     ];
 
     return (
-        <div id="req-section-3-3" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-40 scroll-mt-24">
+        <div id="req-section-3-3" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{ __html: `
-            .s33-stage { flex:1; background:#fbfcfe; border:1px solid rgba(15,23,42,0.06); border-radius:16px; padding:18px; position:relative; overflow:hidden; min-height:440px; }
+            .s33-stage { flex:1; background:#fbfcfe; border:1px solid rgba(15,23,42,0.06); border-radius:16px; padding:18px; position:relative; overflow:hidden; min-height:400px; }
             .s33-scene { position:absolute; top:18px; left:18px; right:18px; bottom:84px; opacity:0; transition:opacity .4s ease; pointer-events:none; overflow:hidden; }
             .s33-scene.on { opacity:1; pointer-events:auto; }
             .s33-bidRow { background:white; border:1px solid rgba(15,23,42,0.07); border-radius:10px; padding:10px 12px; display:flex; align-items:center; gap:10px; font-size:11px; opacity:0; transform:translateX(-10px); transition:all .45s cubic-bezier(.22,.61,.36,1); }
@@ -166,21 +165,18 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 space-y-6 text-left"
+                className="lg:col-span-6 order-1 lg:order-1 space-y-6 text-left"
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-                    Step 03 · AI Negotiation
+                    AI Negotiation
                 </div>
-                <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="text-[28px] md:text-[36px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     Negotiate Using AI.<br />
                     <span className="text-[#3666ff]">Pay Less Every Time.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Vendors respond directly on the platform — no emails, no scattered responses, no manual re-entry. Automated reminders keep vendors on track without your team following up.
-                </p>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    When it's time to negotiate — let FactWise's AI do it for you. Auto-negotiations run based on your custom criteria, driving vendors to their best price. Or take control yourself — counter, push back, and negotiate directly on the platform.
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                    Vendors respond directly on the platform — no emails, no scattered replies, no re-entry while automated reminders keep them on track. When it's time to negotiate, FactWise's AI drives vendors to their best price using your custom criteria — or take control yourself and counter, push back, and negotiate directly on the platform.
                 </p>
 
                 <div className="flex flex-col gap-2 mt-8 text-left">
@@ -223,11 +219,10 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ type: 'spring', stiffness: 75, damping: 14 }}
-                className="lg:col-span-6 relative"
+                className="lg:col-span-6 order-2 lg:order-2 relative"
             >
                 <div
-                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none"
-                    style={{ height: 549, minHeight: 549, maxHeight: 549 }}
+                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none min-h-[510px] lg:h-[510px] w-full"
                 >
                     <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -237,7 +232,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                             <div className="flex items-center gap-1.5">
                                 <span className="text-[12px] font-bold text-slate-800 tracking-tight">Negotiation Hub</span>
                                 <span className="text-slate-300 text-[10px]">/</span>
-                                <span className="text-[11px] font-medium text-slate-500 truncate">RFQ-2026-0204 · Hydraulic Seals</span>
+                                <span className="text-[11px] font-medium text-slate-500 truncate">Hydraulic Seals</span>
                             </div>
                         </div>
                         <div className="flex items-center gap-2 bg-slate-50 border border-slate-100 px-2.5 py-0.5 rounded-full">
@@ -253,7 +248,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                             <div style={{ display:'flex', flexDirection:'column', gap:9 }}>
                                 <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', paddingBottom:8, borderBottom:'1px solid rgba(15,23,42,0.06)' }}>
                                     <span style={{ fontSize:11, fontWeight:700, color:'#475569' }}>Vendor Bids · Platform Submissions</span>
-                                    <span style={{ fontSize:9, color: bidN >= 5 ? '#00b884' : '#f59e0b', fontWeight:800, fontFamily:"'JetBrains Mono',monospace" }}>{bidN}/5 RECEIVED</span>
+                                    <span style={{ fontSize:9, color: bidN >= 4 ? '#00b884' : '#f59e0b', fontWeight:800, fontFamily:"'JetBrains Mono',monospace" }}>{bidN}/4 RECEIVED</span>
                                 </div>
                                 <div style={{ display:'grid', gridTemplateColumns:'auto 1.2fr 0.8fr 0.8fr', gap:8, fontSize:8, color:'#94a3b8', fontWeight:800, letterSpacing:'0.08em', textTransform:'uppercase', padding:'0 6px 4px' }}>
                                     <div>Vendor</div><div>Name</div><div>Unit Price</div><div>Status</div>
@@ -277,7 +272,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                 <div className="s33-schedLine">
                                     <div style={{ fontSize:11, fontWeight:700, color:'#475569', marginBottom:14, display:'flex', alignItems:'center', gap:7 }}>
                                         <div style={{ width:7, height:7, borderRadius:'50%', background:'#3666ff', animation:'s33-pulse 1.6s infinite' }} />
-                                        Auto Follow-Up Schedule · RFQ-2026-0204
+                                        Auto Follow-Up Schedule
                                     </div>
                                     <div className="s33-schedTrack" style={{ '--p': `${Math.min(100,(reminderStep/SCHED.length)*100)}%` } as React.CSSProperties} />
                                     <div className="s33-schedStops">
@@ -299,7 +294,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                 </div>
                                 <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
                                     {[
-                                        { ic: Mail,      text: <><b>RFQ-2026-0204</b> sent to 6 vendors</>,           meta: 'T+0',   color:'#3666ff' },
+                                        { ic: Mail,      text: <>RFQ sent to <b>6 vendors</b></>,                       meta: 'T+0',   color:'#3666ff' },
                                         { ic: RefreshCw, text: <>Auto-reminder fired to <b>2 non-responders</b></>,    meta: 'T+48h', color:'#f59e0b' },
                                         { ic: Check,     text: <><b>6 of 6</b> bids collected · Negotiations ready</>, meta: 'T+5d',  color:'#00b884' },
                                     ].slice(0, reminderLog).map((row, i) => (
@@ -353,7 +348,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                             <tr key={v.code} className={`s33-negoRow ${v.best ? 'best' : ''}`} style={{ opacity: roundBids > i ? 1 : 0.3, transition:'opacity .3s ease' }}>
                                                 <td className="s33-negoCell" style={{ borderLeft:`3px solid ${v.best ? '#00b884' : 'transparent'}`, borderRadius:'6px 0 0 6px', paddingLeft:8 }}>
                                                     <div style={{ fontWeight:700, color:'#0b1322' }}>{v.code}</div>
-                                                    <div style={{ fontSize:8.5, color:'#94a3b8', fontFamily:"'JetBrains Mono',monospace" }}>{v.name.split(' ')[0]}</div>
+                                                    <div style={{ fontSize:8.5, color:'#94a3b8', fontFamily:"'JetBrains Mono',monospace" }}>{v.name}</div>
                                                 </td>
                                                 <td className="s33-negoCell" style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:700, color:'#94a3b8' }}>{v.r1}</td>
                                                 <td className="s33-negoCell" style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:700, color: negoRound >= 2 ? '#0b1322' : '#e2e8f0' }}>{negoRound >= 2 ? (v.r2 ?? '—') : '—'}</td>
@@ -372,7 +367,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
 
                                 {negoRound >= 3 && (
                                     <div style={{ padding:'8px 13px', background:'rgba(0,184,132,0.07)', border:'1px solid rgba(0,184,132,0.2)', borderRadius:9, fontSize:10, fontWeight:700, color:'#065f46', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                                        <span>✓ AI drove Apex to best price · 0 messages sent by your team</span>
+                                        <span>✓ AI drove Vendor A to best price · 0 messages sent by your team</span>
                                         <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, fontWeight:800, color:'#00b884' }}>$39.50 ↓10.6%</span>
                                     </div>
                                 )}
@@ -384,14 +379,13 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                             <div style={{ display:'flex', flexDirection:'column', gap:9 }}>
                                 <div style={{ fontSize:11, fontWeight:700, color:'#475569', paddingBottom:8, borderBottom:'1px solid rgba(15,23,42,0.06)', display:'flex', alignItems:'center', gap:7 }}>
                                     <div style={{ width:7, height:7, borderRadius:'50%', background:'#3666ff', animation:'s33-pulse 1.6s infinite' }} />
-                                    Direct Negotiation · Apex Industrial
+                                    Direct Negotiation · Vendor A
                                 </div>
 
                                 {[
-                                    { side:'vendor', who:'Apex Industrial', text:'Best offer: $39.50/unit for 500 pcs. Lead time 25 days.', time:'2:14 PM', done: counterStep >= 1 },
-                                    { side:'buyer',  who:'You (FW Platform)',text:'Counter: $37.00/unit — or split to 2 deliveries at $37.50.', time:'2:18 PM', done: counterStep >= 2 },
-                                    { side:'vendor', who:'Apex Industrial', text:'Accept $37.80/unit + 28d delivery. Final offer.', time:'2:31 PM', done: counterStep >= 3 },
-                                    { side:'buyer',  who:'You (FW Platform)',text:'Accepted. $37.80/unit · 500 pcs · PO ready to generate.', time:'2:33 PM', done: counterStep >= 4, accepted:true },
+                                    { side:'vendor', who:'Vendor A', text:'Best offer: $39.50/unit for 500 pcs. Lead time 25 days.', time:'2:14 PM', done: counterStep >= 1 },
+                                    { side:'buyer',  who:'You (FW Platform)',text:'Counter: $37.80/unit + 28-day delivery — final.', time:'2:18 PM', done: counterStep >= 2 },
+                                    { side:'vendor', who:'Vendor A', text:'Accepted. $37.80/unit · 500 pcs · PO ready to generate.', time:'2:31 PM', done: counterStep >= 3, accepted:true },
                                 ].map((msg, i) => (
                                     <div key={i} className={`s33-counterBubble ${msg.done ? 'in' : ''} ${msg.side === 'buyer' ? 'buyer' : 'vendor'}`} style={{ transitionDelay:`${i*0.1}s` }}>
                                         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:5 }}>

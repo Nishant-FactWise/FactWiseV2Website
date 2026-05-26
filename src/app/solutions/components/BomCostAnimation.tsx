@@ -546,7 +546,6 @@ export default function BomCostAnimation({
           
           <span className="brand">BOM Editor</span>
           <span className="sep">/</span>
-          <span className="crumb">FG-1041 · Smart Pump Assembly</span>
         </div>
         <div className="pill">
           <span className={'dot ' + (isAuto ? 'auto' : 'man')} />

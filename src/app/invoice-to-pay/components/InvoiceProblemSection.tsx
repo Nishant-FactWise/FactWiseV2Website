@@ -10,7 +10,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 // ============================================================================
 function InvoiceChaosWidget({ isHovered }: { isHovered: boolean }) {
   return (
-    <div className="relative w-full h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
+    <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div className="flex justify-between items-center border-b border-slate-200/60 pb-1.5">
         <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">AP Inbox · Today</span>
         <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-red-50 border border-red-200 text-red-600 font-semibold flex items-center gap-1">
@@ -71,7 +71,7 @@ function InvoiceChaosWidget({ isHovered }: { isHovered: boolean }) {
 // ============================================================================
 function GRVisibilityWidget({ isHovered }: { isHovered: boolean }) {
   return (
-    <div className="relative w-full h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
+    <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div className="flex justify-between items-center mb-1.5">
         <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">Today's Deliveries</span>
         <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-semibold">
@@ -133,7 +133,7 @@ function GRVisibilityWidget({ isHovered }: { isHovered: boolean }) {
 // ============================================================================
 function QCLostWidget({ isHovered }: { isHovered: boolean }) {
   return (
-    <div className="relative w-full h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
+    <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div className="flex justify-between items-center border-b border-slate-200/60 pb-1.5">
         <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">QC · Shop Floor</span>
         <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-semibold flex items-center gap-1">
@@ -200,7 +200,7 @@ function QCLostWidget({ isHovered }: { isHovered: boolean }) {
 // ============================================================================
 function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
   return (
-    <div className="relative w-full h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
+    <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div>
         <div className="flex justify-between items-center mb-1.5">
           <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">Manual Match — Apex INV</span>
@@ -269,7 +269,7 @@ function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
 // ============================================================================
 function NoVisibilityWidget({ isHovered }: { isHovered: boolean }) {
   return (
-    <div className="relative w-full h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
+    <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div className="flex justify-between items-center border-b border-slate-200/60 pb-1">
         <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">INV-90412 · Status</span>
         <span
@@ -398,7 +398,7 @@ export default function InvoiceProblemSection() {
       <div className="mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 relative z-10">
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="text-left max-w-3xl">
+          <div className="text-center md:text-left max-w-3xl mx-auto md:mx-0">
             <div
               className="inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50/50 px-4 py-1.5 text-[11px] font-semibold text-[#3666ff] uppercase tracking-[0.12em] mb-6"
               style={{ fontFamily: 'var(--font-inter)' }}
@@ -408,7 +408,7 @@ export default function InvoiceProblemSection() {
             </div>
 
             <h2
-              className="text-[36px] md:text-[48px] font-semibold text-slate-900 mb-6 leading-[1.1] tracking-[-0.03em]"
+              className="text-[24px] sm:text-[36px] md:text-[48px] font-semibold text-slate-900 mb-6 leading-[1.15] tracking-[-0.03em]"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               Where Most Teams Lose <br />
@@ -436,7 +436,7 @@ export default function InvoiceProblemSection() {
 
         <div
           ref={scrollContainerRef}
-          className="flex overflow-x-auto gap-6 pb-8 pt-2 px-6 xl:px-0 -mx-6 xl:mx-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex overflow-x-auto gap-4 sm:gap-6 pb-8 pt-2 px-8 sm:px-12 xl:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {problems.map((prob, idx) => (
             <motion.div
@@ -449,16 +449,16 @@ export default function InvoiceProblemSection() {
               onMouseEnter={() => setHoveredCardId(prob.id)}
               onMouseLeave={() => setHoveredCardId(null)}
               className={cn(
-                'group relative rounded-3xl bg-white border border-slate-100 p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:border-[#3666ff]/20 cursor-pointer overflow-hidden min-w-[260px] sm:min-w-[290px] xl:min-w-[310px] max-w-[325px] flex-shrink-0 snap-start h-[470px] shadow-[0_15px_45px_-15px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_50px_-12px_rgba(54,102,255,0.12)]'
+                'group relative rounded-3xl bg-white border border-slate-200 p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:border-[#3666ff]/20 cursor-pointer overflow-hidden w-[280px] min-w-[280px] sm:w-auto sm:min-w-[290px] xl:min-w-[310px] max-w-[325px] flex-shrink-0 snap-start h-[420px] sm:h-[470px] shadow-[0_16px_40px_-10px_rgba(15,23,42,0.15),_0_0_24px_rgba(54,102,255,0.06)] hover:shadow-[0_24px_48px_-12px_rgba(15,23,42,0.22),_0_0_32px_rgba(54,102,255,0.16)]'
               )}
             >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" style={{ background: 'radial-gradient(circle at top right, rgba(54, 102, 255, 0.02), transparent 70%)' }} />
+              <div className="absolute inset-0 opacity-60 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" style={{ background: 'radial-gradient(circle at top right, rgba(54, 102, 255, 0.05), transparent 70%)' }} />
 
               <div className="flex flex-col gap-3 relative z-10 text-left">
-                <h3 className="text-[16px] font-semibold tracking-[-0.015em] text-slate-800 leading-snug" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.015em] text-slate-800 leading-snug" style={{ fontFamily: 'var(--font-display)' }}>
                   {prob.subtitle}
                 </h3>
-                <p className="text-[13px] text-slate-400 leading-relaxed font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="text-[12px] sm:text-[13px] text-slate-400 leading-relaxed font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
                   {prob.description}
                 </p>
               </div>

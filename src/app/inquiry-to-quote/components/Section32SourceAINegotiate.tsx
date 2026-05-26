@@ -304,7 +304,7 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
     const activeMenu = stepToMenu(step);
 
     return (
-        <div id="quote-section-3-2" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-40 scroll-mt-24">
+        <div id="quote-section-3-2" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             {/* LEFT: text + step list */}
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -328,13 +328,13 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                     <span className="text-[#3666ff]">Negotiate Using AI.</span>
                 </h3>
                 <p
-                    className="text-slate-500 text-[15px] leading-[1.65] font-normal"
+                    className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify"
                     style={{ fontFamily: 'var(--font-inter)' }}
                 >
                     FactWise auto-selects vendors from manufacturer tags and part history, pre-fills target prices, and flags warnings before you send. Category templates get your event live in minutes — and vendors respond directly on the platform.
                 </p>
                 <p
-                    className="text-slate-500 text-[15px] leading-[1.65] font-normal"
+                    className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify"
                     style={{ fontFamily: 'var(--font-inter)' }}
                 >
                     When it&apos;s time to negotiate, FactWise&apos;s AI drives every vendor to their best price against your criteria — or take control yourself. Every counter-offer tracked, every round visible. Better prices, every time.

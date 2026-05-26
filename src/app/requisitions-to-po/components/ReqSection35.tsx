@@ -5,16 +5,16 @@ import { motion } from 'framer-motion';
 import { Check, Play, Pause, FileText, Zap } from 'lucide-react';
 
 const ALLOC_ITEMS = [
-    { item:'Hydraulic Seals', total:500, vendors:[{ name:'Apex Industrial', qty:350, pct:70, primary:true }, { name:'HydroMfg Ltd.',  qty:150, pct:30, primary:false }] },
-    { item:'Control Valves',  total:50,  vendors:[{ name:'Meridian Mfg.',   qty:50,  pct:100,primary:true }] },
-    { item:'Pressure Gauges', total:30,  vendors:[{ name:'FluidTech Co.',   qty:30,  pct:100,primary:true }] },
+    { item:'Hydraulic Seals', total:500, vendors:[{ name:'Vendor A', qty:350, pct:70, primary:true }, { name:'Vendor E',  qty:150, pct:30, primary:false }] },
+    { item:'Control Valves',  total:50,  vendors:[{ name:'Vendor D', qty:50,  pct:100,primary:true }] },
+    { item:'Pressure Gauges', total:30,  vendors:[{ name:'Vendor B', qty:30,  pct:100,primary:true }] },
 ];
 
 const POS_GENERATED = [
-    { id:'PO-8810', vendor:'Apex Industrial',  items:1, qty:'350 pcs',  value:'$14,910', status:'Issued' },
-    { id:'PO-8811', vendor:'Meridian Mfg.',    items:1, qty:'50 units', value:'$2,215',  status:'Issued' },
-    { id:'PO-8812', vendor:'FluidTech Co.',    items:1, qty:'30 units', value:'$1,392',  status:'Issued' },
-    { id:'PO-8813', vendor:'HydroMfg Ltd.',    items:1, qty:'150 pcs',  value:'$6,570',  status:'Issued' },
+    { id:'PO-8810', vendor:'Vendor A', items:1, qty:'350 pcs',  value:'$14,910', status:'Issued' },
+    { id:'PO-8811', vendor:'Vendor D', items:1, qty:'50 units', value:'$2,215',  status:'Issued' },
+    { id:'PO-8812', vendor:'Vendor B', items:1, qty:'30 units', value:'$1,392',  status:'Issued' },
+    { id:'PO-8813', vendor:'Vendor E', items:1, qty:'150 pcs',  value:'$6,570',  status:'Issued' },
 ];
 
 export default function ReqSection35({ isActive = true }: { isActive?: boolean }) {
@@ -108,18 +108,18 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
     ];
 
     return (
-        <div id="req-section-3-5" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-16 scroll-mt-24">
+        <div id="req-section-3-5" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{ __html: `
-            .s35-stage { flex:1; background:#fbfcfe; border:1px solid rgba(15,23,42,0.06); border-radius:16px; padding:18px; position:relative; overflow:hidden; min-height:440px; }
+            .s35-stage { flex:1; background:#fbfcfe; border:1px solid rgba(15,23,42,0.06); border-radius:16px; padding:18px; position:relative; overflow:hidden; min-height:400px; }
             .s35-scene { position:absolute; top:18px; left:18px; right:18px; bottom:84px; opacity:0; transition:opacity .4s ease; pointer-events:none; overflow:hidden; }
             .s35-scene.on { opacity:1; pointer-events:auto; }
             .s35-allocCard { background:white; border:1px solid rgba(15,23,42,0.08); border-radius:12px; padding:11px 13px; opacity:0; transform:translateY(8px); transition:all .45s cubic-bezier(.22,.61,.36,1); }
             .s35-allocCard.in { opacity:1; transform:translateY(0); }
             .s35-bar { height:8px; border-radius:4px; background:#e2e8f0; overflow:hidden; margin-top:6px; }
             .s35-barFill { height:100%; border-radius:4px; transition:width 1s ease; }
-            .s35-poRow { background:white; border:1px solid rgba(15,23,42,0.07); border-radius:10px; padding:10px 12px; display:grid; grid-template-columns:0.8fr 1.2fr 0.6fr 0.6fr 0.7fr 0.6fr; gap:6px; align-items:center; font-size:10px; opacity:0; transform:scale(0.96); transition:all .4s cubic-bezier(.22,.61,.36,1); }
+            .s35-poRow { background:white; border:1px solid rgba(15,23,42,0.07); border-radius:10px; padding:7px 10px; display:grid; grid-template-columns:0.8fr 1.2fr 0.6fr 0.6fr 0.7fr 0.6fr; gap:6px; align-items:center; font-size:10px; opacity:0; transform:scale(0.96); transition:all .4s cubic-bezier(.22,.61,.36,1); }
             .s35-poRow.in { opacity:1; transform:scale(1); }
-            .s35-genBtn { display:flex; align-items:center; justify-content:center; gap:8px; padding:12px 20px; border-radius:12px; font-size:13px; font-weight:800; cursor:pointer; transition:all .3s ease; border:none; }
+            .s35-genBtn { display:flex; align-items:center; justify-content:center; gap:8px; padding:8px 16px; border-radius:12px; font-size:12px; font-weight:800; cursor:pointer; transition:all .3s ease; border:none; }
             .s35-genBtn.idle { background:linear-gradient(135deg,#3666ff,#2a6cff); color:white; box-shadow:0 8px 24px rgba(54,102,255,0.35); }
             .s35-genBtn.generating { background:linear-gradient(135deg,#f59e0b,#d97706); color:white; animation:s35-genPulse .9s ease-in-out infinite; }
             .s35-genBtn.done { background:linear-gradient(135deg,#059669,#10b981); color:white; }
@@ -136,25 +136,20 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 space-y-6 text-left"
+                className="lg:col-span-6 order-1 lg:order-1 space-y-6 text-left"
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-                    Step 05 · PO Generation
+                    PO Generation
                 </div>
-                <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="text-[28px] md:text-[36px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     Automate PO Generation.<br />
                     <span className="text-[#3666ff]">In One Click.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Once bids are shortlisted, allocate quantities to vendors based on the best bids — with full flexibility to split quantities across multiple vendors per item and set backup allocations for added security.
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                    Once bids are shortlisted, allocate quantities to the best-bidding vendors — split across multiple vendors per item and set backup allocations for security. When allocation is complete, FactWise generates every PO for the entire RFQ in a single click — every line item, vendor, and approval record attached. No manual creation, no missed lines, no delays.
                 </p>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    When allocation is complete, FactWise generates all POs for the entire RFQ in a single click — every line item, every vendor, every approval record attached. No manual PO creation. No missed lines. No delays.
-                </p>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal font-semibold" style={{ fontFamily: 'var(--font-inter)' }}>
-                    From requisition to PO. Done.
-                </p>
+               
 
                 <div className="flex flex-col gap-2 mt-8 text-left">
                     {steps.map((item) => (
@@ -196,11 +191,10 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ type: 'spring', stiffness: 75, damping: 14 }}
-                className="lg:col-span-6 relative"
+                className="lg:col-span-6 order-2 lg:order-2 relative"
             >
                 <div
-                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none"
-                    style={{ height: 549, minHeight: 549, maxHeight: 549 }}
+                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none min-h-[510px] lg:h-[510px] w-full"
                 >
                     <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -209,8 +203,6 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                             </div>
                             <div className="flex items-center gap-1.5">
                                 <span className="text-[12px] font-bold text-slate-800 tracking-tight">PO Generation</span>
-                                <span className="text-slate-300 text-[10px]">/</span>
-                                <span className="text-[11px] font-medium text-slate-500">RFQ-2026-0204 · 3 Items</span>
                             </div>
                         </div>
                         <div className="flex items-center gap-2 bg-slate-50 border border-slate-100 px-2.5 py-0.5 rounded-full">
@@ -266,10 +258,10 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                                 <div style={{ background:'white', border:'1px solid rgba(0,184,132,0.25)', borderRadius:10, padding:'10px 12px' }}>
                                     <div style={{ fontSize:9, fontWeight:800, color:'#00b884', fontFamily:"'JetBrains Mono',monospace", marginBottom:6 }}>PRIMARY ALLOCATION · CONFIRMED</div>
                                     {[
-                                        'Apex Industrial → 350 pcs Hydraulic Seals (70%)',
-                                        'Meridian Mfg. → 50 units Control Valves (100%)',
-                                        'FluidTech Co. → 30 units Pressure Gauges (100%)',
-                                        'HydroMfg Ltd. → 150 pcs Hydraulic Seals (30%)',
+                                        'Vendor A → 350 pcs Hydraulic Seals (70%)',
+                                        'Vendor D → 50 units Control Valves (100%)',
+                                        'Vendor B → 30 units Pressure Gauges (100%)',
+                                        'Vendor E → 150 pcs Hydraulic Seals (30%)',
                                     ].map((line, i) => (
                                         <div key={i} style={{ fontSize:10, color:'#0b1322', fontWeight:600, padding:'3px 0', borderBottom:'1px solid rgba(15,23,42,0.04)', display:'flex', alignItems:'center', gap:7 }}>
                                             <Check size={10} color="#00b884" />
@@ -283,8 +275,8 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                                     <div style={{ background:'rgba(245,158,11,0.04)', border:'1px solid rgba(245,158,11,0.25)', borderRadius:10, padding:'10px 12px', animation:'s35-fadeIn .5s ease forwards' }}>
                                         <div style={{ fontSize:9, fontWeight:800, color:'#92400e', fontFamily:"'JetBrains Mono',monospace", marginBottom:6 }}>⬡ BACKUP ALLOCATION · FALLBACK SECURITY</div>
                                         {[
-                                            { primary:'Apex Industrial → Hyd. Seals', backup:'FluidTech Co. → up to 500 pcs', trigger:'If Apex fails SLA' },
-                                            { primary:'Meridian Mfg. → Control Valves', backup:'HydroMfg Ltd. → up to 50 units', trigger:'If delivery delay > 5d' },
+                                            { primary:'Vendor A → Hyd. Seals', backup:'Vendor B → up to 500 pcs', trigger:'If Vendor A fails SLA' },
+                                            { primary:'Vendor D → Control Valves', backup:'Vendor E → up to 50 units', trigger:'If delivery delay > 5d' },
                                         ].map((row, i) => (
                                             <div key={i} style={{ fontSize:9, color:'#475569', padding:'5px 0', borderBottom:'1px solid rgba(245,158,11,0.1)' }}>
                                                 <div style={{ fontWeight:700, color:'#0b1322', marginBottom:2 }}>{row.primary}</div>
@@ -307,13 +299,13 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
 
                         {/* SCENE 3: One-click generation */}
                         <div className={`s35-scene ${phase === 3 ? 'on' : ''}`}>
-                            <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                            <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
                                 <div style={{ fontSize:11, fontWeight:700, color:'#475569', paddingBottom:7, borderBottom:'1px solid rgba(15,23,42,0.06)' }}>
                                     PO Generation · One Click
                                 </div>
 
                                 {/* The big button */}
-                                <div style={{ display:'flex', justifyContent:'center', padding:'8px 0' }}>
+                                <div style={{ display:'flex', justifyContent:'center', padding:'2px 0' }}>
                                     <button className={`s35-genBtn ${genState}`} style={{ minWidth:240 }}>
                                         {genState === 'idle' ? (
                                             <><Zap size={16} /> Generate All POs (4)</>

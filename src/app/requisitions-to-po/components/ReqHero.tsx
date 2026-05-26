@@ -143,6 +143,14 @@ function FloatCard({ style, delay=0, yAmt=12, dur=6, children }: {
 
 export default function ReqHero() {
   const mono = "'JetBrains Mono', monospace"
+  const [isDesktop, setIsDesktop] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsDesktop(window.innerWidth >= 1280)
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1280)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <>
@@ -172,14 +180,14 @@ export default function ReqHero() {
 
           {/* Heading */}
           <h1 style={{
-            fontSize:'clamp(30px, 2.8vw, 46px)', fontWeight:600,
-            lineHeight:1.15, letterSpacing:'-0.035em', marginBottom:24,
-            fontFamily:'var(--font-display)',
+            fontSize: 'clamp(31px, 2.9vw, 47px)', fontWeight: 600,
+            lineHeight: 1.15, letterSpacing: '-0.035em', marginBottom: 24,
+            fontFamily: 'var(--font-display)',
           }}>
             From Internal Request to Purchase Order.{' '}
             <span style={{
-              background:'linear-gradient(135deg,#7ba6ff 0%,#4f8bff 50%,#2a6cff 100%)',
-              WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
+              background: 'linear-gradient(135deg,#7ba6ff 0%,#4f8bff 50%,#2a6cff 100%)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}>
               Without the Back and Forth.
             </span>
@@ -188,8 +196,8 @@ export default function ReqHero() {
           {/* Subtext */}
           <p
             style={{
-              fontSize:18, lineHeight:1.65, color:'#8899b8', fontWeight:400,
-              marginBottom:40, maxWidth:520, fontFamily:'var(--font-inter)',
+              fontSize: 'clamp(17.3px, 1.25vw, 18px)', lineHeight: 1.65, color: '#8899b8', fontWeight: 400,
+              marginBottom: 40, maxWidth: 520, fontFamily: 'var(--font-inter)',
             }}
           >
             Requests get lost, approvals stall, and POs go out manually one by one. FactWise unifies every step into one intelligent flow — so requests move faster, sourcing gets smarter, and every PO ships with confidence.
@@ -225,11 +233,12 @@ export default function ReqHero() {
         </div>
 
         {/* RIGHT COLUMN */}
+        {isDesktop && (
         <motion.div
           initial={{ opacity:0, y:20 }}
           animate={{ opacity:1, y:0 }}
           transition={{ duration:0.8, delay:0.35, ease:[0.16,1,0.3,1] }}
-          className="fw-hero-visual"
+          className="hidden xl:block fw-hero-visual"
           style={{ position:'relative', height:520 }}
         >
           <div style={{
@@ -316,6 +325,7 @@ export default function ReqHero() {
             </div>
           </FloatCard>
         </motion.div>
+        )}
       </div>
 
       <style>{`@keyframes fw-pulse{0%,100%{opacity:1}50%{opacity:0.35}}`}</style>

@@ -18,7 +18,7 @@ import {
  */
 function BOMComplexityWidget({ isHovered }: { isHovered: boolean }) {
     return (
-        <div className="relative w-full h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left shadow-2xs">
+        <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left shadow-2xs">
             {/* Header tab */}
             <div className="flex items-center justify-between border-b border-slate-200/60 pb-1.5 mb-1.5">
                 <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">
@@ -117,7 +117,7 @@ function BOMComplexityWidget({ isHovered }: { isHovered: boolean }) {
  */
 function PricingGuessworkWidget({ isHovered }: { isHovered: boolean }) {
     return (
-        <div className="relative w-full h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
+        <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
             {/* Target price input guessing box */}
             <div>
                 <div className="flex justify-between items-center mb-1">
@@ -199,7 +199,7 @@ function PricingGuessworkWidget({ isHovered }: { isHovered: boolean }) {
  */
 function VendorCommWidget({ isHovered }: { isHovered: boolean }) {
     return (
-        <div className="relative w-full h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
+        <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
             {/* Header */}
             <div className="flex justify-between items-center border-b border-slate-200/60 pb-1.5">
                 <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">
@@ -296,7 +296,7 @@ function VendorCommWidget({ isHovered }: { isHovered: boolean }) {
  */
 function HiddenCostsWidget({ isHovered }: { isHovered: boolean }) {
     return (
-        <div className="relative w-full h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
+        <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
             {/* Header */}
             <div>
                 <div className="flex justify-between items-center mb-1.5">
@@ -383,7 +383,7 @@ function HiddenCostsWidget({ isHovered }: { isHovered: boolean }) {
  */
 function ManualQuotingWidget({ isHovered }: { isHovered: boolean }) {
     return (
-        <div className="relative w-full h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
+        <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
             {/* Sheet header */}
             <div className="flex justify-between items-center border-b border-slate-200/60 pb-1">
                 <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">
@@ -586,7 +586,7 @@ export default function ProblemSection() {
 
                 {/* Header row with arrows */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-                    <div className="text-left max-w-3xl">
+                    <div className="text-center md:text-left max-w-3xl mx-auto md:mx-0">
                         <div
                             className="inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50/50 px-4 py-1.5 text-[11px] font-semibold text-[#3666ff] uppercase tracking-[0.12em] mb-6"
                             style={{ fontFamily: 'var(--font-inter)' }}
@@ -596,8 +596,15 @@ export default function ProblemSection() {
                         </div>
 
                         <h2
-                            className="text-[36px] md:text-[48px] font-semibold text-slate-900 mb-6 leading-[1.1] tracking-[-0.03em]"
-                            style={{ fontFamily: 'var(--font-display)' }}
+                            style={{
+                                fontSize: 'clamp(24px, 3.4vw, 48px)',
+                                fontWeight: 600,
+                                lineHeight: 1.15,
+                                letterSpacing: '-0.03em',
+                                color: '#0f172a',
+                                margin: '0 0 24px',
+                                fontFamily: 'var(--font-display)',
+                            }}
                         >
                             Where Most Manufacturers <br />
                             <span className="text-[#3666ff]">Lose Time and Money.</span>
@@ -626,7 +633,7 @@ export default function ProblemSection() {
                 {/* Compact, Light-Themed horizontal visual card carousel */}
                 <div
                     ref={scrollContainerRef}
-                    className="flex overflow-x-auto gap-6 pb-8 pt-2 px-6 xl:px-0 -mx-6 xl:mx-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative"
+                    className="flex overflow-x-auto gap-4 sm:gap-6 pb-8 pt-2 px-6 xl:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative"
                 >
                     {problems.map((prob, idx) => (
                         <motion.div
@@ -643,7 +650,7 @@ export default function ProblemSection() {
                             onMouseLeave={() => setHoveredCardId(null)}
                             onClick={() => scrollToSolution(prob.id)}
                             className={cn(
-                                "group relative rounded-3xl bg-white border border-slate-100 p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:border-[#3666ff]/20 cursor-pointer overflow-hidden min-w-[260px] sm:min-w-[290px] xl:min-w-[310px] max-w-[325px] flex-shrink-0 snap-start h-[470px] shadow-[0_15px_45px_-15px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_50px_-12px_rgba(54,102,255,0.12)]"
+                                "group relative rounded-3xl bg-white border border-slate-200/60 p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:border-[#3666ff]/20 cursor-pointer overflow-hidden w-[280px] min-w-[280px] sm:w-auto sm:min-w-[290px] xl:min-w-[310px] max-w-[325px] flex-shrink-0 snap-start h-[420px] sm:h-[470px] shadow-[0_12px_36px_-10px_rgba(15,23,42,0.12),_0_0_20px_rgba(54,102,255,0.05)] hover:shadow-[0_20px_50px_-12px_rgba(54,102,255,0.18)]"
                             )}
                         >
                             {/* Hover color glow layer */}
@@ -657,12 +664,12 @@ export default function ProblemSection() {
                             {/* Card Content Top Section */}
                             <div className="flex flex-col gap-3 relative z-10 text-left">
                                 {/* Heading Block */}
-                                <h3 className="text-[16px] font-semibold tracking-[-0.015em] text-slate-800 leading-snug" style={{ fontFamily: 'var(--font-display)' }}>
+                                <h3 className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.015em] text-slate-800 leading-snug" style={{ fontFamily: 'var(--font-display)' }}>
                                     {prob.subtitle}
                                 </h3>
 
                                 {/* Body Description */}
-                                <p className="text-[13px] text-slate-600 leading-relaxed font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
+                                <p className="text-[12px] sm:text-[13px] text-slate-600 leading-relaxed font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
                                     {prob.description}
                                 </p>
                             </div>

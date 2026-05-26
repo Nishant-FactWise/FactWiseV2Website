@@ -69,7 +69,7 @@ export default async function JobDetailPage({ params }: { params: Params }) {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="pt-32 pb-16 px-6 md:px-14 bg-gradient-to-b from-slate-50 to-white border-b border-slate-200">
+      <section className="pt-28 md:pt-32 pb-12 md:pb-16 px-6 md:px-14 bg-gradient-to-b from-slate-50 to-white border-b border-slate-200">
         <div className="max-w-4xl mx-auto">
           <Link
             href="/careers#openings"
@@ -79,15 +79,11 @@ export default async function JobDetailPage({ params }: { params: Params }) {
             All open roles
           </Link>
 
-          <span className="inline-block text-[11px] font-bold uppercase tracking-[0.18em] text-[#3666ff] bg-blue-50 px-3 py-1 rounded-full mb-5">
-            {job.team}
-          </span>
-
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-slate-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tighter text-slate-900 mb-4">
             {job.title}
           </h1>
 
-          <p className="text-lg text-slate-600 max-w-2xl leading-relaxed mb-6">
+          <p className="text-base md:text-lg text-slate-600 max-w-2xl leading-relaxed mb-6">
             {job.desc}
           </p>
 

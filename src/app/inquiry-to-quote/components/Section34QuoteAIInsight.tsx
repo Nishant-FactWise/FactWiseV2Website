@@ -332,7 +332,7 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
     const activeMenu = stepToMenu(step);
 
     return (
-        <div id="quote-section-3-4" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-40 scroll-mt-24">
+        <div id="quote-section-3-4" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             {/* LEFT */}
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -349,10 +349,10 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                     Automate Quote Generation. <br />
                     <span className="text-[#3666ff]">Built to Win.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     Select the best bids — FactWise generates the customer quote in one click. Every line item priced, every landed cost calculated, every BOM rolled up automatically. No manual calculation, no margin errors.
                 </p>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     Then ask FactWise AI anything about your quote — where the biggest expense lies, how costs shift across volumes, what to sharpen. Every insight you need to protect margin and send the quote first.
                 </p>
 

@@ -313,13 +313,7 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                 transition={{ duration: 0.6 }}
                 className="lg:col-span-6 space-y-6 text-left"
             >
-                <div
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-                    Section 3.2 · Intelligent Sourcing
-                </div>
+
                 <h3
                     className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]"
                     style={{ fontFamily: 'var(--font-display)' }}
@@ -328,16 +322,10 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                     <span className="text-[#3666ff]">Negotiate Using AI.</span>
                 </h3>
                 <p
-                    className="text-slate-500 text-[15px] leading-[1.65] font-normal"
+                    className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify"
                     style={{ fontFamily: 'var(--font-inter)' }}
                 >
-                    FactWise auto-selects vendors from manufacturer tags and part history, pre-fills target prices, and flags warnings before you send. Category templates get your event live in minutes — and vendors respond directly on the platform.
-                </p>
-                <p
-                    className="text-slate-500 text-[15px] leading-[1.65] font-normal"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                    When it&apos;s time to negotiate, FactWise&apos;s AI drives every vendor to their best price against your criteria — or take control yourself. Every counter-offer tracked, every round visible. Better prices, every time.
+                   FactWise streamlines the entire sourcing process — from auto-selecting vendors and pre-filling target prices to launching events in minutes using category templates. Vendors respond directly on the platform, and when it's time to negotiate, AI drives them to their best price against your criteria. Counter and push back yourself, with every offer and round fully tracked for complete visibility.
                 </p>
 
                 <div className="flex flex-col gap-2 mt-8 text-left">

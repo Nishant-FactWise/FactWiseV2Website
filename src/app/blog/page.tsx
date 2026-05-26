@@ -381,8 +381,8 @@ function CategoryBlock({ cat }: { cat: Cat }) {
 
   return (
     <div style={{ marginBottom: 72 }}>
-      {/* two-column layout */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 40, alignItems: "start" }}>
+      {/* two-column layout — 1 col on mobile/tablet, 1fr+280px on desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10 items-start">
 
         {/* LEFT — section title + card grid */}
         <div>
@@ -401,7 +401,7 @@ function CategoryBlock({ cat }: { cat: Cat }) {
             </div>
           </motion.div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {gridPosts.map((post, i) => (
               <ImageCard key={post.slug} post={post} imgIdx={i} />
             ))}
@@ -420,8 +420,8 @@ function CategoryBlock({ cat }: { cat: Cat }) {
           )}
         </div>
 
-        {/* RIGHT — Featured + Latest sidebar */}
-        <div style={{ position: "sticky", top: 100 }}>
+        {/* RIGHT — Featured + Latest sidebar (secondary; hidden below lg) */}
+        <div className="hidden lg:block sticky top-[100px]">
           {/* Featured */}
           <div style={{ marginBottom: 28 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>

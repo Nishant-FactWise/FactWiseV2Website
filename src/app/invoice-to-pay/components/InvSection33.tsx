@@ -46,7 +46,7 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
     const passed = phase >= 4 ? 280 : phase >= 3 ? 282 : phase >= 2 ? 288 : 300;
 
     return (
-        <div id="inv-section-3-3" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-40 scroll-mt-24">
+        <div id="inv-section-3-3" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{
                 __html: `
             @keyframes inv-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
@@ -69,7 +69,7 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
                     Quality Checks On Platform.<br />
                     <span className="text-[#3666ff]">Nothing Slips Through.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     Primary, secondary, and production-line checks — all on the platform, against any invoice or goods receipt, with full attachment support. FactWise's AI flags discrepancies between QC outcomes and the goods receipt automatically. Rejected items are tracked, actioned, and never paid for.
                 </p>
 
@@ -78,24 +78,24 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
                         <div
                             key={item.p}
                             onClick={() => goManual(item.p)}
-                            className={`relative flex items-center justify-between w-full rounded-2xl py-3.5 px-4 transition-all duration-400 group cursor-pointer overflow-hidden ${phase === item.p
+                            className={`relative flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full rounded-2xl py-3.5 px-4 transition-all duration-400 group cursor-pointer overflow-hidden ${phase === item.p
                                     ? 'bg-white border border-[#3666ff]/80 shadow-[0_8px_30px_rgba(54,102,255,0.12)] scale-[1.02] z-10'
                                     : 'bg-transparent border border-transparent hover:bg-white/60 opacity-80 hover:opacity-100'
                                 }`}
                         >
                             {phase === item.p && <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-transparent pointer-events-none" />}
-                            <div className="flex items-center gap-4 relative z-10">
-                                <div className={`size-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors duration-400 ${phase === item.p ? 'border-[#3666ff] bg-[#3666ff] text-white shadow-[0_0_12px_rgba(54,102,255,0.4)]'
+                            <div className="flex items-start gap-4 relative z-10 flex-1 min-w-0">
+                                <div className={`size-6 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors duration-400 ${phase === item.p ? 'border-[#3666ff] bg-[#3666ff] text-white shadow-[0_0_12px_rgba(54,102,255,0.4)]'
                                         : phase > item.p ? 'border-[#00b884] bg-[#00b884] text-white'
                                             : 'border-slate-200 bg-slate-50 text-slate-400 group-hover:border-[#3666ff]/50'
                                     }`}>
                                     <Check className="size-3.5" strokeWidth={3} />
                                 </div>
-                                <span className={`text-[13px] font-bold tracking-tight ${phase === item.p ? 'text-[#3666ff]' : phase > item.p ? 'text-slate-700' : 'text-slate-500'
+                                <span className={`text-[13px] font-bold tracking-tight text-left break-words pr-2 block ${phase === item.p ? 'text-[#3666ff]' : phase > item.p ? 'text-slate-700' : 'text-slate-500'
                                     }`}>{item.title}</span>
                             </div>
                             {phase === item.p && (
-                                <span className="relative z-10 text-[9px] font-black text-emerald-600 bg-emerald-50/80 border border-emerald-100 px-2.5 py-1 rounded-full font-mono uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
+                                <span className="relative z-10 text-[9px] font-black text-emerald-600 bg-emerald-50/80 border border-emerald-100 px-2.5 py-1 rounded-full font-mono uppercase tracking-widest flex items-center gap-1.5 shadow-sm shrink-0 w-fit self-start sm:self-auto">
                                     <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />Active
                                 </span>
                             )}
@@ -113,9 +113,8 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
                 transition={{ type: 'spring', stiffness: 75, damping: 14 }}
                 className="lg:col-span-6 relative"
             >
-                <div
-                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none"
-                    style={{ height: 549, minHeight: 549, maxHeight: 549 }}
+                 <div
+                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none h-auto lg:h-[549px] lg:min-h-[549px] lg:max-h-[549px]"
                 >
                     {/* Top bar */}
                     <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
@@ -129,16 +128,16 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
                                 <span className="text-[11px] font-medium text-slate-500">GR-9241 · lot 300u</span>
                             </div>
                         </div>
-                        <span className="text-[8.5px] font-mono font-bold uppercase tracking-wider px-2 py-[2px] rounded-full" style={{ background: 'rgba(54,102,255,0.08)', color: '#3666ff', border: '1px solid rgba(54,102,255,0.2)' }}>
+                        <span className="text-[8.5px] font-mono font-bold uppercase tracking-wider px-2 py-[2px] rounded-full shrink-0" style={{ background: 'rgba(54,102,255,0.08)', color: '#3666ff', border: '1px solid rgba(54,102,255,0.2)' }}>
                             3 checkpoints
                         </span>
                     </div>
 
                     {/* Stage */}
-                    <div className="relative flex-1 mt-3" style={{ background: '#fbfcfe', borderRadius: 16, border: '1px solid rgba(15,23,42,0.06)', padding: 14, overflow: 'hidden' }}>
+                    <div className="relative flex-1 mt-3 pb-16 lg:pb-0" style={{ background: '#fbfcfe', borderRadius: 16, border: '1px solid rgba(15,23,42,0.06)', padding: 14, overflow: 'hidden' }}>
                         {/* Lot in */}
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                            <div style={{ background: 'white', border: '1px solid rgba(15,23,42,0.07)', borderRadius: 10, padding: 8, minWidth: 120 }}>
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
+                            <div className="bg-white border border-slate-100 rounded-xl p-2 min-w-[120px] w-full sm:w-auto text-left">
                                 <div style={{ fontSize: 7.5, fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 3 }}>Lot in</div>
                                 <div style={{ fontSize: 9, fontWeight: 800, color: '#0b1322' }}>Steel Bracket M8</div>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10,1fr)', gap: 1.5, marginTop: 5 }}>
@@ -149,7 +148,7 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
                                 <div style={{ fontSize: 9, fontWeight: 800, color: '#3666ff', fontFamily: "'JetBrains Mono',monospace", textAlign: 'center', marginTop: 3 }}>300u</div>
                             </div>
 
-                            <div style={{ flex: 1, padding: '0 12px', position: 'relative' }}>
+                            <div style={{ flex: 1, padding: '0 12px', position: 'relative' }} className="w-full">
                                 <div style={{ height: 3, background: '#e2e8f0', borderRadius: 2, position: 'relative', overflow: 'hidden' }}>
                                     <motion.div
                                         initial={false}
@@ -167,7 +166,7 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
                                 )}
                             </div>
 
-                            <div style={{ background: phase >= 5 ? 'rgba(16,185,129,0.08)' : 'white', border: phase >= 5 ? '1px solid rgba(16,185,129,0.3)' : '1px solid rgba(15,23,42,0.07)', borderRadius: 10, padding: 8, minWidth: 90, textAlign: 'center', transition: 'all .4s' }}>
+                            <div className="bg-white border border-slate-100 rounded-xl p-2 min-w-[90px] w-full sm:w-auto text-center" style={{ background: phase >= 5 ? 'rgba(16,185,129,0.08)' : 'white', border: phase >= 5 ? '1px solid rgba(16,185,129,0.3)' : '1px solid rgba(15,23,42,0.07)', transition: 'all .4s' }}>
                                 <div style={{ fontSize: 7.5, fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 3 }}>Out</div>
                                 <div style={{ fontSize: 18, fontWeight: 800, color: phase >= 5 ? '#059669' : '#94a3b8', fontFamily: "'JetBrains Mono',monospace" }}>{passed}</div>
                                 <div style={{ fontSize: 8, color: '#94a3b8' }}>passed</div>
@@ -175,7 +174,7 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
                         </div>
 
                         {/* 3 QC stages */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full mb-3">
                             {stages.map((s, i) => (
                                 <motion.div
                                     key={s.l}

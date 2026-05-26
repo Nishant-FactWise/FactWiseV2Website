@@ -53,7 +53,7 @@ export default function InvSection34({ isActive = true }: { isActive?: boolean }
     ];
 
     return (
-        <div id="inv-section-3-4" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-40 scroll-mt-24">
+        <div id="inv-section-3-4" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{
                 __html: `
             @keyframes inv-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
@@ -325,7 +325,7 @@ export default function InvSection34({ isActive = true }: { isActive?: boolean }
                     Automate Payments.<br />
                     <span className="text-[#3666ff]">Pay Only What You Owe.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     Pay a single line item, a full invoice, or consolidate multiple invoices from one vendor into one payment — with credit logic for rejected quantities built in automatically. Every payment is matched against the PO, GR, QC, and contract terms before a single rupee moves. Teams using FactWise recover up to 5% in costs previously lost to payment errors.
                 </p>
 

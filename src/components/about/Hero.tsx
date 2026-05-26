@@ -17,16 +17,8 @@ export const Hero = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 md:px-14 relative z-10 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-8 shadow-sm"
-        >
-          About FactWise
-        </motion.div>
-
         <motion.h1
-          className="text-5xl md:text-7xl font-bold text-white leading-[1.05] tracking-tighter mb-10 overflow-hidden py-2"
+          className="text-[37px] sm:text-5xl md:text-7xl font-bold text-white leading-[1.05] tracking-tighter mb-10 overflow-hidden py-2"
         >
           {"One Platform.".split("").map((char, index) => (
             <motion.span
@@ -74,7 +66,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.8 }}
-          className="text-white/70 text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto mb-12 font-light"
+          className="text-white/70 text-[17px] sm:text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto mb-12 font-light"
         >
           FactWise is redefining how manufacturers buy, source, quote, and pay — automating
           every workflow, eliminating every bottleneck, and building the operating system for
@@ -88,7 +80,7 @@ export const Hero = () => {
           transition={{ delay: 0.85, duration: 0.8 }}
           whileHover={{ scale: 1.05, backgroundColor: '#4d7aff' }}
           whileTap={{ scale: 0.95 }}
-          className="inline-block px-10 py-5 bg-[#3666ff] text-white rounded-full font-bold text-lg shadow-[0_20px_50px_rgba(54,102,255,0.4)] transition-all"
+          className="inline-block px-6 py-2.5 bg-[#3666ff] text-white rounded-full font-semibold text-sm shadow-[0_12px_30px_rgba(54,102,255,0.35)] transition-all"
         >
           Explore the Platform
         </motion.a>

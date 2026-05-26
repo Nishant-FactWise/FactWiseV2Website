@@ -68,7 +68,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                 setUploadState('idle');
                 setFileItems(0);
                 await sleep(400);
-                for (let i = 1; i <= 4; i++) {
+                for (let i = 1; i <= 3; i++) {
                     if (cancel) return;
                     setApprovalStep(i);
                     await sleep(700);
@@ -114,7 +114,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
         resetAll();
         if (p === 1) { setFormStep(5); setTypedValues(formFields.map(f => f.value)); }
         if (p === 2) { setUploadState('done'); setFileItems(3); }
-        if (p === 3) { setApprovalStep(4); }
+        if (p === 3) { setApprovalStep(3); }
     };
 
     const steps = [
@@ -135,11 +135,10 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
         { name: 'Arjun Mehta',   role: 'REQUESTER · ENGINEERING',       color: '#64748b', code: 'AM' },
         { name: 'Priya Sharma',  role: 'DEPT MANAGER · ENGINEERING',    color: '#3b82f6', code: 'PS' },
         { name: 'Vikram Kumar',  role: 'FINANCE CONTROLLER',             color: '#8b5cf6', code: 'VK' },
-        { name: 'Tara Iyer',     role: 'PROCUREMENT HEAD · CPO',        color: '#0ea5e9', code: 'TI' },
     ];
 
     return (
-        <div id="req-section-3-1" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-40 scroll-mt-24">
+        <div id="req-section-3-1" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{ __html: `
             .s31-stage {
               flex: 1;
@@ -149,7 +148,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
               padding: 18px;
               position: relative;
               overflow: hidden;
-              min-height: 440px;
+              min-height: 400px;
             }
             .s31-scene {
               position: absolute;
@@ -398,21 +397,18 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 space-y-6 text-left"
+                className="lg:col-span-6 order-1 lg:order-1 space-y-6 text-left"
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-                    Step 01 · Requisition Management
+                    Requisition Management
                 </div>
-                <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="text-[28px] md:text-[36px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     Streamline Every Requisition.<br />
                     <span className="text-[#3666ff]">Every Approval Tracked.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Replace requisition chaos with customizable templates — or connect your ERP directly via API to pull requisitions automatically.
-                </p>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Upload any file format and FactWise AI autofills every detail. Each requisition then flows through your approval hierarchy — the right people approving the right requests, every time.
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                    Replace requisition chaos with customizable templates — or connect your ERP via API to pull requisitions automatically. Upload any file format and FactWise AI autofills every detail, then routes each request through your approval hierarchy so the right people approve the right requests, every time.
                 </p>
 
                 <div className="flex flex-col gap-2 mt-8 text-left">
@@ -458,8 +454,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                 className="lg:col-span-6 order-2 lg:order-2 relative"
             >
                 <div
-                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none"
-                    style={{ height: 549, minHeight: 549, maxHeight: 549 }}
+                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none min-h-[510px] lg:h-[510px] w-full"
                 >
                     {/* Top bar */}
                     <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
@@ -470,7 +465,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                             <div className="flex items-center gap-1.5">
                                 <span className="text-[12px] font-bold text-slate-800 tracking-tight">Requisition Hub</span>
                                 <span className="text-slate-300 text-[10px]">/</span>
-                                <span className="text-[11px] font-medium text-slate-500 truncate">REQ-4024 · Engineering</span>
+                                <span className="text-[11px] font-medium text-slate-500 truncate">Engineering</span>
                             </div>
                         </div>
                         <div className="flex items-center gap-2 bg-slate-50 border border-slate-100 px-2.5 py-0.5 rounded-full">
@@ -522,7 +517,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                                             <Check size={11} />
                                         </div>
                                         <div>
-                                            <div style={{ fontSize:10, fontWeight:800, color:'#0b1322' }}>REQ-4024 · All fields validated</div>
+                                            <div style={{ fontSize:10, fontWeight:800, color:'#0b1322' }}>All fields validated</div>
                                             <div style={{ fontSize:9, color:'#3666ff', fontFamily:"'JetBrains Mono',monospace", marginTop:1 }}>5 vendors pre-matched · Target $42/unit</div>
                                         </div>
                                     </div>
@@ -587,8 +582,8 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                                         <div style={{ width:7, height:7, borderRadius:'50%', background:'#3666ff', animation:'s31-pulse 1.6s ease-in-out infinite' }} />
                                         <span style={{ fontSize:11, fontWeight:700, color:'#475569' }}>Approval Queue · Auto-routed by hierarchy</span>
                                     </div>
-                                    {approvalStep >= 4 && (
-                                        <span style={{ fontSize:9, fontWeight:800, color:'#00b884', fontFamily:"'JetBrains Mono',monospace" }}>✓ 3/3 Approved</span>
+                                    {approvalStep >= 3 && (
+                                        <span style={{ fontSize:9, fontWeight:800, color:'#00b884', fontFamily:"'JetBrains Mono',monospace" }}>✓ 2/2 Approved</span>
                                     )}
                                 </div>
 
@@ -597,7 +592,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                                         <GitBranch size={11} />
                                     </div>
                                     <div>
-                                        <div style={{ fontSize:10, fontWeight:800, color:'#1e3a8a' }}>REQ-4024 · Hydraulic Cylinder Seal Kit DN80</div>
+                                        <div style={{ fontSize:10, fontWeight:800, color:'#1e3a8a' }}>Hydraulic Cylinder Seal Kit DN80</div>
                                         <div style={{ fontSize:9, color:'#3666ff', fontFamily:"'JetBrains Mono',monospace", marginTop:1 }}>200 units · Est. $8,400 · Engineering</div>
                                     </div>
                                 </div>
@@ -620,7 +615,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                                     );
                                 })}
 
-                                {approvalStep >= 4 && (
+                                {approvalStep >= 3 && (
                                     <div style={{ padding:'9px 13px', background:'linear-gradient(90deg,rgba(0,184,132,0.07),rgba(54,102,255,0.05))', border:'1px solid rgba(0,184,132,0.2)', borderRadius:10, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                                         <span style={{ fontSize:11, fontWeight:700, color:'#065f46' }}>✓ Fully Approved · Ready for Sourcing</span>
                                         <span style={{ fontSize:9, fontWeight:800, color:'#00b884', fontFamily:"'JetBrains Mono',monospace", background:'rgba(0,184,132,0.1)', border:'1px solid rgba(0,184,132,0.2)', padding:'3px 8px', borderRadius:5 }}>IN PURCHASER QUEUE</span>

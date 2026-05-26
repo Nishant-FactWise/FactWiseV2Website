@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users2, Lightbulb, TrendingUp } from 'lucide-react';
 
@@ -32,6 +32,22 @@ const PILLARS = [
 ];
 
 export const CareersCulture = () => {
+  // Responsive grid columns: 1 on mobile, 2 on tablet, 3 on desktop.
+  // Inline styles can't use Tailwind breakpoints, so track viewport via matchMedia
+  // (same pattern as StaggerTestimonials).
+  const [columns, setColumns] = useState(3);
+
+  useEffect(() => {
+    const updateColumns = () => {
+      if (window.matchMedia('(min-width: 1024px)').matches) setColumns(3);
+      else if (window.matchMedia('(min-width: 640px)').matches) setColumns(2);
+      else setColumns(1);
+    };
+    updateColumns();
+    window.addEventListener('resize', updateColumns);
+    return () => window.removeEventListener('resize', updateColumns);
+  }, []);
+
   return (
     <section style={{
       padding: '80px 24px',
@@ -85,7 +101,7 @@ export const CareersCulture = () => {
         {/* ── Cards ── */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: `repeat(${columns}, 1fr)`,
           gap: 20,
         }}>
           {PILLARS.map((pillar, index) => (

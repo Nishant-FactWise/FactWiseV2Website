@@ -56,7 +56,7 @@ export default function InvSection35({ isActive = true }: { isActive?: boolean }
     ];
 
     return (
-        <div id="inv-section-3-5" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-16 scroll-mt-24">
+        <div id="inv-section-3-5" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{
                 __html: `
             @keyframes inv-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
@@ -78,7 +78,7 @@ export default function InvSection35({ isActive = true }: { isActive?: boolean }
                     Total Visibility.<br />
                     <span className="text-[#3666ff]">From Invoice to Payment.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     Every invoice, every GR, every QC outcome, every payment — tracked in real time from start to finish. GR status, AI-flagged discrepancies, approvals, and payment history all visible at the line item level. No more chasing updates. Every rupee accounted for, every step of the way.
                 </p>
 

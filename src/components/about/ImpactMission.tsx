@@ -12,11 +12,48 @@ const STATS = [
   { value: 24, suffix: '/7', label: 'Strategic AI Support' }
 ];
 
+/* Animates a heading character-by-character (slide-up) but keeps each WORD in an
+   inline-block/whitespace-nowrap wrapper so words never break mid-word — only
+   whole words wrap to the next line. `base` offsets the stagger so a second
+   line continues the sequence. */
+function AnimatedTitle({ text, base = 0 }: { text: string; base?: number }) {
+  const words = text.split(' ');
+  let idx = base;
+  return (
+    <>
+      {words.map((word, wi) => {
+        const charEls = word.split('').map((ch) => {
+          const i = idx++;
+          return (
+            <motion.span
+              key={i}
+              variants={{
+                hidden: { y: 100, opacity: 0 },
+                visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: i * 0.018 } },
+              }}
+              className="inline-block"
+            >
+              {ch}
+            </motion.span>
+          );
+        });
+        idx++; // account for the inter-word space in the stagger sequence
+        return (
+          <React.Fragment key={wi}>
+            <span className="inline-block whitespace-nowrap">{charEls}</span>
+            {wi < words.length - 1 ? ' ' : null}
+          </React.Fragment>
+        );
+      })}
+    </>
+  );
+}
+
 export const ImpactMission = () => {
   return (
     <section className="py-8 px-6 md:px-14 bg-white">
-      <div 
-        className="relative overflow-hidden rounded-[24px] py-16" 
+      <div
+        className="relative overflow-hidden rounded-[24px] py-12 md:py-16"
         style={{ backgroundImage: "url('/TexturedGradient.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         {/* Subtle Glow Overlay */}
@@ -29,10 +66,12 @@ export const ImpactMission = () => {
         <div className="absolute inset-0 noise opacity-10 pointer-events-none mix-blend-overlay" />
 
         <div className="relative z-10 max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-12 gap-16 items-center mb-12 px-6">
+          <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-center mb-12 px-6">
             {/* Left: Morphing Animation */}
             <div className="md:col-span-5 flex items-center justify-center">
-              <MorphingSVG />
+              <div className="w-full max-w-[260px] md:max-w-none">
+                <MorphingSVG />
+              </div>
             </div>
 
             {/* Right: Text Content */}
@@ -45,48 +84,12 @@ export const ImpactMission = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: false }}
-              className="text-4xl md:text-5xl font-bold text-slate-900 leading-[1.05] tracking-tighter mb-8 overflow-hidden py-2"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.05] tracking-tighter mb-8 overflow-hidden py-2"
             >
-              {"Automating Every Workflow ".split("").map((char, index) => (
-                <motion.span
-                  key={index}
-                  variants={{
-                    hidden: { y: 100, opacity: 0 },
-                    visible: {
-                      y: 0,
-                      opacity: 1,
-                      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: index * 0.018 }
-                    }
-                  }}
-                  className="inline-block"
-                  style={{ display: char === " " ? "inline" : "inline-block" }}
-                >
-                  {char === " " ? "\u00A0" : char}
-                </motion.span>
-              ))}
+              <AnimatedTitle text="Automating Every Workflow" base={0} />
               <br className="md:hidden" />
-              <span className="text-[#3666ff] font-instrument italic font-medium inline-block">
-                {"Manufacturers Depend On.".split("").map((char, index) => (
-                  <motion.span
-                    key={index}
-                    variants={{
-                      hidden: { y: 100, opacity: 0 },
-                      visible: {
-                        y: 0,
-                        opacity: 1,
-                        transition: {
-                          duration: 0.6,
-                          ease: [0.16, 1, 0.3, 1],
-                          delay: (index + 26) * 0.018
-                        }
-                      }
-                    }}
-                    className="inline-block"
-                    style={{ display: char === " " ? "inline" : "inline-block" }}
-                  >
-                    {char === " " ? "\u00A0" : char}
-                  </motion.span>
-                ))}
+              <span className="text-[#3666ff] font-instrument italic font-medium">
+                <AnimatedTitle text="Manufacturers Depend On." base={26} />
               </span>
             </motion.h2>
               <motion.div
@@ -97,7 +100,7 @@ export const ImpactMission = () => {
                 className="space-y-6"
               >
                 <p className="text-slate-600 text-lg md:text-xl leading-relaxed">
-                  We are building the operating system for modern manufacturing \u2014 connecting every team,
+                  We are building the operating system for modern manufacturing and connecting every team,
                   every vendor, and every workflow into one intelligent platform. FactWise automates
                   the complex, eliminates the manual, and gives manufacturers the clarity to make
                   better decisions, faster.

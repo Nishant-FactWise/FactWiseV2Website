@@ -52,7 +52,7 @@ export default function InvSection32({ isActive = true }: { isActive?: boolean }
     ];
 
     return (
-        <div id="inv-section-3-2" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-40 scroll-mt-24">
+        <div id="inv-section-3-2" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{
                 __html: `
             @keyframes inv-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
@@ -378,7 +378,7 @@ export default function InvSection32({ isActive = true }: { isActive?: boolean }
                     Track Every Delivery.<br />
                     <span className="text-[#3666ff]">Record Every Discrepancy.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     Create goods receipts against any invoice or PO — recording quantities, flagging damaged goods, and capturing every discrepancy at the line item level in real time. FactWise's AI cross-checks every GR against the original invoice and PO automatically. Nothing assumed. Everything verified.
                 </p>
 

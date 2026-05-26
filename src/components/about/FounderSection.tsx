@@ -6,8 +6,8 @@ import { motion } from 'framer-motion';
 export const FounderSection = () => {
   return (
     <section className="py-8 px-6 md:px-14 bg-white">
-      <div 
-        className="relative overflow-hidden rounded-[24px] py-20 px-8 md:px-20" 
+      <div
+        className="relative overflow-hidden rounded-[24px] py-14 px-6 md:py-20 md:px-20"
         style={{ backgroundImage: "url('/TexturedGradient.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         {/* Subtle Glow Overlay */}
@@ -20,7 +20,7 @@ export const FounderSection = () => {
         <div className="absolute inset-0 noise opacity-10 pointer-events-none mix-blend-overlay" />
 
         <div className="relative z-10 max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-12 gap-16 items-center">
+          <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-center">
             {/* Left: Text Content */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -37,7 +37,7 @@ export const FounderSection = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: false }}
-                className="text-4xl md:text-5xl font-bold text-slate-900 leading-[1.1] tracking-tighter mb-8 overflow-hidden py-1"
+                className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.1] tracking-tighter mb-8 overflow-hidden py-1"
               >
                 {"A Word From ".split("").map((char, index) => (
                   <motion.span
@@ -126,7 +126,7 @@ export const FounderSection = () => {
                   whileInView={{ y: 0, opacity: 1 }}
                   viewport={{ once: false }}
                   transition={{ delay: 0.5, duration: 0.8 }}
-                  className="absolute -bottom-10 -right-12 md:-right-16 z-20 bg-gradient-to-br from-white to-blue-50 p-6 rounded-[32px] shadow-2xl border border-blue-100 min-w-[220px]"
+                  className="absolute -bottom-8 right-0 md:-bottom-10 md:-right-16 z-20 bg-gradient-to-br from-white to-blue-50 p-5 md:p-6 rounded-[28px] md:rounded-[32px] shadow-2xl border border-blue-100 min-w-[180px] md:min-w-[220px]"
                 >
                   <div className="flex flex-col gap-1">
                     <div className="text-lg font-bold text-slate-900 tracking-tight">Stawan Kamani</div>

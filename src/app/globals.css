@@ -626,13 +626,28 @@
    single full-width column, so the hero shows just heading/subhead/CTAs.
    Desktop (>=1024px) is untouched. Hooks live on the inline-styled product
    heroes (SolutionsHero / InvoiceHero / ReqHero). */
-@media (max-width: 1023px) {
+@media (max-width: 1279px) {
   .fw-hero-section { min-height: auto !important; }
   .fw-hero-grid {
     grid-template-columns: 1fr !important;
     gap: 0 !important;
-    padding: 104px 24px 56px !important;
+    padding: 150px 24px 56px !important;
     min-height: auto !important;
+    text-align: center !important;
+  }
+  .fw-hero-grid > div {
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .fw-hero-grid p {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+  .fw-hero-grid div {
+    justify-content: center !important;
   }
   .fw-hero-visual { display: none !important; }
 }

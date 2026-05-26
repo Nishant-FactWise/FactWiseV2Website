@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-const LENIS_ROUTES = ['/about', '/careers'];
+const LENIS_ROUTES = ['/about', '/careers', '/inquiry-to-quote', '/requisitions-to-po', '/invoice-to-pay', '/platform'];
 
 // Global so ScrollReveal can read smoother scroll position reliably
 export let activeSmoother: ScrollSmoother | null = null;

@@ -19,16 +19,25 @@ const STEPS = [
     { num: '04', label: 'Payment Validation', short: 'Payment' },
     { num: '05', label: 'Total Visibility', short: 'Visibility' },
 ];
-
 export default function InvoiceToPayFlow() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [activePanel, setActivePanel] = useState(-1);
+
+    const [isDesktop, setIsDesktop] = useState(true);
+    useEffect(() => {
+        const mq = window.matchMedia('(min-width: 1024px)');
+        const apply = () => setIsDesktop(mq.matches);
+        apply();
+        mq.addEventListener('change', apply);
+        return () => mq.removeEventListener('change', apply);
+    }, []);
 
     const gotoPanelRef = useRef<((index: number, isDown: boolean) => void) | null>(null);
     const currentIndexRef = useRef(-1);
 
     useEffect(() => {
         if (typeof window === 'undefined' || !containerRef.current) return;
+        if (!isDesktop) return; // no swipe on mobile
 
         const panels = gsap.utils.toArray<HTMLElement>('.itpf-panel');
         let animating = false;
@@ -127,7 +136,7 @@ export default function InvoiceToPayFlow() {
             intentObserver.kill();
             window.removeEventListener('keydown', onKey);
         };
-    }, []);
+    }, [isDesktop]);
 
     const navPrev = useCallback(() => {
         if (gotoPanelRef.current) {
@@ -194,10 +203,9 @@ export default function InvoiceToPayFlow() {
                 </div>
             </section>
 
-            {/* ── PINNED SWIPE CONTAINER ── */}
             <div
                 ref={containerRef}
-                className="itpf-container"
+                className="itpf-container hidden lg:block"
                 style={{
                     position: 'relative',
                     height: '100vh',
@@ -256,14 +264,17 @@ export default function InvoiceToPayFlow() {
                 </div>
 
                 {/* STEP PROGRESS BAR (bottom) */}
-                <div style={{
-                    position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)',
-                    zIndex: 100, display: 'flex', alignItems: 'center', gap: 8,
-                    background: 'white', border: '1px solid rgba(15,23,42,0.08)',
-                    borderRadius: 100, padding: '8px 16px',
-                    boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-                    pointerEvents: 'none',
-                }}>
+                <div
+                    className="hidden lg:flex"
+                    style={{
+                        position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)',
+                        zIndex: 100, alignItems: 'center', gap: 8,
+                        background: 'white', border: '1px solid rgba(15,23,42,0.08)',
+                        borderRadius: 100, padding: '8px 16px',
+                        boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+                        pointerEvents: 'none',
+                    }}
+                >
                     {STEPS.map((s, i) => (
                         <div
                             key={i}
@@ -290,11 +301,12 @@ export default function InvoiceToPayFlow() {
                 <button
                     onClick={navPrev}
                     aria-label="Previous step"
+                    className="hidden lg:flex"
                     style={{
                         position: 'absolute', left: 20, top: '50%', transform: 'translateY(-50%)',
                         zIndex: 100, width: 40, height: 40, borderRadius: '50%',
                         background: 'white', border: '1px solid rgba(15,23,42,0.1)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        alignItems: 'center', justifyContent: 'center',
                         cursor: 'pointer', boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
                         transition: 'all .2s ease',
                         opacity: activePanel === 0 ? 0 : 1,
@@ -307,12 +319,13 @@ export default function InvoiceToPayFlow() {
                 <button
                     onClick={navNext}
                     aria-label="Next step"
+                    className="hidden lg:flex"
                     style={{
                         position: 'absolute', right: 20, top: '50%', transform: 'translateY(-50%)',
                         zIndex: 100, width: 40, height: 40, borderRadius: '50%',
                         background: activePanel === 4 ? 'rgba(0,184,132,0.1)' : 'white',
                         border: `1px solid ${activePanel === 4 ? 'rgba(0,184,132,0.3)' : 'rgba(15,23,42,0.1)'}`,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        alignItems: 'center', justifyContent: 'center',
                         cursor: 'pointer', boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
                         transition: 'all .2s ease',
                         color: activePanel === 4 ? '#00b884' : '#64748b',
@@ -323,7 +336,17 @@ export default function InvoiceToPayFlow() {
 
             </div>
 
-            <div style={{ height: 1 }} aria-hidden="true" />
+            {/* Spacer so page content after this section scrolls normally */}
+            {isDesktop && <div style={{ height: 1 }} aria-hidden="true" />}
+
+            {/* MOBILE / TABLET (<lg): all steps stacked vertically, normal scroll */}
+            <div className="block lg:hidden bg-[#ffffff]">
+                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection31 isActive /></div>
+                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection32 isActive /></div>
+                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection33 isActive /></div>
+                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection34 isActive /></div>
+                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection35 isActive /></div>
+            </div>
 
             <style>{`
             @keyframes itpf-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }

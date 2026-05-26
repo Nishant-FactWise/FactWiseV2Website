@@ -25,8 +25,8 @@ export const CareersHero = () => {
           Join Our Mission
         </motion.div>
 
-        <motion.h1 
-          className="text-6xl md:text-8xl font-bold text-white leading-[1] tracking-tighter mb-10 overflow-hidden py-2"
+        <motion.h1
+          className="text-5xl sm:text-6xl md:text-8xl font-bold text-white leading-[1] tracking-tighter mb-8 md:mb-10 overflow-hidden py-2"
         >
           {"Careers at ".split("").map((char, index) => (
             <motion.span
@@ -64,7 +64,7 @@ export const CareersHero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="text-white/70 text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto mb-12 font-light"
+          className="text-white/70 text-base sm:text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto mb-10 md:mb-12 font-light"
         >
           We're committed to boosting your potential and powering your journey. Redefine your limits and make visible impact.
         </motion.p>
@@ -76,7 +76,7 @@ export const CareersHero = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => document.getElementById('openings')?.scrollIntoView({ behavior: 'smooth' })}
-          className="px-10 py-5 bg-[#3666ff] text-white rounded-full font-bold text-lg shadow-[0_20px_50px_rgba(54,102,255,0.4)] transition-all"
+          className="px-8 py-4 md:px-10 md:py-5 bg-[#3666ff] text-white rounded-full font-bold text-base md:text-lg shadow-[0_20px_50px_rgba(54,102,255,0.4)] transition-all"
         >
           Explore Open Roles
         </motion.button>

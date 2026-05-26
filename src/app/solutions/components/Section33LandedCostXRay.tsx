@@ -295,15 +295,15 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                 transition={{ duration: 0.6 }}
                 className="lg:col-span-6 space-y-6 text-left"
             >
-                <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
+                {/* <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
                     Section 3.3 · Landed Cost Analytics
-                </div>
+                </div> */}
                 <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     See True Landed Cost. <br />
                     <span className="text-[#3666ff]">Shortlist with Confidence.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     FactWise automatically applies your custom landed cost formulas across every bid — normalizing currencies and factoring in duties, freight, insurance, and packaging, so every comparison reflects true cost. Drill into vendor performance at a glance: competitive, non-competitive, and excluded bids per supplier, with flexible line-by-line or all-items views. FactWise Recommended Analytics then surfaces the best bid per item based on your own criteria — so every shortlisting decision is backed by data, not guesswork.
                 </p>
 

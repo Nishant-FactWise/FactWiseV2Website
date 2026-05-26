@@ -217,6 +217,14 @@ function FloatCard({ style, delay=0, yAmt=12, dur=6, children }: {
 ════════════════════════════════════════════ */
 export default function SolutionsHero() {
   const mono = "'JetBrains Mono', monospace"
+  const [isDesktop, setIsDesktop] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsDesktop(window.innerWidth >= 1280)
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1280)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <>
@@ -323,11 +331,12 @@ export default function SolutionsHero() {
         </motion.div>
 
         {/* ── RIGHT COLUMN: Dashboard + floating cards ── */}
+        {isDesktop && (
         <motion.div
           initial={{ opacity:0, y:20 }}
           animate={{ opacity:1, y:0 }}
           transition={{ duration:0.8, delay:0.35, ease:[0.16,1,0.3,1] }}
-          className="fw-hero-visual"
+          className="hidden xl:block fw-hero-visual"
           style={{ position:'relative', height:520 }}
         >
           {/* Main dashboard frame */}
@@ -442,6 +451,7 @@ export default function SolutionsHero() {
             </div>
           </FloatCard>
         </motion.div>
+        )}
       </div>
 
       <style>{`@keyframes fw-pulse{0%,100%{opacity:1}50%{opacity:0.35}}`}</style>
