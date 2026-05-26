@@ -46,7 +46,7 @@ import ScrollReveal from "./ui/ScrollReveal";
 
 export default function Hero() {
   return (
-    <section className="h-screen w-full relative pt-16 md:pt-0">
+    <section className="h-screen w-full relative">
       <div className="relative h-full w-full overflow-hidden">
 
         {/* Background video */}
@@ -68,21 +68,23 @@ export default function Hero() {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
 
         {/* Hero content */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 pb-0 sm:px-6 md:px-10 lg:pb-0">
-          <div className="grid grid-cols-12 items-end gap-6">
+        <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 sm:px-6 md:px-10 md:pb-0 lg:pb-0">
+          {/* Phones: FactWise name + Join Us button on one bottom row (no subtext).
+              md+: original 12-col grid with subtext. */}
+          <div className="flex items-end justify-between gap-4 md:grid md:grid-cols-12 md:items-end md:gap-6">
 
-            <div className="col-span-12 lg:col-span-8">
+            <div className="col-span-12 lg:col-span-8 min-w-0">
               <h1
-                className="font-medium leading-[0.8] tracking-[-0.05em] text-[15vw] sm:text-[13vw] md:text-[11vw] lg:text-[10vw] xl:text-[9vw] mb-20 md:mb-32 relative -translate-y-4 md:-translate-y-6"
+                className="font-medium leading-[0.8] tracking-[-0.05em] text-[11vw] sm:text-[13vw] md:text-[11vw] lg:text-[10vw] xl:text-[9vw] mb-2 md:mb-32 relative translate-y-0 md:-translate-y-6"
                 style={{ color: "#E1E0CC", fontFamily: "var(--font-display)" }}
               >
                 FactWise
               </h1>
             </div>
 
-            <div className="col-span-12 flex flex-col gap-6 pb-4 lg:col-span-4 lg:pb-4">
+            <div className="col-span-12 flex flex-col gap-6 pb-0 md:pb-4 lg:col-span-4 lg:pb-4">
               <p
-                className="text-sm text-[#E1E0CC]/80 sm:text-base md:text-lg max-w-[380px]"
+                className="hidden md:block text-sm text-[#E1E0CC]/80 sm:text-base md:text-lg max-w-[380px]"
                 style={{ lineHeight: 1.4, fontFamily: "var(--font-inter)" }}
                 data-speed="0.9"
               >

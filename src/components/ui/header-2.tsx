@@ -17,6 +17,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 	const isLightPage = LIGHT_PAGES.some(p => pathname === p || pathname.startsWith(p + '/'));
 	const theme = isLightPage ? 'light' : propTheme;
 	const [open, setOpen] = React.useState(false);
+	const [expandedMobileMenu, setExpandedMobileMenu] = React.useState<string | null>('Product');
 	const [mounted, setMounted] = React.useState(false);
 	const scrolled = useScroll(20);
 
@@ -97,6 +98,10 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 			document.body.style.overflow = '';
 		};
 	}, [open]);
+
+	if (pathname === '/demo') {
+		return null;
+	}
 
 	return (
 		<header
@@ -232,7 +237,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 						return (
 							<div className="relative group">
 								<a
-									href="https://apps.factwise.io"
+									href="https://apps.factwise.io/?showBackButton=true"
 									className={buttonVariants({ variant: 'ghost', className: loginClass })}
 								>
 									Login
@@ -264,64 +269,86 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 			{/* Mobile Menu */}
 			<div
 				className={cn(
-					'fixed top-16 right-0 bottom-0 left-0 z-50 flex flex-col overflow-hidden bg-[#f6f9fc]/98 backdrop-blur-xl border-t border-black/[0.08] md:hidden',
+					'fixed top-16 right-0 bottom-0 left-0 z-50 flex flex-col overflow-y-auto bg-[#f6f9fc]/98 backdrop-blur-xl border-t border-black/[0.08] md:hidden',
 					open ? 'block' : 'hidden',
 				)}
 			>
+				{/* Background Gradients */}
+				<div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#3666ff]/10 blur-[100px] pointer-events-none" />
+				<div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#3666ff]/15 blur-[100px] pointer-events-none" />
 				<div
 					data-slot={open ? 'open' : 'closed'}
 					className={cn(
 						'flex h-full w-full flex-col justify-between gap-y-2 p-6',
 					)}
 				>
-					<div className="grid gap-y-4">
+					<div className="grid gap-y-3">
 						{links.map((link) => {
 							const active = isLinkActive(link);
 							return (
-							<div key={link.label} className="flex flex-col gap-2">
+							<div key={link.label} className="flex flex-col gap-1 z-10 relative">
 								{link.subLinks ? (
-									<div className={cn('text-2xl font-medium flex items-center gap-2 py-1 select-none', active ? 'text-[#3666ff]' : 'text-[#808080]')}>
+									<button 
+										onClick={() => setExpandedMobileMenu(expandedMobileMenu === link.label ? null : link.label)}
+										className={cn('text-xl font-medium flex items-center justify-between py-1.5 transition-colors active:scale-[0.98]', active ? 'text-[#3666ff]' : 'text-slate-800 hover:text-[#3666ff]')}
+									>
 										{link.label}
-									</div>
+										<ChevronDown size={20} className={cn("transition-transform duration-300 text-slate-400", expandedMobileMenu === link.label ? "rotate-180" : "")} />
+									</button>
 								) : (
 									<a
-										className={cn('text-2xl font-medium transition-colors', active ? 'text-[#3666ff] font-semibold' : 'text-[#808080] hover:text-[#000000]')}
+										className={cn('text-xl font-medium py-1.5 transition-colors active:scale-[0.98]', active ? 'text-[#3666ff] font-semibold' : 'text-slate-800 hover:text-[#3666ff]')}
 										href={link.href}
 										onClick={() => setOpen(false)}
 									>
 										{link.label}
 									</a>
 								)}
-								{(link as any).subLinks && (
-									<div className="flex flex-col gap-2 ml-4 mb-4">
-										{(link as any).subLinks.map((sub: any) => {
-											const subActive = pathname === sub.href || pathname.startsWith(sub.href + '/');
-											return (
-											<a
-												key={sub.label}
-												href={sub.href}
-												className={cn('text-lg transition-colors', subActive ? 'text-[#3666ff] font-semibold' : 'text-[#808080] hover:text-[#000000]')}
-												onClick={() => setOpen(false)}
+								{link.subLinks && (
+									<AnimatePresence>
+										{expandedMobileMenu === link.label && (
+											<motion.div 
+												initial={{ height: 0, opacity: 0 }} 
+												animate={{ height: 'auto', opacity: 1 }} 
+												exit={{ height: 0, opacity: 0 }} 
+												className="overflow-hidden"
 											>
-												{sub.label}
-											</a>
-											);
-										})}
-									</div>
+												<div className="flex flex-col gap-2.5 ml-3 mb-3 mt-1 border-l-2 border-slate-200 pl-4">
+													{(link as any).subLinks.map((sub: any) => {
+														const subActive = pathname === sub.href || pathname.startsWith(sub.href + '/');
+														return (
+														<a
+															key={sub.label}
+															href={sub.href}
+															className={cn('text-base transition-colors active:scale-[0.98]', subActive ? 'text-[#3666ff] font-semibold' : 'text-slate-600 hover:text-[#3666ff]')}
+															onClick={() => setOpen(false)}
+														>
+															{sub.label}
+														</a>
+														);
+													})}
+												</div>
+											</motion.div>
+										)}
+									</AnimatePresence>
 								)}
 							</div>
 							);
 						})}
 					</div>
-					<div className="flex flex-col gap-4 pt-10 border-t border-black/[0.07]">
-						<Button variant="outline" onClick={() => { window.location.href = 'https://apps.factwise.io'; }} className="w-full h-12 text-lg border-black/[0.1] hover:bg-black/[0.04]">
+					<div className="flex flex-col gap-4 pt-8 pb-10 border-t border-black/[0.07] mt-auto z-10 relative">
+						<button 
+							onClick={() => { window.location.href = 'https://apps.factwise.io/?showBackButton=true'; }} 
+							className="w-full h-14 text-lg font-medium text-slate-800 bg-white border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 active:scale-[0.98] transition-all"
+						>
 							Login
-						</Button>
-						<MagicButton
-							label1="Request Demo"
-							label2="Starting Now..."
-							className="w-full"
-						/>
+						</button>
+						<button 
+							onClick={() => { window.location.href = '/demo'; }} 
+							className="w-full h-14 text-lg font-bold text-white bg-[#3666ff] rounded-xl shadow-[0_0_20px_rgba(54,102,255,0.2)] hover:bg-[#3666ff]/90 hover:shadow-lg hover:shadow-[#3666ff]/30 active:scale-[0.98] transition-all"
+						>
+							Request Demo
+						</button>
 					</div>
 				</div>
 			</div>

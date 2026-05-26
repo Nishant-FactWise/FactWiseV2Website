@@ -77,7 +77,7 @@ export default function StatsStrip() {
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="lg:w-[34%] lg:pr-14 flex-shrink-0"
+          className="hidden md:block lg:w-[34%] lg:pr-14 flex-shrink-0"
         >
           <p
             className="max-w-[280px]"
@@ -101,8 +101,8 @@ export default function StatsStrip() {
           style={{ background: 'rgba(74,111,255,0.1)' }}
         />
 
-        {/* Right — 3 stats */}
-        <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center divide-y sm:divide-y-0 sm:divide-x w-full"
+        {/* Right — 3 stats (always a row, resized to fit on phones) */}
+        <div className="flex-1 flex flex-row items-stretch divide-x w-full"
           style={{ '--tw-divide-opacity': 1 } as React.CSSProperties}
         >
           {STATS.map((stat, i) => (
@@ -111,7 +111,7 @@ export default function StatsStrip() {
               initial={{ opacity: 0, y: 18 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.55, delay: 0.12 + i * 0.1 }}
-              className="flex-1 flex flex-col gap-1.5 px-0 sm:px-10 py-6 sm:py-0"
+              className="flex-1 flex flex-col gap-1.5 px-2 sm:px-10 py-2 sm:py-0"
               style={{ borderColor: 'rgba(74,111,255,0.1)' }}
             >
               {/* Big number with counter animation */}
@@ -119,7 +119,7 @@ export default function StatsStrip() {
                 className="leading-none"
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.2rem, 4vw, 3.1rem)',
+                  fontSize: 'clamp(1.5rem, 5vw, 3.1rem)',
                   fontWeight: 800,
                   color: '#0D0F1C',
                   letterSpacing: '-0.04em',

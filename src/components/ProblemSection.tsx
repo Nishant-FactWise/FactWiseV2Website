@@ -429,12 +429,8 @@ export default function ProblemSection() {
           </div>
 
 
-          {/* Problems Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '24px'
-          }}>
+          {/* Problems Grid — 3-across on tablet/desktop, single column on phones */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {PROBLEMS.map((prob, idx) => (
               <motion.div
                 key={idx}
@@ -442,12 +438,14 @@ export default function ProblemSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false }}
                 transition={{ delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative w-full h-[400px] bg-white border border-[#E2E5F0] rounded-[20px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
+                className="group relative w-full h-[480px] lg:h-[400px] bg-white border border-[#E2E5F0] rounded-[20px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
               >
-                {/* Visual Area (Full height initially, half height on hover) */}
-                <div className="relative w-full h-full transition-all duration-500 group-hover:h-1/2 bg-white flex items-center justify-center">
-                  {/* Initial Title Overlay (Bottom, Grey) */}
-                  <div className="absolute bottom-8 left-8 transition-all duration-500 group-hover:opacity-0 group-hover:translate-y-4">
+                {/* Visual Area — half height on mobile (card always open); full height
+                    on desktop, shrinking to half on hover. */}
+                <div className="relative w-full h-1/2 lg:h-full transition-all duration-500 lg:group-hover:h-1/2 bg-white flex items-center justify-center">
+                  {/* Initial Title Overlay (Bottom, Grey) — desktop-only; on mobile the
+                      open content below already shows the title. */}
+                  <div className="absolute bottom-8 left-8 transition-all duration-500 opacity-0 lg:opacity-100 lg:group-hover:opacity-0 lg:group-hover:translate-y-4">
                     <h3 style={{
                       fontFamily: 'var(--font-display)',
                       fontSize: '18px',
@@ -463,8 +461,9 @@ export default function ProblemSection() {
                   <prob.Animation />
                 </div>
 
-                {/* Content Area (Hidden below initially, slides up on hover) */}
-                <div className="absolute left-0 w-full h-1/2 px-8 transition-all duration-500 flex flex-col justify-center bg-white/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 top-full group-hover:top-1/2">
+                {/* Content Area — open by default on mobile; on desktop it stays hidden
+                    below and slides up on hover. */}
+                <div className="absolute left-0 w-full h-1/2 px-8 transition-all duration-500 flex flex-col justify-center bg-white/95 backdrop-blur-sm opacity-100 top-1/2 lg:opacity-0 lg:top-full lg:group-hover:opacity-100 lg:group-hover:top-1/2">
                   <div style={{
                     display: 'flex',
                     alignItems: 'center',

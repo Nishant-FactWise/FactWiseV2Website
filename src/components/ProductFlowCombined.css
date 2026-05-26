@@ -415,7 +415,9 @@
 /* ── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 1080px) {
   .pfc-grid {
-    grid-template-columns: 1fr;
+    /* minmax(0, 1fr) — not 1fr — so the column can shrink below its content
+       and never force the section wider than the viewport. */
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .pfc-left {
@@ -432,20 +434,174 @@
 }
 
 @media (max-width: 768px) {
+  /* Hide the wide horizontal graph; the vertical stepper takes over. */
   .pfc-left {
-    padding: 24px 16px;
-    overflow-x: auto;
-  }
-
-  .pfc-canvas {
-    min-width: 560px;
+    display: none;
   }
 
   .pfc-sidebar {
     padding: 24px 16px;
   }
 
-  .pfc-node {
-    font-size: 8.5px;
+  /* Flow tabs: resize so all four fit on screen (wrap) instead of scrolling. */
+  .pfc-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 28px;
   }
+
+  .pfc-tab {
+    padding: 7px 14px;
+    font-size: 11px;
+  }
+}
+
+/* ── Mobile vertical stepper (active flow only, ≤768px) ─────────────── */
+.pfc-mobile-steps { display: none; }
+
+@media (max-width: 768px) {
+  .pfc-mobile-steps {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 4px 4px;
+  }
+}
+
+.pfc-mstep {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Connector between two steps — a faint line that lights up and runs an
+   animated arrow downward once both steps are reached. */
+.pfc-mconn {
+  position: relative;
+  width: 2px;
+  height: 30px;
+  margin-left: 17px;
+  background: rgba(15, 23, 42, 0.12);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.pfc-mconn.lit {
+  background: var(--ng);
+}
+
+.pfc-mconn-arrow {
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid var(--nc);
+  opacity: 0;
+}
+
+.pfc-mconn.lit .pfc-mconn-arrow {
+  animation: pfc-arrow-down 1.1s ease-in-out infinite;
+}
+
+@keyframes pfc-arrow-down {
+  0%   { top: -4px; opacity: 0; }
+  25%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { top: 24px; opacity: 0; }
+}
+
+.pfc-mcard {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: rgba(26, 29, 46, 0.5);
+  transition: color 0.35s ease, background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.pfc-mcard.is-done {
+  color: #1a1d2e;
+  background: #ffffff;
+  border-color: var(--nc);
+  box-shadow: 0 0 0 1px var(--nc), 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.pfc-mcard.is-current {
+  color: #000000;
+  background: #ffffff;
+  border-color: var(--nc);
+  box-shadow: 0 0 0 3px var(--ng), 0 14px 30px rgba(15, 23, 42, 0.16);
+}
+
+.pfc-mcard-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.pfc-mcard-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: rgba(15, 23, 42, 0.2);
+  transition: background 0.35s ease, box-shadow 0.35s ease;
+}
+
+.pfc-mcard.is-done .pfc-mcard-dot,
+.pfc-mcard.is-current .pfc-mcard-dot {
+  background: var(--nc);
+  box-shadow: 0 0 8px var(--nc);
+}
+
+.pfc-mcard-label {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.pfc-mcard-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: rgba(0, 0, 0, 0.72);
+  background: var(--ng);
+  border-radius: 7px;
+  padding: 7px 9px;
+}
+
+.pfc-mcard-check {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--nc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.pfc-mcard-feeders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pfc-mcard-feeder {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--nc);
+  background: var(--ng);
+  border-radius: 99px;
+  padding: 3px 9px;
 }

@@ -35,6 +35,9 @@ const NODES: NodeDef[] = [
   { id: 'pay', label: 'AI-Powered Payments', x: 92, y: 92 },
 ];
 
+const NODE_BY_ID: Record<string, NodeDef> =
+  Object.fromEntries(NODES.map(n => [n.id, n]));
+
 /* Short detail shown inside a node when it expands open. */
 const NODE_DETAIL: Record<string, string> = {
   'item-cat': 'Standardized item master',
@@ -293,6 +296,8 @@ export default function ProductFlowCombined() {
   const maxSteps = Math.max(...flow.runs.map(r => r.length));
   const doneCount = Math.min(bullets.length, Math.round((sidebarRevealed / maxSteps) * bullets.length));
 
+  // On phones we show only the active flow as a vertical stepper with animated
+  // arrows between steps (see .pfc-mobile-steps in ProductFlowCombined.css).
   return (
     <div id="product-flow-combined" className="pfc-responsive-pad" style={{ position: 'relative', scrollMarginTop: '100px' }}>
       <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '24px', backgroundImage: "url('/TexturedGradient.png')", backgroundSize: 'cover', backgroundPosition: 'center', padding: '80px 0' }}>
@@ -468,6 +473,54 @@ export default function ProductFlowCombined() {
                     );
                   })}
                 </div>
+              </div>
+
+              {/* ════ MOBILE (≤768px) — active flow as a vertical stepper ════
+                  Shows only the current flow's path top-to-bottom, with arrows
+                  animating between steps. Driven by the same state as the desktop
+                  graph (flowIdx / runIdx / revealed). */}
+              <div
+                className="pfc-mobile-steps"
+                style={{ '--nc': flow.color, '--ng': `${flow.color}2e` } as React.CSSProperties}
+              >
+                {steps.map((id, i) => {
+                  const node = NODE_BY_ID[id];
+                  const isVisited = i < revealed;
+                  const isCurrent = i === revealed - 1;
+                  const feeders = FEEDERS[id] || [];
+                  let cls = 'pfc-mcard';
+                  if (isCurrent) cls += ' is-current';
+                  else if (isVisited) cls += ' is-done';
+
+                  return (
+                    <div key={`${flowIdx}-${runIdx}-${i}-${id}`} className="pfc-mstep">
+                      {i > 0 && (
+                        <div className={`pfc-mconn${isVisited ? ' lit' : ''}`}>
+                          <span className="pfc-mconn-arrow" />
+                        </div>
+                      )}
+                      <div className={cls}>
+                        <div className="pfc-mcard-head">
+                          <span className="pfc-mcard-dot" />
+                          <span className="pfc-mcard-label">{node?.label}</span>
+                        </div>
+                        {isVisited && (
+                          <div className="pfc-mcard-detail">
+                            <span className="pfc-mcard-check"><CheckIcon size={7} /></span>
+                            <span>{NODE_DETAIL[id] || 'Processing'}</span>
+                          </div>
+                        )}
+                        {isVisited && feeders.length > 0 && (
+                          <div className="pfc-mcard-feeders">
+                            {feeders.map((sid) => (
+                              <span key={sid} className="pfc-mcard-feeder">{NODE_BY_ID[sid]?.label}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

@@ -128,15 +128,15 @@ export default function ModernCaseStudies() {
         </ScrollReveal>
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12">
-          {/* Filters */}
-          <ScrollReveal delay={0.2}>
-            <div className="flex flex-wrap gap-2">
+          {/* Filters — horizontally scrollable on mobile, wrap on desktop */}
+          <ScrollReveal delay={0.2} className="w-full md:w-auto">
+            <div className="flex gap-2 flex-nowrap overflow-x-auto md:flex-wrap md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {CATEGORIES.map((cat, i) => (
                 <button
                   key={cat}
                   onClick={() => setActiveTab(cat)}
                   className={cn(
-                    "px-5 py-2.5 rounded-xl text-[11px] font-semibold transition-all border tracking-widest uppercase",
+                    "shrink-0 whitespace-nowrap px-5 py-2.5 rounded-xl text-[11px] font-semibold transition-all border tracking-widest uppercase",
                     activeTab === cat
                       ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-600/20"
                       : "bg-white border-slate-100 text-slate-400 hover:border-blue-200 hover:text-blue-600"
@@ -148,8 +148,9 @@ export default function ModernCaseStudies() {
               ))}
             </div>
           </ScrollReveal>
- 
-          <ScrollReveal delay={0.3}>
+
+          {/* View all stories — hidden on mobile */}
+          <ScrollReveal delay={0.3} className="hidden md:block">
             <button className="group flex items-center gap-3 p-1.5 pr-5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200 text-slate-900 transition-all duration-500 hover:bg-white hover:border-blue-300 hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.1)] active:scale-95 whitespace-nowrap">
               <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white transition-all duration-500 group-hover:bg-blue-700 group-hover:scale-105 group-hover:rotate-[15deg]">
                 <ArrowUpRight className="w-4 h-4" />

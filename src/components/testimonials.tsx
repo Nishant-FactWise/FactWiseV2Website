@@ -138,15 +138,18 @@ export default function Testimonials() {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                    {/* Persistent Bento Grid - Initial 6 Cards */}
-                    <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 items-stretch p-2 md:p-4 overflow-visible">
+                    {/* Bento Grid — single column on phones (3 cards before View More),
+                        2 cols on tablet, 4-col bento on desktop. */}
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 items-stretch p-2 md:p-4 overflow-visible">
                         {testimonials.slice(0, 6).map((t, i) => {
                             const isLarge = i === 0 || i === 5;
-                            
+                            // On phones only the first 3 cards show until "View More".
+                            const hideOnMobile = i >= 3 && !showMore;
+
                             return (
                                 <Card
                                     key={t.id}
-                                    className={`${isLarge ? "md:col-span-2" : "md:col-span-1"} h-full border-slate-100 bg-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(74,111,255,0.25)] hover:border-[#4A6FFF]/30 transition-all duration-500 hover:-translate-y-1 group relative overflow-visible rounded-xl flex flex-col`}
+                                    className={`${isLarge ? "md:col-span-2" : "md:col-span-1"} ${hideOnMobile ? "max-sm:hidden" : ""} h-full border-slate-100 bg-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(74,111,255,0.25)] hover:border-[#4A6FFF]/30 transition-all duration-500 hover:-translate-y-1 group relative overflow-visible rounded-xl flex flex-col`}
                                 >
                                     <CardContent className="flex flex-col gap-3 p-4 pt-5 relative z-10 flex-grow">
                                         {/* Top Section: Quote (Left) & Logo (Right) */}

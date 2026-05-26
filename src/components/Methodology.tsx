@@ -292,11 +292,31 @@ export default function MethodologySection() {
   );
 }
 
+// The methodology dashboards are authored at a fixed ~700×580 canvas. On phones that
+// canvas is wider than the screen, so the inner dashboard used to clip on the right.
+// We render it at its native size and CSS-scale the whole thing down to fit the
+// available width — the dashboard stays proportional, just smaller. Desktop is
+// unaffected (this component only renders on the mobile/tablet branch).
+const ANIM_DESIGN_W = 700;
+const ANIM_DESIGN_H = 580;
+
 function MobileFeature({ page, idx }: { page: (typeof pages)[number]; idx: number }) {
   const ref = useRef<HTMLDivElement>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
   // Mount the (looping) animation only while the card is near the viewport, so four
   // animations don't all run off-screen at once and drag on mobile.
   const inView = useInView(ref, { margin: '200px 0px' });
+
+  const [scale, setScale] = useState(0);
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const apply = () => setScale(Math.min(1, el.clientWidth / ANIM_DESIGN_W));
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   return (
     <div
@@ -331,9 +351,23 @@ function MobileFeature({ page, idx }: { page: (typeof pages)[number]; idx: numbe
         </div>
       </div>
 
-      {/* Animation */}
-      <div className="relative h-[360px] w-full overflow-hidden border-t border-slate-100 bg-slate-50/50 sm:h-[440px]">
-        {inView && <page.Animation />}
+      {/* Animation — rendered at its native canvas size, then scaled to fit width. */}
+      <div
+        ref={boxRef}
+        className="relative w-full overflow-hidden border-t border-slate-100 bg-slate-50/50"
+        style={{ height: scale ? ANIM_DESIGN_H * scale : 360 }}
+      >
+        <div
+          className="absolute left-0 top-0"
+          style={{
+            width: ANIM_DESIGN_W,
+            height: ANIM_DESIGN_H,
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+          }}
+        >
+          {scale > 0 && inView && <page.Animation />}
+        </div>
       </div>
     </div>
   );
