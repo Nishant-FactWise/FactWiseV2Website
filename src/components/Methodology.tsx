@@ -181,7 +181,15 @@ export default function MethodologySection() {
           ScrollTrigger's pin is active it wraps this node in a pin-spacer (re-parenting
           it), so unmounting it from React throws "removeChild ... not a child of this
           node". The pin is created/reverted by the useGSAP hook (gated on isDesktop). */}
-      <div ref={containerRef} className="relative hidden h-screen overflow-hidden bg-white lg:block">
+      {/* backfaceVisibility+translate3d: gives this element its own stable
+          compositing layer so the ScrollTrigger pin counter-transform and the
+          ScrollSmoother parent transform share the same sub-pixel rounding
+          origin — eliminates the 1-px flicker on Windows 125 % DPI screens. */}
+      <div
+        ref={containerRef}
+        className="relative hidden h-screen overflow-hidden bg-white lg:block"
+        style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}
+      >
         {pages.map((page, i) => {
           const idx      = i + 1;
           const isActive = currentPage === idx;

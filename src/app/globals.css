@@ -636,3 +636,51 @@
   }
   .fw-hero-visual { display: none !important; }
 }
+
+/* ── prefers-reduced-motion: full fix ───────────────────────────────────────
+   Root cause (discovered 2026-05-26):
+   Windows Accessibility → Visual effects → "Animation effects: OFF" activates
+   prefers-reduced-motion:reduce in every browser on that machine.
+
+   Framer Motion respects this by reducing transition duration to ≈0ms, while
+   still applying its initial={{ opacity:0, y:20 }} hidden state and waiting for
+   IntersectionObserver to reveal elements. GSAP ScrollSmoother moves content via
+   CSS transform rather than native scroll, which causes Chromium's
+   IntersectionObserver to fire multiple times as elements slowly approach the
+   viewport threshold. Each firing triggers an instant opacity:0→1 transition —
+   visible as rapid flickering.
+
+   Two-part fix:
+   1. willChange:'transform' removed from #smooth-content (SmoothScroll.tsx) so
+      IntersectionObserver tracks descendants correctly without misfiring.
+   2. The CSS below ensures that when the user has opted out of motion, ALL
+      content is immediately visible — no entrance animation is needed. */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Show any element Framer Motion has hidden via its initial={{ opacity:0 }}
+     inline style. The !important wins over inline styles. */
+  [style*="opacity: 0"],
+  [style*="opacity:0"] {
+    opacity: 1 !important;
+  }
+
+  /* Strip the translateY offset Framer Motion's initial={{ y:20 }} adds so
+     text/content doesn't sit 20px lower than its layout position. */
+  [style*="translateY(20px)"],
+  [style*="translateY(24px)"],
+  [style*="translate(0px, 20px)"],
+  [style*="translate(0px, 24px)"] {
+    transform: none !important;
+  }
+
+  /* Collapse all CSS animation and transition durations so nothing "plays" —
+     hover highlights and state changes still work, just without motion. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+  }
+}

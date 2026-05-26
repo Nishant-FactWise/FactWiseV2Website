@@ -481,7 +481,7 @@ obs.observe(ROOT);
 
   return (
     <div id="product-hub-animation" className="responsive-section-padding" style={{ position: 'relative', scrollMarginTop: '100px' }}>
-      <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '24px', backgroundImage: "url('/TexturedGradient.png')", backgroundSize: 'cover', backgroundPosition: 'center', padding: '80px 0' }}>
+      <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '24px', backgroundImage: "url('/TexturedGradient.webp')", backgroundSize: 'cover', backgroundPosition: 'center', padding: '80px 0' }}>
         <div style={{ position: 'absolute', right: '-100px', bottom: '-100px', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(54, 102, 255, 0.15) 0%, transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none' }}></div>
         <div className="noise" style={{ position: 'absolute', inset: 0, opacity: 0.12, pointerEvents: 'none', mixBlendMode: 'overlay' }}></div>
         

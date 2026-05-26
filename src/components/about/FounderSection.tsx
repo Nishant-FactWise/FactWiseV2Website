@@ -8,7 +8,7 @@ export const FounderSection = () => {
     <section className="py-8 px-6 md:px-14 bg-white">
       <div 
         className="relative overflow-hidden rounded-[24px] py-20 px-8 md:px-20" 
-        style={{ backgroundImage: "url('/TexturedGradient.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        style={{ backgroundImage: "url('/TexturedGradient.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         {/* Subtle Glow Overlay */}
         <div 

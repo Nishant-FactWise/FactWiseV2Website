@@ -129,7 +129,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 			>
 				<a href="/" className="flex items-center gap-3 cursor-pointer">
 					<img
-						src={(scrolled || open || !mounted || theme === 'light') ? "/logo.png" : "/logowhite.png"}
+						src={(scrolled || open || !mounted || theme === 'light') ? "/logo.webp" : "/logowhite.webp"}
 						alt="FactWise Logo"
 						className="h-8 w-auto transition-all duration-500 rounded-tl-sm rounded-br-sm"
 					/>
@@ -171,11 +171,6 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 										className={buttonVariants({ variant: 'ghost', className: linkClass })}
 										href={link.href}
 										onFocus={() => openDropdown(i)}
-										onClick={(e) => {
-											e.preventDefault();
-											if (isOpen) scheduleClose();
-											else openDropdown(i);
-										}}
 									>
 										{link.label}
 										<ChevronDown size={14} className={cn('transition-transform opacity-50', isOpen && 'rotate-180')} />

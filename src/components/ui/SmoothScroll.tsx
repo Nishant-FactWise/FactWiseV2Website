@@ -55,7 +55,12 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
   return (
     <div id="smooth-wrapper" ref={wrapperRef} style={{ overflow: 'hidden', width: '100%' }}>
-      <div id="smooth-content" style={{ width: '100%', position: 'relative', willChange: 'transform' }}>
+      {/* Do NOT add willChange:'transform' here. GSAP ScrollSmoother manages its
+          own GPU-layer lifecycle internally. A static willChange hint permanently
+          promotes #smooth-content to a compositing layer whose sub-pixel rounding
+          is independent of the ScrollTrigger pin's counter-transform layer — the
+          mismatch causes 1-px flicker on Windows at 125 % display scaling. */}
+      <div id="smooth-content" style={{ width: '100%', position: 'relative' }}>
         {children}
       </div>
     </div>

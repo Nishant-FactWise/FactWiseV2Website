@@ -17,7 +17,7 @@ export const ImpactMission = () => {
     <section className="py-8 px-6 md:px-14 bg-white">
       <div 
         className="relative overflow-hidden rounded-[24px] py-16" 
-        style={{ backgroundImage: "url('/TexturedGradient.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        style={{ backgroundImage: "url('/TexturedGradient.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         {/* Subtle Glow Overlay */}
         <div 
