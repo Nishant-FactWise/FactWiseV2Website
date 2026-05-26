@@ -152,7 +152,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-2 rounded-md px-1 py-1">
               <img 
-                src="/logo.png" 
+                src="/logo.webp" 
                 alt="FactWise Logo" 
                 className="h-8 w-auto" 
               />

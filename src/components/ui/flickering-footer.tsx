@@ -135,7 +135,7 @@ export function FlickeringFooter() {
                   <AnimatedContainer>
                     <Link href="/" className="flex items-center gap-4 group">
                       <img
-                        src="/logo.png"
+                        src="/logo.webp"
                         alt="FactWise Logo"
                         className="h-11 w-auto transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 rounded-tl-sm rounded-br-sm"
                       />

@@ -124,7 +124,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 			>
 				<a href="/" className="flex items-center gap-3 cursor-pointer">
 					<img
-						src={(scrolled || open || !mounted || theme === 'light') ? "/logo.png" : "/logowhite.png"}
+						src={(scrolled || open || !mounted || theme === 'light') ? "/logo.webp" : "/logowhite.webp"}
 						alt="FactWise Logo"
 						className="h-8 w-auto transition-all duration-500 rounded-tl-sm rounded-br-sm"
 					/>

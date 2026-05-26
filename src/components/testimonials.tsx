@@ -102,7 +102,7 @@ export default function Testimonials() {
             id="testimonials"
             style={{ scrollMarginTop: '100px' }}
         >
-            <div className="relative overflow-hidden rounded-[24px] py-24" style={{ backgroundImage: "url('/TexturedGradient.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+            <div className="relative overflow-hidden rounded-[24px] py-24" style={{ backgroundImage: "url('/TexturedGradient.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 {/* Blue Glow on Right - Optimized */}
                 <div 
                   className="absolute -right-32 -bottom-32 w-[800px] h-[800px] rounded-full pointer-events-none opacity-50"
