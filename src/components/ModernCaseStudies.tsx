@@ -224,8 +224,7 @@ export default function ModernCaseStudies() {
                             {study.logo}
                           </div>
                           <div>
-                            <h4 className="text-slate-900 font-semibold text-[11px] leading-none mb-1">{study.company}</h4>
-                            <p className="text-slate-400 text-[8px] font-medium uppercase tracking-[0.1em]">{study.industry}</p>
+                            <h4 className="text-slate-900 font-semibold text-[15px] leading-none">{study.company}</h4>
                           </div>
                         </div>
                         <h3 className={cn(

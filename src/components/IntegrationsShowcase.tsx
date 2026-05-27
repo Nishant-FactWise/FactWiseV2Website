@@ -39,6 +39,23 @@ const SUITE_SUBMODULES: Record<string, { cx: number; items: { label: string; tip
 
 type Tip = { x: number; y: number; title: string; body: string; kind: 'factwise' | 'external' } | null;
 
+// Glowing comet that travels a connector path — the premium replacement for the
+// old flat flow dots. rotate="auto" keeps the tail trailing behind the head.
+// Defined at module scope (not inline) so its SMIL animation isn't remounted /
+// restarted every time the parent re-renders on hover or the auto-cycle tick.
+function Comet({ d, dur, begin }: { d: string; dur: number; begin: number }) {
+  return (
+    <g opacity="0">
+      <path d="M 0,-2 L -11,0 L 0,2 Q 1.7,0 0,-2 Z" fill="url(#cometTail)" />
+      <circle r="5.5" fill="url(#cometGlow)" />
+      <circle r="2" fill="url(#cometCore)" />
+      <animateMotion path={d} dur={`${dur}s`} repeatCount="indefinite" begin={`${begin}s`} rotate="auto" />
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.9;1"
+        dur={`${dur}s`} repeatCount="indefinite" begin={`${begin}s`} />
+    </g>
+  );
+}
+
 export default function IntegrationsShowcase() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement>(null);
@@ -86,19 +103,20 @@ export default function IntegrationsShowcase() {
     });
   }, []);
 
+  // Durations slowed ~1.5× from the originals for a calmer, more premium cadence.
   const PATHS = [
-    { d: "M 192,64  H 736",               dur: 3.8, begin: 0,    begin2: 1.9 },
-    { d: "M 334,64  V 150",               dur: 1.0, begin: 0.3 },
-    { d: "M 730,64  V 150",               dur: 1.0, begin: 0.7 },
-    { d: "M 334,186 V 270 H 498",         dur: 2.0, begin: 0.5 },
-    { d: "M 730,186 V 270 H 562",         dur: 2.0, begin: 0.9 },
-    { d: "M 392,270 H 498",               dur: 1.4, begin: 0.6 },
-    { d: "M 562,270 H 670",               dur: 1.1, begin: 0.2 },
-    { d: "M 832,270 H 876",               dur: 0.8, begin: 1.4 },
-    { d: "M 530,302 V 352",               dur: 1.0, begin: 0.8 },
-    { d: "M 530,388 V 418 H 444 V 438",   dur: 1.3, begin: 0.4 },
-    { d: "M 530,388 V 438",               dur: 1.0, begin: 0.8 },
-    { d: "M 530,388 V 418 H 616 V 438",   dur: 1.3, begin: 1.1 },
+    { d: "M 192,64  H 736",               dur: 5.7,  begin: 0,    begin2: 2.85 },
+    { d: "M 334,64  V 150",               dur: 1.5,  begin: 0.45 },
+    { d: "M 730,64  V 150",               dur: 1.5,  begin: 1.05 },
+    { d: "M 334,186 V 270 H 498",         dur: 3.0,  begin: 0.75 },
+    { d: "M 730,186 V 270 H 562",         dur: 3.0,  begin: 1.35 },
+    { d: "M 392,270 H 498",               dur: 2.1,  begin: 0.9 },
+    { d: "M 562,270 H 670",               dur: 1.65, begin: 0.3 },
+    { d: "M 832,270 H 876",               dur: 1.2,  begin: 2.1 },
+    { d: "M 530,302 V 352",               dur: 1.5,  begin: 1.2 },
+    { d: "M 530,388 V 418 H 444 V 438",   dur: 1.95, begin: 0.6 },
+    { d: "M 530,388 V 438",               dur: 1.5,  begin: 1.2 },
+    { d: "M 530,388 V 418 H 616 V 438",   dur: 1.95, begin: 1.65 },
   ];
 
   // Pill node helper
@@ -331,6 +349,28 @@ export default function IntegrationsShowcase() {
                 }
               `}} />
 
+              {/* ── Gradients for the glowing comets & hub halo ── */}
+              <defs>
+                <radialGradient id="cometCore" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%"   stopColor="#cdd9ff" />
+                  <stop offset="45%"  stopColor="#5a7cff" />
+                  <stop offset="100%" stopColor="#3666ff" />
+                </radialGradient>
+                <radialGradient id="cometGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%"   stopColor="#3666ff" stopOpacity="0.5" />
+                  <stop offset="55%"  stopColor="#3666ff" stopOpacity="0.14" />
+                  <stop offset="100%" stopColor="#3666ff" stopOpacity="0" />
+                </radialGradient>
+                <linearGradient id="cometTail" x1="100%" y1="50%" x2="0%" y2="50%">
+                  <stop offset="0%"   stopColor="#3666ff" stopOpacity="0.75" />
+                  <stop offset="100%" stopColor="#3666ff" stopOpacity="0" />
+                </linearGradient>
+                <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%"   stopColor="#3666ff" stopOpacity="0.16" />
+                  <stop offset="100%" stopColor="#3666ff" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+
               {/* ── Dashed connection paths ── */}
               <g fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.48">
                 <path d="M 192,64  H 736" />
@@ -348,28 +388,23 @@ export default function IntegrationsShowcase() {
                 <path d="M 530,388 V 418 H 616 V 438" />
               </g>
 
-              {/* ── Junction dots ── */}
+              {/* ── Junction dots (with soft pulse halos) ── */}
+              {([[334, 64], [730, 64], [530, 388]] as const).map(([cx, cy], i) => (
+                <circle key={`jp-${i}`} cx={cx} cy={cy} r="4" fill="#3666ff" opacity="0.45">
+                  <animate attributeName="r" values="4;10" dur="2.6s" begin={`${i * 0.55}s`} repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.45;0" dur="2.6s" begin={`${i * 0.55}s`} repeatCount="indefinite" />
+                </circle>
+              ))}
               <circle cx="334" cy="64"  r="4" fill="#3666ff" />
               <circle cx="730" cy="64"  r="4" fill="#3666ff" />
               <circle cx="530" cy="388" r="4" fill="#3666ff" />
 
-              {/* ── Animated traveling dots ── */}
+              {/* ── Animated traveling comets ── */}
+              {/* dur × 1.35 slows every comet uniformly while preserving the tuned stagger. */}
               {PATHS.map(({ d, dur, begin, begin2 }, i) => (
                 <g key={i}>
-                  <circle r="3.5" fill="#3666ff" opacity="0">
-                    <animateMotion path={d} dur={`${dur}s`} repeatCount="indefinite" begin={`${begin}s`} />
-                    <animate attributeName="opacity" values="0;1;1;0"
-                      keyTimes="0;0.07;0.93;1" dur={`${dur}s`}
-                      repeatCount="indefinite" begin={`${begin}s`} />
-                  </circle>
-                  {begin2 !== undefined && (
-                    <circle r="3.5" fill="#3666ff" opacity="0">
-                      <animateMotion path={d} dur={`${dur}s`} repeatCount="indefinite" begin={`${begin2}s`} />
-                      <animate attributeName="opacity" values="0;1;1;0"
-                        keyTimes="0;0.07;0.93;1" dur={`${dur}s`}
-                        repeatCount="indefinite" begin={`${begin2}s`} />
-                    </circle>
-                  )}
+                  <Comet d={d} dur={dur * 1.35} begin={begin} />
+                  {begin2 !== undefined && <Comet d={d} dur={dur * 1.35} begin={begin2} />}
                 </g>
               ))}
 
@@ -460,6 +495,20 @@ export default function IntegrationsShowcase() {
               {/* ── MAIN ROW (cy=270) — The S2P hub ── */}
               <Pill x={172}  y={270} w={220} label="Custom AI Agent Marketplace ↗" tooltip="FactWise capability — build & install custom AI agents on top of FactWise." />
 
+              {/* Radar ping rings + breathing halo radiating from the hub */}
+              <g pointerEvents="none">
+                <circle cx={530} cy={270} r={68} fill="url(#hubGlow)">
+                  <animate attributeName="opacity" values="0.55;1;0.55" dur="3.6s" repeatCount="indefinite" />
+                </circle>
+                {[0, 1.6].map((delay, i) => (
+                  <circle key={`ping-${i}`} cx={530} cy={270} r={36} fill="none" stroke="#3666ff" opacity="0">
+                    <animate attributeName="r" values="34;72" dur="3.2s" begin={`${delay}s`} repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.3;0" dur="3.2s" begin={`${delay}s`} repeatCount="indefinite" />
+                    <animate attributeName="stroke-width" values="1.6;0.3" dur="3.2s" begin={`${delay}s`} repeatCount="indefinite" />
+                  </circle>
+                ))}
+              </g>
+
               {/* CENTER HUB — FactWise */}
               <Pill x={498} y={270} w={64} h={64} rx={16} label="FactWise" large iconSrc="/Factwisesvglogo.svg" tooltip="The Source-to-Pay platform that runs on top of the systems you already have." />
 
@@ -523,16 +572,10 @@ export default function IntegrationsShowcase() {
                       </g>
                       <circle cx={suite.cx} cy={474} r={4} fill="#3666ff" />
 
-                      {/* Flowing dots — continue the diagram's "balls" animation down each branch */}
+                      {/* Flowing comets — continue the diagram's animation down each branch */}
                       {xs.map((cx, i) => {
                         const d = `M ${suite.cx},474 V ${elbowY} H ${cx} V ${subY - 18}`;
-                        return (
-                          <circle key={`flow-${i}`} r="3.5" fill="#3666ff" opacity="0">
-                            <animateMotion path={d} dur="1.8s" repeatCount="indefinite" begin={`${i * 0.22}s`} />
-                            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.92;1"
-                              dur="1.8s" repeatCount="indefinite" begin={`${i * 0.22}s`} />
-                          </circle>
-                        );
+                        return <Comet key={`flow-${i}`} d={d} dur={2.7} begin={i * 0.34} />;
                       })}
 
                       {/* Sub-module chips — identical font & structure to the suite pills */}
