@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Mail, MapPin, Phone } from 'lucide-react';
 import { Button } from './button';
 import Link from 'next/link';
+import { OPEN_PREFERENCES_EVENT } from './CookieConsent';
 
 // --- Custom Social Icons (Refined for Premium Fintech look) ---
 const SocialIcon = ({ d }: { d: string }) => (
@@ -54,8 +55,8 @@ const footerLinks = [
     title: "Resources",
     links: [
       { name: "Blog", href: "/blog" },
+      { name: "FAQ", href: "/faq" },
       { name: "Case Studies", href: "#" },
-      { name: "Documentation", href: "#" },
     ],
   },
   {
@@ -69,7 +70,7 @@ const footerLinks = [
 ];
 
 const socialPlatforms = [
-  { icon: LinkedinIcon, href: "https://www.linkedin.com/company/factwise/", name: "LinkedIn" },
+  { icon: LinkedinIcon, href: "https://in.linkedin.com/company/factwise", name: "LinkedIn" },
   { icon: Mail, href: "mailto:support@factwise.io", name: "Mail" },
 ];
 
@@ -141,16 +142,26 @@ export function FlickeringFooter() {
 
                   <AnimatedContainer delay={0.2}>
                     <div className="flex gap-3">
-                      {socialPlatforms.map((platform, i) => (
-                        <Button
-                          key={platform.name}
-                          variant="outline"
-                          size="icon"
-                          className="size-10 rounded-xl border-slate-200 bg-white text-slate-500 hover:bg-[#3666ff] hover:text-white hover:border-[#3666ff] transition-all duration-300 shadow-sm"
-                        >
-                          <platform.icon />
-                        </Button>
-                      ))}
+                      {socialPlatforms.map((platform) => {
+                        const isExternal = platform.href.startsWith('http');
+                        return (
+                          <Button
+                            key={platform.name}
+                            asChild
+                            variant="outline"
+                            size="icon"
+                            className="size-10 rounded-xl border-slate-200 bg-white text-slate-500 hover:bg-[#3666ff] hover:text-white hover:border-[#3666ff] transition-all duration-300 shadow-sm"
+                          >
+                            <a
+                              href={platform.href}
+                              aria-label={platform.name}
+                              {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                            >
+                              <platform.icon />
+                            </a>
+                          </Button>
+                        );
+                      })}
                     </div>
                   </AnimatedContainer>
                 </div>
@@ -195,13 +206,23 @@ export function FlickeringFooter() {
               </AnimatedContainer>
 
               <AnimatedContainer delay={0.5}>
-                <div className="flex gap-8">
+                <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
                   <Link href="/privacy-policy" className="text-slate-400 hover:text-[#1A1D2E] text-[11px] font-bold uppercase tracking-widest transition-colors">
                     Privacy Policy
                   </Link>
                   <Link href="/terms-of-service" className="text-slate-400 hover:text-[#1A1D2E] text-[11px] font-bold uppercase tracking-widest transition-colors">
                     Terms of Service
                   </Link>
+                  <Link href="/cookie-policy" className="text-slate-400 hover:text-[#1A1D2E] text-[11px] font-bold uppercase tracking-widest transition-colors">
+                    Cookie Policy
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => window.dispatchEvent(new Event(OPEN_PREFERENCES_EVENT))}
+                    className="text-slate-400 hover:text-[#1A1D2E] text-[11px] font-bold uppercase tracking-widest transition-colors"
+                  >
+                    Cookie Settings
+                  </button>
                 </div>
               </AnimatedContainer>
             </div>

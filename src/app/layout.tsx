@@ -3,7 +3,9 @@ import { Inter, Geist } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import SmoothScroll from "@/components/ui/SmoothScroll";
+import ScrollToTop from "@/components/ui/ScrollToTop";
 import { Header } from "@/components/ui/header-2";
+import CookieConsent from "@/components/ui/CookieConsent";
 
 const GTM_ID = "GTM-K6XQZW7";
 const GA4_ID = "G-EY6WGL7RC2";
@@ -340,6 +342,29 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${geist.variable}`}>
       <head>
+        {/*
+          Google Consent Mode v2 — set the DEFAULT to "denied" before GTM/GA4
+          load below. This raw inline script runs synchronously during HTML
+          parse, i.e. ahead of the afterInteractive scripts, so analytics/ad
+          cookies stay blocked until the visitor chooses in the cookie banner
+          (see components/ui/CookieConsent.tsx, which flips these to "granted").
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+  analytics_storage: 'denied',
+  functionality_storage: 'granted',
+  security_storage: 'granted',
+  wait_for_update: 500
+});
+gtag('set', 'ads_data_redaction', true);`,
+          }}
+        />
         <Script id="gtm" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -385,10 +410,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqSchema) }}
         />
         <div className="noise-bg" />
+        <ScrollToTop />
         <Header />
         <SmoothScroll>
           {children}
         </SmoothScroll>
+        <CookieConsent />
       </body>
     </html>
   );

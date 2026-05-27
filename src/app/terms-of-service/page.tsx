@@ -22,15 +22,12 @@ export default function TermsOfServicePage() {
               <Scale className="w-3.5 h-3.5" />
               Legal Agreement
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] pb-1.5 bg-gradient-to-r from-slate-900 via-slate-800 to-[#3666ff] bg-clip-text text-transparent">
               Terms & Conditions
             </h1>
             <p className="text-slate-500 text-base max-w-xl mx-auto">
               Please read these terms and conditions carefully before using the FactWise platform.
             </p>
-            <div className="text-xs text-slate-400 font-medium tracking-wider uppercase pt-2">
-              Last Updated: May 2026
-            </div>
           </div>
 
           {/* Document Content Box */}

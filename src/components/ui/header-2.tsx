@@ -13,7 +13,7 @@ import { usePathname } from 'next/navigation';
 export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark' }) {
 	const pathname = usePathname();
 	// Pages with white/light backgrounds need dark nav text from the start
-	const LIGHT_PAGES = ['/pricing', '/platform', '/demo', '/careers/jobs'];
+	const LIGHT_PAGES = ['/pricing', '/platform', '/demo', '/careers/jobs', '/privacy-policy', '/terms-of-service', '/cookie-policy', '/faq', '/documentation'];
 	const isLightPage = LIGHT_PAGES.some(p => pathname === p || pathname.startsWith(p + '/'));
 	const theme = isLightPage ? 'light' : propTheme;
 	const [open, setOpen] = React.useState(false);
