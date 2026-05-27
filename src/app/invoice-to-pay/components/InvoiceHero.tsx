@@ -143,14 +143,6 @@ function FloatCard({ style, delay=0, yAmt=12, dur=6, children }: {
 
 export default function InvoiceHero() {
   const mono = "'JetBrains Mono', monospace"
-  const [isDesktop, setIsDesktop] = React.useState(false)
-
-  React.useEffect(() => {
-    setIsDesktop(window.innerWidth >= 1280)
-    const handleResize = () => setIsDesktop(window.innerWidth >= 1280)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   return (
     <>
@@ -232,8 +224,9 @@ export default function InvoiceHero() {
 
         </div>
 
-        {/* RIGHT COLUMN */}
-        {isDesktop && (
+        {/* RIGHT COLUMN — visibility handled by CSS (hidden xl:block); no JS gate,
+            so the hero height never shifts after mount and ScrollTrigger positions
+            below it stay accurate. */}
         <motion.div
           initial={{ opacity:0, y:20 }}
           animate={{ opacity:1, y:0 }}
@@ -325,7 +318,6 @@ export default function InvoiceHero() {
             </div>
           </FloatCard>
         </motion.div>
-        )}
       </div>
 
       <style>{`@keyframes fw-pulse{0%,100%{opacity:1}50%{opacity:0.35}}`}</style>

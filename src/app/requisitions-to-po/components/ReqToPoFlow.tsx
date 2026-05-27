@@ -46,6 +46,7 @@ export default function ReqToPoFlow() {
         const panels = gsap.utils.toArray<HTMLElement>('.rtpf-panel');
         let animating = false;
         let triggerStartPx = 0;
+        let triggerEndPx = 0;
 
         // Panels 1-4 start off-screen to the right; panel 0 (ReqSection31) is visible by default
         gsap.set('.rtpf-panel-slide', { xPercent: 100 });
@@ -53,14 +54,19 @@ export default function ReqToPoFlow() {
         gsap.set(panels, { zIndex: (i: number) => i });
 
         function gotoPanel(index: number, isScrollingDown: boolean) {
-            // Exit conditions: re-enable normal scroll at boundaries
-            if ((index === panels.length && isScrollingDown) || (index === -1 && !isScrollingDown)) {
+            // Past the last panel (scrolling down) — release the pin into the next
+            // section. Jump just past the pin end so the long pin window never
+            // becomes dead scroll. Keep the last panel active as it leaves.
+            if (index === panels.length && isScrollingDown) {
+                intentObserver.disable();
+                window.scrollTo({ top: triggerEndPx + 1 });
+                return;
+            }
+            // Before the first panel (scrolling up) — release back to the heading.
+            if (index === -1 && !isScrollingDown) {
                 setActivePanel(-1);
                 intentObserver.disable();
-                if (index === -1) {
-                    // Scroll just above the trigger start so the GSAP pin releases immediately
-                    window.scrollTo({ top: Math.max(0, triggerStartPx - 1) });
-                }
+                window.scrollTo({ top: Math.max(0, triggerStartPx - 1) });
                 return;
             }
 
@@ -96,8 +102,17 @@ export default function ReqToPoFlow() {
             trigger: containerRef.current,
             pin: true,
             start: 'top top',
-            end: '+=200',
-            onRefresh: (self) => { triggerStartPx = self.start; },
+            // Long pin window (~1 viewport). The section is position:fixed for the
+            // WHOLE window, so a fast scroll that overshoots `top top` still lands
+            // INSIDE the window and stays fully on-screen — instead of leaping the
+            // old 200px window in one event (firing onEnter+onLeave together) and
+            // resting half-shown. The observer freezes the page the moment onEnter
+            // fires; gotoPanel jumps past start/end on exit so this long window
+            // never turns into dead scroll. (No snap trigger — a snap on the same
+            // element fights the pin and flings scrollY past the start before it
+            // can engage.)
+            end: () => '+=' + window.innerHeight,
+            onRefresh: (self) => { triggerStartPx = self.start; triggerEndPx = self.end; },
             onEnter: () => {
                 if (currentIndexRef.current === -1) {
                     gotoPanel(0, true);
@@ -107,28 +122,20 @@ export default function ReqToPoFlow() {
                 intentObserver.enable();
             },
             onEnterBack: () => {
+                // Entering from below (e.g. a reload that restored scroll to the
+                // bottom, so the panels were never stepped through): start on the
+                // last panel with all panels slid in, so the upward swipe has
+                // somewhere to go instead of indexing past panel 0.
+                if (currentIndexRef.current === -1) {
+                    currentIndexRef.current = panels.length - 1;
+                    gsap.set('.rtpf-panel-slide', { xPercent: 0 });
+                }
                 setActivePanel(currentIndexRef.current);
                 intentObserver.enable();
             },
         });
         triggerStartPx = trigger.start;
-
-        // Snap the full-screen section into place on approach so it can never rest
-        // half-shown. Without this, ScrollSmoother momentum lets the page stop
-        // mid-pin — cutting the panel and leaving the navbar over the content.
-        // Directional snap: once you've scrolled into its range and stop, it pulls
-        // to fully-pinned (1) going down, or back out (0) going up.
-        const snapTrigger = ScrollTrigger.create({
-            trigger: containerRef.current,
-            start: 'top 85%',
-            end: 'top top',
-            snap: {
-                snapTo: [0, 1],
-                duration: { min: 0.2, max: 0.5 },
-                ease: 'power2.inOut',
-                directional: true,
-            },
-        });
+        triggerEndPx = trigger.end;
 
         const onKey = (e: KeyboardEvent) => {
             if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
@@ -142,7 +149,6 @@ export default function ReqToPoFlow() {
 
         return () => {
             trigger.kill();
-            snapTrigger.kill();
             intentObserver.kill();
             window.removeEventListener('keydown', onKey);
         };
@@ -308,13 +314,15 @@ export default function ReqToPoFlow() {
                             }}
                         />
                     ))}
-                    <span style={{
-                        fontSize: 10, fontWeight: 700, color: '#3666ff',
-                        fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.06em',
-                        marginLeft: 4,
-                    }}>
-                        {STEPS[activePanel]?.num} · {STEPS[activePanel]?.short}
-                    </span>
+                    {activePanel >= 0 && (
+                        <span style={{
+                            fontSize: 10, fontWeight: 700, color: '#3666ff',
+                            fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.06em',
+                            marginLeft: 4,
+                        }}>
+                            {STEPS[activePanel]?.num} · {STEPS[activePanel]?.short}
+                        </span>
+                    )}
                 </div>
 
                 {/* ══════════════════════════════

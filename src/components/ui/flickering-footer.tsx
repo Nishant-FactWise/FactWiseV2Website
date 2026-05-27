@@ -44,10 +44,10 @@ const footerLinks = [
     title: "Solutions",
     links: [
       { name: "Manufacturing", href: "#" },
-      { name: "Retail & CPG", href: "#" },
       { name: "Chemicals", href: "#" },
-      { name: "Logistics", href: "#" },
-      { name: "Enterprises", href: "#" },
+      { name: "Automotive", href: "#" },
+      { name: "MRO", href: "#" },
+      { name: "Electrical Manufacturing", href: "#" },
     ],
   },
   {
@@ -56,7 +56,6 @@ const footerLinks = [
       { name: "Blog", href: "/blog" },
       { name: "Case Studies", href: "#" },
       { name: "Documentation", href: "#" },
-      { name: "System Status", href: "#" },
     ],
   },
   {
@@ -64,17 +63,14 @@ const footerLinks = [
     links: [
       { name: "About Us", href: "/about" },
       { name: "Careers", href: "/careers" },
-      { name: "Press", href: "#" },
       { name: "Book a Demo", href: "/demo" },
     ],
   },
 ];
 
 const socialPlatforms = [
-  { icon: LinkedinIcon, href: "#", name: "LinkedIn" },
-  { icon: InstagramIcon, href: "#", name: "Instagram" },
-  { icon: YoutubeIcon, href: "#", name: "Youtube" },
-  { icon: FacebookIcon, href: "#", name: "Facebook" },
+  { icon: LinkedinIcon, href: "https://www.linkedin.com/company/factwise/", name: "LinkedIn" },
+  { icon: Mail, href: "mailto:support@factwise.io", name: "Mail" },
 ];
 
 const footerVariants = {
@@ -200,11 +196,12 @@ export function FlickeringFooter() {
 
               <AnimatedContainer delay={0.5}>
                 <div className="flex gap-8">
-                  {['Privacy Policy', 'Terms of Service', 'Security'].map((item) => (
-                    <a key={item} href="#" className="text-slate-400 hover:text-[#1A1D2E] text-[11px] font-bold uppercase tracking-widest transition-colors">
-                      {item}
-                    </a>
-                  ))}
+                  <Link href="/privacy-policy" className="text-slate-400 hover:text-[#1A1D2E] text-[11px] font-bold uppercase tracking-widest transition-colors">
+                    Privacy Policy
+                  </Link>
+                  <Link href="/terms-of-service" className="text-slate-400 hover:text-[#1A1D2E] text-[11px] font-bold uppercase tracking-widest transition-colors">
+                    Terms of Service
+                  </Link>
                 </div>
               </AnimatedContainer>
             </div>

@@ -162,8 +162,8 @@ export const AnimatedZapIcon = ({ isHovered }: { isHovered: boolean }) => {
           cy="12"
           r="8"
           fill="#3666ff"
-          opacity="0.05"
-          animate={isHovered ? { scale: [1, 1.3, 1], opacity: [0.05, 0.15, 0.05] } : { scale: 1 }}
+          opacity={0.05}
+          animate={isHovered ? { scale: [1, 1.3, 1], opacity: [0.05, 0.15, 0.05] } : { scale: 1, opacity: 0.05 }}
           transition={{ duration: 1.6, repeat: Infinity }}
         />
 
@@ -349,10 +349,10 @@ export const AnimatedLightbulbIcon = ({ isHovered }: { isHovered: boolean }) => 
         <motion.path
           d="M 9,12 Q 12,9 15,12"
           stroke="#3666ff"
-          strokeWidth="1.8"
+          strokeWidth={1.8}
           strokeLinecap="round"
           fill="none"
-          animate={isHovered ? { strokeWidth: [1.8, 2.5, 1.8], opacity: [0.6, 1, 0.6] } : {}}
+          animate={isHovered ? { strokeWidth: [1.8, 2.5, 1.8], opacity: [0.6, 1, 0.6] } : { strokeWidth: 1.8, opacity: 1 }}
           transition={{ duration: 1.2, repeat: Infinity }}
         />
 

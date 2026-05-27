@@ -42,17 +42,25 @@ export default function InvoiceToPayFlow() {
         const panels = gsap.utils.toArray<HTMLElement>('.itpf-panel');
         let animating = false;
         let triggerStartPx = 0;
+        let triggerEndPx = 0;
 
         gsap.set('.itpf-panel-slide', { xPercent: 100 });
         gsap.set(panels, { zIndex: (i: number) => i });
 
         function gotoPanel(index: number, isScrollingDown: boolean) {
-            if ((index === panels.length && isScrollingDown) || (index === -1 && !isScrollingDown)) {
+            // Past the last panel (scrolling down) — release the pin into the next
+            // section. Jump just past the pin end so the long pin window never
+            // becomes dead scroll. Keep the last panel active as it leaves.
+            if (index === panels.length && isScrollingDown) {
+                intentObserver.disable();
+                window.scrollTo({ top: triggerEndPx + 1 });
+                return;
+            }
+            // Before the first panel (scrolling up) — release back to the heading.
+            if (index === -1 && !isScrollingDown) {
                 setActivePanel(-1);
                 intentObserver.disable();
-                if (index === -1) {
-                    window.scrollTo({ top: Math.max(0, triggerStartPx - 1) });
-                }
+                window.scrollTo({ top: Math.max(0, triggerStartPx - 1) });
                 return;
             }
 
@@ -88,8 +96,17 @@ export default function InvoiceToPayFlow() {
             trigger: containerRef.current,
             pin: true,
             start: 'top top',
-            end: '+=200',
-            onRefresh: (self) => { triggerStartPx = self.start; },
+            // Long pin window (~1 viewport). The section is position:fixed for the
+            // WHOLE window, so a fast scroll that overshoots `top top` still lands
+            // INSIDE the window and stays fully on-screen — instead of leaping the
+            // old 200px window in one event (firing onEnter+onLeave together) and
+            // resting half-shown. The observer freezes the page the moment onEnter
+            // fires; gotoPanel jumps past start/end on exit so this long window
+            // never turns into dead scroll. (No snap trigger — matches
+            // ReqToPoFlow / QuoteToOrderFlowV2; a snap on the same element fights
+            // the pin and flings scrollY past the start before it can engage.)
+            end: () => '+=' + window.innerHeight,
+            onRefresh: (self) => { triggerStartPx = self.start; triggerEndPx = self.end; },
             onEnter: () => {
                 if (currentIndexRef.current === -1) {
                     gotoPanel(0, true);
@@ -99,26 +116,20 @@ export default function InvoiceToPayFlow() {
                 intentObserver.enable();
             },
             onEnterBack: () => {
+                // Entering from below (e.g. a reload that restored scroll to the
+                // bottom, so the panels were never stepped through): start on the
+                // last panel with all panels slid in, so the upward swipe has
+                // somewhere to go instead of indexing past panel 0.
+                if (currentIndexRef.current === -1) {
+                    currentIndexRef.current = panels.length - 1;
+                    gsap.set('.itpf-panel-slide', { xPercent: 0 });
+                }
                 setActivePanel(currentIndexRef.current);
                 intentObserver.enable();
             },
         });
         triggerStartPx = trigger.start;
-
-        // Snap the full-screen section into place on approach so it can never rest
-        // half-shown. Without this, ScrollSmoother momentum lets the page stop
-        // mid-pin — cutting the panel and leaving the navbar over the content.
-        const snapTrigger = ScrollTrigger.create({
-            trigger: containerRef.current,
-            start: 'top 85%',
-            end: 'top top',
-            snap: {
-                snapTo: [0, 1],
-                duration: { min: 0.2, max: 0.5 },
-                ease: 'power2.inOut',
-                directional: true,
-            },
-        });
+        triggerEndPx = trigger.end;
 
         const onKey = (e: KeyboardEvent) => {
             if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
@@ -132,7 +143,6 @@ export default function InvoiceToPayFlow() {
 
         return () => {
             trigger.kill();
-            snapTrigger.kill();
             intentObserver.kill();
             window.removeEventListener('keydown', onKey);
         };
@@ -215,8 +225,8 @@ export default function InvoiceToPayFlow() {
                 }}
             >
                 {/* PANEL 0 — InvSection31 (default visible, white bg) */}
-                <div className="itpf-panel" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'white', display: 'flex', alignItems: 'flex-start', overflow: 'hidden' }}>
-                    <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '110px 24px 60px' }}>
+                <div className="itpf-panel" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'white', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+                    <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <InvSection31 isActive={activePanel === 0} />
                     </div>
                 </div>
@@ -227,17 +237,17 @@ export default function InvoiceToPayFlow() {
                     style={{
                         position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                         background: gradientBg,
-                        display: 'flex', alignItems: 'flex-start', overflow: 'hidden',
+                        display: 'flex', alignItems: 'center', overflow: 'hidden',
                     }}
                 >
-                    <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '110px 24px 60px' }}>
+                    <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <InvSection32 isActive={activePanel === 1} />
                     </div>
                 </div>
 
                 {/* PANEL 2 — InvSection33 (white bg) */}
-                <div className="itpf-panel itpf-panel-slide" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'white', display: 'flex', alignItems: 'flex-start', overflow: 'hidden' }}>
-                    <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '110px 24px 60px' }}>
+                <div className="itpf-panel itpf-panel-slide" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'white', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+                    <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <InvSection33 isActive={activePanel === 2} />
                     </div>
                 </div>
@@ -248,17 +258,17 @@ export default function InvoiceToPayFlow() {
                     style={{
                         position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                         background: gradientBg,
-                        display: 'flex', alignItems: 'flex-start', overflow: 'hidden',
+                        display: 'flex', alignItems: 'center', overflow: 'hidden',
                     }}
                 >
-                    <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '110px 24px 60px' }}>
+                    <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <InvSection34 isActive={activePanel === 3} />
                     </div>
                 </div>
 
                 {/* PANEL 4 — InvSection35 (white bg) */}
-                <div className="itpf-panel itpf-panel-slide" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'white', display: 'flex', alignItems: 'flex-start', overflow: 'hidden' }}>
-                    <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '110px 24px 60px' }}>
+                <div className="itpf-panel itpf-panel-slide" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'white', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+                    <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <InvSection35 isActive={activePanel === 4} />
                     </div>
                 </div>
