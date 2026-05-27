@@ -163,8 +163,9 @@ export default function InvoiceHero() {
         maxWidth:1440, margin:'0 auto',
         padding:'130px 56px 80px',
         display:'grid', gridTemplateColumns:'1.1fr 0.9fr',
-        gap:60, alignItems:'start',
+        gap:60, alignItems:'center',
         minHeight:'calc(100vh - 90px)',
+        transform: 'translateY(3%)',
       }}>
 
         {/* LEFT COLUMN */}
