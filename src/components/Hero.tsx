@@ -1,57 +1,66 @@
 'use client';
 
 import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-/* ---------------- WordsPullUp ---------------- */
-interface WordsPullUpProps {
-  text: string;
-  className?: string;
-  showAsterisk?: boolean;
-  style?: React.CSSProperties;
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
 }
 
-const WordsPullUp = ({ text, className = "", showAsterisk = false, style }: WordsPullUpProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: false });
-  const words = text.split(" ");
-
-  return (
-    <div ref={ref} className={`inline-flex flex-wrap ${className}`} style={style}>
-      {words.map((word, i) => {
-        const isLast = i === words.length - 1;
-        return (
-          <motion.span
-            key={i}
-            initial={{ y: 20, opacity: 0 }}
-            animate={isInView ? { y: 0, opacity: 1 } : {}}
-            transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-block relative"
-            style={{ marginRight: isLast ? 0 : "0.25em" }}
-          >
-            {word}
-            {showAsterisk && isLast && (
-              <span className="absolute top-[0.65em] -right-[0.3em] text-[0.31em]">*</span>
-            )}
-          </motion.span>
-        );
-      })}
-    </div>
-  );
-};
-
-
 export default function Hero() {
-  return (
-    <section className="h-screen w-full relative">
-      <div className="relative h-full w-full overflow-hidden">
+  const sectionRef = useRef<HTMLElement>(null);
+  const pinnedRef  = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-        {/* Background video — compressed from a 29 MB MOV (H.264 @ 19 Mbps,
-            1080p) to a 1.1 MB WebM + 2.9 MB MP4 fallback at 720p / ~1.5-2 Mbps.
-            poster gives an instant first paint; preload="metadata" stops the
-            browser from greedily downloading the whole file before the user
-            actually arrives at the hero. WebM ships to Chrome / Firefox /
-            Edge first; Safari falls through to the MP4. */}
+  // 2-stage hero behaviour:
+  //   1st scroll  -> wordmark + paragraph fade up inside the visually
+  //                   pinned video (rest of the page does not move yet).
+  //   2nd scroll  -> pin releases, page continues into the next section.
+  //
+  // Pattern mirrors Methodology: the pinned element is an INNER div of the
+  // section (not the section itself), wrapped in a compositing-layer hack
+  // so the ScrollTrigger pin counter-transform and the ScrollSmoother
+  // parent transform share the same sub-pixel rounding origin (eliminates
+  // 1-px flicker on Windows / 125 % DPI). pinType: 'transform' is required
+  // because we're inside the ScrollSmoother content wrapper.
+  useGSAP(() => {
+    const trigger = pinnedRef.current;
+    const content = contentRef.current;
+    if (!trigger || !content) return;
+
+    const st = ScrollTrigger.create({
+      trigger,
+      start: "top top",
+      end: "+=100%",
+      pin: true,
+      pinType: "transform",
+      scrub: 0.3,
+      anticipatePin: 1,
+      onUpdate(self) {
+        // Text reveal between 5% and 60% of the pinned distance.
+        const t = Math.max(0, Math.min(1, (self.progress - 0.05) / 0.55));
+        content.style.opacity = `${t}`;
+        content.style.transform = `translate3d(0, ${(1 - t) * 36}px, 0)`;
+      },
+    });
+    return () => st.kill();
+  }, { scope: sectionRef });
+
+  return (
+    <section ref={sectionRef} className="bg-black relative">
+      <div
+        ref={pinnedRef}
+        className="relative h-screen w-full overflow-hidden"
+        // backfaceVisibility + translate3d gives this element its own
+        // stable compositing layer so the ScrollTrigger pin counter-
+        // transform and the ScrollSmoother parent transform share the
+        // same sub-pixel rounding origin (no flicker).
+        style={{ backfaceVisibility: "hidden", transform: "translate3d(0,0,0)" }}
+      >
+
+        {/* Background video — same compressed sources as before. */}
         <video
           autoPlay
           loop
@@ -65,21 +74,21 @@ export default function Hero() {
           <source src="/factwise-hero.mp4"  type="video/mp4" />
         </video>
 
-        {/* Noise overlay — disabled for performance reasons (feTurbulence lag) */}
+        {/* Soft bottom gradient — keeps the eventual text legible without
+            polluting the initial "bare video" state. */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/55" />
+
+        {/* Hero copy — opacity + translateY driven by ScrollTrigger onUpdate.
+            Initial inline styles match the at-rest (hidden) state so there's
+            no flash of visible text before GSAP attaches. */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.15] mix-blend-overlay"
-        />
-
-        {/* Gradient overlay */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
-
-        {/* Hero content */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 sm:px-6 md:px-10 md:pb-0 lg:pb-0">
+          ref={contentRef}
+          className="absolute bottom-0 left-0 right-0 px-4 pb-4 sm:px-6 md:px-10 md:pb-0 lg:pb-0 will-change-transform"
+          style={{ opacity: 0, transform: "translate3d(0, 36px, 0)" }}
+        >
           <div className="flex items-end justify-between gap-4 md:grid md:grid-cols-12 md:items-end md:gap-6">
 
             <div className="col-span-12 lg:col-span-8 min-w-0">
-              {/* Was -translate-y-6 lifting the headline; dropped to translate-y-2
-                  so the wordmark sits a touch lower (per design feedback). */}
               <h1
                 className="font-medium leading-[0.8] tracking-[-0.05em] text-[11vw] sm:text-[13vw] md:text-[11vw] lg:text-[10vw] xl:text-[9vw] mb-2 md:mb-20 relative translate-y-0 md:translate-y-2"
                 style={{ color: "#E1E0CC", fontFamily: "var(--font-display)" }}
@@ -92,7 +101,6 @@ export default function Hero() {
               <p
                 className="hidden md:block text-sm text-[#E1E0CC]/80 sm:text-base md:text-lg max-w-[380px]"
                 style={{ lineHeight: 1.4, fontFamily: "var(--font-inter)" }}
-                data-speed="0.9"
               >
                 Procurement is just the beginning. FactWise connects every workflow — from customer quotes and vendor RFQs to POs, payments, and beyond — in one platform built for manufacturers.
               </p>
@@ -100,14 +108,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-
-      {/* Inline style for noise if needed, but using inline style bg-image above */}
-      <style jsx>{`
-        .noise-overlay {
-          background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-        }
-      `}</style>
     </section>
   );
 }
