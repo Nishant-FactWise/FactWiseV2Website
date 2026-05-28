@@ -9,10 +9,13 @@ const fs = require('fs');
 const sharp = require('sharp');
 
 const root = path.join(__dirname, '..');
-// Only logo.png is reprocessed — logowhite.webp is a separate white-fill
-// design used on dark backgrounds and shouldn't get its fill knocked out.
+// Both logos go through the same trim + cut-out alpha-zero pass. The
+// resulting marks are blue/black solids with transparent interior
+// negative space, so they adapt to whichever background the navbar
+// shows them on (dark hero, scrolled white pill, etc).
 const inputs = [
-  { src: 'public/logo.png', out: 'public/logo.webp' },
+  { src: 'public/logo.png',      out: 'public/logo.webp'      },
+  { src: 'public/logowhite.png', out: 'public/logowhite.webp' },
 ];
 
 async function trim(srcAbs) {
