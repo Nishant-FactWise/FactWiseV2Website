@@ -9,9 +9,10 @@ const fs = require('fs');
 const sharp = require('sharp');
 
 const root = path.join(__dirname, '..');
+// Only logo.png is reprocessed — logowhite.webp is a separate white-fill
+// design used on dark backgrounds and shouldn't get its fill knocked out.
 const inputs = [
-  { src: 'public/logo.png',      out: 'public/logo.webp'      },
-  { src: 'public/logowhite.webp', out: 'public/logowhite.webp' },
+  { src: 'public/logo.png', out: 'public/logo.webp' },
 ];
 
 async function trim(srcAbs) {
@@ -19,12 +20,11 @@ async function trim(srcAbs) {
   // Threshold tuned to catch the off-white halo around anti-aliased edges.
   const stage1 = await sharp(srcAbs).trim({ background: '#ffffff', threshold: 20 }).toBuffer();
   const stage2 = await sharp(stage1).trim({ threshold: 10 }).toBuffer();
-  // Add 4% transparent safe-margin so the mark isn't flush to the rounded
-  // container edge in the navbar.
+  // Add 4% transparent safe-margin so the mark isn't flush to the navbar edge.
   const meta = await sharp(stage2).metadata();
   const side = Math.max(meta.width, meta.height);
   const pad  = Math.round(side * 0.04);
-  return sharp(stage2)
+  const padded = await sharp(stage2)
     .extend({
       top:    pad + Math.round((side - meta.height) / 2),
       bottom: pad + Math.round((side - meta.height) / 2),
@@ -33,6 +33,23 @@ async function trim(srcAbs) {
       background: { r: 0, g: 0, b: 0, alpha: 0 },
     })
     .toBuffer();
+
+  // Knock the white "cut-outs" inside the F and T to fully transparent so
+  // the mark adapts to whatever background it sits on (dark hero shows
+  // through dark, white pill shows through white — no jarring white slivers
+  // at 32x32 in the navbar). Any pixel with R/G/B > 240 and alpha > 0 is
+  // treated as a cut-out and alpha-zeroed.
+  const raw = await sharp(padded).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const buf = raw.data;
+  const { width: w, height: h } = raw.info;
+  for (let i = 0; i < buf.length; i += 4) {
+    const r = buf[i], g = buf[i + 1], b = buf[i + 2], a = buf[i + 3];
+    if (a > 0 && r > 240 && g > 240 && b > 240) {
+      buf[i + 3] = 0;
+    }
+  }
+  // Re-encode as PNG so the outer pipeline can detect the format.
+  return sharp(buf, { raw: { width: w, height: h, channels: 4 } }).png().toBuffer();
 }
 
 (async () => {
