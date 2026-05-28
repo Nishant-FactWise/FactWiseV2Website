@@ -128,13 +128,11 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 				)}
 			>
 				<a href="/" className="flex items-center gap-3 cursor-pointer">
-					<div className="relative h-8 w-8 overflow-hidden rounded-tl-sm rounded-br-sm shrink-0">
-						<img
-							src={(scrolled || open || !mounted || theme === 'light') ? "/logo.webp" : "/logowhite.webp"}
-							alt="FactWise Logo"
-							className="absolute -top-[2%] -left-[2%] w-[102%] h-[102%] max-w-none transition-all duration-500"
-						/>
-					</div>
+					<img
+						src={(scrolled || open || !mounted || theme === 'light') ? "/logo.webp" : "/logowhite.webp"}
+						alt="FactWise Logo"
+						className="h-8 w-8 shrink-0 transition-all duration-500"
+					/>
 					<span className={cn("text-[17px] font-bold tracking-tight transition-colors duration-500", {
 						"text-white": !scrolled && !open && mounted && theme === 'dark',
 						"text-black": scrolled || open || !mounted || theme === 'light',
