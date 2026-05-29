@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef } from "react";
+import { useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -14,6 +15,14 @@ export default function Hero() {
   const pinnedRef  = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  // Mirrors b6dec5b "Animation issue" — the prefers-reduced-motion CSS
+  // block in globals.css forces opacity to 1 globally, but my hero copy
+  // also relies on a translate3d offset which that CSS rule doesn't
+  // strip. So reduced-motion users would see the text shifted 36 px
+  // down. Detecting it here lets us skip the ScrollTrigger pin entirely
+  // and render the text at rest from first paint.
+  const reducedMotion = useReducedMotion();
+
   // 2-stage hero behaviour:
   //   1st scroll  -> wordmark + paragraph fade up inside the visually
   //                   pinned video (rest of the page does not move yet).
@@ -26,6 +35,7 @@ export default function Hero() {
   // 1-px flicker on Windows / 125 % DPI). pinType: 'transform' is required
   // because we're inside the ScrollSmoother content wrapper.
   useGSAP(() => {
+    if (reducedMotion) return;
     const trigger = pinnedRef.current;
     const content = contentRef.current;
     if (!trigger || !content) return;
@@ -46,7 +56,7 @@ export default function Hero() {
       },
     });
     return () => st.kill();
-  }, { scope: sectionRef });
+  }, { scope: sectionRef, dependencies: [reducedMotion] });
 
   return (
     <section ref={sectionRef} className="bg-black relative">
@@ -84,7 +94,11 @@ export default function Hero() {
         <div
           ref={contentRef}
           className="absolute bottom-0 left-0 right-0 px-4 pb-4 sm:px-6 md:px-10 md:pb-0 lg:pb-0 will-change-transform"
-          style={{ opacity: 0, transform: "translate3d(0, 36px, 0)" }}
+          style={
+            reducedMotion
+              ? { opacity: 1, transform: "none" }
+              : { opacity: 0, transform: "translate3d(0, 36px, 0)" }
+          }
         >
           <div className="flex items-end justify-between gap-4 md:grid md:grid-cols-12 md:items-end md:gap-6">
 

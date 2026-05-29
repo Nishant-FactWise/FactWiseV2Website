@@ -352,16 +352,8 @@ function Card({ module, index }: { module: typeof modules[0], index: number }) {
         ))}
       </div>
 
-      <div className="fw-card-footer">
-        <button className={`fw-card-btn ${t.btnClass}`}>
-          Explore solution
-          <span className="fw-btn-arrow">
-            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-              <path d="M2 12L12 2M12 2H6M12 2v6"/>
-            </svg>
-          </span>
-        </button>
-      </div>
+      {/* "Explore solution" CTA hidden until per-module destinations are
+          wired — the button previously did nothing on click. */}
     </div>
   );
 }

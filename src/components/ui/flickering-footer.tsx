@@ -41,22 +41,14 @@ const footerLinks = [
       { name: "Invoice to Pay", href: "/invoice-to-pay" },
     ],
   },
-  {
-    title: "Solutions",
-    links: [
-      { name: "Manufacturing", href: "#" },
-      { name: "Chemicals", href: "#" },
-      { name: "Automotive", href: "#" },
-      { name: "MRO", href: "#" },
-      { name: "Electrical Manufacturing", href: "#" },
-    ],
-  },
+  // Solutions column hidden until destination pages exist — every link
+  // in this column was href="#" and went nowhere.
   {
     title: "Resources",
     links: [
       { name: "Blog", href: "/blog" },
       { name: "FAQ", href: "/faq" },
-      { name: "Case Studies", href: "#" },
+      // "Case Studies" hidden until a destination exists (was href: "#").
     ],
   },
   {
@@ -167,7 +159,7 @@ export function FlickeringFooter() {
                 </div>
 
                 {/* Navigation Links Grid */}
-                <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
                   {footerLinks.map((section, idx) => (
                     <AnimatedContainer key={section.title} delay={0.2 + idx * 0.1}>
                       <div className="space-y-6">
