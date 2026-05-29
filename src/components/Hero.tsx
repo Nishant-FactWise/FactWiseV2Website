@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -28,31 +28,18 @@ export default function Hero() {
   //   reduced-motion guidance because visibility changes aren't motion.
   const reducedMotion = useReducedMotion();
 
-  // Single source of truth for "should the copy be visible right now":
-  //   - On SSR / first paint useReducedMotion() returns null, so we start
-  //     with visibility: hidden. CSS cannot override visibility (Stawan's
-  //     globals.css rule only targets opacity), so the text stays hidden
-  //     no matter what the user's reduced-motion preference is.
-  //   - Once mounted and the preference is known:
-  //       * normal motion -> set visible=true; GSAP then takes over and
-  //         animates opacity / translate during the pinned scroll.
-  //       * reduced motion -> visibility flips visible/hidden purely from
-  //         window.scrollY > 80 (no transition; instant snap).
-  // This eliminates the brief first-paint flash where Stawan's CSS rule
-  // was forcing opacity:0 -> 1 before React could re-render with the
-  // reduced-motion branch.
+  // `visible` gates the inline `visibility` style. CSS can't override
+  // `visibility`, so starting `false` guarantees no first-paint flash
+  // regardless of media-query state.
+  //
+  // The ScrollTrigger below drives the flip:
+  //   normal motion  -> onUpdate fades opacity 0->1 across the pinned
+  //                     scroll; we just flip visible to true on mount so
+  //                     opacity is what's gating the reveal.
+  //   reduced motion -> onUpdate flips visible at 10% of pin progress.
+  //                     No transitions, no scrub — just an instant snap
+  //                     inside the still-pinned hero.
   const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    if (reducedMotion === null) return; // wait for matchMedia to settle
-    if (!reducedMotion) {
-      setVisible(true);
-      return;
-    }
-    const onScroll = () => setVisible(window.scrollY > 80);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [reducedMotion]);
 
   // 2-stage hero behaviour:
   //   1st scroll  -> wordmark + paragraph fade up inside the visually
@@ -66,10 +53,15 @@ export default function Hero() {
   // 1-px flicker on Windows / 125 % DPI). pinType: 'transform' is required
   // because we're inside the ScrollSmoother content wrapper.
   useGSAP(() => {
-    if (reducedMotion) return;
+    if (reducedMotion === null) return; // wait for matchMedia
     const trigger = pinnedRef.current;
     const content = contentRef.current;
     if (!trigger || !content) return;
+
+    // Unblock visibility for both paths once we know the preference.
+    // Reduced-motion users will get re-hidden inside onUpdate below until
+    // they cross the 10 % pin-progress threshold.
+    setVisible(true);
 
     const st = ScrollTrigger.create({
       trigger,
@@ -77,10 +69,21 @@ export default function Hero() {
       end: "+=100%",
       pin: true,
       pinType: "transform",
-      scrub: 0.3,
+      // Scrub only when the user is OK with smooth motion. Pinning by
+      // itself doesn't animate anything — it just holds the section in
+      // place — so it stays on for both paths and keeps the reveal effect
+      // feeling like "text appears on the hero", not "page is scrolling".
+      scrub: reducedMotion ? false : 0.3,
       anticipatePin: 1,
       onUpdate(self) {
-        // Text reveal between 5% and 60% of the pinned distance.
+        if (reducedMotion) {
+          // Instant snap: visible once we've scrolled past 10 % of the
+          // pinned distance, hidden again if the user scrolls back.
+          setVisible(self.progress >= 0.1);
+          return;
+        }
+        // Smooth path: opacity 0 -> 1 + translateY 36 -> 0 between
+        // 5 % and 60 % of the pinned distance.
         const t = Math.max(0, Math.min(1, (self.progress - 0.05) / 0.55));
         content.style.opacity = `${t}`;
         content.style.transform = `translate3d(0, ${(1 - t) * 36}px, 0)`;
