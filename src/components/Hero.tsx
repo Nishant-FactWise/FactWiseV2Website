@@ -27,10 +27,28 @@ export default function Hero() {
   //   with the section). No transition — instant snap is fine under WCAG
   //   reduced-motion guidance because visibility changes aren't motion.
   const reducedMotion = useReducedMotion();
-  const [reducedRevealed, setReducedRevealed] = useState(false);
+
+  // Single source of truth for "should the copy be visible right now":
+  //   - On SSR / first paint useReducedMotion() returns null, so we start
+  //     with visibility: hidden. CSS cannot override visibility (Stawan's
+  //     globals.css rule only targets opacity), so the text stays hidden
+  //     no matter what the user's reduced-motion preference is.
+  //   - Once mounted and the preference is known:
+  //       * normal motion -> set visible=true; GSAP then takes over and
+  //         animates opacity / translate during the pinned scroll.
+  //       * reduced motion -> visibility flips visible/hidden purely from
+  //         window.scrollY > 80 (no transition; instant snap).
+  // This eliminates the brief first-paint flash where Stawan's CSS rule
+  // was forcing opacity:0 -> 1 before React could re-render with the
+  // reduced-motion branch.
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
-    if (!reducedMotion) return;
-    const onScroll = () => setReducedRevealed(window.scrollY > 80);
+    if (reducedMotion === null) return; // wait for matchMedia to settle
+    if (!reducedMotion) {
+      setVisible(true);
+      return;
+    }
+    const onScroll = () => setVisible(window.scrollY > 80);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -107,17 +125,16 @@ export default function Hero() {
         <div
           ref={contentRef}
           className="absolute bottom-0 left-0 right-0 px-4 pb-4 sm:px-6 md:px-10 md:pb-0 lg:pb-0 will-change-transform"
-          style={
-            reducedMotion
-              ? {
-                  // visibility is not caught by globals.css's
-                  // opacity-0 → 1 reduced-motion override; gives us an
-                  // honest hide/show without a transition.
-                  visibility: reducedRevealed ? "visible" : "hidden",
-                  transform: "none",
-                }
-              : { opacity: 0, transform: "translate3d(0, 36px, 0)" }
-          }
+          style={{
+            // Always start hidden via `visibility` (which globals.css's
+            // opacity rule doesn't touch). `visible` flips true once
+            // useEffect knows the reduced-motion preference.
+            visibility: visible ? "visible" : "hidden",
+            // For the smooth-motion path the GSAP onUpdate above overrides
+            // these as it scrubs; this is just the at-rest initial.
+            opacity: reducedMotion ? 1 : 0,
+            transform: reducedMotion ? "none" : "translate3d(0, 36px, 0)",
+          }}
         >
           <div className="flex items-end justify-between gap-4 md:grid md:grid-cols-12 md:items-end md:gap-6">
 
