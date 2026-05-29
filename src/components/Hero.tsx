@@ -110,7 +110,7 @@ export default function Hero() {
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           poster="/factwise-hero-poster.jpg"
           className="absolute inset-0 h-full w-full object-cover"
         >

@@ -343,6 +343,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${geist.variable}`}>
       <head>
         {/*
+          Hero video preload — kick off the WebM fetch the moment HTML
+          starts parsing, before React mounts or ScrollSmoother runs. On
+          slower / reduced-motion laptops the autoplay was waiting on the
+          buffer to fill after JS finished hydrating, taking ~7 s to start.
+          The MP4 fallback isn't preloaded because Safari is the only
+          consumer and Safari respects <video preload="auto"> on its own.
+        */}
+        <link
+          rel="preload"
+          as="video"
+          href="/factwise-hero.webm"
+          type="video/webm"
+        />
+        {/*
           Google Consent Mode v2 — set the DEFAULT to "denied" before GTM/GA4
           load below. This raw inline script runs synchronously during HTML
           parse, i.e. ahead of the afterInteractive scripts, so analytics/ad
