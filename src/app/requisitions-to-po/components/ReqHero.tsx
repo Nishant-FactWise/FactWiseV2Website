@@ -221,14 +221,15 @@ export default function ReqHero() {
                 <ArrowRight style={{ width:14, height:14 }}/>
               </span>
             </Link>
-            <button style={{
+            <Link href="/demo" style={{
               background:'transparent', color:'white',
               border:'1px solid rgba(255,255,255,0.15)',
               padding:'14px 22px', borderRadius:100, fontSize:15,
               fontWeight:500, cursor:'pointer', fontFamily:'var(--font-inter)',
+              textDecoration:'none', display:'inline-flex', alignItems:'center',
             }}>
               Watch product tour
-            </button>
+            </Link>
           </div>
 
         </div>
