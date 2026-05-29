@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, Clock, TrendingUp, Zap, BarChart3, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Clock, TrendingUp, Zap, BarChart3, ShieldCheck } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import ScrollReveal from "./ui/ScrollReveal";
 
@@ -149,17 +149,6 @@ export default function ModernCaseStudies() {
             </div>
           </ScrollReveal>
 
-          {/* View all stories — hidden on mobile */}
-          <ScrollReveal delay={0.3} className="hidden md:block">
-            <button className="group flex items-center gap-3 p-1.5 pr-5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200 text-slate-900 transition-all duration-500 hover:bg-white hover:border-blue-300 hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.1)] active:scale-95 whitespace-nowrap">
-              <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white transition-all duration-500 group-hover:bg-blue-700 group-hover:scale-105 group-hover:rotate-[15deg]">
-                <ArrowUpRight className="w-4 h-4" />
-              </div>
-              <div className="text-left">
-                <div className="text-sm font-semibold text-slate-900 tracking-tight">View all stories</div>
-              </div>
-            </button>
-          </ScrollReveal>
         </div>
  
         {/* Bento Grid Layout */}
