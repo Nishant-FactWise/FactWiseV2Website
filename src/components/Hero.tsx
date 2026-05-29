@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,13 +15,26 @@ export default function Hero() {
   const pinnedRef  = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Mirrors b6dec5b "Animation issue" — the prefers-reduced-motion CSS
-  // block in globals.css forces opacity to 1 globally, but my hero copy
-  // also relies on a translate3d offset which that CSS rule doesn't
-  // strip. So reduced-motion users would see the text shifted 36 px
-  // down. Detecting it here lets us skip the ScrollTrigger pin entirely
-  // and render the text at rest from first paint.
+  // Reduced-motion path:
+  // - GSAP pin + smooth fade is skipped (any motion is opt-out).
+  // - Use `visibility` instead of `opacity` to hide the text: Stawan's
+  //   globals.css rule at b6dec5b force-overrides any inline `opacity: 0`
+  //   to 1 on reduced-motion machines, which used to keep our copy
+  //   permanently visible. `visibility` isn't caught by that selector.
+  // - Toggle visibility on a tiny scroll threshold so the UX flow still
+  //   matches: bare video first, then text snaps in once the user starts
+  //   scrolling, then the hero scrolls past normally (text "disappears"
+  //   with the section). No transition — instant snap is fine under WCAG
+  //   reduced-motion guidance because visibility changes aren't motion.
   const reducedMotion = useReducedMotion();
+  const [reducedRevealed, setReducedRevealed] = useState(false);
+  useEffect(() => {
+    if (!reducedMotion) return;
+    const onScroll = () => setReducedRevealed(window.scrollY > 80);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [reducedMotion]);
 
   // 2-stage hero behaviour:
   //   1st scroll  -> wordmark + paragraph fade up inside the visually
@@ -96,7 +109,13 @@ export default function Hero() {
           className="absolute bottom-0 left-0 right-0 px-4 pb-4 sm:px-6 md:px-10 md:pb-0 lg:pb-0 will-change-transform"
           style={
             reducedMotion
-              ? { opacity: 1, transform: "none" }
+              ? {
+                  // visibility is not caught by globals.css's
+                  // opacity-0 → 1 reduced-motion override; gives us an
+                  // honest hide/show without a transition.
+                  visibility: reducedRevealed ? "visible" : "hidden",
+                  transform: "none",
+                }
               : { opacity: 0, transform: "translate3d(0, 36px, 0)" }
           }
         >
