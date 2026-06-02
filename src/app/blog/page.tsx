@@ -7,7 +7,7 @@ import { ShimmerButton } from "@/components/ui/ShimmerButton";
 import { CATEGORIES, ALL_POSTS, type Post, type Cat } from "./data";
 import { motion } from "framer-motion";
 
-const BASE = "https://factwise.io/blog/post/";
+const BASE = "/blog/post/";
 
 /* ─── Unsplash cover images mapped by category slug ─────────────── */
 const CAT_COVERS: Record<string, string[]> = {
