@@ -108,14 +108,19 @@ export default async function BlogPostPage(
     : [];
 
   return (
-    <main className="min-h-screen bg-white" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+    <main
+      className="min-h-screen bg-white"
+      style={{ fontFamily: "var(--font-inter), sans-serif" }}
+    >
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema(post)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema(post)),
+        }}
       />
 
-      {/* Hero */}
-      <section className="relative w-full overflow-hidden bg-slate-950">
+      {/* Hero — full viewport image with gradient overlay and text near bottom */}
+      <section className="relative w-screen h-screen overflow-hidden bg-slate-950">
         {heroImage && (
           <Image
             src={heroImage}
@@ -123,38 +128,49 @@ export default async function BlogPostPage(
             fill
             priority
             sizes="100vw"
-            className="object-cover opacity-50"
+            className="object-cover"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/40 to-slate-950" />
-        <div className="relative z-10 max-w-3xl mx-auto px-6 pt-40 pb-24 text-center">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-1 text-white/70 text-xs font-semibold uppercase tracking-[0.2em] mb-6 hover:text-white transition-colors"
-          >
-            <ChevronLeft size={14} /> Back to Blog
-          </Link>
-          {post.categories?.[0] && (
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
-              {post.categories[0].name}
-            </div>
-          )}
-          <h1
-            className="text-white font-bold tracking-tight leading-[1.1] mb-6"
-            style={{ fontSize: "clamp(28px, 4.5vw, 48px)" }}
-          >
-            {post.title}
-          </h1>
-          <div className="flex flex-wrap items-center justify-center gap-4 text-white/70 text-sm">
-            {post.author?.name && <span>By {post.author.name}</span>}
-            <span className="inline-flex items-center gap-1.5">
-              <Calendar size={13} /> {formatDate(post.lastUpdated)}
-            </span>
-            {post.readingTime && (
-              <span className="inline-flex items-center gap-1.5">
-                <Clock size={13} /> {post.readingTime}
-              </span>
+        {/* Gradient: transparent at top → dark at bottom for legibility of text overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(2,6,23,0) 0%, rgba(2,6,23,0.15) 55%, rgba(2,6,23,0.85) 100%)",
+          }}
+        />
+        {/* Back link — top-left */}
+        <Link
+          href="/blog"
+          className="absolute top-28 left-6 md:left-10 z-20 inline-flex items-center gap-1 text-white/80 text-xs font-semibold uppercase tracking-[0.2em] hover:text-white transition-colors"
+        >
+          <ChevronLeft size={14} /> Back to Blog
+        </Link>
+        {/* Title block — centered near bottom */}
+        <div className="absolute inset-x-0 bottom-[8vh] z-10 flex justify-center px-6">
+          <div className="max-w-3xl text-center text-white">
+            {post.categories?.[0] && (
+              <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
+                {post.categories[0].name}
+              </div>
             )}
+            <h1
+              className="font-light tracking-tight leading-[1.15] mb-5"
+              style={{ fontSize: "clamp(28px, 4vw, 44px)" }}
+            >
+              {post.title}
+            </h1>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-white/80 text-sm">
+              {post.author?.name && <span>By {post.author.name}</span>}
+              <span className="inline-flex items-center gap-1.5">
+                <Calendar size={13} /> {formatDate(post.lastUpdated)}
+              </span>
+              {post.readingTime && (
+                <span className="inline-flex items-center gap-1.5">
+                  <Clock size={13} /> {post.readingTime}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -176,7 +192,9 @@ export default async function BlogPostPage(
               </div>
             )}
             <div>
-              <div className="text-sm font-bold text-slate-900">{post.author.name}</div>
+              <div className="text-sm font-bold text-slate-900">
+                {post.author.name}
+              </div>
               <div className="text-xs text-slate-500">
                 {formatDate(post.lastUpdated)} · {post.readingTime}
               </div>
@@ -197,7 +215,9 @@ export default async function BlogPostPage(
         {/* About author */}
         {post.author?.bio && (
           <div className="mt-16 pt-10 border-t border-slate-200">
-            <h3 className="text-xl font-bold text-slate-900 mb-3">About the Author</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-3">
+              About the Author
+            </h3>
             <p className="text-slate-600 leading-relaxed">{post.author.bio}</p>
           </div>
         )}
@@ -206,7 +226,9 @@ export default async function BlogPostPage(
       {/* Suggested */}
       {similar.length > 0 && (
         <section className="max-w-5xl mx-auto px-6 pb-16">
-          <h2 className="text-xl font-bold text-slate-900 mb-6">Suggested Articles</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-6">
+            Suggested Articles
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {similar.slice(0, 3).map((p) => {
               const img =
@@ -234,7 +256,9 @@ export default async function BlogPostPage(
                     <h3 className="text-sm font-bold text-slate-900 leading-snug line-clamp-2 group-hover:underline">
                       {p.title}
                     </h3>
-                    <p className="mt-2 text-xs text-slate-500 line-clamp-2">{p.excerpt}</p>
+                    <p className="mt-2 text-xs text-slate-500 line-clamp-2">
+                      {p.excerpt}
+                    </p>
                   </div>
                 </Link>
               );
