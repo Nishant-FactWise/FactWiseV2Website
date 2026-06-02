@@ -120,8 +120,8 @@ function WhiteDashboard() {
           {/* KPIs */}
           <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
             {[
-              {label:'Target Cost',    value:'$48,210', delta:'↓ 4.2% vs last rev'},
-              {label:'Best Bid',       value:'$45,890', delta:'↓ $2,320 saved'},
+              {label:'Target Cost',    value:'₹48,210', delta:'↓ 4.2% vs last rev'},
+              {label:'Best Bid',       value:'₹45,890', delta:'↓ ₹2,320 saved'},
               {label:'Margin Forecast',value:'28.4%',   delta:'↑ 3.1 pts'},
             ].map(k=>(
               <div key={k.label} style={{
@@ -154,10 +154,10 @@ function WhiteDashboard() {
               <div>Component</div><div>Part ID</div><div>Qty</div><div>Unit Cost</div><div>Trend</div>
             </div>
             {[
-              {name:'Hydraulic cylinder',  id:'HC-2048-B',qty:12,price:'$284.20',bars:[50,70,60,85,75]},
-              {name:'Piston seal kit',     id:'PSK-114-A',qty:24,price:'$42.80', bars:[80,65,70,55,50]},
-              {name:'Pressure regulator', id:'PR-509-T', qty:6, price:'$176.50',bars:[45,60,75,70,90]},
-              {name:'Stainless flange',   id:'SF-302-X', qty:18,price:'$89.10', bars:[60,55,50,45,40]},
+              {name:'Hydraulic cylinder',  id:'HC-2048-B',qty:12,price:'₹284.20',bars:[50,70,60,85,75]},
+              {name:'Piston seal kit',     id:'PSK-114-A',qty:24,price:'₹42.80', bars:[80,65,70,55,50]},
+              {name:'Pressure regulator', id:'PR-509-T', qty:6, price:'₹176.50',bars:[45,60,75,70,90]},
+              {name:'Stainless flange',   id:'SF-302-X', qty:18,price:'₹89.10', bars:[60,55,50,45,40]},
             ].map((r,i)=>(
               <div key={r.id} style={{
                 display:'grid',gridTemplateColumns:'1.5fr 1fr 0.5fr 0.8fr 0.5fr',
@@ -301,15 +301,6 @@ export default function SolutionsHero() {
                 <ArrowRight style={{ width:14, height:14 }}/>
               </span>
             </Link>
-            <Link href="/demo" style={{
-              background:'transparent', color:'white',
-              border:'1px solid rgba(255,255,255,0.15)',
-              padding:'14px 22px', borderRadius:100, fontSize:15,
-              fontWeight:500, cursor:'pointer', fontFamily:'var(--font-inter)',
-              textDecoration:'none', display:'inline-flex', alignItems:'center',
-            }}>
-              Watch product tour
-            </Link>
           </div>
         </motion.div>
 
@@ -351,10 +342,10 @@ export default function SolutionsHero() {
               }}><IcLayers/></div>
             </div>
             {[
-              {name:'Vendor A', price:'$45,890', win:true},
-              {name:'Vendor B', price:'$46,420'},
-              {name:'Vendor C', price:'$47,180'},
-              {name:'Vendor D', price:'$49,210', dim:true},
+              {name:'Vendor A', price:'₹45,890', win:true},
+              {name:'Vendor B', price:'₹46,420'},
+              {name:'Vendor C', price:'₹47,180'},
+              {name:'Vendor D', price:'₹49,210', dim:true},
             ].map((v,i)=>(
               <div key={v.name} style={{
                 display:'flex', justifyContent:'space-between', alignItems:'center',
@@ -421,9 +412,9 @@ export default function SolutionsHero() {
             <div style={{ fontSize:9, color:'#94a3b8', marginBottom:10 }}>Customer: Riverline Engineering</div>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, paddingTop:10, borderTop:'1px solid #f1f5f9' }}>
               {[
-                {label:'Landed cost', value:'$45,890'},
+                {label:'Landed cost', value:'₹45,890'},
                 {label:'Markup',      value:'27.4%'},
-                {label:'Margin',      value:'$12,580', green:true},
+                {label:'Margin',      value:'₹12,580', green:true},
                 {label:'Turnaround',  value:'2h 14m'},
               ].map(q=>(
                 <div key={q.label}>

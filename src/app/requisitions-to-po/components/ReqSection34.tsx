@@ -5,11 +5,11 @@ import { motion } from 'framer-motion';
 import { Check, Play, Pause, BarChart2 } from 'lucide-react';
 
 const BIDS_RAW = [
-    { code:'A', name:'Vendor A', unit:'$37.80', freight:'$2.10', duty:'$1.80', pkg:'$0.90', landed:'$42.60' },
-    { code:'B', name:'Vendor B', unit:'$39.50', freight:'$3.40', duty:'$2.90', pkg:'$0.60', landed:'$46.40' },
-    { code:'C', name:'Vendor C', unit:'$38.90', freight:'$4.20', duty:'$3.50', pkg:'$1.10', landed:'$47.70' },
-    { code:'D', name:'Vendor D', unit:'$40.20', freight:'$1.80', duty:'$1.50', pkg:'$0.80', landed:'$44.30' },
-    { code:'E', name:'Vendor E', unit:'$41.00', freight:'$1.20', duty:'$0.90', pkg:'$0.70', landed:'$43.80' },
+    { code:'A', name:'Vendor A', unit:'₹37.80', freight:'₹2.10', duty:'₹1.80', pkg:'₹0.90', landed:'₹42.60' },
+    { code:'B', name:'Vendor B', unit:'₹39.50', freight:'₹3.40', duty:'₹2.90', pkg:'₹0.60', landed:'₹46.40' },
+    { code:'C', name:'Vendor C', unit:'₹38.90', freight:'₹4.20', duty:'₹3.50', pkg:'₹1.10', landed:'₹47.70' },
+    { code:'D', name:'Vendor D', unit:'₹40.20', freight:'₹1.80', duty:'₹1.50', pkg:'₹0.80', landed:'₹44.30' },
+    { code:'E', name:'Vendor E', unit:'₹41.00', freight:'₹1.20', duty:'₹0.90', pkg:'₹0.70', landed:'₹43.80' },
 ];
 
 export default function ReqSection34({ isActive = true }: { isActive?: boolean }) {
@@ -234,7 +234,7 @@ export default function ReqSection34({ isActive = true }: { isActive?: boolean }
                                 {landedN >= 5 && (
                                     <div style={{ padding:'8px 12px', background:'rgba(0,184,132,0.06)', border:'1px solid rgba(0,184,132,0.2)', borderRadius:9, fontSize:10, fontWeight:700, color:'#065f46', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                                         <span>Vendor A (#1 landed) was #1 unit price too — but Vendor C jumped from #3 → #5</span>
-                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:800, color:'#00b884', fontSize:10 }}>$42.60</span>
+                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:800, color:'#00b884', fontSize:10 }}>₹42.60</span>
                                     </div>
                                 )}
                             </div>
@@ -261,9 +261,9 @@ export default function ReqSection34({ isActive = true }: { isActive?: boolean }
                                             FW AI RECOMMENDATION · Best bid per item
                                         </div>
                                         {[
-                                            { item:'Hydraulic Seals (500 pcs)',  vendor:'Vendor A', landed:'$42.60', saving:'$2,200', pct:'10.3%' },
-                                            { item:'Control Valves (50 units)',  vendor:'Vendor D', landed:'$44.30', saving:'$830',   pct:'6.8%'  },
-                                            { item:'Pressure Gauges (30 units)', vendor:'Vendor B', landed:'$46.40', saving:'$540',   pct:'4.5%'  },
+                                            { item:'Hydraulic Seals (500 pcs)',  vendor:'Vendor A', landed:'₹42.60', saving:'₹2,200', pct:'10.3%' },
+                                            { item:'Control Valves (50 units)',  vendor:'Vendor D', landed:'₹44.30', saving:'₹830',   pct:'6.8%'  },
+                                            { item:'Pressure Gauges (30 units)', vendor:'Vendor B', landed:'₹46.40', saving:'₹540',   pct:'4.5%'  },
                                         ].map(r => (
                                             <div key={r.item} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'6px 0', borderBottom:'1px solid rgba(15,23,42,0.04)', fontSize:10 }}>
                                                 <div>
@@ -286,9 +286,9 @@ export default function ReqSection34({ isActive = true }: { isActive?: boolean }
                                             <div style={{ color:'#94a3b8', fontWeight:800 }}>Item</div>
                                             {BIDS_RAW.map(v => <div key={v.code} style={{ fontWeight:800, color:'#475569' }}>{v.code}</div>)}
                                             {[
-                                                { item:'Hyd. Seals', vals:['$42.60','$46.40','$47.70','$44.30','$43.80'], best:0 },
-                                                { item:'Ctrl Valves', vals:['$53.10','$55.20','$58.40','$52.10','$56.80'], best:3 },
-                                                { item:'Prss Gauges', vals:['$63.50','$61.20','$67.80','$65.10','$69.40'], best:1 },
+                                                { item:'Hyd. Seals', vals:['₹42.60','₹46.40','₹47.70','₹44.30','₹43.80'], best:0 },
+                                                { item:'Ctrl Valves', vals:['₹53.10','₹55.20','₹58.40','₹52.10','₹56.80'], best:3 },
+                                                { item:'Prss Gauges', vals:['₹63.50','₹61.20','₹67.80','₹65.10','₹69.40'], best:1 },
                                             ].map(row => (
                                                 <React.Fragment key={row.item}>
                                                     <div style={{ fontWeight:600, color:'#0b1322', textAlign:'left', fontSize:9 }}>{row.item}</div>
@@ -310,9 +310,9 @@ export default function ReqSection34({ isActive = true }: { isActive?: boolean }
                                     Shortlist · Award Decision
                                 </div>
                                 {[
-                                    { vendor:'Vendor A', item:'Hydraulic Seals', qty:'500 pcs',  landed:'$42.60', total:'$21,300', type:'primary' },
-                                    { vendor:'Vendor D', item:'Control Valves',  qty:'50 units', landed:'$44.30', total:'$2,215',  type:'primary' },
-                                    { vendor:'Vendor B', item:'Pressure Gauges', qty:'30 units', landed:'$46.40', total:'$1,392',  type:'backup' },
+                                    { vendor:'Vendor A', item:'Hydraulic Seals', qty:'500 pcs',  landed:'₹42.60', total:'₹21,300', type:'primary' },
+                                    { vendor:'Vendor D', item:'Control Valves',  qty:'50 units', landed:'₹44.30', total:'₹2,215',  type:'primary' },
+                                    { vendor:'Vendor B', item:'Pressure Gauges', qty:'30 units', landed:'₹46.40', total:'₹1,392',  type:'backup' },
                                 ].slice(0, shortlistN).map((row, i) => (
                                     <div key={row.vendor+row.item} className={`s34-row in`} style={{ gridTemplateColumns:'none', display:'block', transitionDelay:`${i*0.1}s`, borderColor: row.type==='backup' ? 'rgba(245,158,11,0.25)' : 'rgba(0,184,132,0.3)', background: row.type==='backup' ? '#fffdf0' : '#f6fcf9' }}>
                                         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:5 }}>
@@ -333,7 +333,7 @@ export default function ReqSection34({ isActive = true }: { isActive?: boolean }
                                 {shortlistN >= 3 && (
                                     <div style={{ padding:'9px 13px', background:'linear-gradient(90deg,rgba(0,184,132,0.07),rgba(54,102,255,0.04))', border:'1px solid rgba(0,184,132,0.2)', borderRadius:10, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                                         <span style={{ fontSize:10, fontWeight:700, color:'#065f46' }}>✓ 3 items shortlisted · Ready for PO generation</span>
-                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:800, fontSize:11, color:'#00b884' }}>$24,907 total</span>
+                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:800, fontSize:11, color:'#00b884' }}>₹24,907 total</span>
                                     </div>
                                 )}
                             </div>

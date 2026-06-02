@@ -89,8 +89,8 @@ const RA_BIDS: Record<string, Bidder> = {
     L2: { q: 920,  qNative: 920,  d: 0, i: 14, p: 18 },
   },
   B: {
-    fx: 'USD', flag: 'CN', name: 'Vendor B',
-    // Native USD quote × FX 83 ≈ INR. Heavy duty/insurance/packaging burden.
+    fx: 'INR', flag: 'CN', name: 'Vendor B',
+    // Native INR quote × FX 83 ≈ INR. Heavy duty/insurance/packaging burden.
     L1: { q: 1180, qNative: 14.22, d: 248, i: 62, p: 58 },
     L2: { q:  880, qNative: 10.60, d: 186, i: 48, p: 44 },
   },
@@ -120,7 +120,7 @@ const raInr = (n: number) => '₹' + Math.round(n).toLocaleString('en-IN');
 
 /**
  * Money formatter that respects whether we are *before* or *after* INR
- * normalisation. Small native unit prices (e.g. $14.22) keep two decimals so
+ * normalisation. Small native unit prices (e.g. ₹14.22) keep two decimals so
  * the per-piece quote looks like a real quote slip; larger aggregates (totals
  * × 200) round to whole units so they stay legible.
  */
@@ -128,7 +128,7 @@ const raFormatPrice = (n: number, k: string, showNativeFirst: boolean) => {
   if (showNativeFirst) {
     const bid = RA_BIDS[k];
     if (bid.fx === 'INR') return '₹' + Math.round(n).toLocaleString('en-IN');
-    if (bid.fx === 'USD') return '$' + (n >= 100 ? Math.round(n).toLocaleString('en-US') : n.toFixed(2));
+    if (bid.fx === 'INR') return '$' + (n >= 100 ? Math.round(n).toLocaleString('en-US') : n.toFixed(2));
     if (bid.fx === 'EUR') return '€' + (n >= 100 ? Math.round(n).toLocaleString('en-DE') : n.toFixed(2));
   }
   return '₹' + Math.round(n).toLocaleString('en-IN');
@@ -415,7 +415,7 @@ export default function RfqAnalyticsAnimation({
     const step = getActiveMenuStep();
     switch (step) {
       case 1:
-        return 'Vendors quote in their native currencies — USD, EUR, INR. On raw unit price the overseas bids look most competitive, but that hides every add-on yet to come.';
+        return 'Vendors quote in their native currencies — INR, EUR, INR. On raw unit price the overseas bids look most competitive, but that hides every add-on yet to come.';
       case 2:
         return 'Your custom landed cost formula auto-applies — duty, freight, insurance, packaging — and every bid is normalised to your currency. True cost surfaces in seconds.';
       case 3:

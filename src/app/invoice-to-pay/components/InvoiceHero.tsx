@@ -15,10 +15,10 @@ const IcBar      = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="n
 function WhiteDashboard() {
   const mono = "'JetBrains Mono', monospace"
   const invoices = [
-    { id:'INV-90412', vendor:'Apex Industrial',  value:'$14,910', status:'4-Way Matched', statusColor:'#10b981', bg:'rgba(16,185,129,0.08)',  border:'rgba(16,185,129,0.2)' },
-    { id:'INV-90415', vendor:'Meridian Mfg.',     value:'$2,215',  status:'GR Pending',     statusColor:'#f59e0b', bg:'rgba(245,158,11,0.08)', border:'rgba(245,158,11,0.2)' },
-    { id:'INV-90418', vendor:'FluidTech Co.',     value:'$1,392',  status:'QC In Review',   statusColor:'#3666ff', bg:'rgba(54,102,255,0.08)', border:'rgba(54,102,255,0.2)' },
-    { id:'INV-90420', vendor:'HydroMfg Ltd.',     value:'$6,570',  status:'Payment Cleared',statusColor:'#8b5cf6', bg:'rgba(139,92,246,0.08)', border:'rgba(139,92,246,0.2)' },
+    { id:'INV-90412', vendor:'Apex Industrial',  value:'₹14,910', status:'4-Way Matched', statusColor:'#10b981', bg:'rgba(16,185,129,0.08)',  border:'rgba(16,185,129,0.2)' },
+    { id:'INV-90415', vendor:'Meridian Mfg.',     value:'₹2,215',  status:'GR Pending',     statusColor:'#f59e0b', bg:'rgba(245,158,11,0.08)', border:'rgba(245,158,11,0.2)' },
+    { id:'INV-90418', vendor:'FluidTech Co.',     value:'₹1,392',  status:'QC In Review',   statusColor:'#3666ff', bg:'rgba(54,102,255,0.08)', border:'rgba(54,102,255,0.2)' },
+    { id:'INV-90420', vendor:'HydroMfg Ltd.',     value:'₹6,570',  status:'Payment Cleared',statusColor:'#8b5cf6', bg:'rgba(139,92,246,0.08)', border:'rgba(139,92,246,0.2)' },
   ]
   return (
     <div style={{ width:'100%', height:'100%', background:'white', borderRadius:12, overflow:'hidden', display:'flex', flexDirection:'column', fontFamily:"'Inter', sans-serif" }}>
@@ -78,8 +78,8 @@ function WhiteDashboard() {
           <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8 }}>
             {[
               {label:'Invoices Verified', value:'194',    delta:'↑ 31 this week'},
-              {label:'Discrepancies Caught',value:'12',   delta:'↓ Saved $24k'},
-              {label:'Cleared This Qtr',  value:'$3.1M',  delta:'↑ 18% on-time'},
+              {label:'Discrepancies Caught',value:'12',   delta:'↓ Saved ₹24k'},
+              {label:'Cleared This Qtr',  value:'₹3.1M',  delta:'↑ 18% on-time'},
             ].map(k=>(
               <div key={k.label} style={{ background:'white',border:'1px solid #f1f5f9',borderRadius:8,padding:'9px 11px',boxShadow:'0 1px 3px rgba(15,23,42,0.04)' }}>
                 <div style={{fontSize:8,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>{k.label}</div>
@@ -213,15 +213,6 @@ export default function InvoiceHero() {
                 <ArrowRight style={{ width:14, height:14 }}/>
               </span>
             </Link>
-            <Link href="/demo" style={{
-              background:'transparent', color:'white',
-              border:'1px solid rgba(255,255,255,0.15)',
-              padding:'14px 22px', borderRadius:100, fontSize:15,
-              fontWeight:500, cursor:'pointer', fontFamily:'var(--font-inter)',
-              textDecoration:'none', display:'inline-flex', alignItems:'center',
-            }}>
-              Watch product tour
-            </Link>
           </div>
 
         </div>
@@ -255,7 +246,7 @@ export default function InvoiceHero() {
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:6 }}>
               <div>
                 <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>INV-90412 · Parsed</div>
-                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Apex Industrial · $14,910</div>
+                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Apex Industrial · ₹14,910</div>
               </div>
               <div style={{ width:24, height:24, borderRadius:6, background:'rgba(54,102,255,0.08)', border:'1px solid rgba(54,102,255,0.2)', display:'grid', placeItems:'center', color:'#3666ff', fontSize:13 }}>AI</div>
             </div>
@@ -304,11 +295,11 @@ export default function InvoiceHero() {
             <div style={{ fontSize:24, fontWeight:700, letterSpacing:'-0.025em', fontFamily:mono, color:'#1A1D2E', margin:'7px 0 2px' }}>
               <span style={{ fontSize:13, color:'#94a3b8' }}>$</span>14,070
             </div>
-            <div style={{ fontSize:9, color:'#94a3b8', marginBottom:10 }}>Net of $840 QC deduction · 6% discount captured</div>
+            <div style={{ fontSize:9, color:'#94a3b8', marginBottom:10 }}>Net of ₹840 QC deduction · 6% discount captured</div>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, paddingTop:10, borderTop:'1px solid #f1f5f9' }}>
               {[
                 {label:'Match cycle',    value:'2.1 hrs'},
-                {label:'Savings',        value:'$840', green:true},
+                {label:'Savings',        value:'₹840', green:true},
                 {label:'Duplicates blocked', value:'3 this qtr'},
                 {label:'Audit trail',    value:'Complete'},
               ].map(q=>(

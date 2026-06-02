@@ -53,7 +53,7 @@ function InvoiceChaosWidget({ isHovered }: { isHovered: boolean }) {
             { label:'Invoice #', value:'INV-90412' },
             { label:'Vendor',    value:'Apex Industrial' },
             { label:'PO Ref',    value:'PO-8810 · Auto-linked' },
-            { label:'Value',     value:'$14,910 · Ready to match', green: true },
+            { label:'Value',     value:'₹14,910 · Ready to match', green: true },
           ].map(f => (
             <div key={f.label} className="flex justify-between bg-slate-50 px-2 py-1 rounded border border-slate-100">
               <span className="text-slate-400 font-medium">{f.label}</span>
@@ -187,7 +187,7 @@ function QCLostWidget({ isHovered }: { isHovered: boolean }) {
           </div>
           <div className="bg-slate-50 border border-slate-200/60 px-2 py-1 rounded flex items-center justify-between font-bold shadow-3xs">
             <span className="text-amber-600">Rejected: 12 pcs</span>
-            <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded text-emerald-700">Deduct $504 from payment</span>
+            <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded text-emerald-700">Deduct ₹504 from payment</span>
           </div>
         </div>
       </motion.div>
@@ -216,9 +216,9 @@ function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
         </div>
         <div className="grid grid-cols-3 gap-1 text-[8.5px]">
           {[
-            { lbl:'PO',      val:'$14,910', tone:'text-slate-700' },
+            { lbl:'PO',      val:'₹14,910', tone:'text-slate-700' },
             { lbl:'GR',      val:'186 pcs', tone:'text-amber-600' },
-            { lbl:'Invoice', val:'$14,910', tone:'text-slate-700' },
+            { lbl:'Invoice', val:'₹14,910', tone:'text-slate-700' },
           ].map(c => (
             <div key={c.lbl} className="bg-white p-1.5 rounded border border-slate-200/60 text-center shadow-3xs">
               <div className="text-[7px] text-slate-400 font-bold uppercase tracking-wider">{c.lbl}</div>
@@ -240,15 +240,15 @@ function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
         >
           <div className="flex justify-between text-slate-500 font-medium">
             <span>QC rejected 12 pcs</span>
-            <span className="font-mono text-red-500 font-bold">-$504</span>
+            <span className="font-mono text-red-500 font-bold">-₹504</span>
           </div>
           <div className="flex justify-between text-slate-500 font-medium">
             <span>Short-shipped 14 pcs</span>
-            <span className="font-mono text-red-500 font-bold">-$588</span>
+            <span className="font-mono text-red-500 font-bold">-₹588</span>
           </div>
           <div className="flex justify-between text-slate-500 font-medium">
             <span>Early-pay discount missed</span>
-            <span className="font-mono text-red-500 font-bold">-$298</span>
+            <span className="font-mono text-red-500 font-bold">-₹298</span>
           </div>
         </motion.div>
       </div>
@@ -256,8 +256,8 @@ function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
       <div className="flex justify-between items-center pt-1.5 border-t border-slate-200/60 text-[9px] font-bold">
         <span className="text-slate-500 font-bold">Final Liability:</span>
         <div className="relative w-[68px] h-[14px] text-right font-mono font-bold">
-          <motion.span initial={{ opacity:1, y:0 }} animate={isHovered ? { opacity:0, y:-10 } : { opacity:1, y:0 }} className="absolute right-0 text-red-500 text-[10px]">$14,910 ⚠️</motion.span>
-          <motion.span initial={{ opacity:0, y:10 }} animate={isHovered ? { opacity:1, y:0 } : { opacity:0, y:10 }} className="absolute right-0 text-emerald-600 text-[10px]">✓ $13,520</motion.span>
+          <motion.span initial={{ opacity:1, y:0 }} animate={isHovered ? { opacity:0, y:-10 } : { opacity:1, y:0 }} className="absolute right-0 text-red-500 text-[10px]">₹14,910 ⚠️</motion.span>
+          <motion.span initial={{ opacity:0, y:10 }} animate={isHovered ? { opacity:1, y:0 } : { opacity:0, y:10 }} className="absolute right-0 text-emerald-600 text-[10px]">✓ ₹13,520</motion.span>
         </div>
       </div>
     </div>

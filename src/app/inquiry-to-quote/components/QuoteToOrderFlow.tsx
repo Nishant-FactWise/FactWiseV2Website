@@ -54,7 +54,7 @@ const BUILDER_FIELDS = [
     { label: 'Part No.', value: 'SBM8-304-001', src: 'BOM' },
     { label: 'Description', value: 'Steel Bracket M8 · 304 SS', src: 'BOM' },
     { label: 'Quantity', value: '1,200 pcs', src: 'BOM' },
-    { label: 'Target Price', value: '$18.50/unit', src: 'PO HISTORY' },
+    { label: 'Target Price', value: '₹18.50/unit', src: 'PO HISTORY' },
     { label: 'Lead Time', value: '≤ 14 days', src: 'CONTRACT' },
     { label: 'Incoterm', value: 'FOB Origin', src: 'POLICY' }
 ];
@@ -1079,13 +1079,13 @@ export default function QuoteToOrderFlow() {
                                                         </div>
                                                         <div style={{ flex: 1 }}>
                                                             <div style={{ fontSize: 10, fontWeight: 800, color: '#1e3a8a', letterSpacing: '-0.01em' }}>RFQ-2026-0871 · Vendor A selected</div>
-                                                            <div style={{ fontSize: 9, color: '#3666ff', fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.04em', marginTop: 1 }}>$18.42/unit · 1,200 pcs · $22,104 total</div>
+                                                            <div style={{ fontSize: 9, color: '#3666ff', fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.04em', marginTop: 1 }}>₹18.42/unit · 1,200 pcs · ₹22,104 total</div>
                                                         </div>
                                                         <div style={{ fontSize: 9, fontWeight: 700, color: '#3666ff', background: 'rgba(54,102,255,0.1)', borderRadius: 5, padding: '3px 7px', fontFamily: "'JetBrains Mono',monospace" }}>AUTO</div>
                                                     </div>
                                                     {([
-                                                        { step: 0, name: 'Priya S.', role: 'BUYER · PROCUREMENT', color: '#6366f1', code: 'PS', limit: '$25K' },
-                                                        { step: 1, name: 'Vikram K.', role: 'MANAGER · CATEGORY LEAD', color: '#0ea5e9', code: 'VK', limit: '$100K' },
+                                                        { step: 0, name: 'Priya S.', role: 'BUYER · PROCUREMENT', color: '#6366f1', code: 'PS', limit: '₹25K' },
+                                                        { step: 1, name: 'Vikram K.', role: 'MANAGER · CATEGORY LEAD', color: '#0ea5e9', code: 'VK', limit: '₹100K' },
                                                         { step: 2, name: 'Tara S.', role: 'CFO · FINANCE', color: '#8b5cf6', code: 'TS', limit: 'FINAL' },
                                                     ] as const).map(({ step, name, role, color, code, limit }) => {
                                                         const isIn = approveN >= step;

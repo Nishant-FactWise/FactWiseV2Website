@@ -11,10 +11,10 @@ const ALLOC_ITEMS = [
 ];
 
 const POS_GENERATED = [
-    { id:'PO-8810', vendor:'Vendor A', items:1, qty:'350 pcs',  value:'$14,910', status:'Issued' },
-    { id:'PO-8811', vendor:'Vendor D', items:1, qty:'50 units', value:'$2,215',  status:'Issued' },
-    { id:'PO-8812', vendor:'Vendor B', items:1, qty:'30 units', value:'$1,392',  status:'Issued' },
-    { id:'PO-8813', vendor:'Vendor E', items:1, qty:'150 pcs',  value:'$6,570',  status:'Issued' },
+    { id:'PO-8810', vendor:'Vendor A', items:1, qty:'350 pcs',  value:'₹14,910', status:'Issued' },
+    { id:'PO-8811', vendor:'Vendor D', items:1, qty:'50 units', value:'₹2,215',  status:'Issued' },
+    { id:'PO-8812', vendor:'Vendor B', items:1, qty:'30 units', value:'₹1,392',  status:'Issued' },
+    { id:'PO-8813', vendor:'Vendor E', items:1, qty:'150 pcs',  value:'₹6,570',  status:'Issued' },
 ];
 
 export default function ReqSection35({ isActive = true }: { isActive?: boolean }) {
@@ -337,7 +337,7 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                                 {genState === 'done' && (
                                     <div style={{ padding:'8px 13px', background:'rgba(0,184,132,0.07)', border:'1px solid rgba(0,184,132,0.2)', borderRadius:9, fontSize:10, fontWeight:700, color:'#065f46', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                                         <span>✓ 4 POs issued · Zero manual entry · Zero errors</span>
-                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:800, color:'#00b884', fontSize:11 }}>$25,087</span>
+                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:800, color:'#00b884', fontSize:11 }}>₹25,087</span>
                                     </div>
                                 )}
                             </div>

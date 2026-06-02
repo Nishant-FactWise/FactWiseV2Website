@@ -5,10 +5,10 @@ import { motion } from 'framer-motion';
 import { Check, Play, Pause, ShoppingCart, Zap, Send, Mail, RefreshCw } from 'lucide-react';
 
 const APPROVAL_FLOW = [
-    { id: 'REQ-1041', item: 'Hydraulic Seals × 200',  dept: 'Engineering',  value: '$8,400',  status: 'Approved' },
-    { id: 'REQ-1042', item: 'Control Valves × 50',    dept: 'Maintenance',  value: '$6,200',  status: 'Approved' },
-    { id: 'REQ-1043', item: 'Hydraulic Seals × 300',  dept: 'Operations',   value: '$12,600', status: 'Approved' },
-    { id: 'REQ-1044', item: 'Pressure Gauges × 30',   dept: 'Quality',      value: '$3,450',  status: 'Approved' },
+    { id: 'REQ-1041', item: 'Hydraulic Seals × 200',  dept: 'Engineering',  value: '₹8,400',  status: 'Approved' },
+    { id: 'REQ-1042', item: 'Control Valves × 50',    dept: 'Maintenance',  value: '₹6,200',  status: 'Approved' },
+    { id: 'REQ-1043', item: 'Hydraulic Seals × 300',  dept: 'Operations',   value: '₹12,600', status: 'Approved' },
+    { id: 'REQ-1044', item: 'Pressure Gauges × 30',   dept: 'Quality',      value: '₹3,450',  status: 'Approved' },
 ];
 
 const VENDORS = ['Vendor A', 'Vendor B', 'Vendor C', 'Vendor D', 'Vendor E', 'Vendor F'];
@@ -256,8 +256,8 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
                                 {consolidateStep >= 1 && (
                                     <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
                                         {[
-                                            { id:'REQ-1041', qty:'200 pcs', dept:'Engineering', unit:'$42/pc' },
-                                            { id:'REQ-1043', qty:'300 pcs', dept:'Operations',  unit:'$42/pc' },
+                                            { id:'REQ-1041', qty:'200 pcs', dept:'Engineering', unit:'₹42/pc' },
+                                            { id:'REQ-1043', qty:'300 pcs', dept:'Operations',  unit:'₹42/pc' },
                                         ].map((r, i) => (
                                             <div key={r.id} style={{ background:'rgba(54,102,255,0.05)', border:`1.5px solid ${consolidateStep >= 2 ? 'rgba(0,184,132,0.3)' : 'rgba(54,102,255,0.35)'}`, borderRadius:10, padding:'9px 12px', display:'flex', justifyContent:'space-between', alignItems:'center', fontSize:11, transition:'all .5s ease' }}>
                                                 <div>
@@ -296,8 +296,8 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
                                     </div>
                                     <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
                                         {[
-                                            { label:'Separate unit price', value:'$42.00/pc', cross:true },
-                                            { label:'Bulk rate (500+)',     value:'$34.50/pc', green:true },
+                                            { label:'Separate unit price', value:'₹42.00/pc', cross:true },
+                                            { label:'Bulk rate (500+)',     value:'₹34.50/pc', green:true },
                                         ].map(c => (
                                             <div key={c.label} style={{ background:'#f8fafc', borderRadius:8, padding:'8px 10px', border:'1px solid rgba(15,23,42,0.06)' }}>
                                                 <div style={{ fontSize:8, color:'#94a3b8', textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:3 }}>{c.label}</div>
@@ -309,7 +309,7 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
 
                                 <div className={`s32-savings ${consolidateStep >= 3 ? 'in' : ''}`}>
                                     <span style={{ fontSize:11, fontWeight:700, color:'#065f46' }}>Volume savings unlocked</span>
-                                    <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:13, fontWeight:800, color:'#00b884' }}>↓ $3,750 saved (18%)</span>
+                                    <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:13, fontWeight:800, color:'#00b884' }}>↓ ₹3,750 saved (18%)</span>
                                 </div>
                             </div>
                         </div>
@@ -343,9 +343,9 @@ export default function ReqSection32({ isActive = true }: { isActive?: boolean }
                                             TARGET PRICES · Pre-filled from 18 past POs
                                         </div>
                                         {[
-                                            { item:'Hydraulic Seals (merged)', target:'$34.50/pc', last:'$38.20', saving:'9.7%' },
-                                            { item:'Control Valves',           target:'$124/unit', last:'$131',   saving:'5.3%' },
-                                            { item:'Pressure Gauges',          target:'$115/unit', last:'$119',   saving:'3.4%' },
+                                            { item:'Hydraulic Seals (merged)', target:'₹34.50/pc', last:'₹38.20', saving:'9.7%' },
+                                            { item:'Control Valves',           target:'₹124/unit', last:'₹131',   saving:'5.3%' },
+                                            { item:'Pressure Gauges',          target:'₹115/unit', last:'₹119',   saving:'3.4%' },
                                         ].map(r => (
                                             <div key={r.item} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'5px 0', borderBottom:'1px solid rgba(15,23,42,0.04)', fontSize:10 }}>
                                                 <span style={{ color:'#475569', fontWeight:600 }}>{r.item}</span>

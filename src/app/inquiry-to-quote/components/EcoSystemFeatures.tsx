@@ -43,7 +43,7 @@ const vendors: Record<string, VendorData> = {
         bgClass: "bg-[#E6F5EC]",
         borderClass: "border-[#C9E8D7]",
         landedBomCost: 38420,
-        terms: "USD · N60 · 10d",
+        terms: "INR · N60 · 10d",
         mcuBid: 7.85,
         pcbBid: 3.05,
         labourBid: 1.79,
@@ -73,7 +73,7 @@ const vendors: Record<string, VendorData> = {
         bgClass: "bg-[#EEF2FF]",
         borderClass: "border-[#DCE3FF]",
         landedBomCost: 41920,
-        terms: "USD · N30 · 14d",
+        terms: "INR · N30 · 14d",
         mcuBid: 8.42,
         pcbBid: "not invited",
         labourBid: 2.10,
@@ -88,7 +88,7 @@ const vendors: Record<string, VendorData> = {
         bgClass: "bg-[#F3E8FF]",
         borderClass: "border-[#E9D5FF]",
         landedBomCost: 42800,
-        terms: "USD · N30 · 9d",
+        terms: "INR · N30 · 9d",
         mcuBid: 8.55,
         pcbBid: 3.20,
         labourBid: "not invited",
@@ -170,7 +170,7 @@ export default function EcoSystemFeatures() {
                         </div>
                         <div>
                             <div className="text-[9px] font-bold text-slate-900 leading-none">Best Landed Cost</div>
-                            <div className="text-[7.5px] text-slate-400 font-mono uppercase tracking-wider mt-0.5">-$3,710 vs PO</div>
+                            <div className="text-[7.5px] text-slate-400 font-mono uppercase tracking-wider mt-0.5">-₹3,710 vs PO</div>
                         </div>
                     </motion.div>
 
@@ -434,7 +434,7 @@ export default function EcoSystemFeatures() {
                                                         >
                                                             <span className="block text-[10px] font-bold">${v.landedBomCost.toLocaleString()}</span>
                                                             <span className="text-[7.5px] font-medium text-slate-400 block mt-0.2">
-                                                                {isBest ? "best" : vKey === "VendorB" ? "FX 83.2" : vKey === "VendorC" ? "+$3,710" : "partial"}
+                                                                {isBest ? "best" : vKey === "VendorB" ? "FX 83.2" : vKey === "VendorC" ? "+₹3,710" : "partial"}
                                                             </span>
                                                         </td>
                                                     )

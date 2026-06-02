@@ -84,9 +84,9 @@ function BulkDiscountWidget({ isHovered }: { isHovered: boolean }) {
 
       <div className="space-y-1 text-[8.5px]">
         {[
-          { req:'REQ-1041', item:'Hydraulic Seals',  qty:'50 pcs',  unit:'$18.40', total:'$920' },
-          { req:'REQ-1043', item:'Hydraulic Seals',  qty:'60 pcs',  unit:'$18.40', total:'$1,104' },
-          { req:'REQ-1047', item:'Hydraulic Seals',  qty:'90 pcs',  unit:'$18.40', total:'$1,656' },
+          { req:'REQ-1041', item:'Hydraulic Seals',  qty:'50 pcs',  unit:'₹18.40', total:'₹920' },
+          { req:'REQ-1043', item:'Hydraulic Seals',  qty:'60 pcs',  unit:'₹18.40', total:'₹1,104' },
+          { req:'REQ-1047', item:'Hydraulic Seals',  qty:'90 pcs',  unit:'₹18.40', total:'₹1,656' },
         ].map(r => (
           <div key={r.req} className="flex items-center justify-between bg-white p-1.5 rounded border border-slate-100 shadow-3xs">
             <span className="font-mono text-slate-400 text-[8px]">{r.req}</span>
@@ -97,7 +97,7 @@ function BulkDiscountWidget({ isHovered }: { isHovered: boolean }) {
         ))}
         <div className="flex justify-between items-center px-1.5 pt-1 border-t border-slate-200/60">
           <span className="text-slate-500 font-bold">3 separate POs</span>
-          <span className="font-mono font-bold text-red-500 text-[9px]">Total: $3,680</span>
+          <span className="font-mono font-bold text-red-500 text-[9px]">Total: ₹3,680</span>
         </div>
       </div>
 
@@ -116,12 +116,12 @@ function BulkDiscountWidget({ isHovered }: { isHovered: boolean }) {
             </div>
             <div className="bg-emerald-900/50 rounded p-1.5 border border-emerald-700/40">
               <div className="text-emerald-400 text-[7px] uppercase">Bulk Rate</div>
-              <div className="font-bold text-emerald-300">$14.90/pc</div>
+              <div className="font-bold text-emerald-300">₹14.90/pc</div>
             </div>
           </div>
           <div className="text-[8.5px] text-slate-300 mt-1 leading-tight font-medium">
-            Total: <span className="text-emerald-400 font-bold">$2,980</span>
-            <span className="text-emerald-300 ml-2">↓ $700 saved (19%)</span>
+            Total: <span className="text-emerald-400 font-bold">₹2,980</span>
+            <span className="text-emerald-300 ml-2">↓ ₹700 saved (19%)</span>
           </div>
         </div>
       </motion.div>
@@ -188,7 +188,7 @@ function EmailRFQWidget({ isHovered }: { isHovered: boolean }) {
           </div>
           <div className="bg-slate-50 border border-slate-200/60 px-2 py-1 rounded flex items-center justify-between text-emerald-600 font-bold shadow-3xs">
             <span>Best bid:</span>
-            <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded animate-pulse">✉️ $11,240 · Locked</span>
+            <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded animate-pulse">✉️ ₹11,240 · Locked</span>
           </div>
         </div>
       </motion.div>
@@ -210,7 +210,7 @@ function LandedCostWidget({ isHovered }: { isHovered: boolean }) {
         <div className="flex justify-between items-center bg-white p-2 rounded border border-slate-200/60 shadow-3xs">
           <div>
             <div className="text-[7.5px] text-slate-400 font-bold uppercase tracking-wider">Unit Price</div>
-            <div className="text-xs font-bold text-slate-800">$22.00</div>
+            <div className="text-xs font-bold text-slate-800">₹22.00</div>
           </div>
           <div className="text-right">
             <div className="text-[7.5px] text-slate-400 font-bold uppercase tracking-wider">Vendor</div>
@@ -231,15 +231,15 @@ function LandedCostWidget({ isHovered }: { isHovered: boolean }) {
         >
           <div className="flex justify-between text-slate-500 font-medium">
             <span>✈️ International Freight</span>
-            <span className="font-mono text-red-500 font-bold">+$3.80</span>
+            <span className="font-mono text-red-500 font-bold">+₹3.80</span>
           </div>
           <div className="flex justify-between text-slate-500 font-medium">
             <span>🏛️ Import Duties (BCD 10%)</span>
-            <span className="font-mono text-red-500 font-bold">+$2.20</span>
+            <span className="font-mono text-red-500 font-bold">+₹2.20</span>
           </div>
           <div className="flex justify-between text-slate-500 font-medium">
             <span>📦 Packaging & Insurance</span>
-            <span className="font-mono text-red-500 font-bold">+$1.40</span>
+            <span className="font-mono text-red-500 font-bold">+₹1.40</span>
           </div>
         </motion.div>
       </div>
@@ -247,8 +247,8 @@ function LandedCostWidget({ isHovered }: { isHovered: boolean }) {
       <div className="flex justify-between items-center pt-1.5 border-t border-slate-200/60 text-[9px] font-bold">
         <span className="text-slate-500 font-bold">True Landed Cost:</span>
         <div className="relative w-[55px] h-[14px] text-right font-mono font-bold">
-          <motion.span initial={{ opacity:1, y:0 }} animate={isHovered ? { opacity:0, y:-10 } : { opacity:1, y:0 }} className="absolute right-0 text-slate-800 text-[10px]">$22.00</motion.span>
-          <motion.span initial={{ opacity:0, y:10 }} animate={isHovered ? { opacity:1, y:0 } : { opacity:0, y:10 }} className="absolute right-0 text-red-500 text-[10px]">⚠️ $29.40</motion.span>
+          <motion.span initial={{ opacity:1, y:0 }} animate={isHovered ? { opacity:0, y:-10 } : { opacity:1, y:0 }} className="absolute right-0 text-slate-800 text-[10px]">₹22.00</motion.span>
+          <motion.span initial={{ opacity:0, y:10 }} animate={isHovered ? { opacity:1, y:0 } : { opacity:0, y:10 }} className="absolute right-0 text-red-500 text-[10px]">⚠️ ₹29.40</motion.span>
         </div>
       </div>
     </div>
@@ -276,7 +276,7 @@ function ManualPOWidget({ isHovered }: { isHovered: boolean }) {
         <div className="bg-white p-1 text-slate-700 font-bold">Total Value</div>
         <div className="bg-white p-1 relative h-[14px]">
           <motion.div initial={{ opacity:1, scale:1 }} animate={isHovered ? { opacity:0, scale:0.8 } : { opacity:1, scale:1 }} className="text-red-500 font-bold font-mono text-[7.5px] bg-red-50 px-1 rounded border border-red-200/50 leading-tight w-fit">#REF!</motion.div>
-          <motion.div initial={{ opacity:0, scale:0.8 }} animate={isHovered ? { opacity:1, scale:1 } : { opacity:0, scale:0.8 }} className="absolute inset-0 p-1 text-emerald-600 font-bold font-mono text-[8.5px]">$11,240</motion.div>
+          <motion.div initial={{ opacity:0, scale:0.8 }} animate={isHovered ? { opacity:1, scale:1 } : { opacity:0, scale:0.8 }} className="absolute inset-0 p-1 text-emerald-600 font-bold font-mono text-[8.5px]">₹11,240</motion.div>
         </div>
       </div>
 

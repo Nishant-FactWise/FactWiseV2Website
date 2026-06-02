@@ -5,10 +5,10 @@ import { motion } from 'framer-motion';
 import { Check, Play, Pause, Zap, Mail, RefreshCw, TrendingDown } from 'lucide-react';
 
 const VENDORS_BIDS = [
-    { code:'A', name:'Vendor A', r1:'$44.20', r2:'$41.80', r3:'$39.50', best:true  },
-    { code:'B', name:'Vendor B', r1:'$45.80', r2:'$43.20', r3:'$41.00', best:false },
-    { code:'C', name:'Vendor C', r1:'$47.10', r2:'$44.50', r3:'$43.20', best:false },
-    { code:'D', name:'Vendor D', r1:'$48.20', r2:null,     r3:null,     best:false },
+    { code:'A', name:'Vendor A', r1:'₹44.20', r2:'₹41.80', r3:'₹39.50', best:true  },
+    { code:'B', name:'Vendor B', r1:'₹45.80', r2:'₹43.20', r3:'₹41.00', best:false },
+    { code:'C', name:'Vendor C', r1:'₹47.10', r2:'₹44.50', r3:'₹43.20', best:false },
+    { code:'D', name:'Vendor D', r1:'₹48.20', r2:null,     r3:null,     best:false },
 ];
 
 export default function ReqSection33({ isActive = true }: { isActive?: boolean }) {
@@ -331,7 +331,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                 </div>
 
                                 <div style={{ background:'white', border:'1px solid rgba(15,23,42,0.07)', borderRadius:10, padding:'10px 12px', fontSize:10, color:'#475569' }}>
-                                    <div style={{ fontSize:9, fontWeight:800, color:'#94a3b8', letterSpacing:'0.08em', textTransform:'uppercase', fontFamily:"'JetBrains Mono',monospace", marginBottom:6 }}>Criteria: Target $34.50 · 500+ pcs · Delivery &lt; 30d</div>
+                                    <div style={{ fontSize:9, fontWeight:800, color:'#94a3b8', letterSpacing:'0.08em', textTransform:'uppercase', fontFamily:"'JetBrains Mono',monospace", marginBottom:6 }}>Criteria: Target ₹34.50 · 500+ pcs · Delivery &lt; 30d</div>
                                     <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
                                         {['Price Target Met', 'Lead Time', 'Payment Terms', 'Quality Cert'].map(c => (
                                             <span key={c} style={{ fontSize:8.5, fontWeight:700, color:'#3666ff', background:'rgba(54,102,255,0.07)', border:'1px solid rgba(54,102,255,0.12)', padding:'3px 8px', borderRadius:4 }}>{c}</span>
@@ -368,7 +368,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                 {negoRound >= 3 && (
                                     <div style={{ padding:'8px 13px', background:'rgba(0,184,132,0.07)', border:'1px solid rgba(0,184,132,0.2)', borderRadius:9, fontSize:10, fontWeight:700, color:'#065f46', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                                         <span>✓ AI drove Vendor A to best price · 0 messages sent by your team</span>
-                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, fontWeight:800, color:'#00b884' }}>$39.50 ↓10.6%</span>
+                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, fontWeight:800, color:'#00b884' }}>₹39.50 ↓10.6%</span>
                                     </div>
                                 )}
                             </div>
@@ -383,9 +383,9 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                 </div>
 
                                 {[
-                                    { side:'vendor', who:'Vendor A', text:'Best offer: $39.50/unit for 500 pcs. Lead time 25 days.', time:'2:14 PM', done: counterStep >= 1 },
-                                    { side:'buyer',  who:'You (FW Platform)',text:'Counter: $37.80/unit + 28-day delivery — final.', time:'2:18 PM', done: counterStep >= 2 },
-                                    { side:'vendor', who:'Vendor A', text:'Accepted. $37.80/unit · 500 pcs · PO ready to generate.', time:'2:31 PM', done: counterStep >= 3, accepted:true },
+                                    { side:'vendor', who:'Vendor A', text:'Best offer: ₹39.50/unit for 500 pcs. Lead time 25 days.', time:'2:14 PM', done: counterStep >= 1 },
+                                    { side:'buyer',  who:'You (FW Platform)',text:'Counter: ₹37.80/unit + 28-day delivery — final.', time:'2:18 PM', done: counterStep >= 2 },
+                                    { side:'vendor', who:'Vendor A', text:'Accepted. ₹37.80/unit · 500 pcs · PO ready to generate.', time:'2:31 PM', done: counterStep >= 3, accepted:true },
                                 ].map((msg, i) => (
                                     <div key={i} className={`s33-counterBubble ${msg.done ? 'in' : ''} ${msg.side === 'buyer' ? 'buyer' : 'vendor'}`} style={{ transitionDelay:`${i*0.1}s` }}>
                                         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:5 }}>

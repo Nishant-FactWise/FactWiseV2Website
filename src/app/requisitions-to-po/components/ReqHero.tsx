@@ -79,7 +79,7 @@ function WhiteDashboard() {
             {[
               {label:'Open Reqs',      value:'38',      delta:'↑ 12 this week'},
               {label:'Pending Approval',value:'18',     delta:'↓ 6 cleared today'},
-              {label:'POs Issued',     value:'$2.4M',   delta:'↑ 22% vs last qtr'},
+              {label:'POs Issued',     value:'₹2.4M',   delta:'↑ 22% vs last qtr'},
             ].map(k=>(
               <div key={k.label} style={{ background:'white',border:'1px solid #f1f5f9',borderRadius:8,padding:'9px 11px',boxShadow:'0 1px 3px rgba(15,23,42,0.04)' }}>
                 <div style={{fontSize:8,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>{k.label}</div>
@@ -221,15 +221,6 @@ export default function ReqHero() {
                 <ArrowRight style={{ width:14, height:14 }}/>
               </span>
             </Link>
-            <Link href="/demo" style={{
-              background:'transparent', color:'white',
-              border:'1px solid rgba(255,255,255,0.15)',
-              padding:'14px 22px', borderRadius:100, fontSize:15,
-              fontWeight:500, cursor:'pointer', fontFamily:'var(--font-inter)',
-              textDecoration:'none', display:'inline-flex', alignItems:'center',
-            }}>
-              Watch product tour
-            </Link>
           </div>
 
         </div>
@@ -262,7 +253,7 @@ export default function ReqHero() {
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:6 }}>
               <div>
                 <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>REQ-1041 · Approved</div>
-                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Engineering · $14,800 value</div>
+                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Engineering · ₹14,800 value</div>
               </div>
               <div style={{ width:24, height:24, borderRadius:6, background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.2)', display:'grid', placeItems:'center', color:'#10b981', fontSize:13 }}>✓</div>
             </div>
@@ -315,7 +306,7 @@ export default function ReqHero() {
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, paddingTop:10, borderTop:'1px solid #f1f5f9' }}>
               {[
                 {label:'Requisitions',  value:'3 merged'},
-                {label:'Savings',       value:'$1,840', green:true},
+                {label:'Savings',       value:'₹1,840', green:true},
                 {label:'Approval time', value:'4.2 hrs'},
                 {label:'PO cycle',      value:'< 1 day'},
               ].map(q=>(

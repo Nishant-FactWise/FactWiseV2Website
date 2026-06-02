@@ -128,7 +128,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
         { label: 'QUANTITY REQUIRED', value: '200 units' },
         { label: 'DEPARTMENT', value: 'Engineering · Project Alpha' },
         { label: 'REQUIRED BY', value: 'Jun 15, 2026' },
-        { label: 'ESTIMATED VALUE', value: '~$8,400' },
+        { label: 'ESTIMATED VALUE', value: '~₹8,400' },
     ];
 
     const approvers = [
@@ -518,7 +518,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                                         </div>
                                         <div>
                                             <div style={{ fontSize:10, fontWeight:800, color:'#0b1322' }}>All fields validated</div>
-                                            <div style={{ fontSize:9, color:'#3666ff', fontFamily:"'JetBrains Mono',monospace", marginTop:1 }}>5 vendors pre-matched · Target $42/unit</div>
+                                            <div style={{ fontSize:9, color:'#3666ff', fontFamily:"'JetBrains Mono',monospace", marginTop:1 }}>5 vendors pre-matched · Target ₹42/unit</div>
                                         </div>
                                     </div>
                                     <span style={{ fontSize:9, fontWeight:800, color:'#00b884', background:'rgba(0,184,132,0.1)', border:'1px solid rgba(0,184,132,0.2)', borderRadius:5, padding:'4px 10px', fontFamily:"'JetBrains Mono',monospace" }}>
@@ -554,9 +554,9 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                                 </div>
 
                                 {[
-                                    { label:'Hydraulic Cylinder Seal DN80', qty:'200 units', val:'$8,400' },
-                                    { label:'O-Ring Kit (Viton) #110',       qty:'500 units', val:'$1,250' },
-                                    { label:'Piston Rod Chrome 80mm',        qty:'50 units',  val:'$4,200' },
+                                    { label:'Hydraulic Cylinder Seal DN80', qty:'200 units', val:'₹8,400' },
+                                    { label:'O-Ring Kit (Viton) #110',       qty:'500 units', val:'₹1,250' },
+                                    { label:'Piston Rod Chrome 80mm',        qty:'50 units',  val:'₹4,200' },
                                 ].map((item, i) => (
                                     <div key={item.label} className={`s31-parseItem ${fileItems > i ? 'in' : ''}`} style={{ transitionDelay: `${i * 0.1}s` }}>
                                         <div>
@@ -593,7 +593,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                                     </div>
                                     <div>
                                         <div style={{ fontSize:10, fontWeight:800, color:'#1e3a8a' }}>Hydraulic Cylinder Seal Kit DN80</div>
-                                        <div style={{ fontSize:9, color:'#3666ff', fontFamily:"'JetBrains Mono',monospace", marginTop:1 }}>200 units · Est. $8,400 · Engineering</div>
+                                        <div style={{ fontSize:9, color:'#3666ff', fontFamily:"'JetBrains Mono',monospace", marginTop:1 }}>200 units · Est. ₹8,400 · Engineering</div>
                                     </div>
                                 </div>
 

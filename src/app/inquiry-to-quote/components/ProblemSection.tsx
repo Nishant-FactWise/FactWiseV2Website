@@ -38,7 +38,7 @@ function BOMComplexityWidget({ isHovered }: { isHovered: boolean }) {
                         <span className="text-slate-400 font-mono">1.</span>
                         <span className="font-semibold text-slate-700">PCB Multi-layer</span>
                     </div>
-                    <span className="text-slate-500 font-mono text-[8.5px]">$12.40</span>
+                    <span className="text-slate-500 font-mono text-[8.5px]">₹12.40</span>
                 </div>
 
                 {/* Item 2: Microcontroller (Alternates hover effect) */}
@@ -61,11 +61,11 @@ function BOMComplexityWidget({ isHovered }: { isHovered: boolean }) {
                     >
                         <div className="flex items-center justify-between text-emerald-700 bg-emerald-50/60 px-1 py-0.5 rounded border border-emerald-100/50">
                             <span>↳ Vendor B (Alt)</span>
-                            <span className="font-mono text-[8px] font-semibold">$2.10</span>
+                            <span className="font-mono text-[8px] font-semibold">₹2.10</span>
                         </div>
                         <div className="flex items-center justify-between text-slate-500 px-1">
                             <span>↳ Vendor C (Alt)</span>
-                            <span className="font-mono text-[8px]">$2.85</span>
+                            <span className="font-mono text-[8px]">₹2.85</span>
                         </div>
                     </motion.div>
                 </div>
@@ -89,7 +89,7 @@ function BOMComplexityWidget({ isHovered }: { isHovered: boolean }) {
                             animate={isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                             className="absolute right-0 text-emerald-600 text-[9px] font-bold"
                         >
-                            $0.42
+                            ₹0.42
                         </motion.span>
                     </div>
                 </div>
@@ -129,7 +129,7 @@ function PricingGuessworkWidget({ isHovered }: { isHovered: boolean }) {
                     </span>
                 </div>
                 <div className="flex items-center gap-2 bg-white border border-slate-200/60 p-1.5 rounded shadow-3xs">
-                    <span className="text-xs font-bold text-slate-800">$12.50</span>
+                    <span className="text-xs font-bold text-slate-800">₹12.50</span>
                     <span className="text-[8px] font-mono text-amber-600 animate-pulse font-semibold">❓ Manual Guess</span>
                 </div>
             </div>
@@ -144,7 +144,7 @@ function PricingGuessworkWidget({ isHovered }: { isHovered: boolean }) {
                 <div className="space-y-0.5">
                     <div className="flex justify-between text-[8.5px]">
                         <span className="text-slate-500 font-medium">Past PO Rates</span>
-                        <span className="font-mono text-slate-700 font-bold text-[8.5px]">$8.40</span>
+                        <span className="font-mono text-slate-700 font-bold text-[8.5px]">₹8.40</span>
                     </div>
                     <div className="w-full h-1 bg-slate-200 rounded-full overflow-hidden">
                         <motion.div
@@ -160,7 +160,7 @@ function PricingGuessworkWidget({ isHovered }: { isHovered: boolean }) {
                 <div className="space-y-0.5">
                     <div className="flex justify-between text-[8.5px]">
                         <span className="text-slate-500 font-medium">Active Contracts</span>
-                        <span className="font-mono text-slate-700 font-bold text-[8.5px]">$9.10</span>
+                        <span className="font-mono text-slate-700 font-bold text-[8.5px]">₹9.10</span>
                     </div>
                     <div className="w-full h-1 bg-slate-200 rounded-full overflow-hidden">
                         <motion.div
@@ -183,9 +183,9 @@ function PricingGuessworkWidget({ isHovered }: { isHovered: boolean }) {
                     <span className="text-[8px] font-mono tracking-widest text-emerald-400 uppercase font-bold">
                         FW Recommendation
                     </span>
-                    <span className="text-[13px] font-extrabold mt-1 text-white tracking-tight">$8.75 - $9.10</span>
+                    <span className="text-[13px] font-extrabold mt-1 text-white tracking-tight">₹8.75 - ₹9.10</span>
                     <span className="text-[8.5px] text-slate-300 mt-1 leading-tight font-medium">
-                        Save $3.40/unit (27% Margin)
+                        Save ₹3.40/unit (27% Margin)
                     </span>
                 </div>
             </motion.div>
@@ -281,7 +281,7 @@ function VendorCommWidget({ isHovered }: { isHovered: boolean }) {
                     <div className="bg-slate-50 border border-slate-200/60 px-2 py-1 rounded flex items-center justify-between text-emerald-600 font-bold shadow-3xs">
                         <span>Vendor A status:</span>
                         <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded animate-pulse">
-                            ✉️ Bid Locked ($8.15)
+                            ✉️ Bid Locked (₹8.15)
                         </span>
                     </div>
                 </div>
@@ -314,7 +314,7 @@ function HiddenCostsWidget({ isHovered }: { isHovered: boolean }) {
                         <div className="text-[7.5px] text-slate-400 font-bold uppercase tracking-wider">
                             Base Unit Price
                         </div>
-                        <div className="text-xs font-bold text-slate-800">$10.00</div>
+                        <div className="text-xs font-bold text-slate-800">₹10.00</div>
                     </div>
                     <div className="text-right">
                         <div className="text-[7.5px] text-slate-400 font-bold uppercase tracking-wider">
@@ -340,15 +340,15 @@ function HiddenCostsWidget({ isHovered }: { isHovered: boolean }) {
                 >
                     <div className="flex justify-between text-slate-500 font-medium">
                         <span>✈️ Logistics & Freight</span>
-                        <span className="font-mono text-red-500 font-bold">+$1.50</span>
+                        <span className="font-mono text-red-500 font-bold">+₹1.50</span>
                     </div>
                     <div className="flex justify-between text-slate-500 font-medium">
                         <span>🏛️ Import Customs (BCD)</span>
-                        <span className="font-mono text-red-500 font-bold">+$2.00</span>
+                        <span className="font-mono text-red-500 font-bold">+₹2.00</span>
                     </div>
                     <div className="flex justify-between text-slate-500 font-medium">
                         <span>📦 Packaging Fees</span>
-                        <span className="font-mono text-red-500 font-bold">+$1.00</span>
+                        <span className="font-mono text-red-500 font-bold">+₹1.00</span>
                     </div>
                 </motion.div>
             </div>
@@ -362,14 +362,14 @@ function HiddenCostsWidget({ isHovered }: { isHovered: boolean }) {
                         animate={isHovered ? { opacity: 0, y: -10 } : { opacity: 1, y: 0 }}
                         className="absolute right-0 text-slate-800 text-[10px]"
                     >
-                        $10.00
+                        ₹10.00
                     </motion.span>
                     <motion.span
                         initial={{ opacity: 0, y: 10 }}
                         animate={isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                         className="absolute right-0 text-red-500 text-[10px] flex items-center gap-0.5"
                     >
-                        ⚠️ $14.50
+                        ⚠️ ₹14.50
                     </motion.span>
                 </div>
             </div>
@@ -406,11 +406,11 @@ function ManualQuotingWidget({ isHovered }: { isHovered: boolean }) {
 
                 {/* Row 1 */}
                 <div className="bg-white p-1 text-slate-600 font-medium">BOM Parts Cost</div>
-                <div className="bg-white p-1 text-slate-800 font-bold">$120.00</div>
+                <div className="bg-white p-1 text-slate-800 font-bold">₹120.00</div>
 
                 {/* Row 2 */}
                 <div className="bg-white p-1 text-slate-600 font-medium">Assembly Markup</div>
-                <div className="bg-white p-1 text-slate-400 italic">=$120 * markup%</div>
+                <div className="bg-white p-1 text-slate-400 italic">=₹120 * markup%</div>
 
                 {/* Row 3 (Formula error) */}
                 <div className="bg-white p-1 text-slate-700 font-bold">Final Cust Quote</div>
@@ -427,7 +427,7 @@ function ManualQuotingWidget({ isHovered }: { isHovered: boolean }) {
                         animate={isHovered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
                         className="absolute inset-0 p-1 text-emerald-600 font-bold font-mono text-[8.5px]"
                     >
-                        $138.00
+                        ₹138.00
                     </motion.div>
                 </div>
             </div>
@@ -455,7 +455,7 @@ function ManualQuotingWidget({ isHovered }: { isHovered: boolean }) {
                 transition={{ delay: 0.25, type: "spring", stiffness: 120 }}
                 className="absolute bottom-0 left-0 right-0 bg-emerald-600 border-t border-emerald-500 p-2 text-[8.5px] text-white flex items-center justify-between font-bold shadow-lg"
             >
-                <span>✨ Locked Quote: $138.00</span>
+                <span>✨ Locked Quote: ₹138.00</span>
                 <span className="text-[7.5px] bg-white/20 px-1.5 rounded font-mono font-bold">
                     26.5% Margin
                 </span>

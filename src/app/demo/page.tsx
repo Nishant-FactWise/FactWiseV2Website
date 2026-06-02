@@ -136,7 +136,34 @@ export default function DemoPage() {
 
                   <div className="space-y-1.5">
                     <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Phone (Optional)</label>
-                    <input type="tel" className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="+1 (555) 000-0000" />
+                    <div className="relative flex rounded-lg border border-slate-200 bg-white hover:border-slate-300 transition-all shadow-sm focus-within:border-[#3666ff] focus-within:ring-4 focus-within:ring-[#3666ff]/10">
+                      <select 
+                        defaultValue="+91"
+                        className="bg-transparent pl-3 pr-5 py-2.5 text-slate-900 text-sm border-r border-slate-200 outline-none focus:outline-none cursor-pointer rounded-l-lg appearance-none font-medium"
+                        style={{ 
+                          backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E")`,
+                          backgroundRepeat: 'no-repeat',
+                          backgroundPosition: 'right 6px center',
+                          backgroundSize: '14px 14px'
+                        }}
+                      >
+                        <option value="+91">🇮🇳 +91</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+44">🇬🇧 +44</option>
+                        <option value="+971">🇦🇪 +971</option>
+                        <option value="+65">🇸🇬 +65</option>
+                        <option value="+61">🇦🇺 +61</option>
+                        <option value="+49">🇩🇪 +49</option>
+                        <option value="+33">🇫🇷 +33</option>
+                        <option value="+81">🇯🇵 +81</option>
+                        <option value="+86">🇨🇳 +86</option>
+                      </select>
+                      <input 
+                        type="tel" 
+                        className="flex-1 bg-transparent px-3 py-2.5 text-slate-900 focus:outline-none placeholder:text-slate-400 text-sm" 
+                        placeholder="" 
+                      />
+                    </div>
                   </div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -164,12 +191,17 @@ export default function DemoPage() {
                   
                   <div className="space-y-1.5">
                     <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Biggest Challenge</label>
-                    <select required className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all text-sm shadow-sm">
-                      <option value="" disabled selected>Select...</option>
-                      <option value="rfq">Slow RFQ processes</option>
-                      <option value="cost">Landed cost calculations</option>
-                      <option value="compliance">Vendor compliance & risk</option>
-                    </select>
+                    <input 
+                      type="text" 
+                      list="challenges"
+                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all text-sm shadow-sm placeholder:text-slate-400"
+                      placeholder="e.g. Slow RFQ processes, or type your own..."
+                    />
+                    <datalist id="challenges">
+                      <option value="Slow RFQ processes" />
+                      <option value="Landed cost calculations" />
+                      <option value="Vendor compliance & risk" />
+                    </datalist>
                   </div>
                   
                   <div className="pt-4">
