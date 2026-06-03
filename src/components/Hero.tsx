@@ -12,7 +12,7 @@ if (typeof window !== "undefined") {
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const pinnedRef  = useRef<HTMLDivElement>(null);
+  const pinnedRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   // Reduced-motion path:
@@ -53,50 +53,22 @@ export default function Hero() {
   // 1-px flicker on Windows / 125 % DPI). pinType: 'transform' is required
   // because we're inside the ScrollSmoother content wrapper.
   useGSAP(() => {
-    if (reducedMotion === null) return; // wait for matchMedia
-    const trigger = pinnedRef.current;
+    if (reducedMotion) return;
+    // Elegant fade-in/slide-up entrance animation on page load
     const content = contentRef.current;
-    if (!trigger || !content) return;
-
-    // Unblock visibility for both paths once we know the preference.
-    // Reduced-motion users will get re-hidden inside onUpdate below until
-    // they cross the 10 % pin-progress threshold.
-    setVisible(true);
-
-    const st = ScrollTrigger.create({
-      trigger,
-      start: "top top",
-      end: "+=100%",
-      pin: true,
-      pinType: "transform",
-      // Scrub only when the user is OK with smooth motion. Pinning by
-      // itself doesn't animate anything — it just holds the section in
-      // place — so it stays on for both paths and keeps the reveal effect
-      // feeling like "text appears on the hero", not "page is scrolling".
-      scrub: reducedMotion ? false : 0.3,
-      anticipatePin: 1,
-      onUpdate(self) {
-        if (reducedMotion) {
-          // Instant snap: visible once we've scrolled past 10 % of the
-          // pinned distance, hidden again if the user scrolls back.
-          setVisible(self.progress >= 0.1);
-          return;
-        }
-        // Smooth path: opacity 0 -> 1 + translateY 36 -> 0 between
-        // 5 % and 60 % of the pinned distance.
-        const t = Math.max(0, Math.min(1, (self.progress - 0.05) / 0.55));
-        content.style.opacity = `${t}`;
-        content.style.transform = `translate3d(0, ${(1 - t) * 36}px, 0)`;
-      },
-    });
-    return () => st.kill();
+    if (!content) return;
+    
+    gsap.fromTo(content,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 1.2, ease: "power4.out", delay: 0.2 }
+    );
   }, { scope: sectionRef, dependencies: [reducedMotion] });
 
   return (
     <section ref={sectionRef} className="bg-black relative">
       <div
         ref={pinnedRef}
-        className="relative h-screen w-full overflow-hidden"
+        className="relative h-[100dvh] md:h-screen w-full overflow-hidden"
         // backfaceVisibility + translate3d gives this element its own
         // stable compositing layer so the ScrollTrigger pin counter-
         // transform and the ScrollSmoother parent transform share the
@@ -104,16 +76,28 @@ export default function Hero() {
         style={{ backfaceVisibility: "hidden", transform: "translate3d(0,0,0)" }}
       >
 
-        {/* Background video — FinalIphone.mp4 */}
+        {/* Desktop Background video */}
         <video
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="hidden md:block absolute inset-0 h-full w-full object-cover"
         >
           <source src="/FinalIphone.mp4" type="video/mp4" />
+        </video>
+
+        {/* Mobile Background video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="block md:hidden absolute inset-0 h-full w-full object-cover"
+        >
+          <source src="/Final_iphone_mobileVersion.mp4" type="video/mp4" />
         </video>
 
         {/* Soft bottom gradient — keeps the eventual text legible without
@@ -127,14 +111,9 @@ export default function Hero() {
           ref={contentRef}
           className="absolute bottom-0 left-0 right-0 px-4 pb-4 sm:px-6 md:px-10 md:pb-0 lg:pb-0 will-change-transform"
           style={{
-            // Always start hidden via `visibility` (which globals.css's
-            // opacity rule doesn't touch). `visible` flips true once
-            // useEffect knows the reduced-motion preference.
-            visibility: visible ? "visible" : "hidden",
-            // For the smooth-motion path the GSAP onUpdate above overrides
-            // these as it scrubs; this is just the at-rest initial.
+            visibility: "visible",
             opacity: reducedMotion ? 1 : 0,
-            transform: reducedMotion ? "none" : "translate3d(0, 36px, 0)",
+            transform: reducedMotion ? "none" : "translate3d(0, 30px, 0)",
           }}
         >
           <div className="flex items-end justify-between gap-4 md:grid md:grid-cols-12 md:items-end md:gap-6">

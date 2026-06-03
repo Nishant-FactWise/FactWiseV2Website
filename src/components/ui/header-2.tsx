@@ -103,19 +103,23 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 		return null;
 	}
 
+	const isLandingPage = pathname === '/';
+
 	return (
 		<header
 			className={cn(
-				'fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ease-in-out mx-auto w-full',
+				'fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ease-in-out mx-auto',
 				{
 					'opacity-0': !mounted,
 					'opacity-100': mounted,
-					// Initial: Transparent, full width, no border
-					'top-0 bg-transparent py-4 md:max-w-[1800px] border border-transparent': !scrolled && !open,
-					// Scrolled: White Floating Pill with subtle border
-					'top-4 md:top-6 rounded-2xl md:max-w-7xl border border-black/5 shadow-[0_8px_32px_rgba(0,0,0,0.06)] bg-white/95 backdrop-blur-xl py-1': scrolled && !open,
+					// Initial Landing Page: Hidden on desktop, visible on mobile (matches top position of scrolled state to avoid jitter)
+					'top-4 md:top-6 bg-transparent border border-transparent md:opacity-0 md:-translate-y-12 md:pointer-events-none w-[calc(100%-2rem)] md:w-full md:max-w-[1800px]': isLandingPage && !scrolled && !open,
+					// Initial Other Pages: Transparent and visible
+					'top-0 bg-transparent py-4 border border-transparent w-full md:max-w-[1800px]': !isLandingPage && !scrolled && !open,
+					// Scrolled (Pill mode): pops out/down with border & backdrop-blur, leaves space on left/right on mobile
+					'top-4 md:top-6 rounded-2xl border border-black/5 shadow-[0_8px_32px_rgba(0,0,0,0.06)] bg-white/95 backdrop-blur-xl py-1 opacity-100 translate-y-0 w-[calc(100%-2rem)] md:w-full md:max-w-7xl': scrolled && !open,
 					// Mobile Open state
-					'top-0 w-full h-full bg-white border-transparent': open,
+					'top-0 w-full h-full bg-white border-transparent opacity-100 translate-y-0 rounded-none': open,
 				},
 			)}
 		>
