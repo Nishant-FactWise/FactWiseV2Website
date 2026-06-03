@@ -112,10 +112,8 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 				{
 					'opacity-0': !mounted,
 					'opacity-100': mounted,
-					// Initial Landing Page: Hidden on desktop, visible on mobile (matches top position of scrolled state to avoid jitter)
-					'top-4 md:top-6 bg-transparent border border-transparent md:opacity-0 md:-translate-y-12 md:pointer-events-none w-[calc(100%-2rem)] md:w-full md:max-w-[1800px]': isLandingPage && !scrolled && !open,
-					// Initial Other Pages: Transparent and visible
-					'top-0 bg-transparent py-4 border border-transparent w-full md:max-w-[1800px]': !isLandingPage && !scrolled && !open,
+					// Initial (All pages): Transparent, full width, visible on page load
+					'top-0 bg-transparent py-4 border border-transparent w-full md:max-w-[1800px]': !scrolled && !open,
 					// Scrolled (Pill mode): pops out/down with border & backdrop-blur, leaves space on left/right on mobile
 					'top-4 md:top-6 rounded-2xl border border-black/5 shadow-[0_8px_32px_rgba(0,0,0,0.06)] bg-white/95 backdrop-blur-xl py-1 opacity-100 translate-y-0 w-[calc(100%-2rem)] md:w-full md:max-w-7xl': scrolled && !open,
 					// Mobile Open state
