@@ -104,18 +104,16 @@ export default function Hero() {
         style={{ backfaceVisibility: "hidden", transform: "translate3d(0,0,0)" }}
       >
 
-        {/* Background video — same compressed sources as before. */}
+        {/* Background video — FinalIphone.mp4 */}
         <video
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
-          poster="/factwise-hero-poster.jpg"
           className="absolute inset-0 h-full w-full object-cover"
         >
-          <source src="/factwise-hero.webm" type="video/webm" />
-          <source src="/factwise-hero.mp4"  type="video/mp4" />
+          <source src="/FinalIphone.mp4" type="video/mp4" />
         </video>
 
         {/* Soft bottom gradient — keeps the eventual text legible without
