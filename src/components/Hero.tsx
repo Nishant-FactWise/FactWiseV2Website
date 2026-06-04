@@ -13,11 +13,13 @@ const fontInter = 'var(--font-inter)';
 
 const slides = [
   { 
-    media: "/FinalIphone.mp4",
+    mediaDesktop: "/FinalIphone.mp4",
+    mediaMobile: "/FinalIphone_mobileVersion.mp4",
     label: "ELECTRONICS"
   },
   { 
-    media: "/Final_ChemicalProduction_Video.mp4",
+    mediaDesktop: "/Final_ChemicalProduction_Video.mp4",
+    mediaMobile: "/Final_ChemicalProduction_mobileversion.mp4",
     label: "CHEMICAL"
   }
 ];
@@ -32,6 +34,17 @@ export default function Hero() {
   const activeIndexRef = useRef(0);
   const isTransitioning = useRef(false);
   const textOverlayRef = useRef<HTMLDivElement>(null);
+
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Sync activeIndex to ref to prevent stale closure bugs
   useEffect(() => {
@@ -96,6 +109,16 @@ export default function Hero() {
       cleanups.forEach(item => item?.cleanup());
     };
   }, []);
+
+  // Re-play video if src changes due to resize
+  useEffect(() => {
+    if (!mounted) return;
+    const currentActive = activeIndexRef.current;
+    const activeVideo = videoRefs.current[currentActive];
+    if (activeVideo) {
+      activeVideo.play().catch(() => {});
+    }
+  }, [isMobile, mounted]);
 
   // Butter-smooth 60fps progress bar updating using requestAnimationFrame (bypasses React re-renders)
   useEffect(() => {
@@ -223,7 +246,7 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef} 
-      className="relative w-full h-[100dvh] md:h-screen bg-black overflow-hidden select-none"
+      className="relative w-full h-[100svh] md:h-screen bg-black overflow-hidden select-none"
       style={{ zIndex: 1 }}
     >
       
@@ -242,11 +265,11 @@ export default function Hero() {
             {/* The Video Element */}
             <video
               ref={el => { videoRefs.current[i] = el; }}
-              src={slide.media}
+              src={mounted && isMobile ? slide.mediaMobile : slide.mediaDesktop}
               muted
               playsInline
               preload="auto"
-              className="absolute inset-0 w-full h-full object-cover scale-[1.02]"
+              className="absolute inset-0 w-full h-full object-contain md:object-cover scale-[1.02]"
             />
             
             {/* Dark Overlay for Text Readability */}
@@ -261,7 +284,7 @@ export default function Hero() {
       {/* Scroll-reveal Text Overlay */}
       <div 
         ref={textOverlayRef}
-        className="absolute inset-0 z-[6] flex flex-col md:flex-row items-start md:items-end justify-between px-6 md:px-16 pb-[18%] md:pb-[8%] pointer-events-none"
+        className="absolute inset-0 z-[6] flex flex-col md:flex-row items-start md:items-end justify-end md:justify-between px-6 md:px-16 pb-[18%] md:pb-[8%] pointer-events-none"
         style={{ opacity: 0, transform: 'translateY(20px)' }}
       >
         {/* Left Side: Huge FactWise Text */}
@@ -273,7 +296,7 @@ export default function Hero() {
         </h1>
 
         {/* Right Side: Description paragraph */}
-        <div className="max-w-[90%] md:max-w-[400px] mt-4 md:mt-0 md:mr-12">
+        <div className="hidden md:block max-w-[90%] md:max-w-[400px] mt-4 md:mt-0 md:mr-12">
           <p 
             className="text-white/80 text-[14px] md:text-[15px] leading-relaxed tracking-wide font-normal"
             style={{ fontFamily: fontInter }}
