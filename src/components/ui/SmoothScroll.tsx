@@ -20,6 +20,11 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const usesLenis = LENIS_ROUTES.includes(pathname);
 
   useGSAP(() => {
+    if (typeof window !== 'undefined') {
+      window.history.scrollRestoration = 'manual';
+      ScrollTrigger.clearScrollMemory();
+    }
+
     if (usesLenis) return;
 
     activeSmoother = ScrollSmoother.create({
@@ -30,22 +35,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       ignoreMobileResize: true,
     });
 
-    let refreshTimer: ReturnType<typeof setTimeout> | null = null;
-    const scheduleRefresh = () => {
-      if (refreshTimer) clearTimeout(refreshTimer);
-      refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
-    };
-
-    const content = document.querySelector('#smooth-content');
-    const ro = content ? new ResizeObserver(scheduleRefresh) : null;
-    if (content && ro) ro.observe(content);
-
-    window.addEventListener('load', scheduleRefresh);
+    ScrollTrigger.refresh();
 
     return () => {
-      if (refreshTimer) clearTimeout(refreshTimer);
-      ro?.disconnect();
-      window.removeEventListener('load', scheduleRefresh);
       activeSmoother?.kill();
       activeSmoother = null;
     };

@@ -2,9 +2,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 @layer base {
   :root {
@@ -697,5 +695,13 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     transition-delay: 0ms !important;
+  }
+}
+
+/* Ensure Hero text overlay is visible initially on mobile devices */
+@media (max-width: 767px) {
+  .hero-mobile-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
   }
 }

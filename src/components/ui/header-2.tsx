@@ -19,7 +19,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 	const [open, setOpen] = React.useState(false);
 	const [expandedMobileMenu, setExpandedMobileMenu] = React.useState<string | null>('Product');
 	const [mounted, setMounted] = React.useState(false);
-	const scrolled = useScroll(20);
+	const scrolled = useScroll(pathname === '/' ? () => (typeof window !== 'undefined' ? window.innerHeight : 800) : 20);
 
 	// Dropdown hover-intent: keeps the menu open as the cursor crosses the
 	// invisible gap between the trigger and the panel. Pure CSS group-hover
@@ -108,22 +108,22 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 	return (
 		<header
 			className={cn(
-				'fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ease-in-out mx-auto',
+				'fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] mx-auto',
 				{
 					'opacity-0': !mounted,
 					'opacity-100': mounted,
 					// Initial (All pages): Transparent, full width, visible on page load
-					'top-0 bg-transparent py-4 border border-transparent w-full md:max-w-[1800px]': !scrolled && !open,
+					'top-0 bg-transparent py-4 border border-transparent w-full md:max-w-[1800px] scale-100': !scrolled && !open,
 					// Scrolled (Pill mode): pops out/down with border & backdrop-blur, leaves space on left/right on mobile
-					'top-4 md:top-6 rounded-2xl border border-black/5 shadow-[0_8px_32px_rgba(0,0,0,0.06)] bg-white/95 backdrop-blur-xl py-1 opacity-100 translate-y-0 w-[calc(100%-2rem)] md:w-full md:max-w-7xl': scrolled && !open,
+					'top-3 md:top-4 rounded-2xl border border-black/[0.1] shadow-[0_30px_60px_rgba(0,0,0,0.15),0_4px_12px_rgba(0,0,0,0.1)] bg-white/95 backdrop-blur-xl py-1 opacity-100 translate-y-0 scale-[1.02] w-[calc(100%-2rem)] md:w-full md:max-w-7xl': scrolled && !open,
 					// Mobile Open state
-					'top-0 w-full h-full bg-white border-transparent opacity-100 translate-y-0 rounded-none': open,
+					'top-0 w-full h-full bg-white border-transparent opacity-100 translate-y-0 scale-100 rounded-none': open,
 				},
 			)}
 		>
 			<nav
 				className={cn(
-					'flex h-14 w-full items-center justify-between px-6 md:px-12 lg:px-20 transition-all duration-500',
+					'flex h-14 w-full items-center justify-between px-6 md:px-12 lg:px-20 transition-all duration-300',
 					{
 						'md:px-8': scrolled,
 					},
@@ -133,9 +133,11 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 					<img
 						src={(scrolled || open || !mounted || theme === 'light') ? "/logo.webp" : "/logowhite.webp"}
 						alt="FactWise Logo"
-						className="h-8 w-8 shrink-0 transition-all duration-500"
+						width={32}
+						height={32}
+						className="h-8 w-8 shrink-0 transition-all duration-300"
 					/>
-					<span className={cn("text-[17px] font-bold tracking-tight transition-colors duration-500", {
+					<span className={cn("text-[17px] font-bold tracking-tight transition-colors duration-300", {
 						"text-white": !scrolled && !open && mounted && theme === 'dark',
 						"text-black": scrolled || open || !mounted || theme === 'light',
 					})}>FactWise</span>
@@ -147,7 +149,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 						const active = isLinkActive(link);
 						const isOpen = openMenu === i;
 						const linkClass = cn(
-							'relative transition-colors duration-500 flex items-center gap-1.5 text-[14px] font-medium cursor-pointer',
+							'relative transition-colors duration-300 flex items-center gap-1.5 text-[14px] font-medium cursor-pointer',
 							darkMode
 								? active ? 'text-white' : 'text-white/80 hover:text-white hover:bg-white/10'
 								: active ? 'text-black' : 'text-black/60 hover:text-black hover:bg-black/5',
@@ -219,14 +221,14 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 							</div>
 						);
 					})}
-					<div className={cn("w-px h-4 mx-4 transition-colors duration-500", {
+					<div className={cn("w-px h-4 mx-4 transition-colors duration-300", {
 						"bg-white/20": !scrolled && !open && theme === 'dark',
 						"bg-black/10": scrolled || open || theme === 'light',
 					})} />
 					{(() => {
 						const darkMode = !scrolled && !open && theme === 'dark';
 						const loginClass = cn(
-							'relative transition-colors duration-500 flex items-center text-[14px] font-medium cursor-pointer',
+							'relative transition-colors duration-300 flex items-center text-[14px] font-medium cursor-pointer',
 							darkMode
 								? 'text-white/80 hover:text-white hover:bg-white/10'
 								: 'text-black/60 hover:text-black hover:bg-black/5',
@@ -255,7 +257,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 						onClick={() => window.location.href = '/demo'}
 					/>
 				</div>
-				<Button size="icon" variant="ghost" onClick={() => setOpen(!open)} className={cn("md:hidden rounded-full border transition-colors duration-500", {
+				<Button size="icon" variant="ghost" onClick={() => setOpen(!open)} className={cn("md:hidden rounded-full border transition-colors duration-300", {
 					// Glassy chip so the menu button stays clearly visible over the hero
 					// from the start (not just a bare white icon lost in the image).
 					"text-white bg-white/15 border-white/25 backdrop-blur-md hover:bg-white/25": !scrolled && !open && theme === 'dark',

@@ -379,6 +379,13 @@ gtag('consent', 'default', {
 gtag('set', 'ads_data_redaction', true);`,
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if (typeof window !== 'undefined' && window.history) {
+  window.history.scrollRestoration = 'manual';
+}`,
+          }}
+        />
         <Script id="gtm" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

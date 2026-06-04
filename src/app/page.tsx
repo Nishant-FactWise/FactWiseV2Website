@@ -45,19 +45,23 @@ export default function Home() {
     >
       {/* Above fold — loaded eagerly */}
       <Hero />
-      <StatsStrip />
 
-      {/* Below fold — viewport-deferred chunk fetch + mount */}
-      <LazySection minHeight="70vh"><ProblemSection /></LazySection>
-      <LazySection minHeight="100vh"><MethodologySection /></LazySection>
-      <LazySection minHeight="80vh"><ProductHubAnimation /></LazySection>
-      <LazySection minHeight="60vh"><ProcurementModules /></LazySection>
-      <LazySection minHeight="80vh"><ImplementationRoadmap /></LazySection>
-      <LazySection minHeight="80vh"><IntegrationsShowcase /></LazySection>
-      <LazySection minHeight="50vh"><Testimonials /></LazySection>
-      <LazySection minHeight="60vh"><ModernCaseStudies /></LazySection>
-      <LazySection minHeight="60vh"><ExpandingIndustrySection /></LazySection>
-      <LazySection minHeight="40vh"><FlickeringFooter /></LazySection>
+      <div className="relative z-10 bg-white w-full hero-overlap-content" style={{ background: '#FFFFFF', zIndex: 10 }}>
+        <StatsStrip />
+
+        {/* Below fold — viewport-deferred chunk fetch + mount */}
+        {/* First few sections loaded eagerly to prevent scroll-jump when mounting during active scroll */}
+        <LazySection eager={true} minHeight="70vh"><ProblemSection /></LazySection>
+        <LazySection eager={true} minHeight="100vh"><MethodologySection /></LazySection>
+        <LazySection minHeight="80vh"><ProductHubAnimation /></LazySection>
+        <LazySection minHeight="60vh"><ProcurementModules /></LazySection>
+        <LazySection minHeight="80vh"><ImplementationRoadmap /></LazySection>
+        <LazySection minHeight="80vh"><IntegrationsShowcase /></LazySection>
+        <LazySection minHeight="50vh"><Testimonials /></LazySection>
+        <LazySection minHeight="60vh"><ModernCaseStudies /></LazySection>
+        <LazySection minHeight="60vh"><ExpandingIndustrySection /></LazySection>
+        <LazySection minHeight="40vh"><FlickeringFooter /></LazySection>
+      </div>
     </main>
   );
 }

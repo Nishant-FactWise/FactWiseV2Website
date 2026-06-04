@@ -14,7 +14,7 @@ const fontInter = 'var(--font-inter)';
 const slides = [
   { 
     mediaDesktop: "/FinalIphone.mp4",
-    mediaMobile: "/FinalIphone_mobileVersion.mp4",
+    mediaMobile: "/Final_iphone_mobileVersion.mp4",
     label: "ELECTRONICS"
   },
   { 
@@ -51,9 +51,9 @@ export default function Hero() {
     activeIndexRef.current = activeIndex;
   }, [activeIndex]);
 
-  // Pinned scroll-reveal animation for text overlay
+  // Pinned scroll-reveal animation for text overlay (Desktop only)
   useGSAP(() => {
-    if (!containerRef.current || !textOverlayRef.current) return;
+    if (!containerRef.current || !textOverlayRef.current || !mounted || isMobile) return;
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -75,7 +75,7 @@ export default function Hero() {
       ease: 'none',
     });
 
-  }); // Global scope allows targeting .hero-overlap-content in page.tsx
+  }, { dependencies: [mounted, isMobile] }); // Global scope allows targeting .hero-overlap-content in page.tsx
 
   // Set up video ended event listeners
   useEffect(() => {
@@ -277,37 +277,35 @@ export default function Hero() {
           </div>
         ))}
       </div>
-
+ 
       {/* Soft Bottom Shadow/Gradient Layer */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 to-transparent z-[5]" />
-
+ 
       {/* Scroll-reveal Text Overlay */}
       <div 
         ref={textOverlayRef}
-        className="absolute inset-0 z-[6] flex flex-col md:flex-row items-start md:items-end justify-end md:justify-between px-6 md:px-16 pb-[18%] md:pb-[8%] pointer-events-none"
+        className="absolute inset-0 z-[6] flex flex-col md:flex-row items-start md:items-end justify-end md:justify-between px-6 md:px-16 pb-[25%] md:pb-[3%] pointer-events-none hero-mobile-visible"
         style={{ opacity: 0, transform: 'translateY(20px)' }}
       >
-        {/* Left Side: Huge FactWise Text */}
-        <h1 
-          className="text-white text-[15vw] md:text-[8vw] font-bold tracking-tighter leading-none select-none"
-          style={{ fontFamily: fontDisplay, color: '#F2F1E8' }}
-        >
-          FactWise
-        </h1>
-
-        {/* Right Side: Description paragraph */}
-        <div className="hidden md:block max-w-[90%] md:max-w-[400px] mt-4 md:mt-0 md:mr-12">
-          <p 
-            className="text-white/80 text-[14px] md:text-[15px] leading-relaxed tracking-wide font-normal"
-            style={{ fontFamily: fontInter }}
+        {/* Left Side: Huge FactWise Text and Subheading */}
+        <div className="flex flex-col items-start max-w-[95%] md:max-w-[500px]">
+          <h1 
+            className="text-white text-[10vw] md:text-[7.6vw] font-bold tracking-tighter leading-none select-none"
+            style={{ fontFamily: fontDisplay, color: '#F2F1E8', textShadow: '0 4px 20px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.5)' }}
           >
-            Procurement is just the beginning. FactWise connects every workflow — from customer quotes and vendor RFQs to POs, payments, and beyond — in one platform built for manufacturers.
+            FactWise
+          </h1>
+          <p 
+            className="block text-white/90 text-[12px] md:text-[15px] mt-2 md:mt-4 leading-relaxed tracking-wide font-normal"
+            style={{ fontFamily: fontInter, textShadow: '0 2px 10px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.5)' }}
+          >
+           FactWise connects every vendor workflow including Inquiry to Quote, Requisition to PO and Invoice to Pay.
           </p>
         </div>
       </div>
 
       {/* Right Column Slide Navigation */}
-      <nav className="absolute bottom-[6%] right-[6%] md:bottom-[10%] md:right-[8%] flex gap-6 md:gap-8 z-[10]">
+      <nav className="absolute bottom-[calc(50%-22vw)] right-[6%] md:bottom-[10%] md:right-[8%] flex gap-6 md:gap-8 z-[10]">
         {slides.map((slide, i) => (
           <div 
             key={i} 
@@ -324,7 +322,7 @@ export default function Hero() {
             </div>
             {/* Nav title */}
             <span 
-              className="text-[11px] md:text-xs uppercase tracking-wider font-semibold text-white"
+              className="text-[9px] md:text-xs uppercase tracking-wider font-semibold text-white"
               style={{ fontFamily: fontInter }}
             >
               {slide.label}
