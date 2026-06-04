@@ -164,8 +164,8 @@ function SourcingPanel() {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
                 {[
-                  { vendor: 'Global Parts', share: '60%', cost: '$42,400' },
-                  { vendor: 'TechLogistics', share: '40%', cost: '$29,100' }
+                  { vendor: 'Global Parts', share: '60%', cost: '₹42,400' },
+                  { vendor: 'TechLogistics', share: '40%', cost: '₹29,100' }
                 ].map(v => (
                   <div key={v.vendor} style={{ padding: 10, borderRadius: 8, background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}>
                     <div style={{ fontSize: 10, color: '#000000', marginBottom: 4, fontWeight: 600 }}>{v.vendor}</div>
@@ -188,7 +188,7 @@ function SourcingPanel() {
               <span style={{ fontSize: 11, color: '#34d399', display: 'block', marginBottom: 4 }}>Landed Cost Recommendation</span>
               <span style={{ fontSize: 14, fontWeight: 700, color: '#000000' }}>Alpha Steel Inc.</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#34d399' }}>$42,100</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#34d399' }}>₹42,100</span>
                 <span style={{ fontSize: 10, color: '#34d399', opacity: 0.7 }}>12% below target</span>
               </div>
             </div>
@@ -221,8 +221,8 @@ const spendCats = [
 ];
 
 const kpiCards = [
-  { label: 'Total Spend YTD', value: '$4.2M', valueColor: '#000000', bg: 'rgba(0,0,0,0.03)', border: 'rgba(0,0,0,0.07)' },
-  { label: 'Savings', value: '$1.1M ↓ 27%', valueColor: '#34d399', bg: 'rgba(52,211,153,0.06)', border: 'rgba(52,211,153,0.18)' },
+  { label: 'Total Spend YTD', value: '₹4.2 Cr', valueColor: '#000000', bg: 'rgba(0,0,0,0.03)', border: 'rgba(0,0,0,0.07)' },
+  { label: 'Savings', value: '₹1.1 Cr ↓ 27%', valueColor: '#34d399', bg: 'rgba(52,211,153,0.06)', border: 'rgba(52,211,153,0.18)' },
 ];
 
 function AnalyticsPanel() {
@@ -231,8 +231,8 @@ function AnalyticsPanel() {
       <div style={{ padding: '24px', height: '100%', overflow: 'hidden' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 28 }}>
           {[
-            { label: 'Total Spend', val: '$4.2M', delta: '+12%', color: '#000000' },
-            { label: 'Cost Savings', val: '$1.1M', delta: '27.4%', color: '#34d399' },
+            { label: 'Total Spend', val: '₹4.2 Cr', delta: '+12%', color: '#000000' },
+            { label: 'Cost Savings', val: '₹1.1 Cr', delta: '27.4%', color: '#34d399' },
             { label: 'Compliance', val: '93%', delta: '+5.2%', color: '#3b82f6' }
           ].map((kpi, i) => (
             <motion.div

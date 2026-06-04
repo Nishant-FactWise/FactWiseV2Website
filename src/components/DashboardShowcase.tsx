@@ -379,7 +379,7 @@ function PurchaseOrderMockup() {
         <Kpi label="Active POs" value="48" accent={accent} />
         <Kpi label="In Approval" value="12" accent="#f59e0b" />
         <Kpi label="Overdue" value="3" accent="#f43f5e" />
-        <Kpi label="Total Value" value="$2.4M" accent={accent} />
+        <Kpi label="Total Value" value="₹2.4 Cr" accent={accent} />
       </div>
 
       <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 10, padding: '9px 12px' }}>
@@ -516,10 +516,10 @@ function AnalyticsMockup() {
     { name: 'Services', pct: 14, color: '#f43f5e' },
   ];
   const vendors = [
-    { name: 'Thrift Co.', spend: '$1.2M', pct: 100 },
-    { name: 'AlphaSup', spend: '$820K', pct: 68 },
-    { name: 'GlobalMat', spend: '$640K', pct: 53 },
-    { name: 'PartHub', spend: '$380K', pct: 32 },
+    { name: 'Thrift Co.', spend: '₹1.2 Cr', pct: 100 },
+    { name: 'AlphaSup', spend: '₹82L', pct: 68 },
+    { name: 'GlobalMat', spend: '₹64L', pct: 53 },
+    { name: 'PartHub', spend: '₹38L', pct: 32 },
   ];
 
   return (
@@ -538,7 +538,7 @@ function AnalyticsMockup() {
       }
     >
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 7 }}>
-        <Kpi label="Total Spend" value="$4.2M" accent={accent} />
+        <Kpi label="Total Spend" value="₹4.2 Cr" accent={accent} />
         <Kpi label="Savings" value="23%" accent="#10b981" />
         <Kpi label="Active POs" value="156" accent={accent} />
         <Kpi label="Vendors" value="38" accent={accent} />

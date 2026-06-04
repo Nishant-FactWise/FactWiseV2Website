@@ -32,9 +32,9 @@ const BrowserFrame = ({ url, children, className = '' }: { url: string; children
 function SupplierScoringMockup() {
   const containerRef = useRef<HTMLDivElement>(null);
   const suppliers = [
-    { name: 'Alpha Inc', tag: 'Recommended', price: '$4.20', lead: '5 days', qty: 100, score: 94, color: '#34d399' },
-    { name: 'Unicorn Resale', tag: 'Alt', price: '$4.85', lead: '7 days', qty: 50, score: 81, color: '#7c5cfc' },
-    { name: 'Stermone Ltd', tag: 'New', price: '$5.10', lead: '10 days', qty: 200, score: 72, color: '#fbbf24' },
+    { name: 'Alpha Inc', tag: 'Recommended', price: '₹4.20', lead: '5 days', qty: 100, score: 94, color: '#34d399' },
+    { name: 'Unicorn Resale', tag: 'Alt', price: '₹4.85', lead: '7 days', qty: 50, score: 81, color: '#7c5cfc' },
+    { name: 'Stermone Ltd', tag: 'New', price: '₹5.10', lead: '10 days', qty: 200, score: 72, color: '#fbbf24' },
   ];
 
   useEffect(() => {
@@ -255,7 +255,7 @@ function NLPMockup() {
         ))}
       </div>
       <div style={{ fontSize: 11, color: '#34d399', background: 'rgba(52,211,153,0.05)', border: '1px solid rgba(52,211,153,0.1)', padding: '6px 10px', borderRadius: 8 }}>
-        ↑ $2.4M spend analyzed
+        ↑ ₹2.4M spend analyzed
       </div>
       <style jsx>{`
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
@@ -321,7 +321,7 @@ function BYOKMockup() {
         <div style={{ padding: '16px', margin: '0 16px 16px', background: '#111116', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <div style={{ fontSize: 11, color: '#6b6b7a', marginBottom: 4 }}>Total Amount</div>
-            <div style={{ fontSize: 20, fontWeight: 700, color: '#f4f4f5' }}>$12,480.00</div>
+            <div style={{ fontSize: 20, fontWeight: 700, color: '#f4f4f5' }}>₹12,480.00</div>
           </div>
           <div className="release-btn" style={{ padding: '10px 16px', fontSize: 13, fontWeight: 600, color: '#fff', background: '#f59e0b', borderRadius: 8 }}>
             Release Payment →

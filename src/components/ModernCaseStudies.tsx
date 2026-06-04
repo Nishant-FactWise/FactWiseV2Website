@@ -35,7 +35,7 @@ const CASE_STUDIES: CaseStudy[] = [
     metrics: [
       { label: 'Profit increase', value: '3%' },
       { label: 'Process speed', value: '3x' },
-      { label: 'Cost saved', value: '$1.2M' },
+      { label: 'Cost saved', value: '₹1.2 Cr' },
     ],
     readTime: '8 min read',
     color: '#000000',

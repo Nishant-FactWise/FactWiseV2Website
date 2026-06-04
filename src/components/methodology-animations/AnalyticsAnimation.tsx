@@ -36,7 +36,7 @@ const KPIS = [
   { label: "Margin Focus",  red: "-2.4%",  green: "+3.1%", icon: Shield,  tone: "rose" },
   { label: "Cycle Time",   red: "14 days", green: "6 days", icon: Activity, tone: "amber" },
   { label: "PO Accuracy",  red: "82%",    green: "98%",   icon: Target,  tone: "cyan" },
-  { label: "Spend / SKU",  red: "$2.1K",  green: "$1.7K", icon: Coins,   tone: "pink" },
+  { label: "Spend / SKU",  red: "₹2.1L",  green: "₹1.7L", icon: Coins,   tone: "pink" },
 ];
 
 // Vendor performance scorecard radar dimensions
@@ -360,7 +360,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
   /* ===== Donut geometry ===== */
   const donutR = 64, donutCx = 85, donutCy = 85;
   const donutCirc = 2 * Math.PI * donutR;
-  const totalSpend = SPEND.reduce((s, x) => s + x.value, 0); // 2700 → "$2.7M"
+  const totalSpend = SPEND.reduce((s, x) => s + x.value, 0); // 2700 → "₹2.7M"
   
   let segStart = 0;
   const segs = SPEND.map((s) => {
@@ -561,7 +561,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                               {b.code}
                             </div>
                             <div className="font-semibold text-slate-800 text-[10px] truncate">{b.name}</div>
-                            <div className="font-mono text-slate-900 text-[10px] font-bold">${(bidPrices[i] / 1000).toFixed(1)}K</div>
+                            <div className="font-mono text-slate-900 text-[10px] font-bold">₹{(bidPrices[i] / 100000).toFixed(2)}L</div>
                             <div className={cn(
                               "text-[9px] font-bold flex items-center gap-0.5",
                               b.delta < 0 ? "text-emerald-600" : "text-rose-600"
@@ -661,11 +661,11 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                         </div>
                         {/* Y-Axis HTML Labels */}
                         <div className="absolute right-2 top-3 bottom-6 flex flex-col justify-between text-[8px] font-medium text-slate-400 select-none h-[calc(100%-36px)] text-right">
-                          <span>$145</span>
-                          <span>$138</span>
-                          <span>$131</span>
-                          <span>$125</span>
-                          <span>$120</span>
+                          <span>₹145</span>
+                          <span>₹138</span>
+                          <span>₹131</span>
+                          <span>₹125</span>
+                          <span>₹120</span>
                         </div>
                         {/* Y-Axis Title */}
                         <div className="absolute right-2 top-[-2px] text-[7.5px] font-semibold text-slate-500 select-none">
@@ -759,7 +759,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                           ))}
                         </svg>
                         <div className="absolute inset-0 flex flex-col items-center justify-center leading-none pointer-events-none select-none">
-                          <span className="text-base font-bold text-slate-800">$2.7M</span>
+                          <span className="text-base font-bold text-slate-800">₹2.7 Cr</span>
                           <span className="text-[8px] text-slate-400 font-medium uppercase tracking-wider mt-1.5">YTD Spend</span>
                         </div>
                       </div>
@@ -771,7 +771,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                           )}>
                             <span className="w-2.5 h-2.5 rounded shadow-xs shrink-0" style={{ background: s.color }} />
                             <span className="text-[9.5px] font-medium text-slate-600 flex-1 truncate">{s.cat}</span>
-                            <span className="font-mono font-bold text-slate-800 text-[9px] shrink-0">${s.value}K</span>
+                            <span className="font-mono font-bold text-slate-800 text-[9px] shrink-0">₹{s.value}K</span>
                           </div>
                         ))}
                       </div>
@@ -845,7 +845,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                             <Zap className="w-2.5 h-2.5 fill-white" /> Recommend
                           </span>
                           <span className="font-semibold text-slate-800 text-[12px] truncate flex-1 ml-2.5">Bharat Steel</span>
-                          <span className="font-mono text-[12px] font-bold text-indigo-600 shrink-0 ml-2">$124.4K</span>
+                          <span className="font-mono text-[12px] font-bold text-indigo-600 shrink-0 ml-2">₹1.24L</span>
                         </div>
                         <div className="space-y-1.5 mt-0.5">
                           <div className={cn("flex items-center gap-2.5 transition-all duration-300 text-[9.5px] text-slate-600", recRows > 0 ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1.5")}>
@@ -882,7 +882,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                         {awardState === 3 ? (
                           <>
                             <Check className="w-4 h-4 shrink-0 shadow-md" />
-                            <span>Awarded · $7.7K under historical avg captured</span>
+                            <span>Awarded · ₹7.7K under historical avg captured</span>
                           </>
                         ) : (
                           <>

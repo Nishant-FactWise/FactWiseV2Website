@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 // ─── Vendor data ──────────────────────────────────────────────────────────────
 const VENDORS = [
-  { name: "Shenzhen Co.", city: "Shenzhen",  code: "USD", sym: "$", fx: 83,  quote: 9.40,  shipping: 1.80, duty: 0.22, tax: 0.95 },
+  { name: "Shenzhen Co.", city: "Shenzhen",  code: "INR", sym: "$", fx: 83,  quote: 9.40,  shipping: 1.80, duty: 0.22, tax: 0.95 },
   { name: "Tata Steel",   city: "Mumbai",    code: "INR", sym: "₹", fx: 1,   quote: 920,   shipping: 35,   duty: 0,    tax: 28   },
   { name: "EuroMetal",    city: "Frankfurt", code: "EUR", sym: "€", fx: 91,  quote: 10.20, shipping: 0.95, duty: 0.12, tax: 1.05 },
 ];
@@ -417,7 +417,7 @@ export default function CustomFormulaAnimation() {
                     </div>
                     <span className={cn(
                       "text-[7px] font-black px-2 py-0.5 rounded text-white tracking-wide",
-                      v.code === "INR" ? "bg-amber-500" : v.code === "USD" ? "bg-blue-700" : "bg-teal-600"
+                      v.code === "INR" ? "bg-amber-500" : v.code === "INR" ? "bg-blue-700" : "bg-teal-600"
                     )}>{v.code}</span>
                   </div>
 

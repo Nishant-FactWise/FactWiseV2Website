@@ -28,7 +28,7 @@ const LC_ITEMS = [
 ];
 const LC_VENDORS = [
     { id: 'A', name: 'Vendor A', loc: 'IN', fx: 'INR', tone: '#3666ff' },
-    { id: 'B', name: 'Vendor B', loc: 'CN', fx: 'USD', tone: '#10b981' },
+    { id: 'B', name: 'Vendor B', loc: 'CN', fx: 'INR', tone: '#10b981' },
     { id: 'C', name: 'Vendor C', loc: 'DE', fx: 'EUR', tone: '#8b5cf6' },
 ];
 const LC_BIDS: Record<string, Record<string, BidCell>> = {

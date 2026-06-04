@@ -254,7 +254,7 @@ const softwareSchema = {
     priceSpecification: {
       "@type": "PriceSpecification",
       price: "0",
-      priceCurrency: "USD",
+      priceCurrency: "INR",
       description: "Contact for pricing — request a demo at factwise.io/demo",
     },
     seller: { "@id": "https://factwise.io/#organization" },

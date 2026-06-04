@@ -692,7 +692,7 @@ function BidsPanel({ phase }: { phase: COPhase }) {
         display: 'flex', justifyContent: 'space-between', fontSize: 9.5, color: '#475569',
       }}>
         <span>Currency-normalised · duty + freight applied</span>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: '#1A1D2E' }}>INR ↔ USD ↔ SGD</span>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: '#1A1D2E' }}>INR ↔ INR ↔ SGD</span>
       </div>
     </div>
   );

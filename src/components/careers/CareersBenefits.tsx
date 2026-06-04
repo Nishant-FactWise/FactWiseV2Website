@@ -35,7 +35,7 @@ const BENEFITS = [
     icon: Clock,
   },
   {
-    title: "$1,500 learning stipend",
+    title: "₹1,500 learning stipend",
     desc: "Books, courses, conferences — your call. Use it to get sharper at what you love.",
     icon: BookOpen,
   },

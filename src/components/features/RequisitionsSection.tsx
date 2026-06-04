@@ -10,9 +10,9 @@ const RequisitionMockup = () => {
   const inView = useInView(ref, { once: true, margin: '-60px' });
 
   const items = [
-    { name: 'MacBook Pro 14"', qty: 5, price: '$1,999', total: '$9,995', status: 'Approved' },
-    { name: 'Dell UltraSharp 32"', qty: 10, price: '$749', total: '$7,490', status: 'Pending' },
-    { name: 'Ergonomic Desk Chair', qty: 12, price: '$450', total: '$5,400', status: 'Draft' },
+    { name: 'MacBook Pro 14"', qty: 5, price: '₹1,999', total: '₹9,995', status: 'Approved' },
+    { name: 'Dell UltraSharp 32"', qty: 10, price: '₹749', total: '₹7,490', status: 'Pending' },
+    { name: 'Ergonomic Desk Chair', qty: 12, price: '₹450', total: '₹5,400', status: 'Draft' },
   ];
 
   return (

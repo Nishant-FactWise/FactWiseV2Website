@@ -117,7 +117,7 @@ const ApprovalWorkflowMockup = () => {
           >
             <div>
               <div style={{ fontSize: 13, color: '#f4f4f5', fontWeight: 600 }}>Purchase Order Review</div>
-              <div style={{ fontSize: 11, color: '#6b6b7a', marginTop: 3 }}>PO-2024-0387 · $12,450.00</div>
+              <div style={{ fontSize: 11, color: '#6b6b7a', marginTop: 3 }}>PO-2024-0387 · ₹12,450.00</div>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
               <div style={{ padding: '8px 18px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.08)', fontSize: 12, fontWeight: 500, color: '#f4f4f5', background: 'rgba(255,255,255,0.03)', cursor: 'pointer' }}>Reject</div>

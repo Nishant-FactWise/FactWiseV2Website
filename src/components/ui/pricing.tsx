@@ -176,7 +176,7 @@ export function PricingCard({
 				<div className="text-xl font-medium text-[#000000] mb-2">{plan.name}</div>
 				<p className="text-[#808080] text-sm font-light">{plan.info}</p>
 				<div className="mt-6 flex items-end gap-1">
-					<span className="text-5xl font-light text-[#000000] tracking-tight">${plan.price[frequency]}</span>
+					<span className="text-5xl font-light text-[#000000] tracking-tight">₹{plan.price[frequency]}</span>
 					<span className="text-[#808080] text-sm mb-1">
 						{plan.name !== 'Free'
 							? '/' + (frequency === 'monthly' ? 'mo' : 'yr')

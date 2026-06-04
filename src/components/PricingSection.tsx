@@ -10,7 +10,7 @@ const pricingTiers = [
   {
     name: "Starter",
     description: "Essential tools for small teams.",
-    price: "$49",
+    price: "₹3,999",
     period: "/mo",
     features: [
       "Up to 5 team members",
@@ -25,7 +25,7 @@ const pricingTiers = [
   {
     name: "Pro",
     description: "Advanced features for scaling operations.",
-    price: "$129",
+    price: "₹9,999",
     period: "/mo",
     features: [
       "Unlimited team members",

@@ -637,9 +637,9 @@ export default function SourcingPanel() {
                                         <span className="ph-title">Price Intelligence · Pulling Live Data</span>
                                     </div>
                                     {([
-                                        { label: "Last PO Price", val: "$19.80 / unit", should: false, delay: 0.15 },
-                                        { label: "Distributor Price", val: "$22.40 / unit", should: false, delay: 0.28 },
-                                        { label: "Should-Cost (Target)", val: "$18.10 / unit", should: true, delay: 0.42 },
+                                        { label: "Last PO Price", val: "₹19.80 / unit", should: false, delay: 0.15 },
+                                        { label: "Distributor Price", val: "₹22.40 / unit", should: false, delay: 0.28 },
+                                        { label: "Should-Cost (Target)", val: "₹18.10 / unit", should: true, delay: 0.42 },
                                     ] as const).map((row, i) => (
                                         <div key={i} className={"sp-priceDataRow " + (row.should ? "should " : "") + (rfqBuildStep >= 3 ? "in" : "")} style={{ transitionDelay: `${row.delay}s` }}>
                                             <span className="pdr-label">{row.label}</span>
@@ -802,14 +802,14 @@ export default function SourcingPanel() {
                                     </div>
                                     <div style={{ flex: 1 }}>
                                         <div style={{ fontSize: 10, fontWeight: 800, color: '#1e3a8a', letterSpacing: '-0.01em' }}>RFQ-2026-0871 · Vendor A selected</div>
-                                        <div style={{ fontSize: 9, color: '#3666ff', fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.04em', marginTop: 1 }}>$18.42/unit · 1,200 pcs · $22,104 total</div>
+                                        <div style={{ fontSize: 9, color: '#3666ff', fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.04em', marginTop: 1 }}>₹18.42/unit · 1,200 pcs · ₹22,104 total</div>
                                     </div>
                                     <div style={{ fontSize: 9, fontWeight: 700, color: '#3666ff', background: 'rgba(54,102,255,0.1)', borderRadius: 5, padding: '3px 7px', fontFamily: "'JetBrains Mono',monospace" }}>AUTO</div>
                                 </div>
 
                                 {([
-                                    { step: 0, name: 'Priya S.', role: 'BUYER · PROCUREMENT', color: '#6366f1', code: 'PS', limit: '$25K' },
-                                    { step: 1, name: 'Vikram K.', role: 'MANAGER · CATEGORY LEAD', color: '#0ea5e9', code: 'VK', limit: '$100K' },
+                                    { step: 0, name: 'Priya S.', role: 'BUYER · PROCUREMENT', color: '#6366f1', code: 'PS', limit: '₹25K' },
+                                    { step: 1, name: 'Vikram K.', role: 'MANAGER · CATEGORY LEAD', color: '#0ea5e9', code: 'VK', limit: '₹100K' },
                                     { step: 2, name: 'Tara S.', role: 'CFO · FINANCE', color: '#8b5cf6', code: 'TS', limit: 'FINAL' },
                                 ] as const).map(({ step, name, role, color, code, limit }) => {
                                     const isIn = approveN >= step;

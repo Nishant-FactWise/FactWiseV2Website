@@ -145,28 +145,28 @@ const RequisitionMockup = () => {
               <td>REQ-2024-001</td>
               <td>Precision Bearings (Class A)</td>
               <td>Auto Division</td>
-              <td>$45,200</td>
+              <td>₹45,200</td>
               <td><span className="status-pill status-ongoing">Ongoing</span></td>
             </tr>
             <tr>
               <td>REQ-2024-002</td>
               <td>Industrial Lubricant (Synth)</td>
               <td>Factory-A</td>
-              <td>$12,800</td>
+              <td>₹12,800</td>
               <td><span className="status-pill status-completed">Completed</span></td>
             </tr>
             <tr>
               <td>REQ-2024-003</td>
               <td>Safety Gear Set (30 units)</td>
               <td>Warehouse-C</td>
-              <td>$8,500</td>
+              <td>₹8,500</td>
               <td><span className="status-pill status-draft">Draft</span></td>
             </tr>
             <tr>
               <td>REQ-2024-004</td>
               <td>Hydraulic Pumps (v4.2)</td>
               <td>Main Unit</td>
-              <td>$22,100</td>
+              <td>₹22,100</td>
               <td><span className="status-pill status-ongoing">Ongoing</span></td>
             </tr>
           </tbody>
@@ -205,7 +205,7 @@ const NegotiateMockup = () => (
           <div key={i} style={{ flex: 1, height: `${h}%`, background: i === 5 ? '#7c5cfc' : 'rgba(124, 92, 252, 0.2)', borderRadius: '2px' }}></div>
         ))}
       </div>
-      <div className="mockup-label">SAVINGS IDENTIFIED: $42,500.00</div>
+      <div className="mockup-label">SAVINGS IDENTIFIED: ₹42,500.00</div>
     </div>
     <div className="status-pill status-approved" style={{ textAlign: 'center', padding: '12px' }}>FW AUTOBOT: 50% QUICKER NEGOTIATIONS</div>
   </div>
@@ -216,11 +216,11 @@ const POMockup = () => (
     <div className="mockup-list">
       <div className="mockup-card" style={{ padding: '12px 20px' }}>
         <div className="mockup-item"><span>PO #44021-01</span> <span className="status-pill status-approved">ACCEPTED</span></div>
-        <div className="mockup-label">VENDORS: 3 · ITEMS: 12 · TOTAL: $128,400</div>
+        <div className="mockup-label">VENDORS: 3 · ITEMS: 12 · TOTAL: ₹1,28,400</div>
       </div>
       <div className="mockup-card" style={{ padding: '12px 20px' }}>
         <div className="mockup-item"><span>PO #44021-02</span> <span className="status-pill status-pending">PENDING</span></div>
-        <div className="mockup-label">VENDORS: 1 · ITEMS: 4 · TOTAL: $12,200</div>
+        <div className="mockup-label">VENDORS: 1 · ITEMS: 4 · TOTAL: ₹12,200</div>
       </div>
     </div>
     <div className="mockup-card">
@@ -242,7 +242,7 @@ const InvoiceMockup = () => (
     <div className="mockup-card">
       <div className="mockup-list">
         <div className="mockup-item"><span>Item Quantity</span> <span className="success-text">Match</span></div>
-        <div className="mockup-item"><span>Unit Price</span> <span className="warning-text">Mismatch ($42.00 vs $44.50)</span></div>
+        <div className="mockup-item"><span>Unit Price</span> <span className="warning-text">Mismatch (₹42.00 vs ₹44.50)</span></div>
         <div className="mockup-item"><span>Tax Code</span> <span className="success-text">Match</span></div>
       </div>
     </div>

@@ -66,7 +66,7 @@ const ReconciliationMockup = () => {
                 transition={{ delay: 0.95, duration: 0.4 }}
                 style={{ fontSize: 16, fontWeight: 700, color: '#f4f4f5', marginTop: 1 }}
               >
-                $12,480.00
+                ₹12,480.00
               </motion.div>
             </div>
             <div style={{ textAlign: 'center' }}>
@@ -77,7 +77,7 @@ const ReconciliationMockup = () => {
                 transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 1.05 }}
                 style={{ fontSize: 16, fontWeight: 700, color: '#34d399', marginTop: 1 }}
               >
-                $0.00
+                ₹0.00
               </motion.div>
             </div>
             <motion.div

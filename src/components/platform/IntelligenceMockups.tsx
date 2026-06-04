@@ -31,9 +31,9 @@ export const PriceSearchMockup = () => (
 
       <div className="space-y-3">
         {[
-          { source: 'Digi-Key API', price: '$0.842', tag: 'Market', color: 'text-orange-500' },
-          { source: 'Factwise Global', price: '$0.795', tag: 'Historical', color: 'text-[#7c5cfc]' },
-          { source: 'Contract #882', price: '$0.780', tag: 'Preferred', color: 'text-green-500' }
+          { source: 'Digi-Key API', price: '₹0.842', tag: 'Market', color: 'text-orange-500' },
+          { source: 'Factwise Global', price: '₹0.795', tag: 'Historical', color: 'text-[#7c5cfc]' },
+          { source: 'Contract #882', price: '₹0.780', tag: 'Preferred', color: 'text-green-500' }
         ].map((item, i) => (
           <motion.div 
             key={i}
@@ -48,7 +48,7 @@ export const PriceSearchMockup = () => (
             </div>
             <div className="text-right">
               <div className={cn("text-lg font-mono font-bold", item.color)}>{item.price}</div>
-              <div className="text-[8px] font-bold text-gray-600 uppercase tracking-widest">USD / Unit</div>
+              <div className="text-[8px] font-bold text-gray-600 uppercase tracking-widest">INR / Unit</div>
             </div>
           </motion.div>
         ))}
@@ -76,7 +76,7 @@ export const TrendsMockup = () => (
               className="w-full bg-[#7c5cfc]/20 rounded-t-md group-hover:bg-[#7c5cfc] transition-all relative"
             >
               <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-[#7c5cfc] text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-lg">
-                ${(0.8 + h/1000).toFixed(3)}
+                ₹{(0.8 + h/1000).toFixed(3)}
               </div>
             </motion.div>
           </div>
@@ -105,7 +105,7 @@ export const LandedCostAnalysisMockup = () => (
       <div className="space-y-4">
         <div className="flex justify-between items-center text-[11px] font-bold text-white/60 uppercase tracking-widest">
           <span>Supplier A (Asia)</span>
-          <span className="text-white">$12.40 / unit</span>
+          <span className="text-white">₹12.40 / unit</span>
         </div>
         <div className="h-4 w-full bg-white/5 rounded-full overflow-hidden flex p-0.5">
           <motion.div initial={{ width: 0 }} animate={{ width: '70%' }} className="h-full bg-[#7c5cfc] rounded-full" />
@@ -117,7 +117,7 @@ export const LandedCostAnalysisMockup = () => (
       <div className="space-y-4">
         <div className="flex justify-between items-center text-[11px] font-bold text-white/60 uppercase tracking-widest">
           <span>Supplier B (Local)</span>
-          <span className="text-white">$14.10 / unit</span>
+          <span className="text-white">₹14.10 / unit</span>
         </div>
         <div className="h-4 w-full bg-white/5 rounded-full overflow-hidden flex p-0.5">
           <motion.div initial={{ width: 0 }} animate={{ width: '92%' }} className="h-full bg-green-500 rounded-full" />
@@ -145,7 +145,7 @@ export const LandedCostAnalysisMockup = () => (
         className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-center"
       >
         <div className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">Savings Opportunity</div>
-        <div className="text-[12px] text-white font-medium">Switching to Supplier A saves <span className="text-green-500 font-bold">$1.70 per unit</span> after all fees.</div>
+        <div className="text-[12px] text-white font-medium">Switching to Supplier A saves <span className="text-green-500 font-bold">₹1.70 per unit</span> after all fees.</div>
       </motion.div>
     </div>
   </div>

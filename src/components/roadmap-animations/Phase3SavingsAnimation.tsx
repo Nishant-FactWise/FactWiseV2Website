@@ -197,9 +197,9 @@ export default function Phase3SavingsAnimation({ speed = 1 }: { speed?: number }
     3: "Fair market price emerges. ±5% confidence band.",
     4: "New quote arrives. 11.5% above your fair price.",
     5: "FactWise flags it. Counter-offer suggested.",
-    6: "Negotiation won. $2,520 saved on one line.",
+    6: "Negotiation won. ₹2,520 saved on one line.",
     7: "Compound it across every category, every quarter.",
-    8: "$1.24M saved YTD. Margins up. Intelligence wins.",
+    8: "₹1.24 Cr saved YTD. Margins up. Intelligence wins.",
   };
   const TITLES = ["Price Intelligence","Price Intelligence","Price History","Fair Market Benchmark","New Quote · Anomaly","AI Insight","Negotiation Won","Savings · By Category","Compounding"];
   const TAGS   = ["","","STL-0421","STL-0421","STL-0421","STL-0421","STL-0421","YTD · ALL PLANTS","FY24"];
@@ -250,7 +250,7 @@ export default function Phase3SavingsAnimation({ speed = 1 }: { speed?: number }
                   <div className="meta">Direct material · 1,200 units / month</div>
                 </div>
                 <div className="right">
-                  <div className="v">${FAIR_PRICE.toFixed(2)}</div>
+                  <div className="v">₹{FAIR_PRICE.toFixed(2)}</div>
                   <div className="l">Fair / unit</div>
                 </div>
               </div>
@@ -258,7 +258,7 @@ export default function Phase3SavingsAnimation({ speed = 1 }: { speed?: number }
                 <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                   {[20,40,60,80].map(y => <line key={y} className="p3-gridLine" x1={CX0} y1={y} x2={CX1} y2={y}/>)}
                   {[18,19,20,21,22].map(v => (
-                    <text key={v} className="p3-axisLbl" x={CX0-1} y={yAt(v)+1.5} textAnchor="end">${v}</text>
+                    <text key={v} className="p3-axisLbl" x={CX0-1} y={yAt(v)+1.5} textAnchor="end">₹{v}</text>
                   ))}
                   {HISTORY.map((h, i) => (
                     <text key={h.m} className="p3-axisLbl" x={xAt(i, HISTORY.length-1)} y={CY1+6} textAnchor="middle">{h.m}</text>
@@ -272,7 +272,7 @@ export default function Phase3SavingsAnimation({ speed = 1 }: { speed?: number }
                   <line className={"p3-fairLine " + (fairIn ? "in" : "")}
                     x1={CX0} y1={yAt(FAIR_PRICE)} x2={CX1} y2={yAt(FAIR_PRICE)} pathLength={100}/>
                   <text className={"p3-fairLbl " + (fairIn ? "in" : "")}
-                    x={CX1-1} y={yAt(FAIR_PRICE)-1.5} textAnchor="end">FAIR ${FAIR_PRICE.toFixed(2)}</text>
+                    x={CX1-1} y={yAt(FAIR_PRICE)-1.5} textAnchor="end">FAIR ₹{FAIR_PRICE.toFixed(2)}</text>
                   {HISTORY.map((h, i) => (
                     <circle key={h.m} className={"p3-dot " + (histN > i ? "in" : "")}
                       cx={xAt(i, HISTORY.length-1)} cy={yAt(h.p)} r={1.5}
@@ -287,7 +287,7 @@ export default function Phase3SavingsAnimation({ speed = 1 }: { speed?: number }
                       fontSize="6" fontWeight="800"
                       fill={quoteDown ? "#00b884" : "#ef4444"}
                       fontFamily="JetBrains Mono, monospace">
-                      ${(quoteDown ? NEW_QUOTE_LOW : NEW_QUOTE_HIGH).toFixed(2)}
+                      ₹{(quoteDown ? NEW_QUOTE_LOW : NEW_QUOTE_HIGH).toFixed(2)}
                     </text>
                   )}
                 </svg>
@@ -296,11 +296,11 @@ export default function Phase3SavingsAnimation({ speed = 1 }: { speed?: number }
                     <div className="ai"><AlertIcon s={10}/></div>
                     <div className="at">OVERPRICED</div>
                   </div>
-                  <div className="ib">Quote <b>${NEW_QUOTE_HIGH}</b> is <b>+11.5%</b> above fair price. Counter at <b>${NEW_QUOTE_LOW}</b>?</div>
-                  <div className="ic">→ Suggest ${NEW_QUOTE_LOW} · save $2,520</div>
+                  <div className="ib">Quote <b>₹{NEW_QUOTE_HIGH}</b> is <b>+11.5%</b> above fair price. Counter at <b>₹{NEW_QUOTE_LOW}</b>?</div>
+                  <div className="ic">→ Suggest ₹{NEW_QUOTE_LOW} · save ₹2,520</div>
                 </div>
                 <div className={"p3-savedChip " + (savedChipIn ? "in" : "")}>
-                  <CheckIcon3 s={11}/> SAVED $2,520
+                  <CheckIcon3 s={11}/> SAVED ₹2,520
                 </div>
               </div>
             </div>
@@ -324,7 +324,7 @@ export default function Phase3SavingsAnimation({ speed = 1 }: { speed?: number }
                   </div>
                   <div className="p3-compBar"/>
                   <div className="p3-compDelta">
-                    <div className="v">−${(c.saved/1000).toFixed(0)}k</div>
+                    <div className="v">−₹{(c.saved/10000).toFixed(1)}L</div>
                     <div className="l">{compDone > i ? "SAVED" : "OPTIMIZING"}</div>
                   </div>
                 </div>
@@ -335,7 +335,7 @@ export default function Phase3SavingsAnimation({ speed = 1 }: { speed?: number }
           {/* SCENE 8 — FINALE */}
           <div className={"p3-scene " + (phase === 8 ? "on" : "")}>
             <div className="p3-finale">
-              <div className="p3-fbig">$1.24M</div>
+              <div className="p3-fbig">₹1.24 Cr</div>
               <div className="p3-fsub">Saved · FY24 YTD</div>
               <div className="p3-marginCard">
                 <div className="mc"><div className="v">+3.4 pts</div><div className="l">Gross Margin</div></div>

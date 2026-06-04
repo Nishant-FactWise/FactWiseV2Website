@@ -37,7 +37,7 @@ const DEFAULT_CUSTOMERS: Customer[] = [
     statusVariant: 'success',
     name: 'Bernard Ng',
     avatar: BERNARD_AVATAR,
-    revenue: '$43.99',
+    revenue: '₹43.99',
   },
   {
     id: 2,
@@ -46,7 +46,7 @@ const DEFAULT_CUSTOMERS: Customer[] = [
     statusVariant: 'warning',
     name: 'Méschac Irung',
     avatar: MESCHAC_AVATAR,
-    revenue: '$19.99',
+    revenue: '₹19.99',
   },
   {
     id: 3,
@@ -55,7 +55,7 @@ const DEFAULT_CUSTOMERS: Customer[] = [
     statusVariant: 'success',
     name: 'Glodie Ng',
     avatar: GLODIE_AVATAR,
-    revenue: '$99.99',
+    revenue: '₹99.99',
   },
   {
     id: 4,
@@ -64,7 +64,7 @@ const DEFAULT_CUSTOMERS: Customer[] = [
     statusVariant: 'danger',
     name: 'Theo Ng',
     avatar: THEO_AVATAR,
-    revenue: '$19.99',
+    revenue: '₹19.99',
   },
 ]
 

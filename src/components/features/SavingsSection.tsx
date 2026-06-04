@@ -193,7 +193,7 @@ export default function SavingsSection() {
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
                               <div>
                                 <div style={{ fontSize: '8px', color: '#6b6b7a', textTransform: 'uppercase', marginBottom: '2px' }}>Price</div>
-                                <div style={{ fontSize: '13px', fontWeight: '700', color: '#fff' }}>$980.00</div>
+                                <div style={{ fontSize: '13px', fontWeight: '700', color: '#fff' }}>₹980.00</div>
                               </div>
                               <div>
                                 <div style={{ fontSize: '8px', color: '#6b6b7a', textTransform: 'uppercase', marginBottom: '2px' }}>Lead Time</div>
@@ -230,7 +230,7 @@ export default function SavingsSection() {
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                               <div>
                                 <div style={{ fontSize: '8px', color: '#6b6b7a', textTransform: 'uppercase', marginBottom: '2px' }}>Price</div>
-                                <div style={{ fontSize: '13px', fontWeight: '700', color: '#fff' }}>$1,040.00</div>
+                                <div style={{ fontSize: '13px', fontWeight: '700', color: '#fff' }}>₹1,040.00</div>
                               </div>
                               <div>
                                 <div style={{ fontSize: '8px', color: '#6b6b7a', textTransform: 'uppercase', marginBottom: '2px' }}>Lead Time</div>
@@ -268,10 +268,10 @@ export default function SavingsSection() {
 
                         <div style={{ width: '100%', height: '140px', display: 'flex', alignItems: 'flex-end', gap: '15px', padding: '0 20px', position: 'relative' }}>
                           {[
-                            { h: 40, val: '$2.1M', label: 'Q1' },
-                            { h: 70, val: '$3.9M', label: 'Q2' },
-                            { h: 95, val: '$5.5M', label: 'Q3' },
-                            { h: 125, val: '$6.7M', label: 'Q4', active: true }
+                            { h: 40, val: '₹2.1M', label: 'Q1' },
+                            { h: 70, val: '₹3.9M', label: 'Q2' },
+                            { h: 95, val: '₹5.5M', label: 'Q3' },
+                            { h: 125, val: '₹6.7M', label: 'Q4', active: true }
                           ].map((bar, i) => (
                             <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                               <motion.div 

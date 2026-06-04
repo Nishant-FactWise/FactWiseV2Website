@@ -39,10 +39,10 @@ export const MultiRoundMockup = () => (
           </div>
           <div className="text-right">
             <div className="flex items-center gap-2 justify-end">
-              <span className="text-lg font-mono font-bold text-white">${supplier.bid}</span>
+              <span className="text-lg font-mono font-bold text-white">₹{supplier.bid}</span>
               {supplier.trend === 'down' && <TrendingDown size={14} className="text-green-500" />}
             </div>
-            <div className="text-[10px] text-gray-600">Was ${supplier.prev}</div>
+            <div className="text-[10px] text-gray-600">Was ₹{supplier.prev}</div>
           </div>
         </motion.div>
       ))}
@@ -81,7 +81,7 @@ export const BOMMockup = () => (
                   )}
                 />
               </div>
-              <span className="text-[10px] font-bold text-white">${item.price}</span>
+              <span className="text-[10px] font-bold text-white">₹{item.price}</span>
             </div>
           </div>
         ))}
@@ -93,7 +93,7 @@ export const BOMMockup = () => (
         className="mt-6 p-4 rounded-2xl bg-gradient-to-br from-[#7c5cfc] to-[#4b8bff] text-white shadow-xl"
       >
         <div className="text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">Total BOM Cost</div>
-        <div className="text-2xl font-mono font-bold">$7,200.00</div>
+        <div className="text-2xl font-mono font-bold">₹7,200.00</div>
       </motion.div>
     </div>
   </div>
@@ -109,7 +109,7 @@ export const LandedCostMockup = () => (
             <span className="text-xs font-bold text-white">Global Logistics A</span>
             <span className="text-[9px] text-gray-500 font-bold uppercase">EXW + Freight + Duty</span>
           </div>
-          <span className="text-xl font-mono font-bold text-[#7c5cfc]">$14.22</span>
+          <span className="text-xl font-mono font-bold text-[#7c5cfc]">₹14.22</span>
         </div>
         <div className="flex h-3 w-full rounded-full overflow-hidden bg-white/5">
           <motion.div initial={{ width: 0 }} animate={{ width: '60%' }} className="bg-[#7c5cfc]" />
@@ -129,7 +129,7 @@ export const LandedCostMockup = () => (
             <span className="text-xs font-bold text-white">Supplier Express B</span>
             <span className="text-[9px] text-gray-500 font-bold uppercase">All-in DDP Rate</span>
           </div>
-          <span className="text-xl font-mono font-bold text-green-500">$13.85</span>
+          <span className="text-xl font-mono font-bold text-green-500">₹13.85</span>
         </div>
         <div className="flex h-3 w-full rounded-full overflow-hidden bg-white/5">
           <motion.div initial={{ width: 0 }} animate={{ width: '85%' }} className="bg-green-500" />
