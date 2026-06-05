@@ -19,8 +19,8 @@ const slides = [
     label: "ELECTRONICS"
   },
   { 
-    mediaDesktop: "/Final_ChemicalProduction_Video.mp4",
-    mediaMobile: "/Final_ChemicalProduction_mobileversion.mp4",
+    mediaDesktop: "/Final_Chemical_Production_Video.mp4",
+    mediaMobile: "/Final_Chemical_Production_MobileVersion.mp4",
     label: "CHEMICAL"
   }
 ];
