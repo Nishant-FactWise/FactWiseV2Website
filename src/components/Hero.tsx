@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -38,6 +39,19 @@ export default function Hero() {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Reduced-motion detection. globals.css force-overrides any inline
+  // opacity:0 -> 1 and strips translateY(20px) for reduced-motion users,
+  // which made the hero text overlay permanently visible (no reveal
+  // possible) on Windows / animations-off laptops. We side-step that by
+  // driving an inline `visibility` (CSS rule doesn't catch visibility),
+  // and by replacing the smooth fade with an instant snap inside the
+  // pin so the section still feels like it's revealing the text rather
+  // than scrolling away beneath it.
+  const reducedMotion = useReducedMotion();
+  // `visible` always starts false so first paint is hidden regardless of
+  // SSR / matchMedia state. Flipped to true once we know what to do.
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
     setMounted(true);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -46,15 +60,48 @@ export default function Hero() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Mobile path: chinmayee's design intent is "text always visible on
+  // mobile" (enforced by .hero-mobile-visible in globals.css). Mirror
+  // that for visibility so we don't accidentally hide it via our gate.
+  useEffect(() => {
+    if (mounted && isMobile) setVisible(true);
+  }, [mounted, isMobile]);
+
   // Sync activeIndex to ref to prevent stale closure bugs
   useEffect(() => {
     activeIndexRef.current = activeIndex;
   }, [activeIndex]);
 
-  // Pinned scroll-reveal animation for text overlay (Desktop only)
+  // Pinned scroll-reveal animation for text overlay (Desktop only).
+  // Two paths, identical pin so the reveal feels the same:
+  //   normal motion  -> scrub:true; opacity 0->1 + y 20->0 over the pin
+  //   reduced motion -> scrub:false; visibility flips at 30% of pin
+  //                     progress (no transition; sidesteps the CSS rule)
   useGSAP(() => {
+    if (reducedMotion === null) return; // wait for matchMedia
     if (!containerRef.current || !textOverlayRef.current || !mounted || isMobile) return;
 
+    if (reducedMotion) {
+      const st = ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top top',
+        end: '+=300',
+        pin: true,
+        pinSpacing: true,
+        scrub: false,
+        anticipatePin: 1,
+        onUpdate(self) {
+          setVisible(self.progress >= 0.3);
+        },
+      });
+      return () => st.kill();
+    }
+
+    // Normal-motion path — chinmayee's original implementation, plus an
+    // explicit setVisible(true) so the inline visibility:hidden initial
+    // state unblocks once GSAP is wired up and opacity is what actually
+    // gates the reveal.
+    setVisible(true);
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
@@ -75,7 +122,7 @@ export default function Hero() {
       ease: 'none',
     });
 
-  }, { dependencies: [mounted, isMobile] }); // Global scope allows targeting .hero-overlap-content in page.tsx
+  }, { dependencies: [mounted, isMobile, reducedMotion] }); // Global scope allows targeting .hero-overlap-content in page.tsx
 
   // Set up video ended event listeners
   useEffect(() => {
@@ -285,7 +332,14 @@ export default function Hero() {
       <div 
         ref={textOverlayRef}
         className="absolute inset-0 z-[6] flex flex-col md:flex-row items-start md:items-end justify-end md:justify-between px-6 md:px-16 pb-[25%] md:pb-[3%] pointer-events-none hero-mobile-visible"
-        style={{ opacity: 0, transform: 'translateY(20px)' }}
+        // visibility is the primary gate — globals.css can't override it
+        // the way it overrides opacity. Initial render is always hidden
+        // (visible=false) regardless of SSR / matchMedia race.
+        style={{
+          visibility: visible ? 'visible' : 'hidden',
+          opacity: reducedMotion ? 1 : 0,
+          transform: reducedMotion ? 'none' : 'translateY(20px)',
+        }}
       >
         {/* Left Side: Huge FactWise Text and Subheading */}
         <div className="flex flex-col items-start max-w-[95%] md:max-w-[500px]">
