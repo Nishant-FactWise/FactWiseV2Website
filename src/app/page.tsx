@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import Hero from '@/components/Hero';
 import StatsStrip from '@/components/StatsStrip';
+import CompanyMarquee from '@/components/CompanyMarquee';
 import LazySection from '@/components/ui/LazySection';
 
 // Each section is its own bundle chunk. With { ssr: false } the chunk is
@@ -47,6 +48,7 @@ export default function Home() {
       <Hero />
 
       <div className="relative z-10 bg-white w-full hero-overlap-content" style={{ background: '#FFFFFF', zIndex: 10 }}>
+        <CompanyMarquee />
         <StatsStrip />
 
         {/* Below fold — viewport-deferred chunk fetch + mount */}
