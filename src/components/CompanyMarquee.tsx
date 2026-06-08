@@ -108,7 +108,7 @@ export default function CompanyMarquee() {
 
       <div className="max-w-7xl mx-auto px-6 text-center mb-6">
         <p className="text-[11px] md:text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
-          Trusted by mid-market and enterprise leaders
+          Trusted by Leaders
         </p>
       </div>
 

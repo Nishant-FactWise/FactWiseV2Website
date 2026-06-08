@@ -6,6 +6,27 @@ import { useGSAP } from '@gsap/react';
 
 const phrases = ["Quoting Platform", "Sourcing Platform", "Procurement Platform"];
 
+const row1 = [
+  { name: "Cyient DLM", logo: "/Cyient.png" },
+  { name: "Vashi Integrated Solutions", logo: "/Vashilogo.png" },
+  { name: "Prasol Chemicals", logo: "/PrasolChemicals.png" },
+  { name: "Syrma SGS", logo: "/syrmasgs.png" }
+];
+
+const row2 = [
+  { name: "JRE", logo: "/JRE.png" },
+  { name: "Lineage", logo: "/Lineage.png" },
+  { name: "Govils", logo: "/Govils.png" },
+  { name: "Shanparts", logo: "/shanparts.png" }
+];
+
+const row3 = [
+  { name: "Gem Corpochem", logo: "/gemcorp.png" },
+  { name: "Amkette", logo: "/Amkette.png" },
+  { name: "Driplex Engitech", logo: "/Driplexengitech.png" },
+  { name: "Bridgepointe", logo: "/bridgepointe.png" }
+];
+
 export default function SplashLoaderDoor() {
   const container = useRef<HTMLDivElement>(null);
   const leftPanel = useRef<HTMLDivElement>(null);
@@ -15,7 +36,7 @@ export default function SplashLoaderDoor() {
   const textContainer = useRef<HTMLDivElement>(null);
   const subheadingRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
-  
+
   const [isActive, setIsActive] = useState(true);
   const [displayText, setDisplayText] = useState('');
   const [phraseIndex, setPhraseIndex] = useState(0);
@@ -97,25 +118,25 @@ export default function SplashLoaderDoor() {
 
   useGSAP(() => {
     if (
-      !container.current || 
-      !leftPanel.current || 
-      !rightPanel.current || 
+      !container.current ||
+      !leftPanel.current ||
+      !rightPanel.current ||
       !contentWrapper.current ||
-      !logoContainer.current || 
-      !textContainer.current || 
+      !logoContainer.current ||
+      !textContainer.current ||
       !subheadingRef.current
     ) return;
 
     const paths = logoContainer.current.querySelectorAll('path');
     const letters = textContainer.current.querySelectorAll('.char');
-    
+
     // Master timeline
     const tl = gsap.timeline();
     timelineRef.current = tl;
 
     const basePaths = Array.from(paths).slice(0, 2);
     const whitePaths = Array.from(paths).slice(2);
-    
+
     // --- Phase 1: Base Logo Construction ---
     basePaths.forEach((path, i) => {
       const length = (path as SVGPathElement).getTotalLength();
@@ -195,6 +216,7 @@ export default function SplashLoaderDoor() {
       ease: 'power3.out'
     }, 0.3);
 
+
   }, { scope: container });
 
   const handleSkip = () => {
@@ -231,19 +253,19 @@ export default function SplashLoaderDoor() {
   if (!isActive) return null;
 
   return (
-    <div 
+    <div
       ref={container}
       onClick={handleSkip}
       className="fixed inset-0 z-[9999] overflow-hidden pointer-events-auto cursor-pointer"
     >
       {/* Split Door Panels (Horizontal Split, sliding vertically) */}
-      <div 
-        ref={leftPanel} 
-        className="fixed top-0 left-0 w-full h-[50vh] bg-white z-[9997]" 
+      <div
+        ref={leftPanel}
+        className="fixed top-0 left-0 w-full h-[50vh] bg-white z-[9997]"
       />
-      <div 
-        ref={rightPanel} 
-        className="fixed bottom-0 left-0 w-full h-[50vh] bg-white z-[9997]" 
+      <div
+        ref={rightPanel}
+        className="fixed bottom-0 left-0 w-full h-[50vh] bg-white z-[9997]"
       />
 
       {/* Floating Centered Content Wrapper */}
@@ -251,6 +273,7 @@ export default function SplashLoaderDoor() {
         ref={contentWrapper}
         className="absolute inset-0 z-[9998] flex items-center justify-center pointer-events-none"
       >
+        {/* Main Logo & Text block (Exactly Centered in Viewport) */}
         <div className="flex items-center justify-center gap-6 md:gap-8 flex-col md:flex-row pointer-events-auto">
           
           {/* Animated Logo */}
@@ -298,7 +321,58 @@ export default function SplashLoaderDoor() {
               <span>&nbsp;*/</span>
             </div>
           </div>
-          
+
+        </div>
+
+        {/* Fading List of Logos grouped in structured rows matching the Canva placement, size, and depth opacities */}
+        <div className="absolute bottom-[-1.5%] md:bottom-[-1%] left-1/2 -translate-x-1/2 flex flex-col items-center justify-center gap-y-4 md:gap-y-6 w-[95vw] max-w-7xl pointer-events-auto">
+          {/* Row 1: Largest & Darkest (Higher Opacity) */}
+          <div className="flex flex-wrap items-center justify-center gap-x-12 md:gap-x-24 gap-y-4">
+            {row1.map((company) => (
+              <div
+                key={company.name}
+                className="h-[40px] md:h-[48px] w-[138px] md:w-[180px] flex items-center justify-center transition-all duration-300"
+              >
+                <img
+                  src={company.logo}
+                  alt={company.name}
+                  className="max-h-full max-w-full object-contain grayscale opacity-90 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Row 2: Medium Size & Lighter */}
+          <div className="flex flex-wrap items-center justify-center gap-x-12 md:gap-x-24 gap-y-4">
+            {row2.map((company) => (
+              <div
+                key={company.name}
+                className="h-[36px] md:h-[42px] w-[124px] md:w-[160px] flex items-center justify-center transition-all duration-300"
+              >
+                <img
+                  src={company.logo}
+                  alt={company.name}
+                  className="max-h-full max-w-full object-contain grayscale opacity-25 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Row 3: Smallest & Lightest */}
+          <div className="flex flex-wrap items-center justify-center gap-x-12 md:gap-x-24 gap-y-4">
+            {row3.map((company) => (
+              <div
+                key={company.name}
+                className="h-[36px] md:h-[42px] w-[124px] md:w-[160px] flex items-center justify-center transition-all duration-300"
+              >
+                <img
+                  src={company.logo}
+                  alt={company.name}
+                  className="max-h-full max-w-full object-contain grayscale opacity-[0.08] hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
