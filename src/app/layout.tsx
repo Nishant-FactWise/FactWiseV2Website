@@ -6,7 +6,7 @@ import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import { Header } from "@/components/ui/header-2";
 import CookieConsent from "@/components/ui/CookieConsent";
-import SplashLoader from "@/components/SplashLoaderDoor";
+import ConditionalSplashLoader from "@/components/ConditionalSplashLoader";
 
 const GTM_ID = "GTM-K6XQZW7";
 const GA4_ID = "G-EY6WGL7RC2";
@@ -407,7 +407,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </Script>
       </head>
       <body className={inter.className} suppressHydrationWarning>
-        <SplashLoader />
+        <ConditionalSplashLoader />
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}

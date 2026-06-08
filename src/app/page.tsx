@@ -12,19 +12,19 @@ import LazySection from '@/components/ui/LazySection';
 // section in LazySection holds the mount (and therefore the chunk fetch)
 // until the section is within ~600 px of the viewport, so chunks load
 // in scroll order and only when actually needed.
-const ProblemSection       = dynamic(() => import('@/components/ProblemSection'),        { ssr: false });
-const MethodologySection   = dynamic(() => import('@/components/Methodology'),            { ssr: false });
-const ProductHubAnimation  = dynamic(() => import('@/components/ProductFlowCombined'),            { ssr: false });
-const ProcurementModules   = dynamic(() => import('@/components/ProcurementModules'),     { ssr: false });
+const ProblemSection = dynamic(() => import('@/components/ProblemSection'), { ssr: false });
+const MethodologySection = dynamic(() => import('@/components/Methodology'), { ssr: false });
+const ProductHubAnimation = dynamic(() => import('@/components/ProductFlowCombined'), { ssr: false });
+const ProcurementModules = dynamic(() => import('@/components/ProcurementModules'), { ssr: false });
 const ImplementationRoadmap = dynamic(() => import('@/components/ImplementationRoadmap'), { ssr: false });
-const IntegrationsShowcase = dynamic(() => import('@/components/IntegrationsShowcase'),   { ssr: false });
-const Testimonials         = dynamic(() => import('@/components/testimonials'),           { ssr: false });
-const ModernCaseStudies    = dynamic(() => import('@/components/ModernCaseStudies'),      { ssr: false });
+const IntegrationsShowcase = dynamic(() => import('@/components/IntegrationsShowcase'), { ssr: false });
+const Testimonials = dynamic(() => import('@/components/testimonials'), { ssr: false });
+const ModernCaseStudies = dynamic(() => import('@/components/ModernCaseStudies'), { ssr: false });
 const ExpandingIndustrySection = dynamic(
   () => import('@/components/ExpandingIndustryCards').then(m => ({ default: m.ExpandingIndustrySection })),
   { ssr: false }
 );
-const FlickeringFooter     = dynamic(
+const FlickeringFooter = dynamic(
   () => import('@/components/ui/flickering-footer').then(m => ({ default: m.FlickeringFooter })),
   { ssr: false }
 );
