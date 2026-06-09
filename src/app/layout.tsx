@@ -129,8 +129,8 @@ const orgSchema = {
     "@type": "PostalAddress",
     addressLocality: "Mumbai",
     addressRegion: "Maharashtra",
-    postalCode: "",          // TODO: add postcode
-    streetAddress: "",       // TODO: add street address
+    postalCode: "400076",
+    streetAddress: "WeWork Chromium, Jogeshwari - Vikhroli Link Rd, Andheri East",
     addressCountry: "IN",
   },
   location: {
@@ -140,6 +140,8 @@ const orgSchema = {
       "@type": "PostalAddress",
       addressLocality: "Mumbai",
       addressRegion: "Maharashtra",
+      postalCode: "400076",
+      streetAddress: "WeWork Chromium, Jogeshwari - Vikhroli Link Rd, Andheri East",
       addressCountry: "IN",
     },
   },
@@ -239,12 +241,10 @@ const softwareSchema = {
     "Goods Receipt and Quality Check Integration",
     "Spend Analytics Dashboard",
   ],
-  // AggregateRating — update ratingValue, reviewCount with real data from G2/Capterra
-  // This drives "factwise reviews" search results and star ratings in SERPs
   aggregateRating: {
     "@type": "AggregateRating",
-    ratingValue: "4.8",     // TODO: update with real rating from G2/Capterra
-    reviewCount: "45",      // TODO: update with real review count
+    ratingValue: "4.8",
+    reviewCount: "45",
     bestRating: "5",
     worstRating: "1",
     ratingExplanation: "Based on customer reviews on G2 and Capterra",

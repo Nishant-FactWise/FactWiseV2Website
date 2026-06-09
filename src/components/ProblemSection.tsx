@@ -375,14 +375,8 @@ export default function ProblemSection() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return (
-    <section id="problem" className="relative py-12 px-4 md:px-10" style={{ scrollMarginTop: '100px' }}>
-      <div className="relative overflow-hidden rounded-[24px] py-24" style={{ backgroundColor: '#ebf1fa' }}>
-        <div className="absolute inset-0 noise" />
-        <div style={{ ...GLOBAL_LAYOUT.containerStyle, paddingLeft: '80px', paddingRight: '80px', opacity: 0 }} />
-      </div>
-    </section>
-  );
+  // Render the entire layout during server pre-rendering to allow full indexability by SEO/AEO bots.
+  // Dynamic client-side animations will mount automatically once hydrated.
 
   return (
     <section
