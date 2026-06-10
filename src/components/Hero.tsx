@@ -312,12 +312,14 @@ export default function Hero() {
             {/* The Video Element */}
             <video
               ref={el => { videoRefs.current[i] = el; }}
-              src={mounted && isMobile ? slide.mediaMobile : slide.mediaDesktop}
               muted
               playsInline
               preload="auto"
               className="absolute inset-0 w-full h-full object-contain md:object-cover scale-[1.02]"
-            />
+            >
+              <source src={slide.mediaMobile} type="video/mp4" media="(max-width: 767px)" />
+              <source src={slide.mediaDesktop} type="video/mp4" media="(min-width: 768px)" />
+            </video>
             
             {/* Dark Overlay for Text Readability */}
             <div className="absolute inset-0 bg-black/40 z-[1] pointer-events-none" />

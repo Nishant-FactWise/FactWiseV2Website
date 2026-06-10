@@ -354,8 +354,16 @@ export default function RootLayout({
         <link
           rel="preload"
           as="video"
-          href="/factwise-hero.webm"
-          type="video/webm"
+          href="/Final_iphone_mobileVersion.mp4"
+          type="video/mp4"
+          media="(max-width: 767px)"
+        />
+        <link
+          rel="preload"
+          as="video"
+          href="/FinalIphone.mp4"
+          type="video/mp4"
+          media="(min-width: 768px)"
         />
         {/*
           Google Consent Mode v2 — set the DEFAULT to "denied" before GTM/GA4
