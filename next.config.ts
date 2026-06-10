@@ -65,6 +65,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/docs/:path*",
+        destination: "/documentation/:path*",
+        permanent: true,
+      },
+      {
         source: "/blog/post/attributes-successful-cpos",
         destination: "/blog/post/attributes-successful-chief-procurement-officers",
         permanent: true,

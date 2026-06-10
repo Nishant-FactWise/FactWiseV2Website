@@ -32,7 +32,6 @@ export default function InvoiceToPayFlow() {
         return () => mq.removeEventListener('change', apply);
     }, []);
 
-    const gotoPanelRef = useRef<((index: number, isDown: boolean) => void) | null>(null);
     const currentIndexRef = useRef(-1);
 
     useEffect(() => {
@@ -40,139 +39,74 @@ export default function InvoiceToPayFlow() {
         if (!isDesktop) return; // no swipe on mobile
 
         const panels = gsap.utils.toArray<HTMLElement>('.itpf-panel');
-        let animating = false;
-        let triggerStartPx = 0;
-        let triggerEndPx = 0;
+        const slidePanels = gsap.utils.toArray<HTMLElement>('.itpf-panel-slide');
 
-        gsap.set('.itpf-panel-slide', { xPercent: 100 });
+        gsap.set(slidePanels, { xPercent: 100 });
         gsap.set(panels, { zIndex: (i: number) => i });
 
-        function gotoPanel(index: number, isScrollingDown: boolean) {
-            // Past the last panel (scrolling down) — release the pin into the next
-            // section. Jump just past the pin end so the long pin window never
-            // becomes dead scroll. Keep the last panel active as it leaves.
-            if (index === panels.length && isScrollingDown) {
-                intentObserver.disable();
-                window.scrollTo({ top: triggerEndPx + 1 });
-                return;
-            }
-            // Before the first panel (scrolling up) — release back to the heading.
-            if (index === -1 && !isScrollingDown) {
-                setActivePanel(-1);
-                intentObserver.disable();
-                window.scrollTo({ top: Math.max(0, triggerStartPx - 1) });
-                return;
-            }
-
-            animating = true;
-            const target = isScrollingDown ? panels[index] : panels[currentIndexRef.current];
-            gsap.to(target, {
-                xPercent: isScrollingDown ? 0 : 100,
-                duration: 0.75,
-                ease: 'power2.inOut',
-                onComplete: () => { animating = false; },
-            });
-
-            currentIndexRef.current = index;
-            setActivePanel(index);
-        }
-
-        gotoPanelRef.current = gotoPanel;
-
-        const intentObserver = ScrollTrigger.observe({
-            type: 'wheel,touch',
-            onUp: () => !animating && gotoPanel(currentIndexRef.current + 1, true),
-            onDown: () => !animating && gotoPanel(currentIndexRef.current - 1, false),
-            wheelSpeed: -1,
-            tolerance: 10,
-            preventDefault: true,
-            onPress: (self: any) => {
-                if (ScrollTrigger.isTouch) self.event.preventDefault();
-            },
-        });
-        intentObserver.disable();
-
-        const trigger = ScrollTrigger.create({
-            trigger: containerRef.current,
-            pin: true,
-            start: 'top top',
-            // Long pin window (~1 viewport). The section is position:fixed for the
-            // WHOLE window, so a fast scroll that overshoots `top top` still lands
-            // INSIDE the window and stays fully on-screen — instead of leaping the
-            // old 200px window in one event (firing onEnter+onLeave together) and
-            // resting half-shown. The observer freezes the page the moment onEnter
-            // fires; gotoPanel jumps past start/end on exit so this long window
-            // never turns into dead scroll. (No snap trigger — matches
-            // ReqToPoFlow / QuoteToOrderFlowV2; a snap on the same element fights
-            // the pin and flings scrollY past the start before it can engage.)
-            end: () => '+=' + window.innerHeight,
-            onRefresh: (self) => { triggerStartPx = self.start; triggerEndPx = self.end; },
-            onEnter: () => {
-                if (currentIndexRef.current === -1) {
-                    gotoPanel(0, true);
-                } else {
-                    setActivePanel(currentIndexRef.current);
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: containerRef.current,
+                pin: true,
+                scrub: 1,
+                end: () => '+=' + (window.innerHeight * slidePanels.length),
+                onUpdate: (self) => {
+                    const index = Math.min(
+                        slidePanels.length,
+                        Math.floor(self.progress * slidePanels.length + 0.5)
+                    );
+                    if (currentIndexRef.current !== index) {
+                        currentIndexRef.current = index;
+                        setActivePanel(index);
+                    }
                 }
-                intentObserver.enable();
-            },
-            onEnterBack: () => {
-                // Entering from below (e.g. a reload that restored scroll to the
-                // bottom, so the panels were never stepped through): start on the
-                // last panel with all panels slid in, so the upward swipe has
-                // somewhere to go instead of indexing past panel 0.
-                if (currentIndexRef.current === -1) {
-                    currentIndexRef.current = panels.length - 1;
-                    gsap.set('.itpf-panel-slide', { xPercent: 0 });
-                }
-                setActivePanel(currentIndexRef.current);
-                intentObserver.enable();
-            },
+            }
         });
-        triggerStartPx = trigger.start;
-        triggerEndPx = trigger.end;
+
+        slidePanels.forEach((panel) => {
+            tl.to(panel, { xPercent: 0, ease: 'none' });
+        });
 
         const onKey = (e: KeyboardEvent) => {
             if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-                !animating && gotoPanel(currentIndexRef.current + 1, true);
+                navToStep(currentIndexRef.current + 1);
             }
             if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-                !animating && gotoPanel(currentIndexRef.current - 1, false);
+                navToStep(currentIndexRef.current - 1);
             }
         };
         window.addEventListener('keydown', onKey);
 
         return () => {
-            trigger.kill();
-            intentObserver.kill();
+            tl.scrollTrigger?.kill();
+            tl.kill();
             window.removeEventListener('keydown', onKey);
         };
     }, [isDesktop]);
 
-    const navPrev = useCallback(() => {
-        if (gotoPanelRef.current) {
-            gotoPanelRef.current(currentIndexRef.current - 1, false);
+    const navToStep = useCallback((targetIndex: number) => {
+        if (typeof window === 'undefined' || !containerRef.current || !isDesktop) return;
+        const slidesCount = document.querySelectorAll('.itpf-panel-slide').length;
+        if (slidesCount === 0) return;
+        
+        const trigger = ScrollTrigger.getAll().find(st => st.pin === containerRef.current);
+        if (trigger) {
+            const start = trigger.start;
+            const end = trigger.end;
+            const totalScroll = end - start;
+            const safeTarget = Math.max(0, Math.min(slidesCount, targetIndex));
+            const targetScrollY = start + (safeTarget / slidesCount) * totalScroll;
+            window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
         }
-    }, []);
+    }, [isDesktop]);
+
+    const navPrev = useCallback(() => {
+        navToStep(currentIndexRef.current - 1);
+    }, [navToStep]);
 
     const navNext = useCallback(() => {
-        if (gotoPanelRef.current) {
-            gotoPanelRef.current(currentIndexRef.current + 1, true);
-        }
-    }, []);
-
-    const navToStep = useCallback((panelIndex: number) => {
-        if (!gotoPanelRef.current) return;
-        const target = panelIndex;
-        const isDown = target > currentIndexRef.current;
-        if (Math.abs(target - currentIndexRef.current) > 1) {
-            const panels = gsap.utils.toArray<HTMLElement>('.itpf-panel');
-            for (let i = Math.min(currentIndexRef.current + 1, target); i <= Math.max(currentIndexRef.current, target - 1); i++) {
-                if (panels[i]) gsap.set(panels[i], { xPercent: isDown ? 0 : 100 });
-            }
-            currentIndexRef.current = target - 1;
-        }
-        gotoPanelRef.current(target, isDown);
-    }, []);
+        navToStep(currentIndexRef.current + 1);
+    }, [navToStep]);
 
     const gradientBg =
         "radial-gradient(ellipse 75% 75% at 0% 0%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), " +

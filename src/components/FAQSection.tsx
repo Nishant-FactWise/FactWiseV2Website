@@ -6,16 +6,15 @@ import { Plus, Minus } from 'lucide-react';
 import SectionHeader from '@/components/SectionHeader';
 import { GLOBAL_LAYOUT } from './LayoutConfig';
 
-const CATEGORIES = ['All', 'Product', 'Sourcing', 'Payments', 'Integration', 'Security', 'Pricing'] as const;
-type Category = (typeof CATEGORIES)[number];
+const DEFAULT_CATEGORIES = ['All', 'Product', 'Sourcing', 'Payments', 'Integration', 'Security', 'Pricing'] as const;
 
-interface FAQ {
+export interface FAQItem {
   q: string;
   a: string;
-  category: Category;
+  category: string;
 }
 
-const FAQS: FAQ[] = [
+const FAQS: FAQItem[] = [
   {
     category: 'Product',
     q: 'What is FactWise?',
@@ -73,18 +72,29 @@ const FAQS: FAQ[] = [
   },
 ];
 
-export default function FAQSection() {
-  const [activeCategory, setActiveCategory] = useState<Category>('Product');
+interface FAQSectionProps {
+  faqs?: FAQItem[];
+  title?: React.ReactNode;
+  description?: string;
+}
+
+export default function FAQSection({ faqs = FAQS, title, description }: FAQSectionProps) {
+  // If we are using default FAQs, default to 'Product', else default to 'All'
+  const isDefault = faqs === FAQS;
+  const [activeCategory, setActiveCategory] = useState<string>(isDefault ? 'Product' : 'All');
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const filtered = FAQS.filter(
+  // Compute dynamic categories based on provided faqs
+  const dynamicCategories = ['All', ...Array.from(new Set(faqs.map(f => f.category)))];
+
+  const filtered = faqs.filter(
     (f) => activeCategory === 'All' || f.category === activeCategory
   );
 
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: FAQS.map((faq) => ({
+    mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
       name: faq.q,
       acceptedAnswer: {
@@ -128,11 +138,13 @@ export default function FAQSection() {
         <SectionHeader
           label="Support"
           title={
-            <>
-              Frequently Asked <span className="italic" style={{ color: '#3666ff' }}>Questions</span>
-            </>
+            title || (
+              <>
+                Frequently Asked <span className="italic" style={{ color: '#3666ff' }}>Questions</span>
+              </>
+            )
           }
-          description="Everything you need to know about FactWise -- how it works, how it fits your stack, and what it takes to get started."
+          description={description || "Everything you need to know about FactWise -- how it works, how it fits your stack, and what it takes to get started."}
           align="center"
         />
 
@@ -146,7 +158,7 @@ export default function FAQSection() {
             marginBottom: 48,
           }}
         >
-          {CATEGORIES.map((cat) => {
+          {dynamicCategories.map((cat) => {
             const isActive = cat === activeCategory;
             return (
               <button
@@ -289,49 +301,6 @@ export default function FAQSection() {
           </AnimatePresence>
         </div>
 
-        {/* Bottom CTA */}
-        <div
-          style={{
-            marginTop: 52,
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 14,
-          }}
-        >
-          <p style={{ fontSize: 13, color: '#808080', fontWeight: 400 }}>
-            Still have questions?
-          </p>
-          <a
-            href="/contact"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '10px 26px',
-              borderRadius: 100,
-              border: '1px solid rgba(54,102,255,0.35)',
-              background: 'rgba(54,102,255,0.10)',
-              color: '#3666ff',
-              fontSize: 13,
-              fontWeight: 500,
-              letterSpacing: '0.03em',
-              textDecoration: 'none',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(54,102,255,0.18)';
-              e.currentTarget.style.borderColor = 'rgba(54,102,255,0.55)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(54,102,255,0.10)';
-              e.currentTarget.style.borderColor = 'rgba(54,102,255,0.35)';
-            }}
-          >
-            Talk to the team &rarr;
-          </a>
-        </div>
       </div>
     </section>
   );

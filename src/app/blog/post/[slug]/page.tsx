@@ -56,8 +56,10 @@ export async function generateMetadata(
   };
 }
 
-function formatDate(iso: string): string {
+function formatDate(iso?: string | null): string {
+  if (!iso) return "";
   const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
   return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 }
 
@@ -71,8 +73,8 @@ function articleSchema(post: HygraphPost) {
       post.featuredPicture?.url ??
       post.featuredImage?.url,
     author: post.author ? { "@type": "Person", name: post.author.name } : undefined,
-    datePublished: post.lastUpdated?.split("T")[0],
-    dateModified: post.lastUpdated?.split("T")[0],
+    datePublished: post.lastUpdated ? post.lastUpdated.split("T")[0] : undefined,
+    dateModified: post.lastUpdated ? post.lastUpdated.split("T")[0] : undefined,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `https://factwise.io/blog/post/${post.slug}`,
@@ -209,7 +211,7 @@ export default async function BlogPostPage(
 
         {/* Body */}
         <div>
-          <RichText content={post.content.raw} />
+          {post.content?.raw ? <RichText content={post.content.raw} /> : null}
         </div>
 
         {/* About author */}
