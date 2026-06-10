@@ -104,6 +104,26 @@ export default function CompanyMarquee() {
         .marquee-track:hover {
           animation-play-state: paused;
         }
+        /* Reduced-motion override.
+           globals.css's reset uses *:not(.force-animate):not(.force-animate *)
+           with a Level-4 complex :not() that some older / Windows Chromium
+           builds parse as "matches nothing", leaving the marquee-track stuck
+           at animation-duration:0.001ms (the static frame the user saw).
+           We re-assert the original animation here with !important; specificity
+           (.force-animate .marquee-track = 0,2,0) beats the global reset
+           (0,1,0) so this wins regardless of how :not() is parsed.
+           Note: an infinitely scrolling marquee is one of the things WCAG
+           specifically calls out under reduced-motion, but the brand intent
+           is for these logos to scroll, so we honour that here. */
+        @media (prefers-reduced-motion: reduce) {
+          .force-animate .marquee-track {
+            animation: marquee-scroll 35s linear infinite !important;
+            animation-duration: 35s !important;
+            animation-iteration-count: infinite !important;
+            animation-name: marquee-scroll !important;
+            animation-timing-function: linear !important;
+          }
+        }
       `}</style>
 
       <div className="max-w-7xl mx-auto px-6 text-center mb-6">
