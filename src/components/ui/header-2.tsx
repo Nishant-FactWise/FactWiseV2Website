@@ -9,6 +9,7 @@ import { useScroll } from '@/components/ui/use-scroll';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark' }) {
 	const pathname = usePathname();
@@ -129,7 +130,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 					},
 				)}
 			>
-				<a href="/" className="flex items-center gap-3 cursor-pointer">
+				<Link href="/" className="flex items-center gap-3 cursor-pointer">
 					<img
 						src={(scrolled || open || !mounted || theme === 'light') ? "/logo.webp" : "/logowhite.webp"}
 						alt="FactWise Logo"
@@ -141,7 +142,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 						"text-white": !scrolled && !open && mounted && theme === 'dark',
 						"text-black": scrolled || open || !mounted || theme === 'light',
 					})}>FactWise</span>
-				</a>
+				</Link>
 
 				<div className="hidden items-center gap-1 md:flex">
 					{links.map((link, i) => {
@@ -171,7 +172,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 								onMouseLeave={link.subLinks ? scheduleClose : undefined}
 							>
 								{link.subLinks ? (
-									<a
+									<Link
 										className={buttonVariants({ variant: 'ghost', className: linkClass })}
 										href={link.href}
 										onFocus={() => openDropdown(i)}
@@ -179,15 +180,15 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 										{link.label}
 										<ChevronDown size={14} className={cn('transition-transform opacity-50', isOpen && 'rotate-180')} />
 										{underline}
-									</a>
+									</Link>
 								) : (
-									<a
+									<Link
 										className={buttonVariants({ variant: 'ghost', className: linkClass })}
 										href={link.href}
 									>
 										{link.label}
 										{underline}
-									</a>
+									</Link>
 								)}
 
 								{(link as any).subLinks && (
@@ -201,7 +202,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 											{(link as any).subLinks.map((sub: any, j: number) => {
 												const subActive = pathname === sub.href || pathname.startsWith(sub.href + '/');
 												return (
-													<a
+													<Link
 														key={j}
 														href={sub.href}
 														className={cn(
@@ -212,7 +213,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 														)}
 													>
 														{sub.label}
-													</a>
+													</Link>
 												);
 											})}
 										</div>
@@ -297,13 +298,13 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 										<ChevronDown size={20} className={cn("transition-transform duration-300 text-slate-400", expandedMobileMenu === link.label ? "rotate-180" : "")} />
 									</button>
 								) : (
-									<a
+									<Link
 										className={cn('text-xl font-medium py-1.5 transition-colors active:scale-[0.98]', active ? 'text-[#3666ff] font-semibold' : 'text-slate-800 hover:text-[#3666ff]')}
 										href={link.href}
 										onClick={() => setOpen(false)}
 									>
 										{link.label}
-									</a>
+									</Link>
 								)}
 								{link.subLinks && (
 									<AnimatePresence>
@@ -318,14 +319,14 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 													{(link as any).subLinks.map((sub: any) => {
 														const subActive = pathname === sub.href || pathname.startsWith(sub.href + '/');
 														return (
-														<a
+														<Link
 															key={sub.label}
 															href={sub.href}
 															className={cn('text-base transition-colors active:scale-[0.98]', subActive ? 'text-[#3666ff] font-semibold' : 'text-slate-600 hover:text-[#3666ff]')}
 															onClick={() => setOpen(false)}
 														>
 															{sub.label}
-														</a>
+														</Link>
 														);
 													})}
 												</div>
