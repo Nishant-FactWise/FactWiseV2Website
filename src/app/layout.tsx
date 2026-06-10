@@ -9,7 +9,7 @@ import CookieConsent from "@/components/ui/CookieConsent";
 import ConditionalSplashLoader from "@/components/ConditionalSplashLoader";
 
 const GTM_ID = "GTM-K6XQZW7";
-const GA4_ID = "G-EY6WGL7RC2";
+const GA4_ID = "G-Y5X31H49ZS";
 const UA_ID = "UA-197708066-1";
 
 const inter = Inter({
