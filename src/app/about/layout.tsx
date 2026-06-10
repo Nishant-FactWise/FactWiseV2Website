@@ -42,6 +42,20 @@ const aboutSchema = {
       { "@type": "ListItem", position: 2, name: "About", item: "https://factwise.io/about" },
     ],
   },
+  mainEntity: {
+    "@type": "Organization",
+    "@id": "https://factwise.io/#organization",
+    founder: {
+      "@type": "Person",
+      name: "Stawan Kamani",
+      jobTitle: "Founder & CEO",
+      worksFor: { "@id": "https://factwise.io/#organization" },
+      sameAs: [
+        "https://www.linkedin.com/in/stawankamani",
+        "https://twitter.com/stawankamani"
+      ]
+    }
+  }
 };
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {

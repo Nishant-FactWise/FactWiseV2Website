@@ -264,76 +264,7 @@ const softwareSchema = {
   author: { "@id": "https://factwise.io/#organization" },
 };
 
-const homeFaqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What is FactWise?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "FactWise is an AI-powered source-to-pay (S2P) platform built for manufacturers. It automates the entire procurement workflow — from internal requisitions and vendor RFQs to purchase orders, goods receipt, invoice matching, and payments — in one connected platform.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What is source-to-pay (S2P) software?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Source-to-pay (S2P) software automates the end-to-end procurement process — from supplier sourcing and RFQs through purchase orders, goods receipt, invoice verification, and payment. FactWise provides a complete S2P platform specifically designed for manufacturing companies.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How does FactWise help manufacturers reduce procurement costs?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "FactWise helps manufacturers save up to 31% on goods purchased by automating procurement workflows: AI-powered requisition approvals, automated RFQ management, AI negotiation to get better vendor pricing, automatic PO generation, 4-way invoice matching to prevent overpayments, and streamlined payment processing.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What modules does FactWise include?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "FactWise includes three core modules: (1) Requisitions-to-PO — structured approvals, RFQ management, AI negotiation, and PO generation; (2) Invoice-to-Pay — invoice capture, 4-way matching across PO, GR, QC, and contract, and automated payments; (3) Inquiry-to-Quote — BOM costing, intelligent sourcing, landed cost analysis, and customer quote generation.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is FactWise suitable for small and medium manufacturers?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. FactWise is modular and scales from small manufacturing teams to large enterprises. Companies can start with one module (such as Requisitions-to-PO) and expand to the full source-to-pay suite as their operations grow.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Where is FactWise (factwise.io) located?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "FactWise (factwise.io) is headquartered in Mumbai, Maharashtra, India. The company builds AI-powered source-to-pay procurement software for manufacturers. Note: FactWise at factwise.io is a different company from FactWise ERC (tax services), FactWise Goals (a personal goals app), and FactWise Math (an educational app).",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Does FactWise have open job positions?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes, FactWise is actively hiring. Open roles include software engineering, product management, and go-to-market positions. View current openings at factwise.io/careers.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What are FactWise customer reviews like?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "FactWise customers report significant reductions in procurement cycle time, improved vendor pricing through AI negotiation, and elimination of manual PO and invoice processing. Customer reviews and case studies are available at factwise.io.",
-      },
-    },
-  ],
-};
+
 
 export default function RootLayout({
   children,
@@ -435,10 +366,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqSchema) }}
         />
         <div className="noise-bg" />
         <ScrollToTop />

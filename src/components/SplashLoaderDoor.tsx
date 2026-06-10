@@ -256,7 +256,7 @@ export default function SplashLoaderDoor() {
     <div
       ref={container}
       onClick={handleSkip}
-      className="fixed inset-0 z-[9999] overflow-hidden pointer-events-auto cursor-pointer"
+      className="fixed inset-0 z-[9999] overflow-hidden pointer-events-auto cursor-pointer force-animate"
     >
       {/* Split Door Panels (Horizontal Split, sliding vertically) */}
       <div

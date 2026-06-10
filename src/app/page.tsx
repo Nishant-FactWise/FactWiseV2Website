@@ -28,6 +28,7 @@ const FlickeringFooter = dynamic(
   () => import('@/components/ui/flickering-footer').then(m => ({ default: m.FlickeringFooter })),
   { ssr: false }
 );
+const FAQSection = dynamic(() => import('@/components/FAQSection'));
 
 export default function Home() {
   return (
@@ -62,6 +63,7 @@ export default function Home() {
         <LazySection minHeight="50vh"><Testimonials /></LazySection>
         <LazySection minHeight="60vh"><ModernCaseStudies /></LazySection>
         <LazySection minHeight="60vh"><ExpandingIndustrySection /></LazySection>
+        <LazySection minHeight="80vh"><FAQSection /></LazySection>
         <LazySection minHeight="40vh"><FlickeringFooter /></LazySection>
       </div>
     </main>

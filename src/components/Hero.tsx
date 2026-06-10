@@ -62,23 +62,34 @@ export default function Hero() {
   }, []);
 
   // Performance optimization: pause video and animation updates when out of view
+  // We use scrollY instead of IntersectionObserver because GSAP pin-spacers
+  // can cause IntersectionObserver to fire rapidly and thrash the browser.
   useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      isInViewRef.current = entry.isIntersecting;
+    if (!mounted || isMobile) return;
+    
+    const handleScroll = () => {
+      // Hero is 100vh + 300px pin. Pause if we've scrolled past it.
+      const isOut = window.scrollY > window.innerHeight + 400;
+      isInViewRef.current = !isOut;
+      
       const currentActive = activeIndexRef.current;
       const activeVideo = videoRefs.current[currentActive];
+      
       if (activeVideo) {
-        if (entry.isIntersecting) {
+        if (!isOut && activeVideo.paused) {
           activeVideo.play().catch(() => {});
-        } else {
+        } else if (isOut && !activeVideo.paused) {
           activeVideo.pause();
         }
       }
-    }, { threshold: 0 });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Initial check
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [mounted, isMobile]);
 
   // Mobile path: chinmayee's design intent is "text always visible on
   // mobile" (enforced by .hero-mobile-visible in globals.css). Mirror

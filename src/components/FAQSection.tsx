@@ -81,6 +81,19 @@ export default function FAQSection() {
     (f) => activeCategory === 'All' || f.category === activeCategory
   );
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQS.map((faq) => ({
+      '@type': 'Question',
+      name: faq.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.a,
+      },
+    })),
+  };
+
   return (
     <section
       style={{
@@ -91,6 +104,10 @@ export default function FAQSection() {
         overflow: 'hidden',
       }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       {/* Radial glow */}
       <div
         aria-hidden

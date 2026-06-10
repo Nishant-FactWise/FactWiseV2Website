@@ -70,7 +70,7 @@ export default function CompanyMarquee() {
   const marqueeList = [...companies, ...companies, ...companies];
 
   return (
-    <section className="w-full bg-[#FFFFFF] py-10 md:py-14 border-b border-slate-100 relative z-20">
+    <section className="w-full bg-[#FFFFFF] py-10 md:py-14 border-b border-slate-100 relative z-20 force-animate">
       <style>{`
         @keyframes marquee-scroll {
           0% {

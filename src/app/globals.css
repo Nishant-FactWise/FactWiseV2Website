@@ -397,16 +397,7 @@
   border-radius: 99px;
 }
 
-@media (prefers-reduced-motion: reduce) {
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
 
 /* ── BentoGrid pill badges ─────────────────────── */
 .pill {
@@ -672,25 +663,25 @@
 @media (prefers-reduced-motion: reduce) {
   /* Show any element Framer Motion has hidden via its initial={{ opacity:0 }}
      inline style. The !important wins over inline styles. */
-  [style*="opacity: 0"],
-  [style*="opacity:0"] {
+  [style*="opacity: 0"]:not(.force-animate):not(.force-animate *),
+  [style*="opacity:0"]:not(.force-animate):not(.force-animate *) {
     opacity: 1 !important;
   }
 
   /* Strip the translateY offset Framer Motion's initial={{ y:20 }} adds so
      text/content doesn't sit 20px lower than its layout position. */
-  [style*="translateY(20px)"],
-  [style*="translateY(24px)"],
-  [style*="translate(0px, 20px)"],
-  [style*="translate(0px, 24px)"] {
+  [style*="translateY(20px)"]:not(.force-animate):not(.force-animate *),
+  [style*="translateY(24px)"]:not(.force-animate):not(.force-animate *),
+  [style*="translate(0px, 20px)"]:not(.force-animate):not(.force-animate *),
+  [style*="translate(0px, 24px)"]:not(.force-animate):not(.force-animate *) {
     transform: none !important;
   }
 
   /* Collapse all CSS animation and transition durations so nothing "plays" —
      hover highlights and state changes still work, just without motion. */
-  *,
-  *::before,
-  *::after {
+  *:not(.force-animate):not(.force-animate *),
+  *:not(.force-animate):not(.force-animate *)::before,
+  *:not(.force-animate):not(.force-animate *)::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
