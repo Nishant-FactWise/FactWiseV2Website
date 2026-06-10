@@ -38,7 +38,10 @@ export default function SplashLoaderDoor() {
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   const [isActive, setIsActive] = useState(true);
-  const [displayText, setDisplayText] = useState('');
+  // Pre-seed first char so the splash never renders an empty cursor on
+  // first paint (the screenshot from the affected laptop caught exactly
+  // that frame). The typing useEffect picks up from displayText.length.
+  const [displayText, setDisplayText] = useState(phrases[0][0] || '');
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [hasExited, setHasExited] = useState(false);
@@ -111,6 +114,12 @@ export default function SplashLoaderDoor() {
     } else if (isDeleting && displayText === '') {
       setIsDeleting(false);
       setPhraseIndex((prev) => prev + 1);
+      // Same trick as the initial state: pre-seed the first char of the
+      // next phrase so the cursor doesn't sit on an empty string between
+      // phrases. Without this there's a ~30 ms window where displayText
+      // is '' and a screenshot can catch it.
+      const next = phrases[phraseIndex + 1];
+      if (next) setDisplayText(next[0]);
     }
 
     return () => clearTimeout(timer);
