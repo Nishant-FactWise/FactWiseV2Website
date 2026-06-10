@@ -18,8 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
 
     // Commercial
-    { url: `${base}/pricing`,                        lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-
     // Brand & content
     { url: `${base}/about`,                          lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/blog`,                           lastModified: now, changeFrequency: "daily",   priority: 0.8 },

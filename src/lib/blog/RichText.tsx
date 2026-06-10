@@ -2,6 +2,34 @@ import Image from "next/image";
 import type { JSX } from "react";
 import type { RichTextNode } from "./hygraph";
 
+function normalizeHref(href: string | undefined): string {
+  if (!href) return "";
+  const trimmed = href.trim();
+  
+  if (
+    trimmed.startsWith("http://") ||
+    trimmed.startsWith("https://") ||
+    trimmed.startsWith("/") ||
+    trimmed.startsWith("#") ||
+    trimmed.startsWith("mailto:") ||
+    trimmed.startsWith("tel:")
+  ) {
+    return trimmed;
+  }
+  
+  // Check if it's an external domain name missing the protocol prefix
+  const domainRegex = /^[a-zA-Z0-9][-a-zA-Z0-9.]*\.[a-zA-Z]{2,}(?:\/.*)?$/;
+  const commonDomains = ["google.com", "microsoft.com", "ibm.com", "walmart.com", "dell.com", "amazon.com", "ge.com", "unilever.com", "proactis.com", "dole.com", "rolls-royce"];
+  const isCommon = commonDomains.some(d => trimmed.toLowerCase().includes(d));
+  
+  if (domainRegex.test(trimmed) || isCommon) {
+    return `https://${trimmed}`;
+  }
+  
+  // If it's a relative path/slug, prefix with root-relative /blog/post/ so it isn't nested relative to the current post URL
+  return `/blog/post/${trimmed}`;
+}
+
 function renderNodes(nodes: RichTextNode[] | undefined, keyPrefix = "n"): JSX.Element[] {
   if (!nodes) return [];
   return nodes.map((node, i) => renderNode(node, `${keyPrefix}-${i}`));
@@ -76,11 +104,12 @@ function renderNode(node: RichTextNode, key: string): JSX.Element {
         </blockquote>
       );
     case "link": {
-      const isExternal = node.href?.startsWith("http") && !node.href.includes("factwise.io");
+      const normalizedHref = normalizeHref(node.href);
+      const isExternal = normalizedHref.startsWith("http") && !normalizedHref.includes("factwise.io");
       return (
         <a
           key={key}
-          href={node.href}
+          href={normalizedHref}
           target={node.openInNewTab || isExternal ? "_blank" : undefined}
           rel={node.openInNewTab || isExternal ? "noopener noreferrer" : undefined}
           className="text-blue-600 underline underline-offset-2 hover:text-blue-800"
