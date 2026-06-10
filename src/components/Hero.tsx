@@ -13,12 +13,12 @@ const fontDisplay = 'var(--font-display)';
 const fontInter = 'var(--font-inter)';
 
 const slides = [
-  { 
+  {
     mediaDesktop: "/FinalIphone.mp4",
     mediaMobile: "/Final_iphone_mobileVersion.mp4",
     label: "ELECTRONICS"
   },
-  { 
+  {
     mediaDesktop: "/Final_Chemical_Production_Video.mp4",
     mediaMobile: "/Final_Chemical_Production_MobileVersion.mp4",
     label: "CHEMICAL"
@@ -30,11 +30,12 @@ export default function Hero() {
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const progressBarRefs = useRef<(HTMLDivElement | null)[]>([]);
-  
+
   const [activeIndex, setActiveIndex] = useState(0);
   const activeIndexRef = useRef(0);
   const isTransitioning = useRef(false);
   const textOverlayRef = useRef<HTMLDivElement>(null);
+  const isInViewRef = useRef(true);
 
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -58,6 +59,25 @@ export default function Hero() {
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Performance optimization: pause video and animation updates when out of view
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      isInViewRef.current = entry.isIntersecting;
+      const currentActive = activeIndexRef.current;
+      const activeVideo = videoRefs.current[currentActive];
+      if (activeVideo) {
+        if (entry.isIntersecting) {
+          activeVideo.play().catch(() => {});
+        } else {
+          activeVideo.pause();
+        }
+      }
+    }, { threshold: 0 });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
   }, []);
 
   // Mobile path: chinmayee's design intent is "text always visible on
@@ -149,7 +169,7 @@ export default function Hero() {
 
     // Play initial video
     if (videoRefs.current[0]) {
-      videoRefs.current[0].play().catch(() => {});
+      videoRefs.current[0].play().catch(() => { });
     }
 
     return () => {
@@ -163,39 +183,47 @@ export default function Hero() {
     const currentActive = activeIndexRef.current;
     const activeVideo = videoRefs.current[currentActive];
     if (activeVideo) {
-      activeVideo.play().catch(() => {});
+      activeVideo.play().catch(() => { });
     }
   }, [isMobile, mounted]);
 
   // Butter-smooth 60fps progress bar updating using requestAnimationFrame (bypasses React re-renders)
   useEffect(() => {
     let animId: number;
-    
+    let isRunning = true;
+
     const updateProgress = () => {
-      const currentActive = activeIndexRef.current;
-      const activeVideo = videoRefs.current[currentActive];
-      
-      if (activeVideo && activeVideo.duration) {
-        const pct = (activeVideo.currentTime / activeVideo.duration) * 100;
-        
-        // Update active bar
-        const activeBar = progressBarRefs.current[currentActive];
-        if (activeBar) {
-          activeBar.style.width = `${pct}%`;
-        }
-        
-        // Reset inactive bar
-        const inactiveIdx = currentActive === 0 ? 1 : 0;
-        const inactiveBar = progressBarRefs.current[inactiveIdx];
-        if (inactiveBar) {
-          inactiveBar.style.width = '0%';
+      if (!isRunning) return;
+
+      if (isInViewRef.current) {
+        const currentActive = activeIndexRef.current;
+        const activeVideo = videoRefs.current[currentActive];
+
+        if (activeVideo && activeVideo.duration) {
+          const pct = (activeVideo.currentTime / activeVideo.duration) * 100;
+
+          // Update active bar
+          const activeBar = progressBarRefs.current[currentActive];
+          if (activeBar) {
+            activeBar.style.width = `${pct}%`;
+          }
+
+          // Reset inactive bar
+          const inactiveIdx = currentActive === 0 ? 1 : 0;
+          const inactiveBar = progressBarRefs.current[inactiveIdx];
+          if (inactiveBar) {
+            inactiveBar.style.width = '0%';
+          }
         }
       }
       animId = requestAnimationFrame(updateProgress);
     };
 
     animId = requestAnimationFrame(updateProgress);
-    return () => cancelAnimationFrame(animId);
+    return () => {
+      isRunning = false;
+      cancelAnimationFrame(animId);
+    };
   }, []);
 
   const triggerTransition = (targetIndex: number) => {
@@ -217,21 +245,21 @@ export default function Hero() {
 
     // Play target video immediately so it's ready during transition
     targetVideo.currentTime = 0;
-    targetVideo.play().catch(() => {});
+    targetVideo.play().catch(() => { });
 
     // Set initial position of the target slide before transitioning
     const startXPercent = direction === 'forward' ? 100 : -100;
-    
+
     // Set target slide active/visible and set starting position
-    gsap.set(targetSlide, { 
+    gsap.set(targetSlide, {
       xPercent: startXPercent,
       zIndex: 2,
-      visibility: 'visible' 
+      visibility: 'visible'
     });
-    
+
     // Bring target video content in with opposite translation (parallax window effect) and initial zoom
     const videoParallaxStart = direction === 'forward' ? -35 : 35;
-    gsap.set(targetVideo, { 
+    gsap.set(targetVideo, {
       xPercent: videoParallaxStart,
       scale: 1.15
     });
@@ -245,12 +273,12 @@ export default function Hero() {
           currentVideo.currentTime = 0;
           gsap.set(currentVideo, { scale: 1.02, xPercent: 0 });
         }
-        
+
         // Finalize styles
         gsap.set(currentSlide, { zIndex: 1, visibility: 'hidden' });
         gsap.set(targetSlide, { zIndex: 3 });
         gsap.set(targetVideo, { scale: 1.02, xPercent: 0 });
-        
+
         setActiveIndex(targetIndex);
         isTransitioning.current = false;
       }
@@ -291,12 +319,12 @@ export default function Hero() {
   };
 
   return (
-    <section 
-      ref={containerRef} 
+    <section
+      ref={containerRef}
       className="relative w-full h-[100svh] md:h-screen bg-black overflow-hidden select-none"
       style={{ zIndex: 1 }}
     >
-      
+
       {/* Slides Container */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         {slides.map((slide, i) => (
@@ -320,18 +348,18 @@ export default function Hero() {
               <source src={slide.mediaMobile} type="video/mp4" media="(max-width: 767px)" />
               <source src={slide.mediaDesktop} type="video/mp4" media="(min-width: 768px)" />
             </video>
-            
+
             {/* Dark Overlay for Text Readability */}
             <div className="absolute inset-0 bg-black/40 z-[1] pointer-events-none" />
           </div>
         ))}
       </div>
- 
+
       {/* Soft Bottom Shadow/Gradient Layer */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 to-transparent z-[5]" />
- 
+
       {/* Scroll-reveal Text Overlay */}
-      <div 
+      <div
         ref={textOverlayRef}
         className="absolute inset-0 z-[6] flex flex-col md:flex-row items-start md:items-end justify-end md:justify-between px-6 md:px-16 pb-[25%] md:pb-[3%] pointer-events-none hero-mobile-visible"
         // visibility is the primary gate — globals.css can't override it
@@ -345,17 +373,17 @@ export default function Hero() {
       >
         {/* Left Side: Huge FactWise Text and Subheading */}
         <div className="flex flex-col items-start max-w-[95%] md:max-w-[500px]">
-          <h1 
+          <h1
             className="text-white text-[10vw] md:text-[7.6vw] font-bold tracking-tighter leading-none select-none"
             style={{ fontFamily: fontDisplay, color: '#F2F1E8', textShadow: '0 4px 20px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.5)' }}
           >
             FactWise
           </h1>
-          <p 
+          <p
             className="block text-white/90 text-[12px] md:text-[15px] mt-2 md:mt-4 leading-relaxed tracking-wide font-normal"
             style={{ fontFamily: fontInter, textShadow: '0 2px 10px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.5)' }}
           >
-           FactWise connects every vendor workflow including Inquiry to Quote, Requisition to PO and Invoice to Pay.
+            FactWise connects every vendor workflow including Inquiry to Quote, Requisition to PO and Invoice to Pay.
           </p>
         </div>
       </div>
@@ -363,21 +391,21 @@ export default function Hero() {
       {/* Right Column Slide Navigation */}
       <nav className="absolute bottom-[calc(50%-22vw)] right-[6%] md:bottom-[10%] md:right-[8%] flex gap-6 md:gap-8 z-[10]">
         {slides.map((slide, i) => (
-          <div 
-            key={i} 
+          <div
+            key={i}
             onClick={() => onSlideNavClick(i)}
             className={`flex flex-col gap-2 cursor-pointer transition-opacity duration-300 ${activeIndex === i ? 'opacity-100' : 'opacity-40 hover:opacity-75'}`}
           >
             {/* Progress indicator bar */}
             <div className="w-[80px] md:w-[120px] h-[2px] bg-white/20 relative overflow-hidden">
-              <div 
+              <div
                 ref={el => { progressBarRefs.current[i] = el; }}
                 className="absolute top-0 left-0 h-full bg-white"
                 style={{ width: '0%' }}
               />
             </div>
             {/* Nav title */}
-            <span 
+            <span
               className="text-[9px] md:text-xs uppercase tracking-wider font-semibold text-white"
               style={{ fontFamily: fontInter }}
             >

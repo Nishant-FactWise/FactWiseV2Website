@@ -8,17 +8,19 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 /* ─── Phase 1: onboarding checklist ─────────────────────────────────────────── */
 function Phase1Visual() {
   const [checked, setChecked] = useState(0);
-  const dead = useRef(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref);
 
   useEffect(() => {
-    dead.current = false;
+    if (!inView) return;
+    let dead = false;
     const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
     async function run() {
-      while (!dead.current) {
+      while (!dead) {
         setChecked(0);
         await sleep(800);
         for (let i = 1; i <= 5; i++) {
-          if (dead.current) return;
+          if (dead) return;
           setChecked(i);
           await sleep(600);
         }
@@ -26,8 +28,8 @@ function Phase1Visual() {
       }
     }
     run();
-    return () => { dead.current = true; };
-  }, []);
+    return () => { dead = true; };
+  }, [inView]);
 
   const rows = [
     "Expert onboarding from Day 1",
@@ -38,7 +40,7 @@ function Phase1Visual() {
   ];
 
   return (
-    <div className="w-full h-full flex flex-col gap-0 p-4 justify-center">
+    <div ref={ref} className="w-full h-full flex flex-col gap-0 p-4 justify-center">
       {rows.map((label, i) => {
         const done = checked > i;
         const active = checked === i;
@@ -91,21 +93,23 @@ function Phase1Visual() {
 /* ─── Phase 2: before/after bars ────────────────────────────────────────────── */
 function Phase2Visual() {
   const [step, setStep] = useState(0);
-  const dead = useRef(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref);
 
   useEffect(() => {
-    dead.current = false;
+    if (!inView) return;
+    let dead = false;
     const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
     async function run() {
-      while (!dead.current) {
-        setStep(0); await sleep(600);
-        for (let i = 1; i <= 4; i++) { if (dead.current) return; setStep(i); await sleep(700); }
+      while (!dead) {
+        setStep(0); await sleep(600); if (dead) return;
+        for (let i = 1; i <= 4; i++) { if (dead) return; setStep(i); await sleep(700); }
         await sleep(3000);
       }
     }
     run();
-    return () => { dead.current = true; };
-  }, []);
+    return () => { dead = true; };
+  }, [inView]);
 
   const metrics = [
     { label: "RFQ TURNAROUND", before: "3 days", after: "2 hrs", bW: 88, aW: 22 },
@@ -113,7 +117,7 @@ function Phase2Visual() {
   ];
 
   return (
-    <div className="w-full h-full flex flex-col gap-3 p-4 justify-center">
+    <div ref={ref} className="w-full h-full flex flex-col gap-3 p-4 justify-center">
       {metrics.map((m, mi) => {
         const showB = step >= mi * 2 + 1; const showA = step >= mi * 2 + 2;
         return (
@@ -166,23 +170,25 @@ function Phase3Visual() {
   const [barsIn, setBarsIn] = useState(false);
   const [lineIn, setLineIn] = useState(false);
   const [chipIn, setChipIn] = useState(false);
-  const dead = useRef(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref);
 
   useEffect(() => {
-    dead.current = false;
+    if (!inView) return;
+    let dead = false;
     const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
     async function run() {
-      while (!dead.current) {
+      while (!dead) {
         setBarsIn(false); setLineIn(false); setChipIn(false);
-        await sleep(500); setBarsIn(true);
-        await sleep(900); setLineIn(true);
-        await sleep(700); setChipIn(true);
+        await sleep(500); if (dead) return; setBarsIn(true);
+        await sleep(900); if (dead) return; setLineIn(true);
+        await sleep(700); if (dead) return; setChipIn(true);
         await sleep(3200);
       }
     }
     run();
-    return () => { dead.current = true; };
-  }, []);
+    return () => { dead = true; };
+  }, [inView]);
 
   const bars = [
     { q: "Q1", h: 38, color: "#f5c97a" },
@@ -193,7 +199,7 @@ function Phase3Visual() {
   const trendPts = "20,72 70,58 120,42 180,18";
 
   return (
-    <div className="w-full h-full flex flex-col p-4 justify-center">
+    <div ref={ref} className="w-full h-full flex flex-col p-4 justify-center">
       <div className="relative" style={{ height: 110 }}>
         <svg viewBox="0 0 200 90" width="100%" height="100%" className="overflow-visible">
           {bars.map((b, i) => {
