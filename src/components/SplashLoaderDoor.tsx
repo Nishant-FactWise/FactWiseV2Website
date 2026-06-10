@@ -261,11 +261,11 @@ export default function SplashLoaderDoor() {
       {/* Split Door Panels (Horizontal Split, sliding vertically) */}
       <div
         ref={leftPanel}
-        className="fixed top-0 left-0 w-full h-[50vh] bg-white z-[9997]"
+        className="fixed top-0 left-0 w-full h-[51vh] bg-white z-[9997]"
       />
       <div
         ref={rightPanel}
-        className="fixed bottom-0 left-0 w-full h-[50vh] bg-white z-[9997]"
+        className="fixed bottom-0 left-0 w-full h-[51vh] bg-white z-[9997]"
       />
 
       {/* Floating Centered Content Wrapper */}
@@ -274,10 +274,10 @@ export default function SplashLoaderDoor() {
         className="absolute inset-0 z-[9998] flex items-center justify-center pointer-events-none"
       >
         {/* Main Logo & Text block (Exactly Centered in Viewport) */}
-        <div className="flex items-center justify-center gap-6 md:gap-8 flex-col md:flex-row pointer-events-auto">
+        <div className="flex items-center justify-center gap-4 md:gap-8 flex-col md:flex-row pointer-events-auto">
           
           {/* Animated Logo */}
-          <div ref={logoContainer} className="w-[65px] md:w-[98px] h-auto shrink-0 relative">
+          <div ref={logoContainer} className="w-[45px] md:w-[98px] h-auto shrink-0 relative">
             <svg viewBox="0 0 1525 1527" className="w-full h-auto drop-shadow-sm">
               {/* Black Layer */}
               <path fill="#000000" stroke="#000000" strokeWidth="6" d="M1511.9,15.2 C1512.5,16.1 1513.7,17.1 1513.7,18.0 C1513.8,79.2 1513.8,140.4 1513.8,201.6 C1513.8,359.4 1513.7,517.3 1513.7,675.2 C1513.7,841.8 1513.7,1008.5 1513.7,1175.1 C1513.7,1225.9 1513.9,1276.6 1513.5,1327.4 C1513.5,1339.6 1511.7,1351.6 1508.5,1363.7 C1504.6,1378.2 1499.5,1392.1 1492.9,1405.5 C1484.4,1422.8 1473.3,1438.2 1460.2,1452.4 C1441.6,1472.5 1419.7,1487.7 1394.9,1498.8 C1379.8,1505.7 1364.0,1510.3 1347.5,1513.0 C1323.4,1516.9 1299.2,1514.8 1275.0,1514.8 C1055.4,1515.1 835.8,1515.0 616.2,1515.0 C417.3,1514.9 218.5,1514.9 19.7,1514.9 C18.0,1514.9 16.4,1515.3 14.7,1515.2 C14.4,1515.2 14.2,1514.1 14.3,1513.1 C113.7,1413.7 212.6,1314.8 311.5,1215.9 C312.8,1214.6 314.5,1213.8 316.4,1212.8 C415.0,1212.9 513.1,1212.9 611.6,1212.9 C611.6,1211.0 611.6,1209.4 611.6,1207.7 C611.7,1122.9 611.8,1038.1 611.8,953.3 C611.8,941.3 611.4,929.3 611.4,917.0 C613.0,915.1 614.2,913.2 615.7,911.7 C713.3,814.1 810.9,716.5 908.5,618.8 C909.7,617.7 910.7,616.4 912.1,615.1 C912.9,615.5 913.8,616.2 913.8,616.8 C913.8,690.6 913.7,764.3 913.7,838.1 C913.7,947.8 913.7,1057.6 913.8,1167.4 C913.8,1182.5 913.8,1197.5 913.8,1212.7 C1013.3,1212.7 1112.3,1212.7 1211.7,1212.7 C1211.7,1211.2 1211.7,1210.1 1211.7,1208.9 C1211.7,1077.1 1211.7,945.3 1211.7,813.5 C1211.7,661.3 1211.8,509.1 1211.7,357.0 C1211.7,343.8 1211.4,330.5 1211.5,317.0 C1213.1,314.9 1214.4,313.0 1216.0,311.4 C1313.3,214.1 1410.6,116.8 1507.8,19.5 C1509.2,18.1 1510.5,16.6 1511.9,15.2 z" />
@@ -295,7 +295,7 @@ export default function SplashLoaderDoor() {
             <div
               ref={textContainer}
               className="flex font-[580] tracking-tight text-black"
-              style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3.88rem, 7.96vw, 6.32rem)', lineHeight: 1, perspective: '400px' }}
+              style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 10vw, 6.32rem)', lineHeight: 1, perspective: '400px' }}
             >
               {['F', 'a', 'c', 't', 'W', 'i', 's', 'e'].map((char, index) => (
                 <span key={index} className="inline-block overflow-hidden py-2 -my-2">
@@ -312,7 +312,7 @@ export default function SplashLoaderDoor() {
             {/* Subheading with typewriter animation (Typora-style code comment) */}
             <div
               ref={subheadingRef}
-              className="text-slate-400 font-normal tracking-[0.15em] text-[12px] md:text-[14px] uppercase flex items-center justify-center md:justify-start animate-pulse-cursor"
+              className="text-slate-400 font-normal tracking-[0.15em] text-[10px] md:text-[14px] uppercase flex items-center justify-center md:justify-start animate-pulse-cursor"
               style={{ fontFamily: 'var(--font-inter)', height: '1.5em', marginTop: 'clamp(0.35rem, 0.7vw, 0.7rem)' }}
             >
               <span>/*&nbsp;End-to-End&nbsp;</span>
@@ -325,13 +325,13 @@ export default function SplashLoaderDoor() {
         </div>
 
         {/* Fading List of Logos grouped in structured rows matching the Canva placement, size, and depth opacities */}
-        <div className="absolute bottom-[-1.5%] md:bottom-[-1%] left-1/2 -translate-x-1/2 flex flex-col items-center justify-center gap-y-4 md:gap-y-6 w-[95vw] max-w-7xl pointer-events-auto">
+        <div className="absolute bottom-[2%] md:bottom-[-1%] left-1/2 -translate-x-1/2 flex flex-col items-center justify-center gap-y-2 md:gap-y-6 w-[95vw] max-w-7xl pointer-events-auto">
           {/* Row 1: Largest & Darkest (Higher Opacity) */}
-          <div className="flex flex-wrap items-center justify-center gap-x-12 md:gap-x-24 gap-y-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 md:gap-x-24 gap-y-2 md:gap-y-4">
             {row1.map((company) => (
               <div
                 key={company.name}
-                className="h-[40px] md:h-[48px] w-[138px] md:w-[180px] flex items-center justify-center transition-all duration-300"
+                className="h-[28px] md:h-[48px] w-[75px] md:w-[180px] flex items-center justify-center transition-all duration-300"
               >
                 <img
                   src={company.logo}
@@ -343,11 +343,11 @@ export default function SplashLoaderDoor() {
           </div>
 
           {/* Row 2: Medium Size & Lighter */}
-          <div className="flex flex-wrap items-center justify-center gap-x-12 md:gap-x-24 gap-y-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 md:gap-x-24 gap-y-2 md:gap-y-4">
             {row2.map((company) => (
               <div
                 key={company.name}
-                className="h-[36px] md:h-[42px] w-[124px] md:w-[160px] flex items-center justify-center transition-all duration-300"
+                className="h-[24px] md:h-[42px] w-[65px] md:w-[160px] flex items-center justify-center transition-all duration-300"
               >
                 <img
                   src={company.logo}
@@ -359,11 +359,11 @@ export default function SplashLoaderDoor() {
           </div>
 
           {/* Row 3: Smallest & Lightest */}
-          <div className="flex flex-wrap items-center justify-center gap-x-12 md:gap-x-24 gap-y-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 md:gap-x-24 gap-y-2 md:gap-y-4">
             {row3.map((company) => (
               <div
                 key={company.name}
-                className="h-[36px] md:h-[42px] w-[124px] md:w-[160px] flex items-center justify-center transition-all duration-300"
+                className="h-[24px] md:h-[42px] w-[65px] md:w-[160px] flex items-center justify-center transition-all duration-300"
               >
                 <img
                   src={company.logo}
