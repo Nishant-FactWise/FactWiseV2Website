@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -19,16 +20,8 @@ const nextConfig: NextConfig = {
         hostname: 'res.cloudinary.com',
       },
       {
-        protocol: 'http',
-        hostname: 'res.cloudinary.com',
-      },
-      {
         protocol: 'https',
         hostname: '**.graphassets.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'media.graphassets.com',
       },
     ],
   },

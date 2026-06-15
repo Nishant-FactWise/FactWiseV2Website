@@ -55,7 +55,7 @@ function Counter({ value, inView }: { value: string; inView: boolean }) {
 
 export default function StatsStrip() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false, margin: '-60px' });
+  const inView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
     <section

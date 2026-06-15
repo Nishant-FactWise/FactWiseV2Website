@@ -142,7 +142,7 @@ export default function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
-          'sticky top-0 z-50 w-full border-b border-transparent transition-[background-color,border-color] duration-300 will-change-[background-color,border-color]',
+          'sticky top-0 z-50 w-full border-b border-transparent transition-[background-color,border-color] duration-300',
           scrolled && 'border-black/[0.08] bg-white/80 backdrop-blur-xl',
         )}
       >

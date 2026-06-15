@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark' }) {
 	const pathname = usePathname();
@@ -131,12 +132,13 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 				)}
 			>
 				<Link href="/" className="flex items-center gap-3 cursor-pointer">
-					<img
+					<Image
 						src={(scrolled || open || !mounted || theme === 'light') ? "/logo.webp" : "/logowhite.webp"}
 						alt="FactWise Logo"
 						width={32}
 						height={32}
 						className="h-8 w-8 shrink-0 transition-all duration-300"
+						priority
 					/>
 					<span className={cn("text-[17px] font-bold tracking-tight transition-colors duration-300", {
 						"text-white": !scrolled && !open && mounted && theme === 'dark',

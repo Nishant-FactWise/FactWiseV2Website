@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const companies = [
   {
@@ -70,7 +71,13 @@ export default function CompanyMarquee() {
   const marqueeList = [...companies, ...companies, ...companies];
 
   return (
-    <section className="w-full bg-[#FFFFFF] py-10 md:py-14 border-b border-slate-100 relative z-20 force-animate">
+    <motion.section
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className="w-full bg-[#FFFFFF] py-10 md:py-14 border-b border-slate-100 relative z-20 force-animate"
+    >
       <style>{`
         @keyframes marquee-scroll {
           0% {
@@ -140,28 +147,19 @@ export default function CompanyMarquee() {
               href={company.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center h-12 w-36 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+              className="relative flex items-center justify-center h-12 w-36 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
             >
-              <img
+              <Image
                 src={company.logo}
                 alt={`${company.name} logo`}
-                className="max-h-full max-w-full object-contain"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  const parent = target.parentElement;
-                  if (parent) {
-                    const fallback = document.createElement('span');
-                    fallback.className = 'text-sm font-bold tracking-tight text-slate-400';
-                    fallback.innerText = company.name;
-                    parent.appendChild(fallback);
-                  }
-                }}
+                fill
+                sizes="144px"
+                className="object-contain"
               />
             </a>
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

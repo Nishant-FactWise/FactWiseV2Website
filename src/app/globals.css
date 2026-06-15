@@ -476,10 +476,6 @@
   perspective: 1200px;
 }
 
-.perspective-1200 {
-  perspective: 1200px;
-}
-
 .preserve-3d {
   transform-style: preserve-3d;
 }
@@ -536,17 +532,17 @@
 }
 
 @theme inline {
-  --font-mono: var(----font-mono);
-  --font-sans: var(----font-sans);
-  --font-display: var(----font-display);
-  --color-color-bg: var(----color-bg);
-  --color-color-text: var(----color-text);
-  --color-color-text-muted: var(----color-text-muted);
-  --color-color-text-light: var(----color-text-light);
-  --color-color-accent: var(----color-accent);
-  --font-size-mono: var(----font-size-mono);
-  --spacing-sm: var(----spacing-sm);
-  --spacing-md: var(----spacing-md);
+  --font-mono: var(--font-mono);
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --color-color-bg: var(--color-bg);
+  --color-color-text: var(--color-text);
+  --color-color-text-muted: var(--color-text-muted);
+  --color-color-text-light: var(--color-text-light);
+  --color-color-accent: var(--color-accent);
+  --font-size-mono: var(--font-size-mono);
+  --spacing-sm: var(--spacing-sm);
+  --spacing-md: var(--spacing-md);
 }
 
 /* ── Sophisticated Hero Gradient ── */
@@ -695,4 +691,13 @@
     opacity: 1 !important;
     transform: translateY(0) !important;
   }
+}
+
+/* LazySection settling window: hide content for two rAFs after mount
+   so Framer Motion can apply initial:{ opacity:0 } before first paint.
+   This prevents the flash-of-unstyled-content when a section mounts
+   just before the viewport reaches it. */
+.fw-lazy-settling {
+  opacity: 0;
+  pointer-events: none;
 }

@@ -132,7 +132,7 @@ export default function FaqContent() {
           {/* CTA */}
           <div className="mt-14 overflow-hidden rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-8 text-center md:p-10">
             <h3 className="text-xl font-bold text-slate-900 md:text-2xl">Still have questions?</h3>
-            <p className="mx-auto mt-2 max-w-md text-[14px] text-slate-500 md:text-[15px]">
+            <p className="mt-2 text-[14px] text-slate-500 md:text-[15px]">
               Book a demo and our team will walk you through FactWise and how it fits your procurement workflow.
             </p>
             <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">

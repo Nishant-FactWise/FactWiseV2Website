@@ -14,7 +14,7 @@ export const StorySection = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: false }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="md:col-span-5 flex justify-center"
           >
@@ -60,7 +60,7 @@ export const StorySection = () => {
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: false }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
                 className="absolute top-[25%] left-[10%] md:left-[15%] bg-white/95 backdrop-blur-xl p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-3 md:gap-4 z-20"
               >
@@ -73,7 +73,7 @@ export const StorySection = () => {
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: false }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ delay: 0.7, duration: 0.8 }}
                 className="absolute bottom-[30%] right-[8%] md:right-[10%] bg-white/95 backdrop-blur-xl p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-3 md:gap-4 z-20"
               >
@@ -89,7 +89,7 @@ export const StorySection = () => {
           <motion.div 
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="md:col-span-7 flex flex-col items-start justify-center"
           >
@@ -119,7 +119,7 @@ export const StorySection = () => {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
               className="mt-10 md:mt-12 flex flex-wrap gap-6 md:gap-8 items-center pt-8 border-t border-slate-100"
             >

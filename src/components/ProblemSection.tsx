@@ -430,8 +430,8 @@ export default function ProblemSection() {
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{ delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ delay: idx * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="group relative w-full h-[480px] lg:h-[400px] bg-white border border-[#E2E5F0] rounded-[20px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
               >
                 {/* Visual Area — half height on mobile (card always open); full height

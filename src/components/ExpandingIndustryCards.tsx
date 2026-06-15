@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import {
   Pyramid,
   Castle,
@@ -20,9 +21,8 @@ import {
   Factory,
   Zap
 } from "lucide-react";
-import { cn } from "@/lib/utils"; 
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import ScrollReveal from "./ui/ScrollReveal";
 
 export interface CardItem {
   id: string | number;
@@ -111,19 +111,27 @@ export const ExpandingCards = React.forwardRef<
           tabIndex={0}
           data-active={activeIndex === index}
         >
-          <img
+          <Image
             src={item.imgSrc}
             alt={item.title}
-            className="absolute inset-0 h-full w-full object-cover transition-all duration-700 ease-out group-data-[active=true]:scale-105 group-data-[active=true]:grayscale-0 scale-110 grayscale"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 20vw, 200px"
+            className="object-cover transition-all duration-700 ease-out group-data-[active=true]:scale-105 group-data-[active=true]:grayscale-0 scale-110 grayscale"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-opacity duration-500" />
 
           <article
-            className="absolute inset-0 flex flex-col justify-end gap-3 p-6"
+            className="absolute inset-0 flex flex-col justify-end gap-2 p-6 pb-8"
           >
-            <h3 className="hidden origin-left rotate-90 text-sm font-bold uppercase tracking-[0.2em] text-white/90 opacity-100 transition-all duration-500 ease-out md:block group-data-[active=true]:opacity-0 whitespace-nowrap mb-12">
-              {item.title}
-            </h3>
+            {/* Vertical label — writing-mode keeps text within card width, no overflow */}
+            <div
+              className="hidden md:flex absolute bottom-6 left-0 right-0 justify-center pointer-events-none transition-opacity duration-500 group-data-[active=true]:opacity-0"
+              style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+            >
+              <span className="text-sm font-bold uppercase tracking-[0.2em] text-white/90">
+                {item.title}
+              </span>
+            </div>
 
             <div className="text-blue-400 opacity-0 transition-all duration-500 delay-100 transform translate-y-4 group-data-[active=true]:translate-y-0 group-data-[active=true]:opacity-100">
               {item.icon}
@@ -133,7 +141,7 @@ export const ExpandingCards = React.forwardRef<
               {item.title}
             </h3>
 
-            <p className="w-full max-w-md text-[15px] text-white/70 opacity-0 transition-all duration-500 delay-200 transform translate-y-4 group-data-[active=true]:translate-y-0 group-data-[active=true]:opacity-100 leading-relaxed line-clamp-3">
+            <p className="w-full text-[15px] text-white/80 opacity-0 transition-all duration-500 delay-200 transform translate-y-4 group-data-[active=true]:translate-y-0 group-data-[active=true]:opacity-100 leading-relaxed">
               {item.description}
             </p>
           </article>
@@ -224,24 +232,37 @@ export function ExpandingIndustrySection() {
 
       {/* Content */}
       <div className="mx-auto max-w-7xl px-6 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mx-auto max-w-3xl text-center mb-12"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#4A6FFF] text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
-            <Globe className="size-3" />
-            <span>Vertical Solutions</span>
-          </div>
-          <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]">
+        <div className="mx-auto max-w-3xl text-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#4A6FFF] text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
+              <Globe className="size-3" />
+              <span>Vertical Solutions</span>
+            </div>
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]"
+          >
             Tailored for your <span className="text-[#3666ff]">Industry</span>
-          </h2>
-          <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto font-medium">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto font-medium"
+          >
             FactWise provides specialized features designed to meet the unique challenges of your specific market sector.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
         
         <ExpandingCards items={industryItems} />
       </div>

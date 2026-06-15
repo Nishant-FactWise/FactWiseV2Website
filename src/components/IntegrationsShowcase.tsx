@@ -74,7 +74,7 @@ export default function IntegrationsShowcase() {
       });
     }, 2600);
     return () => clearInterval(id);
-  }, [expandedSuite]);
+  }, []);
 
   // Position a tooltip above the hovered SVG node, relative to the diagram container
   const showTip = (el: SVGGraphicsElement, body: string, kind: 'factwise' | 'external', title: string) => {
@@ -224,10 +224,9 @@ export default function IntegrationsShowcase() {
       {/* Background Glows & Noise */}
       <div 
         className="absolute -right-32 -bottom-32 w-[800px] h-[800px] rounded-full pointer-events-none opacity-40"
-        style={{ 
+        style={{
           background: 'radial-gradient(circle, rgba(54, 102, 255, 0.2) 0%, rgba(54, 102, 255, 0.05) 30%, transparent 70%)',
-          willChange: 'transform'
-        }} 
+        }}
       />
       <div 
         className="absolute -left-32 -top-32 w-[600px] h-[600px] rounded-full pointer-events-none opacity-30"
@@ -245,10 +244,10 @@ export default function IntegrationsShowcase() {
             label="Integrations"
             title={
               <>
-                FactWise runs Source-to-Pay. <span className="text-[#3666ff]">It plugs into the systems you already have.</span>
+                FactWise runs Source-to-Pay. <br className="hidden md:block" />
+                <span className="text-[#3666ff] text-3xl md:text-5xl font-bold block mt-1 md:mt-2">Works with what you have.</span>
               </>
             }
-            description="FactWise connects seamlessly to your existing ERP, CRM, BOM, inventory, and supplier systems via APIs and MCP. Keep your systems of record while FactWise orchestrates the entire procurement workflow on top."
             align="center"
           />
         </div>

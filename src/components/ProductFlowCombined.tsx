@@ -313,18 +313,22 @@ export default function ProductFlowCombined() {
               </div>
             </ScrollReveal>
 
-            <ScrollReveal type="kinetic">
-              <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]">
-                Automate Every Way You Procure. <br />
-                <span style={{ color: '#3666ff' }}>One Platform.</span>
-              </h2>
-            </ScrollReveal>
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]"
+            >
+              Automate Every Way You Procure. <br />
+              <span style={{ color: '#3666ff' }}>One Platform.</span>
+            </motion.h2>
 
             <motion.p
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
               style={{ color: '#64748b', maxWidth: '720px', fontSize: '18px', lineHeight: 1.6, fontWeight: 500, margin: 0 }}
             >
               Every manufacturer procures differently — some start with a customer RFQ, some with a requisition, some with a vendor invoice. FactWise handles all three, end to end.
@@ -346,7 +350,13 @@ export default function ProductFlowCombined() {
           </div>
 
           {/* Two cards on the gradient: flowchart + details */}
-          <div className="pfc-grid">
+          <motion.div
+            className="pfc-grid"
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          >
 
             {/* ════ LEFT — flowchart card ════ */}
             <div className="pfc-chart-card">
@@ -558,7 +568,7 @@ export default function ProductFlowCombined() {
               </div>
 
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 

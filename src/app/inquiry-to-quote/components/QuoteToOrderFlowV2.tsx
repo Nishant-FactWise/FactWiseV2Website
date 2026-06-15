@@ -12,25 +12,25 @@ import Section34QuoteAIInsight from './Section34QuoteAIInsight';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ──────────────────────────────────────────────────────────────────────
-   QuoteToOrderFlowV2 — mirrors ReqToPoFlow.tsx
-   ─ Pinned 100vh container with 4 horizontal-swipe panels.
-   ─ Panel 0 = BOM & Cost Intelligence (unchanged).
-   ─ Panels 1-3 = the three new TSX section files.
-   ────────────────────────────────────────────────────────────────────── */
-
 const STEPS = [
-    { num: '01', label: 'BOM & Cost Intelligence',  short: 'BOM'        },
-    { num: '02', label: 'Intelligent Sourcing',     short: 'Sourcing'   },
-    { num: '03', label: 'Landed Cost Analytics',    short: 'Analytics'  },
-    { num: '04', label: 'Quote Generation',         short: 'Quote'      },
+    { num: '01', label: 'BOM & Cost Intelligence', short: 'BOM' },
+    { num: '02', label: 'Intelligent Sourcing',    short: 'Sourcing' },
+    { num: '03', label: 'Landed Cost Analytics',   short: 'Analytics' },
+    { num: '04', label: 'Quote Generation',        short: 'Quote' },
 ];
+const TOTAL = STEPS.length;       // 4 panels
+const SLIDE_DUR = 0.55;           // seconds per panel transition
+const COOLDOWN = SLIDE_DUR * 1000 + 80; // ms — ignore wheel events mid-animation
 
 export default function QuoteToOrderFlowV2() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [activePanel, setActivePanel] = useState(-1); // -1 = not entered; 0-3 → panels
-
+    const [activePanel, setActivePanel] = useState(0);
     const [isDesktop, setIsDesktop] = useState(true);
+
+    const indexRef   = useRef(0);       // current panel index (no re-render lag)
+    const busyRef    = useRef(false);   // true while a transition is running
+    const pinnedRef  = useRef(false);   // true while ScrollTrigger has us pinned
+
     useEffect(() => {
         const mq = window.matchMedia('(min-width: 1024px)');
         const apply = () => setIsDesktop(mq.matches);
@@ -39,112 +39,159 @@ export default function QuoteToOrderFlowV2() {
         return () => mq.removeEventListener('change', apply);
     }, []);
 
-    const currentIndexRef = useRef(-1);
+    // Animate to a specific panel index directly via GSAP (no scrub)
+    const goTo = useCallback((next: number) => {
+        if (busyRef.current) return;
+        const clamped = Math.max(0, Math.min(TOTAL - 1, next));
+        if (clamped === indexRef.current) return;
 
-    useEffect(() => {
-        if (typeof window === 'undefined' || !containerRef.current) return;
-        if (!isDesktop) return; // no swipe on mobile
+        busyRef.current = true;
+        const panels = gsap.utils.toArray<HTMLElement>('.qtof-panel-slide');
 
-        const panels = gsap.utils.toArray<HTMLElement>('.qtof-panel');
-        const slidePanels = gsap.utils.toArray<HTMLElement>('.qtof-panel-slide');
+        // All slide panels: those before `clamped` are at xPercent 0 (already passed),
+        // those at or after are at xPercent 100 (waiting to come in).
+        // Animate ONLY the panel that needs to move.
+        const direction = clamped > indexRef.current ? 1 : -1;
 
-        // Panels 1-3 start off-screen to the right; panel 0 (BOM) is visible by default
-        gsap.set(slidePanels, { xPercent: 100 });
-        gsap.set(panels, { zIndex: (i: number) => i });
-
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: containerRef.current,
-                pin: true,
-                scrub: 1,
-                end: () => '+=' + (window.innerHeight * slidePanels.length),
-                onUpdate: (self) => {
-                    // self.progress goes from 0 to 1
-                    const index = Math.min(
-                        slidePanels.length,
-                        Math.floor(self.progress * slidePanels.length + 0.5)
-                    );
-                    if (currentIndexRef.current !== index) {
-                        currentIndexRef.current = index;
-                        setActivePanel(index);
+        if (direction > 0) {
+            // Moving forward — bring next panel in from right
+            const incoming = panels[clamped - 1]; // panel-slide index = panel index - 1
+            gsap.fromTo(incoming,
+                { xPercent: 100 },
+                {
+                    xPercent: 0, duration: SLIDE_DUR,
+                    ease: 'power2.inOut',
+                    onComplete: () => {
+                        indexRef.current = clamped;
+                        setActivePanel(clamped);
+                        setTimeout(() => { busyRef.current = false; }, 50);
                     }
                 }
-            }
+            );
+        } else {
+            // Moving backward — push current panel back to right
+            const outgoing = panels[indexRef.current - 1];
+            gsap.to(outgoing, {
+                xPercent: 100, duration: SLIDE_DUR,
+                ease: 'power2.inOut',
+                onComplete: () => {
+                    indexRef.current = clamped;
+                    setActivePanel(clamped);
+                    setTimeout(() => { busyRef.current = false; }, 50);
+                }
+            });
+        }
+    }, []);
+
+    // Exit the pinned section by scrolling past it
+    const exitSection = useCallback((direction: 'forward' | 'back') => {
+        const trigger = ScrollTrigger.getAll().find(st => st.pin === containerRef.current);
+        if (!trigger) return;
+        const target = direction === 'forward' ? trigger.end + 2 : trigger.start - 2;
+        window.scrollTo({ top: target, behavior: 'smooth' });
+    }, []);
+
+    useEffect(() => {
+        if (!isDesktop || !containerRef.current) return;
+
+        const panels = gsap.utils.toArray<HTMLElement>('.qtof-panel-slide');
+
+        // Reset all slide panels off-screen right
+        gsap.set(panels, { xPercent: 100 });
+        gsap.set(gsap.utils.toArray<HTMLElement>('.qtof-panel'), { zIndex: (i: number) => i });
+
+        // Pin the container — NO scrub, NO animation on the timeline
+        // The pin just holds the page position while we handle transitions ourselves
+        const st = ScrollTrigger.create({
+            trigger: containerRef.current,
+            pin: true,
+            start: 'top top',
+            end: '+=' + (window.innerHeight * 0.5), // minimal end — just enough to detect entry/exit
+            onEnter: () => { pinnedRef.current = true; },
+            onLeave: () => { pinnedRef.current = false; },
+            onEnterBack: () => { pinnedRef.current = true; },
+            onLeaveBack: () => { pinnedRef.current = false; },
         });
 
-        slidePanels.forEach((panel) => {
-            tl.to(panel, { xPercent: 0, ease: 'none' });
-        });
+        // Wheel handler — intercept scroll while pinned
+        const onWheel = (e: WheelEvent) => {
+            if (!pinnedRef.current) return;
+            e.preventDefault();
 
-        const onKey = (e: KeyboardEvent) => {
-            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-                navToStep(currentIndexRef.current + 1);
-            }
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-                navToStep(currentIndexRef.current - 1);
+            if (busyRef.current) return;
+
+            const forward = e.deltaY > 0;
+
+            if (forward && indexRef.current < TOTAL - 1) {
+                goTo(indexRef.current + 1);
+            } else if (!forward && indexRef.current > 0) {
+                goTo(indexRef.current - 1);
+            } else if (forward && indexRef.current === TOTAL - 1) {
+                exitSection('forward');
+            } else if (!forward && indexRef.current === 0) {
+                exitSection('back');
             }
         };
+
+        // Touch support
+        let touchStartY = 0;
+        const onTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
+        const onTouchEnd = (e: TouchEvent) => {
+            if (!pinnedRef.current) return;
+            const delta = touchStartY - e.changedTouches[0].clientY;
+            if (Math.abs(delta) < 30) return;
+            if (delta > 0 && indexRef.current < TOTAL - 1) goTo(indexRef.current + 1);
+            else if (delta < 0 && indexRef.current > 0) goTo(indexRef.current - 1);
+            else if (delta > 0) exitSection('forward');
+            else exitSection('back');
+        };
+
+        // Key support
+        const onKey = (e: KeyboardEvent) => {
+            if (!pinnedRef.current) return;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(indexRef.current + 1);
+            if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(indexRef.current - 1);
+        };
+
+        window.addEventListener('wheel', onWheel, { passive: false });
+        window.addEventListener('touchstart', onTouchStart, { passive: true });
+        window.addEventListener('touchend', onTouchEnd, { passive: true });
         window.addEventListener('keydown', onKey);
 
         return () => {
-            tl.scrollTrigger?.kill();
-            tl.kill();
+            st.kill();
+            window.removeEventListener('wheel', onWheel);
+            window.removeEventListener('touchstart', onTouchStart);
+            window.removeEventListener('touchend', onTouchEnd);
             window.removeEventListener('keydown', onKey);
         };
-    }, [isDesktop]);
+    }, [isDesktop, goTo, exitSection]);
 
-    const navToStep = useCallback((targetIndex: number) => {
-        if (typeof window === 'undefined' || !containerRef.current || !isDesktop) return;
-        const slidesCount = document.querySelectorAll('.qtof-panel-slide').length;
-        if (slidesCount === 0) return;
-        
-        const trigger = ScrollTrigger.getAll().find(st => st.pin === containerRef.current);
-        if (trigger) {
-            const start = trigger.start;
-            const end = trigger.end;
-            const totalScroll = end - start;
-            const safeTarget = Math.max(0, Math.min(slidesCount, targetIndex));
-            const targetScrollY = start + (safeTarget / slidesCount) * totalScroll;
-            window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
-        }
-    }, [isDesktop]);
-
-    const navPrev = useCallback(() => {
-        navToStep(currentIndexRef.current - 1);
-    }, [navToStep]);
-
-    const navNext = useCallback(() => {
-        navToStep(currentIndexRef.current + 1);
-    }, [navToStep]);
+    const navPrev = useCallback(() => goTo(indexRef.current - 1), [goTo]);
+    const navNext = useCallback(() => goTo(indexRef.current + 1), [goTo]);
 
     return (
         <>
-            {/* ══════════════════════════════
-                HEADING SECTION (above pinned area, scrolls normally)
-            ══════════════════════════════ */}
+            {/* HEADING — scrolls normally above pinned area */}
             <section style={{ background: 'white', padding: '80px 24px 60px', textAlign: 'center' }}>
                 <div style={{ maxWidth: 1240, margin: '0 auto' }}>
-                    <div
-                        style={{
-                            display: 'inline-flex', alignItems: 'center', gap: 6,
-                            padding: '5px 14px', borderRadius: 100,
-                            background: 'rgba(54,102,255,0.06)', border: '1px solid rgba(54,102,255,0.15)',
-                            fontSize: 11, fontWeight: 700, color: '#3666ff',
-                            marginBottom: 24, letterSpacing: '0.12em', textTransform: 'uppercase',
-                            fontFamily: 'var(--font-inter)',
-                        }}
-                    >
+                    <div style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 6,
+                        padding: '5px 14px', borderRadius: 100,
+                        background: 'rgba(54,102,255,0.06)', border: '1px solid rgba(54,102,255,0.15)',
+                        fontSize: 11, fontWeight: 700, color: '#3666ff',
+                        marginBottom: 24, letterSpacing: '0.12em', textTransform: 'uppercase',
+                        fontFamily: 'var(--font-inter)',
+                    }}>
                         <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#3666ff', display: 'inline-block', animation: 'qtof-pulse 2s infinite' }} />
                         The FactWise Inquiry to Quote Engine
                     </div>
-                    <h2
-                        style={{
-                            fontSize: 'clamp(32px, 3.4vw, 52px)', fontWeight: 600,
-                            lineHeight: 1.1, letterSpacing: '-0.035em',
-                            color: '#0D1117', margin: '0 0 16px',
-                            fontFamily: 'var(--font-display)',
-                        }}
-                    >
+                    <h2 style={{
+                        fontSize: 'clamp(32px, 3.4vw, 52px)', fontWeight: 600,
+                        lineHeight: 1.1, letterSpacing: '-0.035em',
+                        color: '#0D1117', margin: '0 0 16px',
+                        fontFamily: 'var(--font-display)',
+                    }}>
                         How FactWise Automates <span style={{ color: '#3666ff' }}>Every Step</span>
                     </h2>
                     <p style={{ fontSize: 17, lineHeight: 1.65, color: '#64748b', maxWidth: 640, margin: '0 auto', fontFamily: 'var(--font-inter)' }}>
@@ -153,163 +200,115 @@ export default function QuoteToOrderFlowV2() {
                 </div>
             </section>
 
+            {/* PINNED CONTAINER — desktop only */}
             <div
                 ref={containerRef}
                 className="qtof-container hidden lg:block"
-                style={{
-                    position: 'relative',
-                    height: '100vh',
-                    width: '100%',
-                    overflow: 'hidden',
-                    background: 'white',
-                }}
+                style={{ position: 'relative', height: '100vh', width: '100%', overflow: 'hidden', background: 'white' }}
             >
-                {/* PANEL 0 — BOM & Cost Intelligence (default visible) */}
-                <div className="qtof-panel" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'white', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+                {/* PANEL 0 — BOM (always visible underneath) */}
+                <div className="qtof-panel" style={{ position: 'absolute', inset: 0, background: 'white', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
                     <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <BomCostSection />
                     </div>
                 </div>
 
-                {/* PANEL 1 — Source in Minutes · AI Negotiate */}
-                <div
-                    className="qtof-panel qtof-panel-slide"
-                    style={{
-                        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                        background:
-                            "radial-gradient(ellipse 75% 75% at 0% 0%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), " +
-                            "radial-gradient(ellipse 75% 75% at 100% 100%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), " +
-                            "white",
-                        display: 'flex', alignItems: 'center', overflow: 'hidden',
-                    }}
-                >
+                {/* PANEL 1 */}
+                <div className="qtof-panel qtof-panel-slide" style={{
+                    position: 'absolute', inset: 0,
+                    background: 'radial-gradient(ellipse 75% 75% at 0% 0%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), radial-gradient(ellipse 75% 75% at 100% 100%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), white',
+                    display: 'flex', alignItems: 'center', overflow: 'hidden',
+                }}>
                     <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <Section32SourceAINegotiate isActive={activePanel === 1} />
                     </div>
                 </div>
 
-                {/* PANEL 2 — Landed Cost X-Ray */}
-                <div className="qtof-panel qtof-panel-slide" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'white', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+                {/* PANEL 2 */}
+                <div className="qtof-panel qtof-panel-slide" style={{ position: 'absolute', inset: 0, background: 'white', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
                     <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <Section33LandedCostXRay isActive={activePanel === 2} />
                     </div>
                 </div>
 
-                {/* PANEL 3 — Quote AI Insight */}
-                <div
-                    className="qtof-panel qtof-panel-slide"
-                    style={{
-                        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                        background:
-                            "radial-gradient(ellipse 75% 75% at 0% 0%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), " +
-                            "radial-gradient(ellipse 75% 75% at 100% 100%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), " +
-                            "white",
-                        display: 'flex', alignItems: 'center', overflow: 'hidden',
-                    }}
-                >
+                {/* PANEL 3 */}
+                <div className="qtof-panel qtof-panel-slide" style={{
+                    position: 'absolute', inset: 0,
+                    background: 'radial-gradient(ellipse 75% 75% at 0% 0%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), radial-gradient(ellipse 75% 75% at 100% 100%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), white',
+                    display: 'flex', alignItems: 'center', overflow: 'hidden',
+                }}>
                     <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <Section34QuoteAIInsight isActive={activePanel === 3} />
                     </div>
                 </div>
 
-                {/* ══════════════════════════════
-                    STEP PROGRESS BAR (bottom)
-                ══════════════════════════════ */}
-                <div
-                    className="hidden lg:flex"
-                    style={{
-                        position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)',
-                        zIndex: 100, alignItems: 'center', gap: 8,
-                        background: 'white', border: '1px solid rgba(15,23,42,0.08)',
-                        borderRadius: 100, padding: '8px 16px',
-                        boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-                        pointerEvents: 'none',
-                    }}
-                >
+                {/* PROGRESS BAR */}
+                <div className="hidden lg:flex" style={{
+                    position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)',
+                    zIndex: 100, alignItems: 'center', gap: 8,
+                    background: 'white', border: '1px solid rgba(15,23,42,0.08)',
+                    borderRadius: 100, padding: '8px 16px',
+                    boxShadow: '0 4px 24px rgba(0,0,0,0.08)', pointerEvents: 'none',
+                }}>
                     {STEPS.map((s, i) => (
-                        <div
-                            key={i}
-                            style={{
-                                width: activePanel === i ? 20 : 6, height: 6,
-                                borderRadius: 3,
-                                background: activePanel === i ? '#3666ff' : activePanel > i ? '#00b884' : '#e2e8f0',
-                                transition: 'all .4s cubic-bezier(.22,.61,.36,1)',
-                            }}
-                        />
+                        <div key={s.num} style={{
+                            width: activePanel === i ? 20 : 6, height: 6, borderRadius: 3,
+                            background: activePanel === i ? '#3666ff' : activePanel > i ? '#00b884' : '#e2e8f0',
+                            transition: 'all .4s cubic-bezier(.22,.61,.36,1)',
+                        }} />
                     ))}
-                    {activePanel >= 0 && (
-                        <span
-                            style={{
-                                fontSize: 10, fontWeight: 700, color: '#3666ff',
-                                fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.06em',
-                                marginLeft: 4,
-                            }}
-                        >
-                            {STEPS[activePanel]?.num} · {STEPS[activePanel]?.short}
-                        </span>
-                    )}
+                    <span style={{ fontSize: 10, fontWeight: 700, color: '#3666ff', fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.06em', marginLeft: 4 }}>
+                        {STEPS[activePanel]?.num} · {STEPS[activePanel]?.short}
+                    </span>
                 </div>
 
-                {/* ══════════════════════════════
-                    SIDE NAV ARROWS
-                ══════════════════════════════ */}
-                <button
-                    onClick={navPrev}
-                    aria-label="Previous step"
-                    className="hidden lg:flex"
+                {/* PREV ARROW */}
+                <button onClick={navPrev} aria-label="Previous step" className="hidden lg:flex"
                     style={{
                         position: 'absolute', left: 20, top: '50%', transform: 'translateY(-50%)',
                         zIndex: 100, width: 40, height: 40, borderRadius: '50%',
                         background: 'white', border: '1px solid rgba(15,23,42,0.1)',
                         alignItems: 'center', justifyContent: 'center',
                         cursor: 'pointer', boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-                        transition: 'all .2s ease',
+                        transition: 'opacity .2s ease, border-color .2s ease, color .2s ease',
                         opacity: activePanel === 0 ? 0 : 1,
                         pointerEvents: activePanel === 0 ? 'none' : 'auto',
                         color: '#64748b',
                     }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(54,102,255,0.4)'; (e.currentTarget as HTMLElement).style.color = '#3666ff'; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(15,23,42,0.1)'; (e.currentTarget as HTMLElement).style.color = '#64748b'; }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(54,102,255,0.4)'; (e.currentTarget as HTMLElement).style.color = '#3666ff'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(15,23,42,0.1)'; (e.currentTarget as HTMLElement).style.color = '#64748b'; }}
                 >
                     <ChevronLeft style={{ width: 16, height: 16, color: 'inherit' }} />
                 </button>
 
-                <button
-                    onClick={navNext}
-                    aria-label="Next step"
-                    className="hidden lg:flex"
+                {/* NEXT ARROW */}
+                <button onClick={navNext} aria-label="Next step" className="hidden lg:flex"
                     style={{
                         position: 'absolute', right: 20, top: '50%', transform: 'translateY(-50%)',
                         zIndex: 100, width: 40, height: 40, borderRadius: '50%',
-                        background: activePanel === STEPS.length - 1 ? 'rgba(0,184,132,0.1)' : 'white',
-                        border: `1px solid ${activePanel === STEPS.length - 1 ? 'rgba(0,184,132,0.3)' : 'rgba(15,23,42,0.1)'}`,
+                        background: activePanel === TOTAL - 1 ? 'rgba(0,184,132,0.1)' : 'white',
+                        border: `1px solid ${activePanel === TOTAL - 1 ? 'rgba(0,184,132,0.3)' : 'rgba(15,23,42,0.1)'}`,
                         alignItems: 'center', justifyContent: 'center',
                         cursor: 'pointer', boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
                         transition: 'all .2s ease',
-                        color: activePanel === STEPS.length - 1 ? '#00b884' : '#64748b',
+                        color: activePanel === TOTAL - 1 ? '#00b884' : '#64748b',
                     }}
-                    onMouseEnter={(e) => { if (activePanel < STEPS.length - 1) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(54,102,255,0.4)'; (e.currentTarget as HTMLElement).style.color = '#3666ff'; } }}
-                    onMouseLeave={(e) => { if (activePanel < STEPS.length - 1) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(15,23,42,0.1)'; (e.currentTarget as HTMLElement).style.color = '#64748b'; } }}
+                    onMouseEnter={e => { if (activePanel < TOTAL - 1) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(54,102,255,0.4)'; (e.currentTarget as HTMLElement).style.color = '#3666ff'; } }}
+                    onMouseLeave={e => { if (activePanel < TOTAL - 1) { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(15,23,42,0.1)'; (e.currentTarget as HTMLElement).style.color = '#64748b'; } }}
                 >
                     <ChevronRight style={{ width: 16, height: 16, color: 'inherit' }} />
                 </button>
-
             </div>
 
-            {/* Spacer so page content after this section scrolls normally */}
-            {isDesktop && <div style={{ height: 1 }} aria-hidden="true" />}
-
-            {/* MOBILE / TABLET (<lg): all steps stacked vertically, normal scroll */}
-            <div className="block lg:hidden bg-[#ffffff]">
+            {/* MOBILE — stacked vertically */}
+            <div className="block lg:hidden bg-white">
                 <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><BomCostSection /></div>
                 <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section32SourceAINegotiate isActive /></div>
                 <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section33LandedCostXRay isActive /></div>
                 <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section34QuoteAIInsight isActive /></div>
             </div>
 
-            <style>{`
-                @keyframes qtof-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
-            `}</style>
+            <style>{`@keyframes qtof-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }`}</style>
         </>
     );
 }

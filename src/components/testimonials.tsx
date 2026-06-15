@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -13,7 +14,7 @@ const testimonials = [
         company: "Syrma SGS",
         content: "Factwise has significantly improved procurement digitalization and automated quotation processes, enabling faster workflows, enhanced transparency, and data-driven decision-making. We like the platform's efficiency, seamless integration, and actionable insights.",
         color: "bg-blue-100 text-blue-700",
-        logo: "/image.png"
+        logo: "/syrmasgs.png"
     },
     {
         id: 'fortune-50-vp',
@@ -40,7 +41,7 @@ const testimonials = [
         company: "Driplex",
         content: "Our manufacturing company uses the traditional standard ERP system. With Factwise integrating with our ERP, our purchasing has become informed, organized, and effortless. The intuitive and sleek UI was a standout feature.",
         color: "bg-orange-100 text-orange-700",
-        logo: "/driplex.png"
+        logo: "/Driplexengitech.png"
     },
     {
         id: 'gem-corp',
@@ -49,7 +50,7 @@ const testimonials = [
         company: "Gem Corp",
         content: "FactWise excels in analytics — their AI innovation transforms analysis into a user-friendly experience. Breaking free from old formats, we've minimized Excel dependency, witnessing a data-driven revolution.",
         color: "bg-pink-100 text-pink-700",
-        logo: "/GemCorpochem.png"
+        logo: "/gemcorp.png"
     },
     {
         id: 'prasol',
@@ -58,7 +59,7 @@ const testimonials = [
         company: "Prasol",
         content: "FactWise has enabled us to make data-driven decisions in procurement. This has increased the efficiency and compliance in the team and more importantly led to cost savings which is extremely important.",
         color: "bg-cyan-100 text-cyan-700",
-        logo: "/image copy.png"
+        logo: "/PrasolChemicals.png"
     },
     {
         id: 'bpt',
@@ -67,7 +68,7 @@ const testimonials = [
         company: "Bridgepointe",
         content: "FactWise streamlined our quoting process, replacing manual tasks with efficient vendor and client interactions. Customizable and adaptable, it tailored to our complex workflow perfectly.",
         color: "bg-yellow-100 text-yellow-700",
-        logo: "/Bridgepointe.png"
+        logo: "/bridgepointe.png"
     },
     {
         id: 'fortune-50-sr-dir',
@@ -147,9 +148,16 @@ export default function Testimonials() {
                             const hideOnMobile = i >= 3 && !showMore;
 
                             return (
-                                <Card
+                                <motion.div
                                     key={t.id}
-                                    className={`${isLarge ? "md:col-span-2" : "md:col-span-1"} ${hideOnMobile ? "max-sm:hidden" : ""} h-full border-slate-100 bg-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(74,111,255,0.25)] hover:border-[#4A6FFF]/30 transition-all duration-500 hover:-translate-y-1 group relative overflow-visible rounded-xl flex flex-col`}
+                                    initial={{ opacity: 0, y: 32 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: '-40px' }}
+                                    transition={{ duration: 0.6, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                                    className={`${isLarge ? "md:col-span-2" : "md:col-span-1"} ${hideOnMobile ? "max-sm:hidden" : ""} h-full`}
+                                >
+                                <Card
+                                    className={`h-full border-slate-100 bg-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(74,111,255,0.25)] hover:border-[#4A6FFF]/30 transition-all duration-500 hover:-translate-y-1 group relative overflow-visible rounded-xl flex flex-col`}
                                 >
                                     <CardContent className="flex flex-col gap-3 p-4 pt-5 relative z-10 flex-grow">
                                         {/* Top Section: Quote (Left) & Logo (Right) */}
@@ -160,22 +168,13 @@ export default function Testimonials() {
                                                 </svg>
                                             </div>
                                             {t.logo && (
-                                                <div className="h-10 w-32 flex items-center justify-end logo-container ml-auto">
-                                                    <img 
-                                                        src={t.logo} 
-                                                        alt={`${t.company} logo`} 
-                                                        className="max-h-full max-w-full object-contain opacity-90 group-hover:opacity-100 transition-all duration-500"
-                                                        onError={(e) => {
-                                                            const target = e.target as HTMLImageElement;
-                                                            target.style.display = 'none';
-                                                            const parent = target.parentElement;
-                                                            if (parent) {
-                                                                const fallback = document.createElement('span');
-                                                                fallback.className = 'text-[12px] font-black tracking-tighter text-[#1A1D2E] opacity-50';
-                                                                fallback.innerText = t.company;
-                                                                parent.appendChild(fallback);
-                                                            }
-                                                        }}
+                                                <div className="relative h-10 w-32 flex items-center justify-end logo-container ml-auto">
+                                                    <Image
+                                                        src={t.logo}
+                                                        alt={`${t.company} logo`}
+                                                        fill
+                                                        sizes="128px"
+                                                        className="object-contain object-right opacity-90 group-hover:opacity-100 transition-all duration-500"
                                                     />
                                                 </div>
                                             )}
@@ -214,6 +213,7 @@ export default function Testimonials() {
                                         </div>
                                     </CardContent>
                                 </Card>
+                                </motion.div>
                             );
                         })}
 

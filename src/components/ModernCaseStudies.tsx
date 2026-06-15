@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Clock, TrendingUp, Zap, BarChart3, ShieldCheck } from 'lucide-react';
 import { cn } from "@/lib/utils";
@@ -163,16 +164,18 @@ export default function ModernCaseStudies() {
                 <motion.div
                   key={study.id}
                   layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
                   exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
-                  whileHover={{ 
+                  whileHover={{
                     y: -5,
                     boxShadow: "0 20px 40px -12px rgba(0, 0, 0, 0.06)",
                   }}
                   transition={{
-                    duration: 0.4,
-                    ease: [0.23, 1, 0.32, 1],
+                    duration: 0.55,
+                    delay: index * 0.08,
+                    ease: [0.22, 1, 0.36, 1],
                   }}
                   className={cn(
                     "group relative bg-white rounded-[32px] overflow-hidden border border-slate-200/60 flex flex-col will-change-transform transform-gpu shadow-sm hover:shadow-xl transition-shadow",
@@ -188,10 +191,12 @@ export default function ModernCaseStudies() {
                       "relative overflow-hidden shrink-0",
                       (isLarge || isOnly) ? "h-64 md:h-full md:w-1/2" : "h-32"
                     )}>
-                      <img
+                      <Image
                         src={study.visual as string}
                         alt={study.company}
-                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
+                        className="object-cover transition-transform duration-1000 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
                       <div className="absolute top-4 left-4 z-10">

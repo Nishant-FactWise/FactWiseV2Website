@@ -10,7 +10,6 @@ import ConditionalSplashLoader from "@/components/ConditionalSplashLoader";
 
 const GTM_ID = "GTM-K6XQZW7";
 const GA4_ID = "G-Y5X31H49ZS";
-const UA_ID = "UA-197708066-1";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -284,6 +283,12 @@ export default function RootLayout({
         */}
         <link
           rel="preload"
+          as="image"
+          href="/TexturedGradient.webp"
+          type="image/webp"
+        />
+        <link
+          rel="preload"
           as="video"
           href="/Final_iphone_mobileVersion.mp4"
           type="video/mp4"
@@ -341,7 +346,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           {`window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${UA_ID}');
             gtag('config', '${GA4_ID}');`}
         </Script>
       </head>

@@ -9,7 +9,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 function Phase1Visual() {
   const [checked, setChecked] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref);
+  const inView = useInView(ref, { once: true });
 
   useEffect(() => {
     if (!inView) return;
@@ -94,7 +94,7 @@ function Phase1Visual() {
 function Phase2Visual() {
   const [step, setStep] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref);
+  const inView = useInView(ref, { once: true });
 
   useEffect(() => {
     if (!inView) return;
@@ -171,7 +171,7 @@ function Phase3Visual() {
   const [lineIn, setLineIn] = useState(false);
   const [chipIn, setChipIn] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref);
+  const inView = useInView(ref, { once: true });
 
   useEffect(() => {
     if (!inView) return;
@@ -269,7 +269,7 @@ const CARDS = [
     id: "setup", phase: "Phase 01", timeline: "WEEKS 2–8",
     accent: "#3666ff", accentBg: "rgba(54,102,255,0.07)", accentBorder: "rgba(54,102,255,0.18)", cardBg: "#f0f4ff",
     title: "Go Live. With Full Support.",
-    desc: "Our team works alongside yours — configuring workflows, migrating your catalogue, and training every user. By week 8, FactWise runs your procurement exactly the way your business needs.",
+    desc: "Our team configures workflows, migrates your catalogue, and trains your users. FactWise is tailored to your needs.",
     features: ["Expert onboarding from Day 1","Legacy data migration & validation","Role-based access & approval chains"],
     Visual: Phase1Visual,
   },
@@ -278,7 +278,7 @@ const CARDS = [
     accent: "#00b884", accentBg: "rgba(0,184,132,0.07)", accentBorder: "rgba(0,184,132,0.22)", cardBg: "#f0faf6",
     popular: true,
     title: "Replace Manual Work. Gain Speed.",
-    desc: "RFQs that took days now take hours. Vendor follow-ups are automated. Approvals move without chasing. Your team focuses on decisions that matter.",
+    desc: "RFQs take hours instead of days. Approvals are automated, letting your team focus on decisions that matter.",
     features: ["Autonomous procurement approvals","Real-time supply chain visibility","Advanced vendor performance tracking"],
     Visual: Phase2Visual,
   },
@@ -286,7 +286,7 @@ const CARDS = [
     id: "savings", phase: "Phase 03", timeline: "MONTHS 6–12",
     accent: "#e8a020", accentBg: "rgba(232,160,32,0.07)", accentBorder: "rgba(232,160,32,0.22)", cardBg: "#fdf8ee",
     title: "Unlock Savings. Compound Intelligence.",
-    desc: "With months of procurement history, the intelligence compounds. You know what you paid, what's fair, and where to push back. Costs come down. Margins go up.",
+    desc: "Procurement intelligence compounds over time. Costs come down and margins go up as you uncover strategic savings.",
     features: ["Auditable ROI & cost savings","Strategic sourcing & forecasting","Consolidated multi-entity reporting"],
     Visual: Phase3Visual,
   },

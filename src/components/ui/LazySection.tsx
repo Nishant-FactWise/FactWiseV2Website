@@ -1,46 +1,43 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useReducer, type ReactNode } from 'react';
 
 interface LazySectionProps {
   children: ReactNode;
-  /** Distance ahead of viewport at which to start mounting (e.g. "600px") */
   rootMargin?: string;
-  /** Minimum reserved height so the page doesn't jump as sections mount */
   minHeight?: string;
-  /** Mount immediately if true (escape hatch for above-the-fold use) */
   eager?: boolean;
 }
 
-// Defers mounting children until they're near the viewport.
-// next/dynamic with { ssr: false } only delays SSR — the JS chunk still
-// fetches right after hydration. This wrapper holds the mount entirely
-// until IntersectionObserver fires, so 10 below-fold animation chunks
-// don't all race for bandwidth on first paint.
+type State = 'idle' | 'settling' | 'done';
+
 export default function LazySection({
   children,
-  rootMargin = '600px 0px',
+  rootMargin = '300px 0px',
   minHeight = '60vh',
   eager = false,
 }: LazySectionProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(eager);
+  const outerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const [state, dispatch] = useReducer(
+    (_: State, next: State) => next,
+    eager ? 'done' : 'idle',
+  );
 
   useEffect(() => {
-    if (mounted) return;
-    const el = ref.current;
+    if (state !== 'idle') return;
+    const el = outerRef.current;
     if (!el) return;
 
-    // Older browsers / SSR — fall through to mounting immediately.
     if (typeof IntersectionObserver === 'undefined') {
-      setMounted(true);
+      dispatch('settling');
       return;
     }
 
     const io = new IntersectionObserver(
       entries => {
         if (entries.some(e => e.isIntersecting)) {
-          setMounted(true);
+          dispatch('settling');
           io.disconnect();
         }
       },
@@ -48,11 +45,60 @@ export default function LazySection({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [mounted, rootMargin]);
+  }, [state, rootMargin]);
+
+  useEffect(() => {
+    if (state !== 'settling') return;
+
+    // After children render, measure their real height and fix the outer
+    // wrapper to that exact height. This means the placeholder height
+    // matches the real content — no layout shift, no scroll jump.
+    // Then after 2 rAFs (Framer Motion has applied initial styles),
+    // release the fixed height and go to done.
+    const outer = outerRef.current;
+    const inner = innerRef.current;
+    let id1: number, id2: number;
+
+    id1 = requestAnimationFrame(() => {
+      // First rAF: real content has rendered, measure it.
+      if (outer && inner) {
+        const realHeight = inner.getBoundingClientRect().height;
+        if (realHeight > 0) {
+          // Lock outer to the real height so page length doesn't change.
+          outer.style.minHeight = `${realHeight}px`;
+        }
+      }
+      id2 = requestAnimationFrame(() => {
+        // Second rAF: Framer Motion initial styles are set. Release height.
+        if (outer) {
+          outer.style.minHeight = '';
+        }
+        dispatch('done');
+      });
+    });
+
+    return () => {
+      cancelAnimationFrame(id1);
+      cancelAnimationFrame(id2);
+      if (outer) outer.style.minHeight = '';
+    };
+  }, [state]);
+
+  const placeholder = state === 'idle' || state === 'settling';
 
   return (
-    <div ref={ref} style={{ minHeight: mounted ? undefined : minHeight }}>
-      {mounted ? children : null}
+    <div
+      ref={outerRef}
+      style={placeholder ? { minHeight, background: '#ffffff' } : undefined}
+    >
+      {(state === 'settling' || state === 'done') ? (
+        <div
+          ref={innerRef}
+          className={state === 'settling' ? 'fw-lazy-settling' : undefined}
+        >
+          {children}
+        </div>
+      ) : null}
     </div>
   );
 }
