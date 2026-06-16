@@ -114,7 +114,12 @@ export async function POST(req: NextRequest) {
 
   const internalEmail = {
     sender: { name: senderName, email: senderEmail },
-    to: [{ email: senderEmail, name: senderName }],
+    to: [
+      { email: 'stawan.kamani@factwise.io', name: 'Stawan Kamani' },
+      { email: 'devanshi@factwise.io', name: 'Devanshi' },
+      { email: 'info@factwise.io', name: 'Info' },
+      { email: 'support@factwise.io', name: 'Support' }
+    ],
     subject: `🔔 New demo request — ${name} · ${company}`,
     htmlContent: `
 <!DOCTYPE html>
