@@ -332,7 +332,7 @@ export default function DemoPage() {
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Company *</label>
-                      <input required name="company" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="Acme Corp" />
+                      <input required name="company" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="e.g. Global Industries" />
                     </div>
                   </div>
 
@@ -367,7 +367,7 @@ export default function DemoPage() {
                         <option value="+81">🇯🇵 +81</option>
                         <option value="+86">🇨🇳 +86</option>
                       </select>
-                      <input name="phone" type="tel" className="flex-1 bg-transparent px-3 py-2.5 text-slate-900 focus:outline-none placeholder:text-slate-400 text-sm" placeholder="98765 43210" />
+                      <input name="phone" type="tel" className="flex-1 bg-transparent px-3 py-2.5 text-slate-900 focus:outline-none placeholder:text-slate-400 text-sm" placeholder="99999 99999" />
                     </div>
                   </div>
 
