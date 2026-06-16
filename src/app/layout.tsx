@@ -7,6 +7,7 @@ import ScrollToTop from "@/components/ui/ScrollToTop";
 import { Header } from "@/components/ui/header-2";
 import CookieConsent from "@/components/ui/CookieConsent";
 import ConditionalSplashLoader from "@/components/ConditionalSplashLoader";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 
 const GTM_ID = "GTM-K6XQZW7";
 const GA4_ID = "G-Y5X31H49ZS";
@@ -350,6 +351,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </Script>
       </head>
       <body className={inter.className} suppressHydrationWarning>
+        <AnalyticsTracker />
         <ConditionalSplashLoader />
         <noscript>
           <iframe
