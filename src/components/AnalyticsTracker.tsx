@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import Clarity from "@microsoft/clarity";
 
 // Declare global dataLayer array for GTM
 declare global {
@@ -19,6 +20,12 @@ export default function AnalyticsTracker() {
 
   // Initialize tracking and fetch IP address
   useEffect(() => {
+    // Initialize Microsoft Clarity if project ID is provided
+    const clarityId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
+    if (clarityId) {
+      Clarity.init(clarityId);
+    }
+
     // Set initial page start time if not already set
     if (pageStartTimeRef.current === 0) {
       pageStartTimeRef.current = Date.now();
