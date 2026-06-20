@@ -76,8 +76,8 @@ export const ImpactMission = () => {
 
             {/* Right: Text Content */}
             <div className="md:col-span-7 flex flex-col items-start">
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
-              Our Mission
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
+              Impact & Mission
             </div>
 
             <motion.h2

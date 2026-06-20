@@ -95,8 +95,8 @@ export const CoreValues = () => {
           
           {/* Left Side: Sticky Heading */}
           <div className="heading-column h-fit pb-24">
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#4A6FFF] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
-              The FactWise Way
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
+              Core Values
             </div>
             <h2 className="text-5xl md:text-6xl font-bold text-slate-900 leading-[1.05] tracking-tighter mb-8">
               The values that <br />

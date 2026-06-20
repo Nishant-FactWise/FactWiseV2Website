@@ -35,7 +35,7 @@ const footerLinks = [
       { name: "About Us", href: "/about" },
       { name: "Careers", href: "/careers" },
       { name: "Book a Demo", href: "/demo" },
-      { name: "Contact", href: "/contact" },
+      { name: "Contact", href: "/demo" },
     ],
   },
   {

@@ -113,7 +113,6 @@ export default function CustomersTableCard({
         'group bg-white relative w-full overflow-hidden rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/10',
         className
       )}
-      aria-label={title}
     >
       {/* Top Accent Bar (Logical adaptation of Phase Card design) */}
       <div
@@ -136,7 +135,7 @@ export default function CustomersTableCard({
               <Clock className="w-3 h-3" />
               Real-time
             </div>
-            <button className="text-slate-300 hover:text-slate-600 transition-colors p-1">
+            <button aria-label="More options" className="text-slate-400 hover:text-slate-600 transition-colors p-1">
               <MoreHorizontal className="w-5 h-5" />
             </button>
           </div>
@@ -162,7 +161,7 @@ export default function CustomersTableCard({
       <div className="overflow-x-auto p-6 pt-2">
         <table className="min-w-[600px] w-full border-separate border-spacing-y-2.5 text-sm">
           <thead>
-            <tr className="text-slate-400 text-[10px] font-black uppercase tracking-widest *:px-4 *:py-3 *:text-left">
+            <tr className="text-slate-500 text-[10px] font-black uppercase tracking-widest *:px-4 *:py-3 *:text-left">
               <th className="w-12">#</th>
               <th>Customer Profile</th>
               <th>Status</th>
@@ -176,7 +175,7 @@ export default function CustomersTableCard({
                 key={customer.id}
                 className="group/row hover:bg-slate-50/80 transition-all duration-300 *:px-4 *:py-3.5"
               >
-                <td className="text-slate-300 font-black text-xs rounded-l-2xl border-y border-l border-transparent group-hover/row:border-slate-100 group-hover/row:text-slate-500 transition-colors">
+                <td className="text-slate-400 font-black text-xs rounded-l-2xl border-y border-l border-transparent group-hover/row:border-slate-100 group-hover/row:text-slate-600 transition-colors">
                   {idx + 1}
                 </td>
                 <td className="border-y border-transparent group-hover/row:border-slate-100 transition-colors">
@@ -215,7 +214,7 @@ export default function CustomersTableCard({
             {customers.length} Rows
           </div>
           <span className="w-1 h-1 rounded-full bg-slate-200" />
-          <span className="text-slate-400 text-[10px] font-medium italic">Updated just now</span>
+          <span className="text-slate-500 text-[10px] font-medium italic">Updated just now</span>
         </div>
 
         <button className="group/btn flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 text-blue-600 font-bold text-xs transition-all hover:border-blue-200 hover:bg-blue-50/50">

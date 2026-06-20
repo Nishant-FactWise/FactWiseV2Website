@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Observer } from 'gsap/Observer';
+import { useGSAP } from '@gsap/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import BomCostSection from './BomCostSection';
@@ -10,7 +12,7 @@ import Section32SourceAINegotiate from './Section32SourceAINegotiate';
 import Section33LandedCostXRay from './Section33LandedCostXRay';
 import Section34QuoteAIInsight from './Section34QuoteAIInsight';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Observer);
 
 const STEPS = [
     { num: '01', label: 'BOM & Cost Intelligence', short: 'BOM' },
@@ -20,16 +22,11 @@ const STEPS = [
 ];
 const TOTAL = STEPS.length;       // 4 panels
 const SLIDE_DUR = 0.55;           // seconds per panel transition
-const COOLDOWN = SLIDE_DUR * 1000 + 80; // ms — ignore wheel events mid-animation
 
 export default function QuoteToOrderFlowV2() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [activePanel, setActivePanel] = useState(0);
     const [isDesktop, setIsDesktop] = useState(true);
-
-    const indexRef   = useRef(0);       // current panel index (no re-render lag)
-    const busyRef    = useRef(false);   // true while a transition is running
-    const pinnedRef  = useRef(false);   // true while ScrollTrigger has us pinned
 
     useEffect(() => {
         const mq = window.matchMedia('(min-width: 1024px)');
@@ -39,136 +36,69 @@ export default function QuoteToOrderFlowV2() {
         return () => mq.removeEventListener('change', apply);
     }, []);
 
-    // Animate to a specific panel index directly via GSAP (no scrub)
-    const goTo = useCallback((next: number) => {
-        if (busyRef.current) return;
-        const clamped = Math.max(0, Math.min(TOTAL - 1, next));
-        if (clamped === indexRef.current) return;
-
-        busyRef.current = true;
-        const panels = gsap.utils.toArray<HTMLElement>('.qtof-panel-slide');
-
-        // All slide panels: those before `clamped` are at xPercent 0 (already passed),
-        // those at or after are at xPercent 100 (waiting to come in).
-        // Animate ONLY the panel that needs to move.
-        const direction = clamped > indexRef.current ? 1 : -1;
-
-        if (direction > 0) {
-            // Moving forward — bring next panel in from right
-            const incoming = panels[clamped - 1]; // panel-slide index = panel index - 1
-            gsap.fromTo(incoming,
-                { xPercent: 100 },
-                {
-                    xPercent: 0, duration: SLIDE_DUR,
-                    ease: 'power2.inOut',
-                    onComplete: () => {
-                        indexRef.current = clamped;
-                        setActivePanel(clamped);
-                        setTimeout(() => { busyRef.current = false; }, 50);
-                    }
-                }
-            );
-        } else {
-            // Moving backward — push current panel back to right
-            const outgoing = panels[indexRef.current - 1];
-            gsap.to(outgoing, {
-                xPercent: 100, duration: SLIDE_DUR,
-                ease: 'power2.inOut',
-                onComplete: () => {
-                    indexRef.current = clamped;
-                    setActivePanel(clamped);
-                    setTimeout(() => { busyRef.current = false; }, 50);
-                }
-            });
-        }
-    }, []);
-
-    // Exit the pinned section by scrolling past it
-    const exitSection = useCallback((direction: 'forward' | 'back') => {
-        const trigger = ScrollTrigger.getAll().find(st => st.pin === containerRef.current);
-        if (!trigger) return;
-        const target = direction === 'forward' ? trigger.end + 2 : trigger.start - 2;
-        window.scrollTo({ top: target, behavior: 'smooth' });
-    }, []);
-
-    useEffect(() => {
+    useGSAP(() => {
         if (!isDesktop || !containerRef.current) return;
 
-        const panels = gsap.utils.toArray<HTMLElement>('.qtof-panel-slide');
+        const slides = gsap.utils.toArray<HTMLElement>('.qtof-panel-slide');
+        const totalSlides = slides.length + 1; // Panel 0 + slides 1,2,3
 
-        // Reset all slide panels off-screen right
-        gsap.set(panels, { xPercent: 100 });
+        // Initialize slides off-screen right
+        gsap.set(slides, { xPercent: 100 });
         gsap.set(gsap.utils.toArray<HTMLElement>('.qtof-panel'), { zIndex: (i: number) => i });
 
-        // Pin the container — NO scrub, NO animation on the timeline
-        // The pin just holds the page position while we handle transitions ourselves
-        const st = ScrollTrigger.create({
-            trigger: containerRef.current,
-            pin: true,
-            start: 'top top',
-            end: '+=' + (window.innerHeight * 0.5), // minimal end — just enough to detect entry/exit
-            onEnter: () => { pinnedRef.current = true; },
-            onLeave: () => { pinnedRef.current = false; },
-            onEnterBack: () => { pinnedRef.current = true; },
-            onLeaveBack: () => { pinnedRef.current = false; },
+        // We pin for 4 window heights (one for each slide transition)
+        const scrollDistance = window.innerHeight * totalSlides;
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: containerRef.current,
+                pin: true,
+                start: 'top top',
+                end: `+=${scrollDistance}`,
+                scrub: 0.8, // Smoothly follow the native scrollbar
+                onUpdate: (self) => {
+                    // Update the active panel based on scrub progress
+                    const progress = self.progress;
+                    // Snap progress to discrete steps
+                    const currentIdx = Math.min(
+                        TOTAL - 1,
+                        Math.max(0, Math.round(progress * (TOTAL - 1)))
+                    );
+                    setActivePanel(currentIdx);
+                }
+            }
         });
 
-        // Wheel handler — intercept scroll while pinned
-        const onWheel = (e: WheelEvent) => {
-            if (!pinnedRef.current) return;
-            e.preventDefault();
+        // Build a continuous timeline that slides each panel over the previous one
+        slides.forEach((slide, i) => {
+            tl.to(slide, {
+                xPercent: 0,
+                ease: 'none' // Linear ease so it matches scrollbar 1:1
+            });
+            // Add a small pause after each slide arrives
+            tl.to({}, { duration: 0.2 });
+        });
 
-            if (busyRef.current) return;
+    }, { dependencies: [isDesktop], scope: containerRef });
 
-            const forward = e.deltaY > 0;
+    // The nav buttons now scroll the window natively to the correct progress point
+    const navPrev = useCallback(() => {
+        const trigger = ScrollTrigger.getAll().find(st => st.pin === containerRef.current);
+        if (trigger && activePanel > 0) {
+            const step = trigger.end - trigger.start;
+            const target = trigger.start + (step * ((activePanel - 1) / (TOTAL - 1)));
+            window.scrollTo({ top: target, behavior: 'smooth' });
+        }
+    }, [activePanel]);
 
-            if (forward && indexRef.current < TOTAL - 1) {
-                goTo(indexRef.current + 1);
-            } else if (!forward && indexRef.current > 0) {
-                goTo(indexRef.current - 1);
-            } else if (forward && indexRef.current === TOTAL - 1) {
-                exitSection('forward');
-            } else if (!forward && indexRef.current === 0) {
-                exitSection('back');
-            }
-        };
-
-        // Touch support
-        let touchStartY = 0;
-        const onTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
-        const onTouchEnd = (e: TouchEvent) => {
-            if (!pinnedRef.current) return;
-            const delta = touchStartY - e.changedTouches[0].clientY;
-            if (Math.abs(delta) < 30) return;
-            if (delta > 0 && indexRef.current < TOTAL - 1) goTo(indexRef.current + 1);
-            else if (delta < 0 && indexRef.current > 0) goTo(indexRef.current - 1);
-            else if (delta > 0) exitSection('forward');
-            else exitSection('back');
-        };
-
-        // Key support
-        const onKey = (e: KeyboardEvent) => {
-            if (!pinnedRef.current) return;
-            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(indexRef.current + 1);
-            if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(indexRef.current - 1);
-        };
-
-        window.addEventListener('wheel', onWheel, { passive: false });
-        window.addEventListener('touchstart', onTouchStart, { passive: true });
-        window.addEventListener('touchend', onTouchEnd, { passive: true });
-        window.addEventListener('keydown', onKey);
-
-        return () => {
-            st.kill();
-            window.removeEventListener('wheel', onWheel);
-            window.removeEventListener('touchstart', onTouchStart);
-            window.removeEventListener('touchend', onTouchEnd);
-            window.removeEventListener('keydown', onKey);
-        };
-    }, [isDesktop, goTo, exitSection]);
-
-    const navPrev = useCallback(() => goTo(indexRef.current - 1), [goTo]);
-    const navNext = useCallback(() => goTo(indexRef.current + 1), [goTo]);
+    const navNext = useCallback(() => {
+        const trigger = ScrollTrigger.getAll().find(st => st.pin === containerRef.current);
+        if (trigger && activePanel < TOTAL - 1) {
+            const step = trigger.end - trigger.start;
+            const target = trigger.start + (step * ((activePanel + 1) / (TOTAL - 1)));
+            window.scrollTo({ top: target, behavior: 'smooth' });
+        }
+    }, [activePanel]);
 
     return (
         <>

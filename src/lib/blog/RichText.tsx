@@ -4,8 +4,16 @@ import type { RichTextNode } from "./hygraph";
 
 function normalizeHref(href: string | undefined): string {
   if (!href) return "";
-  const trimmed = href.trim();
+  let trimmed = href.trim();
   
+  // Normalize known broken links in blog content database
+  if (trimmed.includes("supplier-contract-management-procurement-software-solutions")) {
+    trimmed = trimmed.replace("supplier-contract-management-procurement-software-solutions", "supplier-contract-management-process-procurement-software-solutions");
+  }
+  if (trimmed.includes("rfq-or-auction")) {
+    trimmed = trimmed.replace("rfq-or-auction", "rfq-and-auction");
+  }
+
   if (
     trimmed.startsWith("http://") ||
     trimmed.startsWith("https://") ||

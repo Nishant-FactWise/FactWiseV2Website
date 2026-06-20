@@ -43,6 +43,21 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/contact",
+        destination: "/demo",
+        permanent: true,
+      },
+      {
+        source: "/blog/post/supplier-contract-management-procurement-software-solutions",
+        destination: "/blog/post/supplier-contract-management-process-procurement-software-solutions",
+        permanent: true,
+      },
+      {
+        source: "/blog/post/rfq-or-auction",
+        destination: "/blog/post/rfq-and-auction",
+        permanent: true,
+      },
+      {
         source: "/pricinglandingpage",
         destination: "/demo",
         permanent: true,
@@ -59,7 +74,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/docs/:path*",
-        destination: "/documentation/:path*",
+        destination: "/documentation",
         permanent: true,
       },
       {

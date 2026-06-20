@@ -515,13 +515,6 @@ export default function BlogPage() {
         </div>
 
         <div className="relative z-10 w-full max-w-2xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-8 shadow-sm"
-          >
-            Blog
-          </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 24 }}

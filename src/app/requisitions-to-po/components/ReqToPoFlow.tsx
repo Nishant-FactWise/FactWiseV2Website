@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ReqSection31 from './ReqSection31';
@@ -30,6 +31,7 @@ export default function ReqToPoFlow() {
     const indexRef  = useRef(0);
     const busyRef   = useRef(false);
     const pinnedRef = useRef(false);
+    const lastEventTime = useRef(0);
 
     useEffect(() => {
         const mq = window.matchMedia('(min-width: 1024px)');
@@ -81,14 +83,14 @@ export default function ReqToPoFlow() {
         window.scrollTo({ top: target, behavior: 'smooth' });
     }, []);
 
-    useEffect(() => {
+    useGSAP(() => {
         if (!isDesktop || !containerRef.current) return;
 
         const panels = gsap.utils.toArray<HTMLElement>('.rtpf-panel-slide');
         gsap.set(panels, { xPercent: 100 });
         gsap.set(gsap.utils.toArray<HTMLElement>('.rtpf-panel'), { zIndex: (i: number) => i });
 
-        const st = ScrollTrigger.create({
+        ScrollTrigger.create({
             trigger: containerRef.current,
             pin: true,
             start: 'top top',
@@ -102,20 +104,44 @@ export default function ReqToPoFlow() {
         const onWheel = (e: WheelEvent) => {
             if (!pinnedRef.current) return;
             e.preventDefault();
-            if (busyRef.current) return;
+
+            const now = Date.now();
+            const timeSinceLast = now - lastEventTime.current;
+            lastEventTime.current = now;
+
+            const isMomentum = timeSinceLast < 50;
+            if (busyRef.current || isMomentum) return;
+            
             const forward = e.deltaY > 0;
-            if (forward && indexRef.current < TOTAL - 1)       goTo(indexRef.current + 1);
-            else if (!forward && indexRef.current > 0)          goTo(indexRef.current - 1);
-            else if (forward && indexRef.current === TOTAL - 1) exitSection('forward');
-            else if (!forward && indexRef.current === 0)        exitSection('back');
+            if (forward && indexRef.current < TOTAL - 1) {
+                goTo(indexRef.current + 1);
+            }
+            else if (!forward && indexRef.current > 0) {
+                goTo(indexRef.current - 1);
+            }
+            else if (forward && indexRef.current === TOTAL - 1) {
+                exitSection('forward');
+            }
+            else if (!forward && indexRef.current === 0) {
+                exitSection('back');
+            }
         };
 
         let touchStartY = 0;
         const onTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
         const onTouchEnd = (e: TouchEvent) => {
             if (!pinnedRef.current) return;
+            
+            const now = Date.now();
+            const timeSinceLast = now - lastEventTime.current;
+            lastEventTime.current = now;
+            
+            const isMomentum = timeSinceLast < 50;
+            if (busyRef.current || isMomentum) return;
+
             const delta = touchStartY - e.changedTouches[0].clientY;
             if (Math.abs(delta) < 30) return;
+            
             if (delta > 0 && indexRef.current < TOTAL - 1) goTo(indexRef.current + 1);
             else if (delta < 0 && indexRef.current > 0) goTo(indexRef.current - 1);
             else if (delta > 0) exitSection('forward');
@@ -134,13 +160,12 @@ export default function ReqToPoFlow() {
         window.addEventListener('keydown', onKey);
 
         return () => {
-            st.kill();
             window.removeEventListener('wheel', onWheel);
             window.removeEventListener('touchstart', onTouchStart);
             window.removeEventListener('touchend', onTouchEnd);
             window.removeEventListener('keydown', onKey);
         };
-    }, [isDesktop, goTo, exitSection]);
+    }, { dependencies: [isDesktop, goTo, exitSection], scope: containerRef });
 
     const navPrev = useCallback(() => goTo(indexRef.current - 1), [goTo]);
     const navNext = useCallback(() => goTo(indexRef.current + 1), [goTo]);

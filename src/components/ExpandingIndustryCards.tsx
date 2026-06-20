@@ -133,17 +133,19 @@ export const ExpandingCards = React.forwardRef<
               </span>
             </div>
 
-            <div className="text-blue-400 opacity-0 transition-all duration-500 delay-100 transform translate-y-4 group-data-[active=true]:translate-y-0 group-data-[active=true]:opacity-100">
-              {item.icon}
+            <div className="flex flex-col gap-2 md:w-[320px]">
+              <div className="text-blue-400 opacity-0 transition-all duration-500 delay-100 transform translate-y-4 group-data-[active=true]:translate-y-0 group-data-[active=true]:opacity-100">
+                {item.icon}
+              </div>
+
+              <h2 className="text-2xl font-bold text-white opacity-0 transition-all duration-500 delay-150 transform translate-y-4 group-data-[active=true]:translate-y-0 group-data-[active=true]:opacity-100">
+                {item.title}
+              </h2>
+
+              <p className="w-full text-[15px] text-white/80 opacity-0 transition-all duration-500 delay-200 transform translate-y-4 group-data-[active=true]:translate-y-0 group-data-[active=true]:opacity-100 leading-relaxed">
+                {item.description}
+              </p>
             </div>
-
-            <h3 className="text-2xl font-bold text-white opacity-0 transition-all duration-500 delay-150 transform translate-y-4 group-data-[active=true]:translate-y-0 group-data-[active=true]:opacity-100">
-              {item.title}
-            </h3>
-
-            <p className="w-full text-[15px] text-white/80 opacity-0 transition-all duration-500 delay-200 transform translate-y-4 group-data-[active=true]:translate-y-0 group-data-[active=true]:opacity-100 leading-relaxed">
-              {item.description}
-            </p>
           </article>
         </li>
       ))}

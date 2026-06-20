@@ -64,17 +64,32 @@ function formatDate(iso?: string | null): string {
 }
 
 function articleSchema(post: HygraphPost) {
+  const imageUrl =
+    post.featuredPicture?.secure_url ??
+    post.featuredPicture?.url ??
+    post.featuredImage?.url ??
+    "https://factwise.io/logo.png"; // Strict requirement: Articles MUST have an image
+
+  const isoDate = post.lastUpdated 
+    ? new Date(post.lastUpdated).toISOString() 
+    : new Date().toISOString();
+
   return {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
-    image:
-      post.featuredPicture?.secure_url ??
-      post.featuredPicture?.url ??
-      post.featuredImage?.url,
-    author: post.author ? { "@type": "Person", name: post.author.name } : undefined,
-    datePublished: post.lastUpdated ? post.lastUpdated.split("T")[0] : undefined,
-    dateModified: post.lastUpdated ? post.lastUpdated.split("T")[0] : undefined,
+    image: [imageUrl], // Google prefers arrays for images
+    author: post.author ? { 
+      "@type": "Person", 
+      name: post.author.name,
+      url: "https://factwise.io/about" // Author URL is highly recommended
+    } : {
+      "@type": "Organization",
+      name: "FactWise",
+      url: "https://factwise.io"
+    },
+    datePublished: isoDate,
+    dateModified: isoDate,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `https://factwise.io/blog/post/${post.slug}`,
@@ -82,9 +97,10 @@ function articleSchema(post: HygraphPost) {
     publisher: {
       "@type": "Organization",
       name: "FactWise",
+      url: "https://factwise.io", // This missing URL causes the "FactWise" item error in GSC
       logo: {
         "@type": "ImageObject",
-        url: "https://factwise.io/images/FWLogos/logo512.png",
+        url: "https://factwise.io/logo.png",
       },
     },
     description: post.seos?.[0]?.description ?? post.excerpt,

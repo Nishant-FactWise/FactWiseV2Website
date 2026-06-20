@@ -218,7 +218,7 @@ export default function ModernCaseStudies() {
                             {study.logo}
                           </div>
                           <div>
-                            <h4 className="text-slate-900 font-semibold text-[15px] leading-none">{study.company}</h4>
+                            <span className="block text-slate-900 font-semibold text-[15px] leading-none">{study.company}</span>
                           </div>
                         </div>
                         <h3 className={cn(

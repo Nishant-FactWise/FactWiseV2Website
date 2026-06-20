@@ -16,9 +16,12 @@ export const StorySection = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="md:col-span-5 flex justify-center"
+            className="md:col-span-5"
           >
-            <div className="relative aspect-[4/5] w-full max-w-sm rounded-[48px] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl group">
+            <div 
+              className="relative mx-auto w-full min-w-[280px] sm:min-w-[320px] max-w-md rounded-[40px] md:rounded-[48px] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl group"
+              style={{ aspectRatio: '4/5' }}
+            >
               {/* Base Image Layer */}
               <motion.div 
                 className="absolute inset-0 z-0"
@@ -62,12 +65,12 @@ export const StorySection = () => {
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
-                className="absolute top-[25%] left-[10%] md:left-[15%] bg-white/95 backdrop-blur-xl p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-3 md:gap-4 z-20"
+                className="absolute top-[20%] md:top-[25%] left-[5%] md:left-[8%] bg-white/95 backdrop-blur-xl p-2 md:p-3 rounded-xl shadow-xl flex items-center gap-2 md:gap-3 z-20"
               >
-                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white">
-                  <Check className="w-4 h-4 md:w-5 md:h-5" />
+                <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                  <Check className="w-3 h-3 md:w-3.5 md:h-3.5" />
                 </div>
-                <span className="text-xs md:text-sm font-bold text-slate-900 whitespace-nowrap">Sourcing event closed</span>
+                <span className="text-[10px] md:text-[11px] font-bold text-slate-900 whitespace-nowrap">Sourcing event closed</span>
               </motion.div>
 
               <motion.div
@@ -75,12 +78,12 @@ export const StorySection = () => {
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ delay: 0.7, duration: 0.8 }}
-                className="absolute bottom-[30%] right-[8%] md:right-[10%] bg-white/95 backdrop-blur-xl p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-3 md:gap-4 z-20"
+                className="absolute bottom-[25%] md:bottom-[30%] right-[5%] md:right-[8%] bg-white/95 backdrop-blur-xl p-2 md:p-3 rounded-xl shadow-xl flex items-center gap-2 md:gap-3 z-20"
               >
-                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                  <Check className="w-4 h-4 md:w-5 md:h-5" />
+                <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-blue-500 flex items-center justify-center text-white shrink-0">
+                  <Check className="w-3 h-3 md:w-3.5 md:h-3.5" />
                 </div>
-                <span className="text-xs md:text-sm font-bold text-slate-900 whitespace-nowrap">Invoice matched</span>
+                <span className="text-[10px] md:text-[11px] font-bold text-slate-900 whitespace-nowrap">Invoice matched</span>
               </motion.div>
             </div>
           </motion.div>
@@ -94,8 +97,8 @@ export const StorySection = () => {
             className="md:col-span-7 flex flex-col items-start justify-center"
           >
             <div className="flex flex-col items-start">
-              <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
-                Our Story
+              <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
+                The Story
               </div>
             </div>
             
@@ -103,7 +106,7 @@ export const StorySection = () => {
               A Platform Built For The <span className="text-[#3666ff] font-instrument italic font-medium">Complexity</span> Of Real Procurement.
             </h2>
             
-            <div className="space-y-6 md:space-y-8 text-slate-600 text-base md:text-lg leading-relaxed max-w-xl">
+            <div className="space-y-6 md:space-y-8 text-slate-600 text-justify text-base md:text-lg leading-relaxed max-w-xl">
               <p>
                 FactWise was founded by procurement and engineering veterans who watched 
                 enterprise buyers wrestle with disconnected tools, slow approvals, and 

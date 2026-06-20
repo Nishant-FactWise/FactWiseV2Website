@@ -1,8 +1,23 @@
 import { MetadataRoute } from "next";
+import { getAllPostSlugs } from "@/lib/blog/hygraph";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://factwise.io";
   const now = new Date();
+  
+  let blogSlugs: { slug: string }[] = [];
+  try {
+    blogSlugs = await getAllPostSlugs();
+  } catch (err) {
+    console.error("Failed to fetch blog slugs for sitemap:", err);
+  }
+
+  const blogEntries: MetadataRoute.Sitemap = blogSlugs.map((post) => ({
+    url: `${base}/blog/post/${post.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
 
   return [
     // Core pages — highest priority
@@ -24,5 +39,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/careers`,                        lastModified: now, changeFrequency: "weekly",  priority: 0.6 },
     { url: `${base}/faq`,                            lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/documentation`,                  lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    ...blogEntries,
   ];
 }

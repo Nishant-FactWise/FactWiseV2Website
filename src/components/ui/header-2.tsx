@@ -260,7 +260,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 						onClick={() => window.location.href = '/demo'}
 					/>
 				</div>
-				<Button size="icon" variant="ghost" onClick={() => setOpen(!open)} className={cn("md:hidden rounded-full border transition-colors duration-300", {
+				<Button size="icon" variant="ghost" aria-label="Toggle Navigation Menu" aria-expanded={open} onClick={() => setOpen(!open)} className={cn("md:hidden rounded-full border transition-colors duration-300", {
 					// Glassy chip so the menu button stays clearly visible over the hero
 					// from the start (not just a bare white icon lost in the image).
 					"text-white bg-white/15 border-white/25 backdrop-blur-md hover:bg-white/25": !scrolled && !open && theme === 'dark',

@@ -29,7 +29,7 @@ export const FounderSection = () => {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="md:col-span-7 flex flex-col items-start"
             >
-              <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
+              <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8 shadow-sm">
                 Leadership
               </div>
 
@@ -81,7 +81,7 @@ export const FounderSection = () => {
                 </span>
               </motion.h2>
 
-              <div className="space-y-5 text-slate-500 text-base md:text-lg leading-relaxed max-w-2xl">
+              <div className="space-y-5 text-slate-500 text-justify text-base md:text-lg leading-relaxed max-w-2xl">
                 <p>
                   When I started this journey, my vision was simple. I wanted to create
                   something that brings value, fosters connection, and makes a meaningful

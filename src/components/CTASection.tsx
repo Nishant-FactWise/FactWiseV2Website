@@ -105,7 +105,7 @@ export default function CTASection() {
               {/* Action Buttons */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, justifyContent: 'center' }}>
                 <motion.a
-                  href="/contact"
+                  href="/demo"
                   whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(255,255,255,0.3)' }}
                   whileTap={{ scale: 0.95 }}
                   style={{
@@ -122,7 +122,7 @@ export default function CTASection() {
                   Book a Demo
                 </motion.a>
                 <motion.a
-                  href="/contact"
+                  href="/demo"
                   whileHover={{ scale: 1.05, background: 'rgba(255,255,255,0.1)' }}
                   whileTap={{ scale: 0.95 }}
                   style={{

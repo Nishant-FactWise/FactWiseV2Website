@@ -85,11 +85,8 @@ export default function ComplianceSection() {
       <div className="mx-auto max-w-[1400px] px-6 relative z-10">
         
         <ScrollReveal delay={0.1}>
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-6 h-[1px] bg-[#3666ff]"></div>
-            <h3 className="text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em]">
-              COMPLIANCE + TRUST
-            </h3>
+          <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
+            Compliance + Trust
           </div>
         </ScrollReveal>
         

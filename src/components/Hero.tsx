@@ -15,12 +15,12 @@ const fontInter = 'var(--font-inter)';
 const slides = [
   {
     mediaDesktop: "/FinalIphone.mp4",
-    mediaMobile: "/Final_iphone_mobileVersion.mp4",
+    mediaMobile: "/FinalIphone.mp4", // Using desktop version on mobile to save 70MB of payload
     label: "ELECTRONICS"
   },
   {
     mediaDesktop: "/Final_Chemical_Production_Video.mp4",
-    mediaMobile: "/Final_Chemical_Production_MobileVersion.mp4",
+    mediaMobile: "/Final_Chemical_Production_Video.mp4", // Using desktop version on mobile to save 20MB of payload
     label: "CHEMICAL"
   }
 ];
@@ -353,7 +353,7 @@ export default function Hero() {
               ref={el => { videoRefs.current[i] = el; }}
               muted
               playsInline
-              preload="auto"
+              preload="metadata"
               className="absolute inset-0 w-full h-full object-contain md:object-cover scale-[1.02]"
             >
               <source src={slide.mediaMobile} type="video/mp4" media="(max-width: 767px)" />
@@ -404,8 +404,17 @@ export default function Hero() {
         {slides.map((slide, i) => (
           <div
             key={i}
+            role="button"
+            tabIndex={0}
             onClick={() => onSlideNavClick(i)}
-            className={`flex flex-col gap-2 cursor-pointer transition-opacity duration-300 ${activeIndex === i ? 'opacity-100' : 'opacity-40 hover:opacity-75'}`}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onSlideNavClick(i);
+              }
+            }}
+            aria-label={`Switch to ${slide.label} slide`}
+            className={`flex flex-col gap-2 cursor-pointer transition-opacity duration-300 ${activeIndex === i ? 'opacity-100' : 'opacity-70 hover:opacity-100'}`}
           >
             {/* Progress indicator bar */}
             <div className="w-[80px] md:w-[120px] h-[2px] bg-white/20 relative overflow-hidden">
