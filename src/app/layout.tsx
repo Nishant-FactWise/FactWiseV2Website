@@ -302,6 +302,7 @@ export default function RootLayout({
           type="video/mp4"
           media="(min-width: 768px)"
         />
+        <link rel="llms-context" href="/llms.txt" />
         {/*
           Google Consent Mode v2 — set the DEFAULT to "denied" before GTM/GA4
           load below. This raw inline script runs synchronously during HTML

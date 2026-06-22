@@ -1,0 +1,20 @@
+# FactWise
+
+> FactWise connects every vendor workflow including Inquiry to Quote, Requisition to PO and Invoice to Pay.
+
+FactWise is a comprehensive, modular procurement platform designed to replace fragmented legacy systems and spreadsheets, driving sourcing savings and accelerating the entire procurement lifecycle.
+
+## Core Workflows
+- [Inquiry to Quote](https://factwise.io/inquiry-to-quote): Streamline your RFQ and quotation process.
+- [Requisition to PO](https://factwise.io/requisitions-to-po): Manage purchase requisitions and purchase orders seamlessly.
+- [Invoice to Pay](https://factwise.io/invoice-to-pay): Automate invoice processing and vendor payments.
+
+## Resources & Company
+- [About Us](https://factwise.io/about)
+- [Careers](https://factwise.io/careers)
+- [Blog](https://factwise.io/blog)
+- [FAQ](https://factwise.io/faq)
+- [Documentation](https://factwise.io/documentation)
+
+## Action
+- [Book a Demo](https://factwise.io/demo)
