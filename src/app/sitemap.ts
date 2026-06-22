@@ -12,8 +12,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("Failed to fetch blog slugs for sitemap:", err);
   }
 
-  const blogEntries: MetadataRoute.Sitemap = blogSlugs.map((post) => ({
-    url: `${base}/blog/post/${post.slug}`,
+  const blogEntries: MetadataRoute.Sitemap = blogSlugs
+    .filter((post) => post.slug !== "benefits-digital-transformation-procurement-smb")
+    .map((post) => ({
+      url: `${base}/blog/post/${post.slug}`,
     lastModified: now,
     changeFrequency: "weekly",
     priority: 0.8,

@@ -2,7 +2,11 @@
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import { Search, ChevronRight, ChevronDown } from "lucide-react";
-import { FlickeringFooter } from "@/components/ui/flickering-footer";
+import dynamic from "next/dynamic";
+const FlickeringFooter = dynamic(
+  () => import("@/components/ui/flickering-footer").then(m => ({ default: m.FlickeringFooter })),
+  { ssr: false }
+);
 import { ShimmerButton } from "@/components/ui/ShimmerButton";
 import { CATEGORIES, ALL_POSTS, type Post, type Cat } from "./data";
 import { motion } from "framer-motion";
@@ -68,7 +72,7 @@ const CAT_COVERS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=75",
   ],
   "manufacturing": [
-    "https://images.unsplash.com/photo-1581093458791-9d42e3c7e117?w=600&q=75",
+    "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600&q=75",
     "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=75",
     "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=75",
     "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=75",
@@ -121,7 +125,7 @@ const SLUG_IMG: Record<string, string> = {
   "costs-timelines-for-implementing-procurement-solutions": "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=600&q=75",
   "technologies-manufacturers-transform-procurement":    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=75",
   "contract-manufacturing-definitive-guide":             "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600&q=75",
-  "create-winwin-outcomes-contract-manufacturing":       "https://images.unsplash.com/photo-1581093458791-9d42e3c7e117?w=600&q=75",
+  "create-winwin-outcomes-contract-manufacturing":       "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600&q=75",
   "dpo-powerful-tool":                                   "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&q=75",
   "benefits-challenges-eprocurement":                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=75",
   "selection-criteria-procurement-software-guide":       "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=600&q=75",
@@ -190,14 +194,14 @@ const SLUG_IMG: Record<string, string> = {
   "benefits-purchase-orders-small-manufacturers":        "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&q=75",
   "automating-purchase-order-small-manufacturers":       "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=75",
   // Manufacturing
-  "critical-issues-procurement-manufacturing-companies": "https://images.unsplash.com/photo-1581093458791-9d42e3c7e117?w=600&q=75",
+  "critical-issues-procurement-manufacturing-companies": "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600&q=75",
   "manufacturing-companies-robust-quality-management-system": "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600&q=75",
   "procurement-iiot":                                    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=75",
   "benefits-procurement-process-mapping":                "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=600&q=75",
   "optimizing-procurement-best-practices-pharma-industry": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=75",
   "aerospace-procurement-success-strategies":            "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=75",
   "procurement-tools-for-electronics-unlocking-efficiency-and-success": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=75",
-  "procurement-power-up-unleashing-tools-in-the-chemical-industry": "https://images.unsplash.com/photo-1581093458791-9d42e3c7e117?w=600&q=75",
+  "procurement-power-up-unleashing-tools-in-the-chemical-industry": "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600&q=75",
   "automotive-industry-procurement-navigating-challenges-strategies": "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=75",
   "jewelry-procurement-challenges-innovative-solutions": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=75",
   "procurement-challenges-construction-material-acquisition": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=75",

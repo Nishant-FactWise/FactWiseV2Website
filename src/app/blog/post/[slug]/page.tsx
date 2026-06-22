@@ -3,7 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ChevronLeft, Calendar, Clock } from "lucide-react";
-import { FlickeringFooter } from "@/components/ui/flickering-footer";
+import dynamic from "next/dynamic";
+const FlickeringFooter = dynamic(
+  () => import("@/components/ui/flickering-footer").then(m => ({ default: m.FlickeringFooter })),
+  { ssr: false }
+);
 import {
   getPostDetails,
   getAllPostSlugs,
@@ -32,7 +36,7 @@ export async function generateMetadata(
   if (!post) return { title: "Post not found" };
   const seo = post.seos?.[0];
   const title = seo?.title ?? post.title;
-  const description = seo?.description ?? post.excerpt;
+  const description = seo?.description || post.excerpt || post.title;
   const url = `https://factwise.io/blog/post/${post.slug}`;
   const image = post.featuredPicture?.secure_url ?? post.featuredPicture?.url ?? post.featuredImage?.url;
   return {
@@ -103,7 +107,7 @@ function articleSchema(post: HygraphPost) {
         url: "https://factwise.io/logo.png",
       },
     },
-    description: post.seos?.[0]?.description ?? post.excerpt,
+    description: post.seos?.[0]?.description || post.excerpt || post.title,
   };
 }
 
