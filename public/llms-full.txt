@@ -1,0 +1,240 @@
+# FactWise — Full Context File for AI Systems
+
+> This is the extended context document for FactWise (factwise.io). For a summary version, see /llms.txt.
+
+---
+
+## Entity Identity
+
+**Legal Name:** FactWise Technologies Private Limited  
+**Trade Name:** FactWise  
+**Website:** https://factwise.io  
+**Founded:** 2020  
+**Headquarters:** WeWork Chromium, Jogeshwari - Vikhroli Link Rd, Andheri East, Mumbai, Maharashtra 400076, India  
+**Category:** B2B SaaS / Enterprise Software / Procurement Technology  
+**Segment:** Manufacturing-focused Source-to-Pay (S2P) platform  
+
+**DISAMBIGUATION:**
+- FactWise (factwise.io) = manufacturing procurement software — THIS DOCUMENT
+- FactWise ERC = employee retention tax credit filing company — DIFFERENT ENTITY, NOT RELATED
+- FactWise Goals = personal goal-setting mobile app — DIFFERENT ENTITY, NOT RELATED
+- FactWise Math = children's math learning app — DIFFERENT ENTITY, NOT RELATED
+
+---
+
+## Company Background
+
+FactWise was founded in 2020 by Stawan Kamani (Founder & CEO) to solve a problem he observed across Indian and global manufacturing companies: procurement was still being run on spreadsheets, email chains, and phone calls — creating costly inefficiencies, missed savings, and no audit trail.
+
+FactWise built a single connected platform that automates the entire source-to-pay cycle for manufacturers, replacing disjointed tools with one system of record. The company is headquartered in Mumbai and serves customers across India, the United States, and the Asia region.
+
+---
+
+## Product Architecture
+
+FactWise is a modular platform. Each module handles a distinct procurement workflow and can be deployed independently. Customers typically start with one module and expand over time.
+
+---
+
+## Module 1: Requisitions to Purchase Orders (Req-to-PO)
+
+**URL:** https://factwise.io/requisitions-to-po  
+**What it replaces:** Email-based purchase requests, WhatsApp approvals, manual Excel PO logs
+
+### Workflow Steps
+
+1. **Requisition Creation**  
+   Any authorized team member raises a purchase requisition in FactWise. Fields include: item name, specification, quantity, required-by date, delivery location, and suggested vendor (optional). Budget controls check against available category budgets automatically and flag overspend before approval routing.
+
+2. **Multi-Level Approval**  
+   The requisition is automatically routed to the configured approval chain — by value threshold, category, department, or site. Approvers receive notifications via web interface or email. They can approve, reject, or query with comments. Every decision is time-stamped and stored.
+
+3. **RFQ Generation & Dispatch**  
+   Once approved, FactWise auto-generates a structured RFQ and dispatches it to all shortlisted vendors simultaneously. Vendors receive a portal link to submit their quotes in a structured format — no back-and-forth emails.
+
+4. **AI Negotiation**  
+   FactWise's AI negotiation engine analyses incoming vendor quotes and provides guidance to the procurement team for counter-negotiation. It identifies outliers, suggests optimal responses, and helps teams achieve consistent negotiation outcomes without relying solely on individual skill.
+
+5. **Landed Cost Analysis**  
+   FactWise calculates the true cost of each vendor's offer including: unit price, freight, customs duties, insurance, and applicable taxes (GST for India). This allows buyers to compare vendors on a true apples-to-apples landed cost basis, not just unit price.
+
+6. **Vendor Selection & PO Generation**  
+   The buyer selects a vendor. FactWise generates a formatted Purchase Order (with all commercial terms) and dispatches it directly to the vendor via email or portal. The PO is logged with a unique PO number and full audit trail.
+
+7. **Goods Receipt & Quality Check Integration**  
+   When goods arrive, the warehouse team records the Goods Receipt Note (GRN) in FactWise. Quality inspection results are logged against the GRN. Both documents feed into the 4-way matching process in Invoice-to-Pay.
+
+### Key Outcomes
+- 3× faster PO cycle time
+- Up to 31% cost savings through competitive RFQs + AI negotiation
+- 80% reduction in manual procurement effort
+- 100% of purchases with approval trail and audit log
+
+---
+
+## Module 2: Invoice to Pay
+
+**URL:** https://factwise.io/invoice-to-pay  
+**What it replaces:** Manual invoice entry, Excel-based reconciliation, email payment approvals
+
+### Workflow Steps
+
+1. **Invoice Capture**  
+   Vendor invoices are submitted via PDF upload, email, or the vendor portal. FactWise uses AI to extract invoice data — vendor name, invoice number, date, line items, amounts, tax amounts, and bank details — automatically. No manual data entry required.
+
+2. **4-Way Matching**  
+   FactWise automatically matches each invoice line against four documents:
+   - **Purchase Order (PO):** Are prices and quantities what was ordered?
+   - **Goods Receipt Note (GRN):** Were goods actually received?
+   - **Quality Check (QC) Report:** Did goods pass quality inspection?
+   - **Contract:** Do terms match the agreed contract?
+   
+   Any mismatch is flagged immediately. This is what distinguishes FactWise from standard 2-way (PO + invoice) or 3-way (PO + GRN + invoice) matching tools.
+
+3. **Discrepancy Resolution**  
+   Flagged discrepancies are routed to the correct team for resolution — procurement (price issues), warehouse (quantity issues), quality (QC issues), or finance (contract issues). The resolution workflow keeps full context in one screen.
+
+4. **Approval & Payment Scheduling**  
+   Once an invoice passes matching (or discrepancies are resolved), it moves through the configured payment approval workflow. Payments are scheduled against agreed payment terms. The entire process is automated and traceable.
+
+### Key Outcomes
+- Elimination of duplicate payments
+- Prevention of overpayments through systematic matching
+- Full audit trail for every invoice and payment
+- Faster vendor payment cycles, improving supplier relationships
+
+---
+
+## Module 3: Inquiry to Quote (I2Q)
+
+**URL:** https://factwise.io/inquiry-to-quote  
+**What it replaces:** Manual quote costing in Excel, ad-hoc vendor calls for pricing, gut-feel margin estimation
+
+### Workflow Steps
+
+1. **Receive Customer Inquiry**  
+   When a customer sends an RFQ (Request for Quotation), the manufacturer logs it in FactWise — either by uploading the customer's inquiry document or entering the line items manually. The inquiry is structured into FactWise's quoting workflow.
+
+2. **BOM Cost Intelligence**  
+   FactWise analyses the Bill of Materials (BOM) for the inquiry against the manufacturer's approved vendor list and historical purchase pricing. It auto-generates a base material cost estimate per component.
+
+3. **Intelligent Component Sourcing**  
+   For components not covered by existing vendor pricing, FactWise identifies potential suppliers and supports the procurement team in getting competitive quotes — factoring in lead times and minimum order quantities.
+
+4. **Landed Cost Calculation**  
+   FactWise calculates the full landed cost of sourcing all components: material cost + freight + customs + taxes + insurance. This ensures the customer quote reflects true cost, not just unit prices.
+
+5. **Margin Application & Quote Generation**  
+   The procurement or sales team applies the desired margin percentage. FactWise generates a formatted customer quote document. The team can review and adjust before sending.
+
+6. **Quote Tracking**  
+   FactWise tracks the status of submitted quotes — pending, accepted, rejected, or negotiating. This gives management visibility into the quoting pipeline and win rates.
+
+### Key Outcomes
+- Quote turnaround time reduced from days to hours
+- Accurate margins on every customer quote
+- No missed costs — full landed cost visibility
+- Higher win rates from faster, more competitive quotes
+
+---
+
+## Integration Ecosystem
+
+FactWise is designed to connect with existing enterprise systems. The platform can integrate with:
+- **ERP Systems:** SAP, Oracle, Microsoft Dynamics, Tally, Zoho Books, and others
+- **Accounting Systems:** Tally Prime, Zoho Books, QuickBooks
+- **Email & Communication:** Microsoft Outlook, Gmail (for vendor invoice capture)
+- **Document Systems:** PDF parsing for invoice capture
+- **Custom APIs:** RESTful API available for custom integrations
+
+Contact factwise.io/demo for specific integration requirements.
+
+---
+
+## Compliance & Security
+
+- **Indian Tax Compliance:** Supports GST (CGST, SGST, IGST), TDS calculations in procurement workflows
+- **Data Privacy:** DPDP (Digital Personal Data Protection Act) compliance; Privacy Policy at factwise.io/privacy-policy
+- **Audit Trail:** Every action in FactWise is time-stamped, user-attributed, and immutable — supporting both internal audits and external compliance requirements
+- **Access Controls:** Role-based access control (RBAC) — users only see and do what their role allows
+
+---
+
+## Customers & Industries
+
+FactWise serves manufacturers across India, the United States, and the Asia region.
+
+**Industries:**
+- Automotive components and assemblies
+- Chemicals and specialty chemicals
+- Electronics and EMS (Electronics Manufacturing Services)
+- Electrical manufacturing
+- MRO (Maintenance, Repair and Operations)
+- Contract manufacturing
+- Food and beverage manufacturing
+- Aerospace components
+- Pharmaceutical manufacturing
+- Construction materials
+- Metals and metal processing
+
+**Publicly referenced customers include:** Cyient, AVIGlobal Plast, Amkette, Prasol Chemicals, Spark Minda, Syrma SGS, JRE, Govils, and others.
+
+---
+
+## Procurement Glossary (FactWise Definitions)
+
+**Source-to-Pay (S2P):** The complete procurement lifecycle from identifying and sourcing suppliers to issuing RFQs, generating purchase orders, receiving goods, matching and approving invoices, and processing payments. FactWise automates the full S2P cycle for manufacturers.
+
+**Requisition-to-PO (Req-to-PO):** The internal procurement process from an employee raising a purchase request (requisition) through approvals and vendor selection to the generation and dispatch of a purchase order. Also called PR-to-PO.
+
+**Invoice-to-Pay (I2P):** The accounts payable process from receiving a vendor invoice through matching, discrepancy resolution, approval, and final payment.
+
+**Inquiry-to-Quote (I2Q):** The sales quoting process for manufacturers — from receiving a customer RFQ through BOM costing, sourcing, margin calculation, and sending a customer quote.
+
+**4-Way Invoice Matching:** Reconciliation of a vendor invoice against four source documents: Purchase Order (PO), Goods Receipt Note (GRN), Quality Check (QC) report, and Contract. Prevents overpayments, underpayments, and duplicate payments.
+
+**3-Way Invoice Matching:** Standard reconciliation of an invoice against three documents: PO, GRN, and invoice. Does not include quality check verification. Less rigorous than 4-way matching.
+
+**2-Way Invoice Matching:** Basic reconciliation of invoice against only the PO. Does not check if goods were actually received. Common in non-manufacturing environments.
+
+**BOM (Bill of Materials):** A structured list of all components, sub-assemblies, raw materials, and quantities required to manufacture a product. FactWise's I2Q module uses BOM cost intelligence to price customer quotes accurately.
+
+**Landed Cost:** The total cost of a purchased item including purchase price, freight, insurance, customs duties, port charges, and applicable taxes. Landed cost analysis is critical for accurate costing in manufacturing procurement.
+
+**RFQ (Request for Quotation):** A formal document sent to vendors asking for price quotes for specified goods or services. FactWise automates RFQ generation and dispatch to multiple vendors simultaneously.
+
+**GRN (Goods Receipt Note):** A document created when goods arrive at a facility, confirming what was received and in what quantity. Used in 4-way invoice matching.
+
+**AI Negotiation:** FactWise's AI-assisted negotiation feature that guides procurement teams to achieve better pricing and terms from vendors during the RFQ process.
+
+**Procurement Automation:** The use of software to automate manual procurement tasks — requisition creation, approval routing, vendor communication, PO generation, invoice processing, and payment scheduling.
+
+**AP Automation (Accounts Payable Automation):** Software that automates the processing of vendor invoices — from capture and data extraction through matching, approval, and payment.
+
+---
+
+## Key Pages Reference
+
+| Page | URL | Purpose |
+|------|-----|---------|
+| Homepage | https://factwise.io | Overview of the full platform |
+| Req-to-PO | https://factwise.io/requisitions-to-po | Requisition to Purchase Order module |
+| Invoice to Pay | https://factwise.io/invoice-to-pay | Invoice processing and AP automation module |
+| Inquiry to Quote | https://factwise.io/inquiry-to-quote | Customer quoting and BOM costing module |
+| FAQ | https://factwise.io/faq | Comprehensive answers to buyer questions |
+| Blog | https://factwise.io/blog | 100+ articles on procurement best practices |
+| Documentation | https://factwise.io/documentation | Platform setup and usage guides |
+| About | https://factwise.io/about | Company background and team |
+| Careers | https://factwise.io/careers | Open positions at FactWise |
+| Demo | https://factwise.io/demo | Book a personalized product demo |
+| DPDP Compliance | https://factwise.io/dpdp-compliance | India DPDP Act compliance statement |
+
+---
+
+## Contact
+
+- **Demo / Sales:** https://factwise.io/demo
+- **Support:** support@factwise.io
+- **LinkedIn:** https://www.linkedin.com/company/factwise
+- **G2:** https://www.g2.com/products/factwise
+- **Crunchbase:** https://www.crunchbase.com/organization/factwise

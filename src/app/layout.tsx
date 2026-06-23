@@ -170,12 +170,16 @@ const orgSchema = {
     maxValue: 50,
   },
   // sameAs is critical for Google Knowledge Panel and entity disambiguation
-  // TODO: verify each URL matches your actual profiles and add any missing ones
+  // Each authoritative external profile strengthens the entity signal for FactWise
+  // and reduces confusion with FactWise ERC, FactWise Goals, and FactWise Math.
   sameAs: [
     "https://www.linkedin.com/company/factwise",
     "https://twitter.com/factwise",
     "https://www.crunchbase.com/organization/factwise",
     "https://www.g2.com/products/factwise",
+    "https://www.capterra.com/p/factwise",
+    "https://www.getapp.com/operations-management-software/a/factwise",
+    "https://tracxn.com/d/companies/factwise",
   ],
   knowsAbout: [
     "Source-to-Pay Automation",
@@ -210,6 +214,26 @@ const websiteSchema = {
     },
     "query-input": "required name=search_term_string",
   },
+  // Speakable: tells Google Assistant / voice AI which content is most important to read aloud
+  speakable: {
+    "@type": "SpeakableSpecification",
+    cssSelector: ["h1", "h2", ".speakable"],
+  },
+};
+
+const videoSchema = {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "@id": "https://factwise.io/#hero-video",
+  name: "FactWise — AI-Powered Source-to-Pay Platform for Manufacturers",
+  description:
+    "See how FactWise automates the complete source-to-pay procurement cycle for manufacturers — from requisitions and RFQs to purchase orders, invoice matching, and payments — in one connected platform.",
+  thumbnailUrl: "https://factwise.io/factwise-hero-poster.jpg",
+  uploadDate: "2024-01-01T00:00:00Z",
+  contentUrl: "https://factwise.io/FinalIphone.mp4",
+  embedUrl: "https://factwise.io",
+  publisher: { "@id": "https://factwise.io/#organization" },
+  inLanguage: "en-US",
 };
 
 const softwareSchema = {
@@ -303,6 +327,7 @@ export default function RootLayout({
           media="(min-width: 768px)"
         />
         <link rel="llms-context" href="/llms.txt" />
+        <link rel="llms-context-full" href="/llms-full.txt" />
         {/*
           Google Consent Mode v2 — set the DEFAULT to "denied" before GTM/GA4
           load below. This raw inline script runs synchronously during HTML
@@ -373,6 +398,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }}
         />
         <div className="noise-bg" />
         <ScrollToTop />

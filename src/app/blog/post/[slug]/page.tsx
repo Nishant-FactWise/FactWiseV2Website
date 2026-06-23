@@ -3,11 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ChevronLeft, Calendar, Clock } from "lucide-react";
-import dynamic from "next/dynamic";
-const FlickeringFooter = dynamic(
-  () => import("@/components/ui/flickering-footer").then(m => ({ default: m.FlickeringFooter })),
-  { ssr: false }
-);
+import { FlickeringFooter } from "@/components/ClientOnlySections";
 import {
   getPostDetails,
   getAllPostSlugs,
@@ -74,9 +70,19 @@ function articleSchema(post: HygraphPost) {
     post.featuredImage?.url ??
     "https://factwise.io/logo.png"; // Strict requirement: Articles MUST have an image
 
-  const isoDate = post.lastUpdated 
-    ? new Date(post.lastUpdated).toISOString() 
-    : new Date().toISOString();
+  // Use createdAt for datePublished so the date is stable across crawls.
+  // Fall back to lastUpdated if createdAt is unavailable, then to an empty
+  // string (which omits the field rather than lying with today's date).
+  const datePublished = post.createdAt
+    ? new Date(post.createdAt).toISOString()
+    : post.lastUpdated
+    ? new Date(post.lastUpdated).toISOString()
+    : "";
+
+  // dateModified should reflect the last edit — fall back to createdAt.
+  const dateModified = post.lastUpdated
+    ? new Date(post.lastUpdated).toISOString()
+    : datePublished;
 
   return {
     "@context": "https://schema.org",
@@ -92,8 +98,8 @@ function articleSchema(post: HygraphPost) {
       name: "FactWise",
       url: "https://factwise.io"
     },
-    datePublished: isoDate,
-    dateModified: isoDate,
+    ...(datePublished && { datePublished }),
+    ...(dateModified && { dateModified }),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `https://factwise.io/blog/post/${post.slug}`,
@@ -101,7 +107,7 @@ function articleSchema(post: HygraphPost) {
     publisher: {
       "@type": "Organization",
       name: "FactWise",
-      url: "https://factwise.io", // This missing URL causes the "FactWise" item error in GSC
+      url: "https://factwise.io",
       logo: {
         "@type": "ImageObject",
         url: "https://factwise.io/logo.png",

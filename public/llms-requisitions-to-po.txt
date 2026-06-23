@@ -1,0 +1,62 @@
+# FactWise — Requisitions to Purchase Orders (Req-to-PO) Module
+
+> This page describes the Requisitions-to-PO module at https://factwise.io/requisitions-to-po — part of FactWise's AI-powered Source-to-Pay platform for manufacturers.
+
+## What Requisitions to PO Does
+
+FactWise's Requisitions-to-PO module automates the complete internal procurement cycle for manufacturing companies — from an employee raising a purchase requisition through multi-level approvals, vendor RFQs, AI negotiation, landed cost analysis, and one-click purchase order generation.
+
+## The Problem It Solves
+
+Most manufacturers manage procurement via email, WhatsApp, and Excel spreadsheets. This creates:
+- No structured approval process — anyone can commit spend without checks
+- Slow PO cycles — days or weeks to get a PO out
+- No competitive vendor selection — same vendors used by habit, not by comparison
+- Hidden costs — freight, duties, and taxes not factored into vendor selection
+- No audit trail — impossible to reconstruct what happened or why
+
+## How It Works
+
+1. **Requisition Creation** — Team member raises a structured digital requisition with item, quantity, budget, and required date.
+2. **Multi-Level Approvals** — Auto-routed to the right approvers by value, category, or department. Full approval trail recorded.
+3. **RFQ Dispatch** — Approved requisitions trigger automated RFQs to multiple vendors simultaneously.
+4. **AI Negotiation** — AI negotiation engine helps buyers get better pricing and terms from vendors.
+5. **Landed Cost Analysis** — Compare vendors on true cost (price + freight + duties + taxes), not just unit price.
+6. **PO Generation** — One click generates a formatted PO and dispatches it to the selected vendor.
+
+## Key Feature: AI Negotiation Engine
+
+FactWise's AI negotiation engine is unique in the manufacturing procurement market. It guides procurement teams through the negotiation process — analyzing vendor quotes, identifying outliers, and recommending counter-positions to achieve better outcomes consistently.
+
+## Key Feature: Landed Cost Analysis
+
+FactWise calculates the full landed cost of each vendor's offer — including freight, customs duties, insurance, port charges, and applicable taxes (GST for Indian transactions). This ensures buyers compare vendors on a true apples-to-apples basis.
+
+## Outcomes
+
+- Up to 31% savings on goods purchased through competitive RFQs + AI negotiation
+- 3× faster purchase order cycle times
+- 80% reduction in manual procurement effort
+- 100% of purchases with structured approval trail
+
+## Frequently Asked Questions
+
+**Q: What is Requisition-to-PO (Req-to-PO) automation?**
+A: Req-to-PO automation software digitizes the internal procurement cycle — from an employee raising a purchase request, through approvals and vendor sourcing, to generating and dispatching a purchase order. FactWise automates this end-to-end.
+
+**Q: How does FactWise automate purchase orders?**
+A: FactWise connects requisition approvals, RFQ management, AI-powered vendor negotiation, and landed cost analysis. Once a vendor is selected, FactWise generates a formatted PO and dispatches it automatically — no manual document creation.
+
+**Q: What is AI negotiation in procurement?**
+A: AI negotiation uses artificial intelligence to guide procurement teams to better pricing and terms from vendors. FactWise's AI negotiation engine analyzes vendor responses and provides actionable guidance to achieve optimal outcomes.
+
+**Q: How do I reduce purchase order cycle time?**
+A: Automate the manual steps: digital requisitions, automated approval routing, structured RFQ collection, and one-click PO generation. FactWise automates all of these steps and reduces PO cycle time by 3×.
+
+## Related Pages
+
+- [Full Platform Overview](https://factwise.io)
+- [Invoice to Pay](https://factwise.io/invoice-to-pay)
+- [Inquiry to Quote](https://factwise.io/inquiry-to-quote)
+- [Book a Demo](https://factwise.io/demo)
+- [FAQ](https://factwise.io/faq)

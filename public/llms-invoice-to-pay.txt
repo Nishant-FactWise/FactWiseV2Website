@@ -1,0 +1,58 @@
+# FactWise — Invoice to Pay Module
+
+> This page describes the Invoice-to-Pay module at https://factwise.io/invoice-to-pay — part of FactWise's AI-powered Source-to-Pay platform for manufacturers.
+
+## What Invoice to Pay Does
+
+FactWise's Invoice-to-Pay module automates the complete accounts payable (AP) process for manufacturing companies — from vendor invoice capture through 4-way matching, discrepancy resolution, approval, and payment scheduling.
+
+## The Problem It Solves
+
+Manufacturing companies typically receive hundreds of vendor invoices per month. Processing these manually creates:
+- Duplicate payments (same invoice paid twice)
+- Overpayments (paying more than the PO or contract price)
+- Delayed payments (slow manual processing strains supplier relationships)
+- No audit trail (compliance and audit risk)
+- Finance team bottlenecks (hours spent on data entry and reconciliation)
+
+## How It Works
+
+1. **Invoice Capture** — Invoices arrive via PDF upload, email, or vendor portal. AI extracts all data automatically.
+2. **4-Way Matching** — Invoice is matched against: (1) Purchase Order, (2) Goods Receipt Note, (3) Quality Check Report, (4) Contract.
+3. **Discrepancy Flagging** — Mismatches are flagged and routed to the right team for resolution.
+4. **Approval Workflow** — Clean invoices move through the configured payment approval chain.
+5. **Payment Scheduling** — Approved invoices are scheduled for payment on agreed terms.
+
+## Key Feature: 4-Way Invoice Matching
+
+Most systems do 2-way matching (PO + invoice) or 3-way matching (PO + GRN + invoice). FactWise does 4-way matching, adding Quality Check verification — critical for manufacturing where goods must pass quality inspection before payment is approved.
+
+## Outcomes
+
+- Zero duplicate payments
+- Elimination of overpayments
+- Full audit trail for every transaction
+- Faster vendor payment cycles
+- Finance team time freed from manual reconciliation
+
+## Frequently Asked Questions
+
+**Q: What is 4-way invoice matching?**
+A: 4-way invoice matching automatically reconciles a vendor invoice against four documents: the Purchase Order (PO), the Goods Receipt Note (GRN), the Quality Check (QC) report, and the Contract. Any mismatch is flagged before payment is approved. FactWise performs this matching automatically.
+
+**Q: How does AI invoice capture work?**
+A: FactWise uses AI to read vendor invoices submitted as PDFs, via email, or through the vendor portal. The AI extracts vendor name, invoice number, date, line items, quantities, unit prices, tax amounts, and banking details automatically — no manual data entry required.
+
+**Q: What is AP automation for manufacturing?**
+A: Accounts Payable (AP) automation for manufacturing automates vendor invoice processing — capturing invoices, matching them against POs and goods receipts (including quality checks), routing approvals, and processing payments. FactWise's Invoice-to-Pay module is purpose-built for this.
+
+**Q: How do I prevent duplicate invoice payments?**
+A: The most reliable method is automated 4-way matching — checking each invoice against the PO, GRN, quality check, and contract before approving payment. FactWise's Invoice-to-Pay module catches duplicates, quantity mismatches, and price discrepancies automatically.
+
+## Related Pages
+
+- [Full Platform Overview](https://factwise.io)
+- [Requisitions to PO](https://factwise.io/requisitions-to-po)
+- [Inquiry to Quote](https://factwise.io/inquiry-to-quote)
+- [Book a Demo](https://factwise.io/demo)
+- [FAQ](https://factwise.io/faq)

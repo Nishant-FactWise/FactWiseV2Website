@@ -14,6 +14,13 @@ function normalizeHref(href: string | undefined): string {
     trimmed = trimmed.replace("rfq-or-auction", "rfq-and-auction");
   }
 
+  // Fix external broken links (404/403) from SEMrush audit
+  if (trimmed.includes("dole.com/en")) trimmed = trimmed.replace("dole.com/en", "dole.com");
+  if (trimmed.includes("proactis.com/uk/en")) trimmed = trimmed.replace("proactis.com/uk/en", "proactis.com");
+  if (trimmed.includes("rolls-roycemotorcars.com/en")) trimmed = trimmed.replace("rolls-roycemotorcars.com/en", "rolls-roycemotorcars.com");
+  if (trimmed.includes("whitbread.co.uk")) trimmed = "https://en.wikipedia.org/wiki/Whitbread"; // 403 workaround
+  if (trimmed.includes("baesystems.com/en/home")) trimmed = "https://en.wikipedia.org/wiki/BAE_Systems"; // 403 workaround
+
   if (
     trimmed.startsWith("http://") ||
     trimmed.startsWith("https://") ||

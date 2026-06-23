@@ -106,6 +106,31 @@ export const faqCategories: FaqCategory[] = [
       },
     ],
   },
+  {
+    category: 'FactWise vs. Alternatives',
+    items: [
+      {
+        q: 'How is FactWise different from SAP Ariba?',
+        a: 'SAP Ariba is built for large enterprises with massive IT budgets and long implementation timelines. FactWise is built specifically for manufacturers — it is modular (you start with one workflow), faster to implement, and priced for SMBs and mid-market companies. FactWise also includes manufacturer-specific features like BOM costing, landed cost analysis, and quality-check-based invoice matching that SAP Ariba does not prioritize.',
+      },
+      {
+        q: 'How is FactWise different from Coupa?',
+        a: 'Coupa is a broad procurement platform targeting large enterprises. FactWise is a purpose-built solution for manufacturing companies, with deeper features for the manufacturing procurement context: BOM costing, inquiry-to-quote, goods receipt and quality check verification in invoice matching, and a leaner implementation path. FactWise is designed to replace spreadsheets and legacy systems at manufacturing SMBs, not to be a second ERP.',
+      },
+      {
+        q: 'How is FactWise different from Zoho or Tally for procurement?',
+        a: 'Zoho and Tally are general accounting and ERP tools with limited procurement modules. FactWise is a dedicated source-to-pay procurement platform with deep workflow automation: structured requisitions, RFQ management, AI negotiation, landed cost analysis, 4-way invoice matching, and spend analytics — all purpose-built for manufacturers.',
+      },
+      {
+        q: 'Is FactWise better than using spreadsheets for procurement?',
+        a: 'Yes. Spreadsheet-based procurement creates silos, version control issues, no approval trail, and is impossible to audit. FactWise replaces spreadsheets with a structured digital system that enforces approval workflows, captures a full audit trail, automates vendor communication, prevents overpayments, and provides real-time spend visibility. Most customers see ROI within the first few months through negotiation savings alone.',
+      },
+      {
+        q: 'What is the best procurement software for Indian manufacturers?',
+        a: 'FactWise is a leading procurement software choice for Indian manufacturers. It is built and headquartered in India (Mumbai), understands Indian tax and compliance requirements including GST and TDS, supports INR-based workflows, and is priced appropriately for Indian manufacturing SMBs. It covers the full source-to-pay cycle: requisitions, RFQs, purchase orders, goods receipt, invoice matching, and payments.',
+      },
+    ],
+  },
 ];
 
 export const faqJsonLd = {

@@ -1,0 +1,61 @@
+# FactWise — Inquiry to Quote (I2Q) Module
+
+> This page describes the Inquiry-to-Quote module at https://factwise.io/inquiry-to-quote — part of FactWise's AI-powered Source-to-Pay platform for manufacturers.
+
+## What Inquiry to Quote Does
+
+FactWise's Inquiry-to-Quote module helps manufacturers respond to customer RFQs faster and more profitably — automating BOM cost intelligence, intelligent component sourcing, landed cost analysis, and customer quote generation.
+
+## The Problem It Solves
+
+When a customer sends an RFQ, most manufacturers struggle with:
+- Slow quoting — manually costing each BOM component takes days
+- Inaccurate costs — forgetting freight, duties, and taxes reduces margins
+- Missed business — slow responses lose orders to faster competitors
+- No margin visibility — quoting without knowing true cost leads to unprofitable wins
+
+## How It Works
+
+1. **Receive Customer Inquiry** — Log the customer RFQ in FactWise with the Bill of Materials (BOM) or specification.
+2. **BOM Cost Intelligence** — FactWise automatically prices each BOM component against your vendor database and historical pricing.
+3. **Intelligent Component Sourcing** — For uncovered components, FactWise identifies potential vendors and supports competitive sourcing.
+4. **Landed Cost Calculation** — FactWise computes the full landed cost: material + freight + customs + taxes + insurance.
+5. **Margin Application** — Apply your desired margin percentage. FactWise shows the final quote price and margin clearly.
+6. **Customer Quote Generation** — One click generates a formatted customer quote document. Track acceptance and win rates.
+
+## Key Feature: BOM Cost Intelligence
+
+FactWise matches each component in a customer's Bill of Materials against your approved vendor price list and historical purchase data. This gives a fast, accurate base cost estimate without manual lookups across multiple spreadsheets.
+
+## Key Feature: Landed Cost Analysis
+
+FactWise calculates the true total cost of components: purchase price + freight + customs duties + insurance + taxes. This ensures customer quotes reflect actual costs and protect margins — not just unit prices that ignore total cost of ownership.
+
+## Outcomes
+
+- Quote turnaround reduced from days to hours
+- Accurate margins on every customer quote (no surprises after winning the order)
+- Higher win rates from faster, more competitive quotes
+- Full visibility into quoting pipeline and win rates
+
+## Frequently Asked Questions
+
+**Q: What is Inquiry-to-Quote (I2Q) software?**
+A: I2Q software automates the manufacturer's response to customer RFQs — from BOM costing and component sourcing through landed cost calculation and customer quote generation. FactWise's I2Q module helps manufacturers quote faster and more accurately.
+
+**Q: What is BOM costing in manufacturing?**
+A: BOM (Bill of Materials) costing calculates the total material cost of a product by pricing each component. FactWise automates BOM costing by matching each component against your vendor price database and historical purchases.
+
+**Q: What is landed cost analysis?**
+A: Landed cost analysis calculates the total cost of a purchased item including purchase price, freight, insurance, customs duties, taxes, and other charges required to bring goods to your facility. FactWise includes landed cost analysis in both I2Q and Requisitions-to-PO.
+
+**Q: How can manufacturers quote faster?**
+A: Automate BOM costing against vendor price lists, use intelligent component sourcing, calculate landed costs automatically, and generate quote documents with one click. FactWise's I2Q module automates all of these steps.
+
+## Related Pages
+
+- [Full Platform Overview](https://factwise.io)
+- [Requisitions to PO](https://factwise.io/requisitions-to-po)
+- [Invoice to Pay](https://factwise.io/invoice-to-pay)
+- [Book a Demo](https://factwise.io/demo)
+- [FAQ](https://factwise.io/faq)

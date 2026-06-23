@@ -16,31 +16,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((post) => post.slug !== "benefits-digital-transformation-procurement-smb")
     .map((post) => ({
       url: `${base}/blog/post/${post.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    }));
 
   return [
-    // Core pages — highest priority
+    // ── Core pages ── highest authority signals for AI crawlers ──────────────
     { url: base,                                     lastModified: now, changeFrequency: "weekly",  priority: 1.0 },
     { url: `${base}/demo`,                           lastModified: now, changeFrequency: "monthly", priority: 0.95 },
 
-    // Product / workflow pages
-    { url: `${base}/inquiry-to-quote`,               lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/requisitions-to-po`,             lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/invoice-to-pay`,                 lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    // /solutions permanently redirects to /inquiry-to-quote — excluded from sitemap
+    // ── Product / workflow pages ─────────────────────────────────────────────
+    { url: `${base}/inquiry-to-quote`,               lastModified: now, changeFrequency: "monthly", priority: 0.92 },
+    { url: `${base}/requisitions-to-po`,             lastModified: now, changeFrequency: "monthly", priority: 0.92 },
+    { url: `${base}/invoice-to-pay`,                 lastModified: now, changeFrequency: "monthly", priority: 0.92 },
 
+    // ── High-value AEO pages (FAQ, Glossary, Blog) ─────────────────────────
+    { url: `${base}/faq`,                            lastModified: now, changeFrequency: "weekly",  priority: 0.88 },
+    { url: `${base}/glossary`,                       lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${base}/blog`,                           lastModified: now, changeFrequency: "daily",   priority: 0.85 },
 
+    // ── Brand & company pages ────────────────────────────────────────────────
+    { url: `${base}/about`,                          lastModified: now, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${base}/documentation`,                  lastModified: now, changeFrequency: "monthly", priority: 0.72 },
+    { url: `${base}/careers`,                        lastModified: now, changeFrequency: "weekly",  priority: 0.65 },
 
-    // Commercial
-    // Brand & content
-    { url: `${base}/about`,                          lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/blog`,                           lastModified: now, changeFrequency: "daily",   priority: 0.8 },
-    { url: `${base}/careers`,                        lastModified: now, changeFrequency: "weekly",  priority: 0.6 },
-    { url: `${base}/faq`,                            lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/documentation`,                  lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    // ── Legal / compliance ───────────────────────────────────────────────────
+    { url: `${base}/privacy-policy`,                 lastModified: now, changeFrequency: "yearly",  priority: 0.4 },
+    { url: `${base}/terms-of-service`,               lastModified: now, changeFrequency: "yearly",  priority: 0.4 },
+    { url: `${base}/cookie-policy`,                  lastModified: now, changeFrequency: "yearly",  priority: 0.4 },
+    { url: `${base}/dpdp-compliance`,                lastModified: now, changeFrequency: "yearly",  priority: 0.4 },
+
+    // ── Blog posts ───────────────────────────────────────────────────────────
     ...blogEntries,
   ];
 }
