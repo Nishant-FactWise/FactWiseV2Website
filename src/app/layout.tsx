@@ -29,11 +29,11 @@ const geist = Geist({
 export const metadata: Metadata = {
   metadataBase: new URL("https://factwise.io"),
   title: {
-    default: "FactWise | AI-Powered Source-to-Pay Platform for Manufacturers",
+    default: "FactWise | AI-Powered Source-to-Pay Platform for Procurement",
     template: "%s | FactWise",
   },
   description:
-    "FactWise automates the entire source-to-pay process for manufacturers — from requisitions and RFQs to purchase orders, invoices, and payments. One AI-powered platform, every workflow.",
+    "FactWise automates the entire source-to-pay process for procurement — from requisitions and RFQs to purchase orders, invoices, and payments. One AI-powered platform, every workflow.",
   keywords: [
     "source to pay platform",
     "procurement software for manufacturers",
@@ -68,15 +68,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://factwise.io",
     siteName: "FactWise",
-    title: "FactWise | AI-Powered Source-to-Pay Platform for Manufacturers",
+    title: "FactWise | AI-Powered Source-to-Pay Platform for Procurement",
     description:
-      "FactWise automates the entire source-to-pay process for manufacturers — from requisitions and RFQs to purchase orders, invoices, and payments.",
+      "FactWise automates the entire source-to-pay process for procurement — from requisitions and RFQs to purchase orders, invoices, and payments.",
     images: [
       {
         url: "/logo.png",
         width: 1200,
         height: 630,
-        alt: "FactWise — AI-Powered Source-to-Pay Platform for Manufacturers",
+        alt: "FactWise — AI-Powered Source-to-Pay Platform for Procurement",
       },
     ],
   },
@@ -84,9 +84,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@factwise",
     creator: "@factwise",
-    title: "FactWise | AI-Powered Source-to-Pay Platform for Manufacturers",
+    title: "FactWise | AI-Powered Source-to-Pay Platform for Procurement",
     description:
-      "FactWise automates the entire source-to-pay process for manufacturers — from requisitions and RFQs to purchase orders, invoices, and payments.",
+      "FactWise automates the entire source-to-pay process for procurement — from requisitions and RFQs to purchase orders, invoices, and payments.",
     images: ["/logo.png"],
   },
   alternates: {
@@ -203,17 +203,10 @@ const websiteSchema = {
   "@id": "https://factwise.io/#website",
   url: "https://factwise.io",
   name: "FactWise",
-  description: "AI-powered source-to-pay platform for manufacturers",
+  alternateName: ["FactWise Technologies", "FactWise Procurement"],
+  description: "AI-powered source-to-pay platform for procurement",
   publisher: { "@id": "https://factwise.io/#organization" },
   inLanguage: "en-US",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: "https://factwise.io/blog?q={search_term_string}",
-    },
-    "query-input": "required name=search_term_string",
-  },
   // Speakable: tells Google Assistant / voice AI which content is most important to read aloud
   speakable: {
     "@type": "SpeakableSpecification",
@@ -225,9 +218,9 @@ const videoSchema = {
   "@context": "https://schema.org",
   "@type": "VideoObject",
   "@id": "https://factwise.io/#hero-video",
-  name: "FactWise — AI-Powered Source-to-Pay Platform for Manufacturers",
+  name: "FactWise — AI-Powered Source-to-Pay Platform for Procurement",
   description:
-    "See how FactWise automates the complete source-to-pay procurement cycle for manufacturers — from requisitions and RFQs to purchase orders, invoice matching, and payments — in one connected platform.",
+    "See how FactWise automates the complete source-to-pay procurement cycle — from requisitions and RFQs to purchase orders, invoice matching, and payments — in one connected platform.",
   thumbnailUrl: "https://factwise.io/factwise-hero-poster.jpg",
   uploadDate: "2024-01-01T00:00:00Z",
   contentUrl: "https://factwise.io/FinalIphone.mp4",

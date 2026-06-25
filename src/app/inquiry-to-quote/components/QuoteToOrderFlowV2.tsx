@@ -16,9 +16,9 @@ gsap.registerPlugin(ScrollTrigger, Observer);
 
 const STEPS = [
     { num: '01', label: 'BOM & Cost Intelligence', short: 'BOM' },
-    { num: '02', label: 'Intelligent Sourcing',    short: 'Sourcing' },
-    { num: '03', label: 'Landed Cost Analytics',   short: 'Analytics' },
-    { num: '04', label: 'Quote Generation',        short: 'Quote' },
+    { num: '02', label: 'Intelligent Sourcing', short: 'Sourcing' },
+    { num: '03', label: 'Landed Cost Analytics', short: 'Analytics' },
+    { num: '04', label: 'Quote Generation', short: 'Quote' },
 ];
 const TOTAL = STEPS.length;       // 4 panels
 const SLIDE_DUR = 0.55;           // seconds per panel transition
@@ -28,6 +28,11 @@ export default function QuoteToOrderFlowV2() {
     const [activePanel, setActivePanel] = useState(0);
     const [isDesktop, setIsDesktop] = useState(true);
 
+    const indexRef = useRef(0);
+    const busyRef = useRef(false);
+    const pinnedRef = useRef(false);
+    const lastEventTime = useRef(0);
+
     useEffect(() => {
         const mq = window.matchMedia('(min-width: 1024px)');
         const apply = () => setIsDesktop(mq.matches);
@@ -36,69 +41,136 @@ export default function QuoteToOrderFlowV2() {
         return () => mq.removeEventListener('change', apply);
     }, []);
 
+    const goTo = useCallback((next: number) => {
+        if (busyRef.current) return;
+        const clamped = Math.max(0, Math.min(TOTAL - 1, next));
+        if (clamped === indexRef.current) return;
+
+        busyRef.current = true;
+        const panels = gsap.utils.toArray<HTMLElement>('.qtof-panel-slide');
+        const direction = clamped > indexRef.current ? 1 : -1;
+
+        if (direction > 0) {
+            const incoming = panels[clamped - 1];
+            gsap.fromTo(incoming,
+                { xPercent: 100 },
+                {
+                    xPercent: 0, duration: SLIDE_DUR, ease: 'power2.inOut',
+                    onComplete: () => {
+                        indexRef.current = clamped;
+                        setActivePanel(clamped);
+                        setTimeout(() => { busyRef.current = false; }, 50);
+                    }
+                }
+            );
+        } else {
+            const outgoing = panels[indexRef.current - 1];
+            gsap.to(outgoing, {
+                xPercent: 100, duration: SLIDE_DUR, ease: 'power2.inOut',
+                onComplete: () => {
+                    indexRef.current = clamped;
+                    setActivePanel(clamped);
+                    setTimeout(() => { busyRef.current = false; }, 50);
+                }
+            });
+        }
+    }, []);
+
+    const exitSection = useCallback((direction: 'forward' | 'back') => {
+        const trigger = ScrollTrigger.getAll().find(st => st.pin === containerRef.current);
+        if (!trigger) return;
+        const target = direction === 'forward' ? trigger.end + 2 : trigger.start - 2;
+        window.scrollTo({ top: target, behavior: 'smooth' });
+    }, []);
+
     useGSAP(() => {
         if (!isDesktop || !containerRef.current) return;
 
-        const slides = gsap.utils.toArray<HTMLElement>('.qtof-panel-slide');
-        const totalSlides = slides.length + 1; // Panel 0 + slides 1,2,3
-
-        // Initialize slides off-screen right
-        gsap.set(slides, { xPercent: 100 });
+        const panels = gsap.utils.toArray<HTMLElement>('.qtof-panel-slide');
+        gsap.set(panels, { xPercent: 100 });
         gsap.set(gsap.utils.toArray<HTMLElement>('.qtof-panel'), { zIndex: (i: number) => i });
 
-        // We pin for 4 window heights (one for each slide transition)
-        const scrollDistance = window.innerHeight * totalSlides;
+        ScrollTrigger.create({
+            trigger: containerRef.current,
+            pin: true,
+            start: 'top top',
+            end: '+=' + (window.innerHeight * 0.5),
+            onEnter: () => { pinnedRef.current = true; },
+            onLeave: () => { pinnedRef.current = false; },
+            onEnterBack: () => { pinnedRef.current = true; },
+            onLeaveBack: () => { pinnedRef.current = false; },
+        });
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: containerRef.current,
-                pin: true,
-                start: 'top top',
-                end: `+=${scrollDistance}`,
-                scrub: 0.8, // Smoothly follow the native scrollbar
-                onUpdate: (self) => {
-                    // Update the active panel based on scrub progress
-                    const progress = self.progress;
-                    // Snap progress to discrete steps
-                    const currentIdx = Math.min(
-                        TOTAL - 1,
-                        Math.max(0, Math.round(progress * (TOTAL - 1)))
-                    );
-                    setActivePanel(currentIdx);
-                }
+        const onWheel = (e: WheelEvent) => {
+            if (!pinnedRef.current) return;
+            e.preventDefault();
+
+            const now = Date.now();
+            const timeSinceLast = now - lastEventTime.current;
+            lastEventTime.current = now;
+
+            const isMomentum = timeSinceLast < 50;
+            if (busyRef.current || isMomentum) return;
+
+            const forward = e.deltaY > 0;
+            if (forward && indexRef.current < TOTAL - 1) {
+                goTo(indexRef.current + 1);
             }
-        });
+            else if (!forward && indexRef.current > 0) {
+                goTo(indexRef.current - 1);
+            }
+            else if (forward && indexRef.current === TOTAL - 1) {
+                exitSection('forward');
+            }
+            else if (!forward && indexRef.current === 0) {
+                exitSection('back');
+            }
+        };
 
-        // Build a continuous timeline that slides each panel over the previous one
-        slides.forEach((slide, i) => {
-            tl.to(slide, {
-                xPercent: 0,
-                ease: 'none' // Linear ease so it matches scrollbar 1:1
-            });
-            // Add a small pause after each slide arrives
-            tl.to({}, { duration: 0.2 });
-        });
+        let touchStartY = 0;
+        const onTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
+        const onTouchEnd = (e: TouchEvent) => {
+            if (!pinnedRef.current) return;
 
-    }, { dependencies: [isDesktop], scope: containerRef });
+            const now = Date.now();
+            const timeSinceLast = now - lastEventTime.current;
+            lastEventTime.current = now;
 
-    // The nav buttons now scroll the window natively to the correct progress point
-    const navPrev = useCallback(() => {
-        const trigger = ScrollTrigger.getAll().find(st => st.pin === containerRef.current);
-        if (trigger && activePanel > 0) {
-            const step = trigger.end - trigger.start;
-            const target = trigger.start + (step * ((activePanel - 1) / (TOTAL - 1)));
-            window.scrollTo({ top: target, behavior: 'smooth' });
-        }
-    }, [activePanel]);
+            const isMomentum = timeSinceLast < 50;
+            if (busyRef.current || isMomentum) return;
 
-    const navNext = useCallback(() => {
-        const trigger = ScrollTrigger.getAll().find(st => st.pin === containerRef.current);
-        if (trigger && activePanel < TOTAL - 1) {
-            const step = trigger.end - trigger.start;
-            const target = trigger.start + (step * ((activePanel + 1) / (TOTAL - 1)));
-            window.scrollTo({ top: target, behavior: 'smooth' });
-        }
-    }, [activePanel]);
+            const delta = touchStartY - e.changedTouches[0].clientY;
+            if (Math.abs(delta) < 30) return;
+
+            if (delta > 0 && indexRef.current < TOTAL - 1) goTo(indexRef.current + 1);
+            else if (delta < 0 && indexRef.current > 0) goTo(indexRef.current - 1);
+            else if (delta > 0) exitSection('forward');
+            else exitSection('back');
+        };
+
+        const onKey = (e: KeyboardEvent) => {
+            if (!pinnedRef.current) return;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(indexRef.current + 1);
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(indexRef.current - 1);
+        };
+
+        window.addEventListener('wheel', onWheel, { passive: false });
+        window.addEventListener('touchstart', onTouchStart, { passive: true });
+        window.addEventListener('touchend', onTouchEnd, { passive: true });
+        window.addEventListener('keydown', onKey);
+
+        return () => {
+            window.removeEventListener('wheel', onWheel);
+            window.removeEventListener('touchstart', onTouchStart);
+            window.removeEventListener('touchend', onTouchEnd);
+            window.removeEventListener('keydown', onKey);
+        };
+    }, { dependencies: [isDesktop, goTo, exitSection], scope: containerRef });
+
+
+
+    const navPrev = useCallback(() => goTo(indexRef.current - 1), [goTo]);
+    const navNext = useCallback(() => goTo(indexRef.current + 1), [goTo]);
 
     return (
         <>
@@ -147,7 +219,7 @@ export default function QuoteToOrderFlowV2() {
                 <div className="qtof-panel qtof-panel-slide" style={{
                     position: 'absolute', inset: 0,
                     background: 'radial-gradient(ellipse 75% 75% at 0% 0%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), radial-gradient(ellipse 75% 75% at 100% 100%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), white',
-                    display: 'flex', alignItems: 'center', overflow: 'hidden',
+                    display: 'flex', alignItems: 'center', overflow: 'hidden'
                 }}>
                     <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <Section32SourceAINegotiate isActive={activePanel === 1} />
@@ -165,7 +237,7 @@ export default function QuoteToOrderFlowV2() {
                 <div className="qtof-panel qtof-panel-slide" style={{
                     position: 'absolute', inset: 0,
                     background: 'radial-gradient(ellipse 75% 75% at 0% 0%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), radial-gradient(ellipse 75% 75% at 100% 100%, rgba(105,145,240,0.45), rgba(150,180,250,0.18) 35%, transparent 65%), white',
-                    display: 'flex', alignItems: 'center', overflow: 'hidden',
+                    display: 'flex', alignItems: 'center', overflow: 'hidden'
                 }}>
                     <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                         <Section34QuoteAIInsight isActive={activePanel === 3} />
@@ -229,6 +301,9 @@ export default function QuoteToOrderFlowV2() {
                     <ChevronRight style={{ width: 16, height: 16, color: 'inherit' }} />
                 </button>
             </div>
+
+            {/* Spacer */}
+            {isDesktop && <div style={{ height: 1 }} aria-hidden="true" />}
 
             {/* MOBILE — stacked vertically */}
             <div className="block lg:hidden bg-white">

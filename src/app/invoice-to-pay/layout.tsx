@@ -115,6 +115,16 @@ const faqSchema = {
   ],
 };
 
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://factwise.io/invoice-to-pay/#webpage",
+  url: "https://factwise.io/invoice-to-pay",
+  name: "Invoice to Pay Automation | 4-Way Matching | FactWise",
+  description: "Automate invoice capture, 4-way matching across PO, GR, QC, and contract, and payment processing. Every invoice verified, every discrepancy caught.",
+  isPartOf: { "@id": "https://factwise.io/#website" },
+};
+
 export default function InvoiceToPayLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
@@ -122,6 +132,7 @@ export default function InvoiceToPayLayout({ children }: { children: React.React
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       {children}
     </>
   );

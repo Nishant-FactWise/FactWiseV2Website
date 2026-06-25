@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { activeSmoother } from './SmoothScroll';
 
 /**
@@ -30,12 +31,27 @@ export default function ScrollToTop() {
         /* smoother torn down mid-transition — native reset below still applies */
       }
       window.scrollTo(0, 0);
+      ScrollTrigger.refresh();
     };
 
     // Reset now, and again next frame once the route's smoother has re-initialized.
     toTop();
     const raf = requestAnimationFrame(toTop);
-    return () => cancelAnimationFrame(raf);
+
+    // As SPA client navigation hydrates, elements (mockups, Framer Motion entrance animations, fonts)
+    // take several hundred milliseconds to reach their final settled DOM height.
+    // Refresh ScrollTrigger silently as layout settles so pinned pin-spacer calculations are accurate.
+    const refresh = () => ScrollTrigger.refresh();
+    const t1 = setTimeout(refresh, 150);
+    const t2 = setTimeout(refresh, 500);
+    const t3 = setTimeout(refresh, 1200);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, [pathname]);
 
   return null;

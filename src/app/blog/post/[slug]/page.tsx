@@ -86,7 +86,7 @@ function articleSchema(post: HygraphPost) {
 
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: post.title,
     image: [imageUrl], // Google prefers arrays for images
     author: post.author ? { 
@@ -135,6 +135,31 @@ export default async function BlogPostPage(
     ? await getSimilarPosts(categorySlugs, post.slug).catch(() => [])
     : [];
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://factwise.io/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: "https://factwise.io/blog",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: `https://factwise.io/blog/post/${post.slug}`,
+      },
+    ],
+  };
+
   return (
     <main
       className="min-h-screen bg-white"
@@ -144,6 +169,12 @@ export default async function BlogPostPage(
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(articleSchema(post)),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
         }}
       />
 

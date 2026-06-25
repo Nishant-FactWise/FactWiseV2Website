@@ -15,12 +15,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 const STEPS = [
     { num: '01', label: 'AI Invoice Processing', short: 'Invoice' },
-    { num: '02', label: 'Goods Receipt',          short: 'GR' },
-    { num: '03', label: 'Quality Control',         short: 'QC' },
-    { num: '04', label: 'Payment Validation',      short: 'Payment' },
-    { num: '05', label: 'Total Visibility',        short: 'Visibility' },
+    { num: '02', label: 'Goods Receipt', short: 'GR' },
+    { num: '03', label: 'Quality Control', short: 'QC' },
+    { num: '04', label: 'Payment Validation', short: 'Payment' },
+    { num: '05', label: 'Total Visibility', short: 'Visibility' },
 ];
-const TOTAL     = STEPS.length;
+const TOTAL = STEPS.length;
 const SLIDE_DUR = 0.55;
 
 const gradientBg =
@@ -33,8 +33,8 @@ export default function InvoiceToPayFlow() {
     const [activePanel, setActivePanel] = useState(0);
     const [isDesktop, setIsDesktop] = useState(true);
 
-    const indexRef  = useRef(0);
-    const busyRef   = useRef(false);
+    const indexRef = useRef(0);
+    const busyRef = useRef(false);
     const pinnedRef = useRef(false);
     const lastEventTime = useRef(0);
 
@@ -116,7 +116,7 @@ export default function InvoiceToPayFlow() {
 
             const isMomentum = timeSinceLast < 50;
             if (busyRef.current || isMomentum) return;
-            
+
             const forward = e.deltaY > 0;
             if (forward && indexRef.current < TOTAL - 1) {
                 goTo(indexRef.current + 1);
@@ -136,17 +136,17 @@ export default function InvoiceToPayFlow() {
         const onTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
         const onTouchEnd = (e: TouchEvent) => {
             if (!pinnedRef.current) return;
-            
+
             const now = Date.now();
             const timeSinceLast = now - lastEventTime.current;
             lastEventTime.current = now;
-            
+
             const isMomentum = timeSinceLast < 50;
             if (busyRef.current || isMomentum) return;
 
             const delta = touchStartY - e.changedTouches[0].clientY;
             if (Math.abs(delta) < 30) return;
-            
+
             if (delta > 0 && indexRef.current < TOTAL - 1) goTo(indexRef.current + 1);
             else if (delta < 0 && indexRef.current > 0) goTo(indexRef.current - 1);
             else if (delta > 0) exitSection('forward');
@@ -156,7 +156,7 @@ export default function InvoiceToPayFlow() {
         const onKey = (e: KeyboardEvent) => {
             if (!pinnedRef.current) return;
             if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(indexRef.current + 1);
-            if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(indexRef.current - 1);
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(indexRef.current - 1);
         };
 
         window.addEventListener('wheel', onWheel, { passive: false });
@@ -171,6 +171,8 @@ export default function InvoiceToPayFlow() {
             window.removeEventListener('keydown', onKey);
         };
     }, { dependencies: [isDesktop, goTo, exitSection], scope: containerRef });
+
+
 
     const navPrev = useCallback(() => goTo(indexRef.current - 1), [goTo]);
     const navNext = useCallback(() => goTo(indexRef.current + 1), [goTo]);

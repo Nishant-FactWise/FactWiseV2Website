@@ -183,7 +183,6 @@ const SLUG_IMG: Record<string, string> = {
   // SMB
   "best-practices-smb-optimize-procurement":             "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=75",
   "procurement-training-program-smb-guide":              "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=75",
-  "benefits-digital-transformation-procurement-smb":     "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=75",
   "procurement-software-advantages-smb":                 "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=75",
   "supply-chain-management-procurement-smb":             "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=75",
   "benefits-purchase-orders-small-manufacturers":        "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&q=75",

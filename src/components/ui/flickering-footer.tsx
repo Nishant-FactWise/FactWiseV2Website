@@ -61,7 +61,7 @@ const AnimatedContainer = ({ children, delay = 0 }: { children: React.ReactNode;
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
+      viewport={{ once: false, margin: '-40px' }}
       transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
