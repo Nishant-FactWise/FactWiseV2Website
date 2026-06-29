@@ -84,24 +84,26 @@ export default function ComplianceSection() {
 
       <div className="mx-auto max-w-[1400px] px-6 relative z-10">
         
-        <ScrollReveal delay={0.1}>
-          <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
-            Compliance + Trust
-          </div>
-        </ScrollReveal>
-        
-        <ScrollReveal delay={0.2}>
-          <h2 className="text-3xl font-bold tracking-tight md:text-5xl mb-6 leading-[1.1]" style={{ fontFamily: 'var(--font-display)' }}>
-            Compliance isn't a feature<br />
-            <span className="text-[#3666ff]">you turn on.</span>
-          </h2>
-        </ScrollReveal>
+        <div className="mx-auto max-w-3xl text-center flex flex-col items-center mb-16">
+          <ScrollReveal delay={0.1}>
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
+              Compliance + Trust
+            </div>
+          </ScrollReveal>
+          
+          <ScrollReveal delay={0.2}>
+            <h2 className="text-3xl font-bold tracking-tight md:text-5xl mb-6 leading-[1.1]" style={{ fontFamily: 'var(--font-display)' }}>
+              Compliance isn't a feature<br />
+              <span className="text-[#3666ff]">you turn on.</span>
+            </h2>
+          </ScrollReveal>
 
-        <ScrollReveal delay={0.3}>
-          <p className="text-slate-500 text-sm md:text-base max-w-2xl mb-16 font-medium">
-            It's how FactWise was built. Enterprise procurement, CISOs, and data protection officers can relax.
-          </p>
-        </ScrollReveal>
+          <ScrollReveal delay={0.3}>
+            <p className="text-slate-500 text-sm md:text-base max-w-2xl font-medium">
+              It's how FactWise was built. Enterprise procurement, CISOs, and data protection officers can relax.
+            </p>
+          </ScrollReveal>
+        </div>
 
         {/* 6-column grid to match the screenshot exactly */}
         <div 
