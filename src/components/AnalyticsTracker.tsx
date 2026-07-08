@@ -18,7 +18,7 @@ export default function AnalyticsTracker() {
   const activeSectionsRef = useRef<{ [sectionId: string]: number }>({});
   const activeSectionObserverRef = useRef<IntersectionObserver | null>(null);
 
-  // Initialize tracking and fetch IP address
+  // Initialize tracking
   useEffect(() => {
     // Initialize Microsoft Clarity if project ID is provided
     const clarityId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
@@ -31,21 +31,7 @@ export default function AnalyticsTracker() {
       pageStartTimeRef.current = Date.now();
     }
 
-    // 1. Fetch IP Address once on load
-    fetch("/api/get-ip")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.ip) {
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            event: "user_ip_detected",
-            user_ip: data.ip,
-          });
-        }
-      })
-      .catch((err) => console.error("Error fetching IP address:", err));
-
-    // 2. Identify potential username or user_id from localStorage/cookies
+    // 1. Identify potential username or user_id from localStorage/cookies
     try {
       const getCookie = (name: string) => {
         const value = `; ${document.cookie}`;

@@ -12,8 +12,7 @@ import {
 } from "@/lib/blog/hygraph";
 import { RichText } from "@/lib/blog/RichText";
 
-export const revalidate = 300;
-export const dynamicParams = true;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   try {
