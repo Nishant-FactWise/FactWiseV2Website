@@ -30,6 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/inquiry-to-quote`,               lastModified: now, changeFrequency: "monthly", priority: 0.92 },
     { url: `${base}/requisitions-to-po`,             lastModified: now, changeFrequency: "monthly", priority: 0.92 },
     { url: `${base}/invoice-to-pay`,                 lastModified: now, changeFrequency: "monthly", priority: 0.92 },
+    { url: `${base}/supplier`,                       lastModified: now, changeFrequency: "monthly", priority: 0.92 },
 
     // ── High-value AEO pages (FAQ, Glossary, Blog) ─────────────────────────
     { url: `${base}/faq`,                            lastModified: now, changeFrequency: "weekly",  priority: 0.88 },

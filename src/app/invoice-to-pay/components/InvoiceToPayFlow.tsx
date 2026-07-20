@@ -36,7 +36,7 @@ export default function InvoiceToPayFlow() {
     const indexRef = useRef(0);
     const busyRef = useRef(false);
     const pinnedRef = useRef(false);
-    const lastEventTime = useRef(0);
+    const lastTransitionTime = useRef(0);
 
     useEffect(() => {
         const mq = window.matchMedia('(min-width: 1024px)');
@@ -111,23 +111,23 @@ export default function InvoiceToPayFlow() {
             e.preventDefault();
 
             const now = Date.now();
-            const timeSinceLast = now - lastEventTime.current;
-            lastEventTime.current = now;
-
-            const isMomentum = timeSinceLast < 50;
-            if (busyRef.current || isMomentum) return;
+            if (busyRef.current || now - lastTransitionTime.current < 750) return;
 
             const forward = e.deltaY > 0;
             if (forward && indexRef.current < TOTAL - 1) {
+                lastTransitionTime.current = now;
                 goTo(indexRef.current + 1);
             }
             else if (!forward && indexRef.current > 0) {
+                lastTransitionTime.current = now;
                 goTo(indexRef.current - 1);
             }
             else if (forward && indexRef.current === TOTAL - 1) {
+                lastTransitionTime.current = now;
                 exitSection('forward');
             }
             else if (!forward && indexRef.current === 0) {
+                lastTransitionTime.current = now;
                 exitSection('back');
             }
         };
@@ -138,19 +138,27 @@ export default function InvoiceToPayFlow() {
             if (!pinnedRef.current) return;
 
             const now = Date.now();
-            const timeSinceLast = now - lastEventTime.current;
-            lastEventTime.current = now;
-
-            const isMomentum = timeSinceLast < 50;
-            if (busyRef.current || isMomentum) return;
+            if (busyRef.current || now - lastTransitionTime.current < 750) return;
 
             const delta = touchStartY - e.changedTouches[0].clientY;
             if (Math.abs(delta) < 30) return;
 
-            if (delta > 0 && indexRef.current < TOTAL - 1) goTo(indexRef.current + 1);
-            else if (delta < 0 && indexRef.current > 0) goTo(indexRef.current - 1);
-            else if (delta > 0) exitSection('forward');
-            else exitSection('back');
+            if (delta > 0 && indexRef.current < TOTAL - 1) {
+                lastTransitionTime.current = now;
+                goTo(indexRef.current + 1);
+            }
+            else if (delta < 0 && indexRef.current > 0) {
+                lastTransitionTime.current = now;
+                goTo(indexRef.current - 1);
+            }
+            else if (delta > 0) {
+                lastTransitionTime.current = now;
+                exitSection('forward');
+            }
+            else {
+                lastTransitionTime.current = now;
+                exitSection('back');
+            }
         };
 
         const onKey = (e: KeyboardEvent) => {

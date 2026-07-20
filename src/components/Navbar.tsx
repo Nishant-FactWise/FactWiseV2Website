@@ -216,6 +216,18 @@ export default function Navbar() {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
+                {/* Suppliers */}
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/supplier"
+                      className="inline-flex h-9 items-center rounded-md px-4 py-2 text-sm font-medium text-foreground/60 transition-colors hover:bg-black/[0.04] hover:text-foreground"
+                    >
+                      Suppliers
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
                 {/* Pricing */}
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>

@@ -20,6 +20,7 @@ const footerLinks = [
       { name: "Inquiry to Quote", href: "/inquiry-to-quote" },
       { name: "Requisitions to PO", href: "/requisitions-to-po" },
       { name: "Invoice to Pay", href: "/invoice-to-pay" },
+      { name: "For Suppliers", href: "/supplier" },
     ],
   },
   {

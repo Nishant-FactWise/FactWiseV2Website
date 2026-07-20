@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-const LENIS_ROUTES = ['/about', '/careers', '/inquiry-to-quote', '/requisitions-to-po', '/invoice-to-pay', '/platform'];
+const LENIS_ROUTES = ['/about', '/careers', '/inquiry-to-quote', '/requisitions-to-po', '/invoice-to-pay', '/platform', '/supplier'];
 
 // Global so ScrollReveal can read smoother scroll position reliably
 export let activeSmoother: ScrollSmoother | null = null;
@@ -38,15 +38,29 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     ScrollTrigger.refresh();
 
     return () => {
-      activeSmoother?.kill();
-      activeSmoother = null;
+      if (activeSmoother) {
+        activeSmoother.kill();
+        activeSmoother = null;
+        if (typeof window !== 'undefined') {
+          window.scrollTo(0, 0);
+          ScrollTrigger.refresh();
+        }
+        if (typeof document !== 'undefined') {
+          document.documentElement.style.overflow = '';
+          document.documentElement.style.height = '';
+          document.body.style.overflow = '';
+          document.body.style.height = '';
+        }
+      }
     };
   }, { scope: wrapperRef, dependencies: [pathname] });
 
-  if (usesLenis) return <>{children}</>;
-
   return (
-    <div id="smooth-wrapper" ref={wrapperRef} style={{ overflow: 'hidden', width: '100%' }}>
+    <div 
+      id="smooth-wrapper" 
+      ref={wrapperRef} 
+      style={usesLenis ? { width: '100%' } : { overflow: 'hidden', width: '100%' }}
+    >
       {/* Do NOT add willChange:'transform' here. GSAP ScrollSmoother manages its
           own GPU-layer lifecycle internally. A static willChange hint permanently
           promotes #smooth-content to a compositing layer whose sub-pixel rounding

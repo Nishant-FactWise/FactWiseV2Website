@@ -64,6 +64,10 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 			]
 		},
 		{
+			label: 'Suppliers',
+			href: '/supplier',
+		},
+		{
 			label: 'Blog',
 			href: '/blog',
 		},

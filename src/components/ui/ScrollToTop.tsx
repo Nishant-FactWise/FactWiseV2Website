@@ -23,6 +23,11 @@ export default function ScrollToTop() {
   useEffect(() => {
     if (typeof window === 'undefined' || window.location.hash) return;
 
+    // Kill ALL lingering ScrollTriggers from the previous route before anything else.
+    // Stale pin-spacers from pinned pages (e.g. /supplier, /inquiry-to-quote) create
+    // the blank white gap at the top when navigating away if not explicitly killed.
+    ScrollTrigger.getAll().forEach(st => st.kill());
+
     const toTop = () => {
       // GSAP ScrollSmoother (active on most routes). false = jump, don't animate.
       try {
@@ -41,10 +46,17 @@ export default function ScrollToTop() {
     // As SPA client navigation hydrates, elements (mockups, Framer Motion entrance animations, fonts)
     // take several hundred milliseconds to reach their final settled DOM height.
     // Refresh ScrollTrigger silently as layout settles so pinned pin-spacer calculations are accurate.
-    const refresh = () => ScrollTrigger.refresh();
-    const t1 = setTimeout(refresh, 150);
-    const t2 = setTimeout(refresh, 500);
-    const t3 = setTimeout(refresh, 1200);
+    const refreshAndScroll = () => {
+      window.scrollTo(0, 0);
+      ScrollTrigger.refresh();
+    };
+    const refreshOnly = () => {
+      ScrollTrigger.refresh();
+    };
+
+    const t1 = setTimeout(refreshAndScroll, 150);
+    const t2 = setTimeout(refreshOnly, 500);
+    const t3 = setTimeout(refreshOnly, 1200);
 
     return () => {
       cancelAnimationFrame(raf);
