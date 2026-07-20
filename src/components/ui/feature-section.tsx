@@ -615,7 +615,7 @@ export function FeatureSteps({
   return (
     <section 
       id="factwise-benefits"
-      className={cn("py-32 bg-white border-t border-slate-100 relative overflow-hidden text-[#1A1D2E] scroll-mt-24", className)}
+      className={cn("pt-4 pb-32 bg-white border-t border-slate-100 relative overflow-hidden text-[#1A1D2E] scroll-mt-24", className)}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >

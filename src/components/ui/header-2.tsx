@@ -105,7 +105,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 		};
 	}, [open]);
 
-	if (pathname === '/demo') {
+	if (pathname === '/demo' || pathname === '/supplier-onboarding') {
 		return null;
 	}
 

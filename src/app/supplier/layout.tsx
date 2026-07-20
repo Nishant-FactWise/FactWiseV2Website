@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "FactWise for Suppliers | Simply and Seamlessly | FactWise",
     description:
-      "Whether your suppliers respond manually, through APIs, or fully automatically — FactWise makes it effortless to engage, respond, and win business without friction.",
+      "Respond through the portal, Excel, or API — FactWise matches every line item against your pricing and gets your bid out before the deadline.",
     url: "https://factwise.io/supplier",
     type: "website",
   },

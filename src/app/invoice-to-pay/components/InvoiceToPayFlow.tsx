@@ -100,7 +100,7 @@ export default function InvoiceToPayFlow() {
                 className="hidden lg:block"
                 style={{ height: `${TOTAL * 100}vh`, position: 'relative' }}
             >
-                <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: 'white' }}>
+                <div style={{ position: 'sticky', top: 'max(80px, calc(50vh - 340px))', height: '680px', overflow: 'hidden', background: 'white' }}>
 
                     {/* Panel 0 — base, always behind */}
                     <div style={{ position: 'absolute', inset: 0, zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'white' }}>

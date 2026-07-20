@@ -444,7 +444,7 @@ export default function SupplierHero() {
             }}
           >
             <Sparkles className="size-3.5 text-[#3666ff]" />
-            Supplier Engagement & Quoting Engine
+            AI-POWERED SUPPLIER QUOTING
           </div>
 
           <h1
@@ -481,12 +481,12 @@ export default function SupplierHero() {
               fontFamily: 'var(--font-inter)',
             }}
           >
-            Whether your suppliers respond manually, through APIs, or fully automatically — FactWise makes it effortless for every supplier to engage, respond, and win business without friction.
+            Respond through the portal, Excel, or API — FactWise matches every line item against your pricing and gets your bid out before the deadline.
           </p>
 
           <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
-            <button
-              onClick={() => setModalOpen(true)}
+            <Link
+              href="/supplier-onboarding"
               style={{
                 background: 'linear-gradient(135deg,#4f8bff,#2a6cff)',
                 color: 'white',
@@ -501,6 +501,7 @@ export default function SupplierHero() {
                 gap: 8,
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.1) inset, 0 12px 40px rgba(42,108,255,0.4)',
                 fontFamily: 'var(--font-inter)',
+                textDecoration: 'none',
               }}
             >
               Get Started as Supplier
@@ -516,7 +517,7 @@ export default function SupplierHero() {
               >
                 <ArrowRight className="size-3" />
               </span>
-            </button>
+            </Link>
 
             <a
               href="#supplier-problems"

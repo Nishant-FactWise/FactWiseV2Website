@@ -324,24 +324,6 @@ export default function SupplierProblemsSection() {
               <span className="text-[#3666ff]">Struggle to Respond on Time.</span>
             </h2>
           </div>
-
-          {/* Navigation arrows */}
-          <div className="hidden md:flex items-center gap-3 self-end mb-1 shrink-0">
-            <button
-              onClick={() => scroll('left')}
-              className="size-11 rounded-full border border-slate-200/80 bg-white hover:border-[#3666ff]/50 hover:bg-blue-50/20 text-slate-500 hover:text-[#3666ff] active:scale-95 transition-all flex items-center justify-center shadow-xs cursor-pointer"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft className="size-5" />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              className="size-11 rounded-full border border-slate-200/80 bg-white hover:border-[#3666ff]/50 hover:bg-blue-50/20 text-slate-500 hover:text-[#3666ff] active:scale-95 transition-all flex items-center justify-center shadow-xs cursor-pointer"
-              aria-label="Scroll right"
-            >
-              <ChevronRight className="size-5" />
-            </button>
-          </div>
         </div>
 
         {/* Compact, Light-Themed horizontal visual card carousel */}
@@ -362,9 +344,8 @@ export default function SupplierProblemsSection() {
               }}
               onMouseEnter={() => setHoveredCardId(prob.id)}
               onMouseLeave={() => setHoveredCardId(null)}
-              onClick={() => scrollToSolution(prob.id)}
               className={cn(
-                'group relative rounded-3xl bg-white border border-slate-200/60 p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:border-[#3666ff]/20 cursor-pointer overflow-hidden w-[280px] min-w-[280px] sm:w-auto sm:min-w-[290px] xl:min-w-[310px] max-w-[325px] flex-shrink-0 snap-start h-[420px] sm:h-[470px] shadow-[0_12px_36px_-10px_rgba(15,23,42,0.12),_0_0_20px_rgba(54,102,255,0.05)] hover:shadow-[0_20px_50px_-12px_rgba(54,102,255,0.18)]'
+                'group relative rounded-3xl bg-white border border-slate-200/60 p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:border-[#3666ff]/20 overflow-hidden w-[280px] min-w-[280px] sm:w-auto sm:min-w-[290px] xl:min-w-[310px] max-w-[325px] flex-shrink-0 snap-start h-[420px] sm:h-[470px] shadow-[0_12px_36px_-10px_rgba(15,23,42,0.12),_0_0_20px_rgba(54,102,255,0.05)] hover:shadow-[0_20px_50px_-12px_rgba(54,102,255,0.18)]'
               )}
             >
               {/* Card Content Top Section */}
@@ -386,22 +367,6 @@ export default function SupplierProblemsSection() {
 
               {/* Interactive Inner Widget */}
               <div className="my-3 relative z-10 w-full">{renderWidget(prob.id, hoveredCardId === prob.id)}</div>
-
-              {/* Card See Solution Transition Footer */}
-              <div className="pt-3 border-t border-slate-100 relative z-10">
-                <div className="relative h-5 overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-end transition-all duration-300 transform group-hover:-translate-y-full group-hover:opacity-0">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff]/80" />
-                  </div>
-
-                  <div className="absolute inset-0 flex items-center justify-between transition-all duration-300 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
-                    <span className="text-[11px] font-bold text-[#3666ff] flex items-center gap-1.5">
-                      See FactWise Solution
-                      <span className="transition-transform duration-300 group-hover:translate-x-0.5">➔</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
             </motion.div>
           ))}
         </div>

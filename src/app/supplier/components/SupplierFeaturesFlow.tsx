@@ -700,30 +700,30 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
                 .line-left { stroke-dasharray: 6 4; animation: dash-flow-left 1.2s infinite linear; }
               `}</style>
 
-              <svg className="w-full h-full absolute inset-0 pointer-events-none" viewBox="0 0 540 300" fill="none">
+              <svg className="w-full h-full absolute inset-0 pointer-events-none" viewBox="0 0 560 300" fill="none">
                 
                 {/* ─── CONNECTOR LINES & DATA PIPELINES ─── */}
                 
                 {/* 1. Partner System <---> Partner Pricing Repository */}
-                <path d="M 105 145 H 145" stroke="#3666ff" strokeWidth="1.5" className={cn(showSync ? "line-right" : "opacity-30")} />
+                <path d="M 105 145 H 155" stroke="#3666ff" strokeWidth="1.5" className={cn(showSync ? "line-right" : "opacity-30")} />
 
                 {/* 2. Partner Pricing Repository <---> FactWise AI Portal */}
-                <path d="M 240 125 H 280" stroke="#3666ff" strokeWidth="1.5" className={cn(showRfq ? "line-right" : "opacity-30")} />
-                <path d="M 280 165 H 240" stroke="#10b981" strokeWidth="1.5" className={cn(showRfq ? "line-left" : "opacity-30")} />
+                <path d="M 250 125 H 300" stroke="#3666ff" strokeWidth="1.5" className={cn(showRfq ? "line-right" : "opacity-30")} />
+                <path d="M 300 165 H 250" stroke="#10b981" strokeWidth="1.5" className={cn(showRfq ? "line-left" : "opacity-30")} />
 
                 {/* 3. FactWise AI Portal <---> Customer ERPs (3 Automation Lines to 3 separate Customer Blocks) */}
                 {/* Line 1 (PO Sync to Customer A ERP) */}
-                <path d="M 380 65 H 425" stroke="#10b981" strokeWidth="1.5" className={cn(showAutomation ? "line-right" : "opacity-30")} />
+                <path d="M 400 65 H 450" stroke="#10b981" strokeWidth="1.5" className={cn(showAutomation ? "line-right" : "opacity-30")} />
                 {/* Line 2 (Invoice Sync to Customer B ERP) */}
-                <path d="M 425 150 H 380" stroke="#f43f5e" strokeWidth="1.5" className={cn(showAutomation ? "line-left" : "opacity-30")} />
+                <path d="M 450 150 H 400" stroke="#f43f5e" strokeWidth="1.5" className={cn(showAutomation ? "line-left" : "opacity-30")} />
                 {/* Line 3 (Payment Sync to Customer C ERP) */}
-                <path d="M 380 235 H 425" stroke="#10b981" strokeWidth="1.5" className={cn(showAutomation ? "line-right" : "opacity-30")} />
+                <path d="M 400 235 H 450" stroke="#10b981" strokeWidth="1.5" className={cn(showAutomation ? "line-right" : "opacity-30")} />
 
                 {/* 4. Bypass Line: Partner Onboarding (Partner System -> FactWise AI Portal) */}
-                <path d="M 55 80 C 55 20, 330 20, 330 55" stroke="#a855f7" strokeWidth="1.5" strokeDasharray="5 3" className="opacity-30" />
+                <path d="M 55 80 C 55 15, 350 15, 350 55" stroke="#a855f7" strokeWidth="1.5" strokeDasharray="5 3" className="opacity-30" />
 
                 {/* 5. Bypass Lines: Portal -> Partner System (PO, Invoice, Payment Automation) */}
-                <path d="M 330 245 C 330 285, 55 285, 55 210" stroke="#10b981" strokeWidth="1.5" className={cn(showAutomation ? "line-left" : "opacity-20")} />
+                <path d="M 350 245 C 350 295, 55 295, 55 210" stroke="#10b981" strokeWidth="1.5" className={cn(showAutomation ? "line-left" : "opacity-20")} />
 
                 {/* ─── BLOCKS (using foreignObject for rich HTML) ─── */}
                 
@@ -747,7 +747,7 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
                 </foreignObject>
 
                 {/* Block 2: Partner Pricing Repository (Middle-left, Gray Theme) */}
-                <foreignObject x="145" y="90" width="95" height="110">
+                <foreignObject x="155" y="90" width="95" height="110">
                   <div className={cn(
                     "w-full h-full rounded-xl border p-2.5 flex flex-col justify-between text-left transition-all duration-500",
                     showSync 
@@ -756,7 +756,7 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
                   )}>
                     <div className="text-[8px] font-mono text-slate-500 font-bold uppercase tracking-wider">Repository</div>
                     <div className="space-y-0.5 my-auto">
-                      <div className="text-[9.5px] font-extrabold text-slate-800 leading-tight">Pricing DB</div>
+                      <div className="text-[9.5px] font-extrabold text-slate-800 leading-tight">Your Pricing Data</div>
                       <div className="text-[7px] text-slate-500 leading-snug">Maintains live catalog rates.</div>
                     </div>
                     <span className="text-[7px] font-bold text-slate-600 bg-slate-100 border border-slate-200 px-1 py-0.5 rounded text-center">
@@ -766,16 +766,16 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
                 </foreignObject>
 
                 {/* Block 3: FactWise AI Portal (Middle-right, Blue Theme) */}
-                <foreignObject x="280" y="55" width="100" height="190">
+                <foreignObject x="300" y="55" width="100" height="190">
                   <div className={cn(
                     "w-full h-full rounded-xl border p-2 flex flex-col justify-between text-left transition-all duration-500",
                     showRfq 
                       ? "bg-blue-50/70 border-blue-200 shadow-sm" 
                       : "bg-slate-50 border-slate-100 opacity-60"
                   )}>
-                    <div className="text-[8px] font-mono text-blue-600 font-bold uppercase tracking-wider">FactWise Portal</div>
+                    <div className="text-[8px] font-mono text-blue-600 font-bold uppercase tracking-wider">Partner Portal</div>
                     <div className="space-y-1 my-auto">
-                      <div className="text-[9.5px] font-extrabold text-slate-800 leading-tight">AI Portal</div>
+                      <div className="text-[9.5px] font-extrabold text-slate-800 leading-tight">FactWise Portal</div>
                       <div className="text-[7.5px] text-slate-500 leading-snug">Matches incoming RFQ specifications.</div>
                     </div>
                     <span className="text-[7px] font-bold text-blue-600 bg-blue-100/50 border border-blue-200/50 px-1 py-0.5 rounded text-center">
@@ -785,7 +785,7 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
                 </foreignObject>
 
                 {/* Block 4A: Customer A ERP (Right-most Top, Purple Theme) */}
-                <foreignObject x="425" y="30" width="105" height="70">
+                <foreignObject x="450" y="30" width="105" height="70">
                   <div className={cn(
                     "w-full h-full rounded-xl border p-2 flex flex-col justify-between text-left transition-all duration-500",
                     showAutomation 
@@ -801,7 +801,7 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
                 </foreignObject>
 
                 {/* Block 4B: Customer B ERP (Right-most Middle, Purple Theme) */}
-                <foreignObject x="425" y="115" width="105" height="70">
+                <foreignObject x="450" y="115" width="105" height="70">
                   <div className={cn(
                     "w-full h-full rounded-xl border p-2 flex flex-col justify-between text-left transition-all duration-500",
                     showAutomation 
@@ -817,7 +817,7 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
                 </foreignObject>
 
                 {/* Block 4C: Customer C ERP (Right-most Bottom, Purple Theme) */}
-                <foreignObject x="425" y="200" width="105" height="70">
+                <foreignObject x="450" y="200" width="105" height="70">
                   <div className={cn(
                     "w-full h-full rounded-xl border p-2 flex flex-col justify-between text-left transition-all duration-500",
                     showAutomation 
@@ -834,33 +834,33 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
 
                 {/* LABELS OVER CONNECTORS */}
                 {/* Onboarding */}
-                <text x="192" y="32" fill="#a855f7" fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle" opacity="0.6">Partner Onboarding</text>
+                <text x="202" y="22" fill="#a855f7" fontSize="8" fontWeight="bold" fontFamily="monospace" textAnchor="middle" opacity="0.6">Partner Onboarding</text>
                 
                 {/* RFQ / Quote */}
                 {showRfq && (
                   <>
-                    <text x="260" y="117" fill="#3666ff" fontSize="7.5" fontWeight="bold" fontFamily="monospace" textAnchor="middle">RFQ In</text>
-                    <text x="260" y="180" fill="#10b981" fontSize="7.5" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Quote Out</text>
+                    <text x="275" y="117" fill="#3666ff" fontSize="7.5" fontWeight="bold" fontFamily="monospace" textAnchor="middle">RFQ In</text>
+                    <text x="275" y="180" fill="#10b981" fontSize="7.5" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Quote Out</text>
                   </>
                 )}
 
                 {/* Pricing Data */}
                 {showSync && (
-                  <text x="125" y="137" fill="#3666ff" fontSize="7.5" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Pricing Sync</text>
+                  <text x="130" y="137" fill="#3666ff" fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Pricing Sync</text>
                 )}
 
                 {/* 3 lines labels (PO, Invoice, Payment Automation) */}
                 {showAutomation && (
                   <>
-                    <text x="402" y="57" fill="#10b981" fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">PO Sync</text>
-                    <text x="402" y="142" fill="#f43f5e" fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Invoice</text>
-                    <text x="402" y="227" fill="#10b981" fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Payment</text>
+                    <text x="425" y="57" fill="#10b981" fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">PO Sync</text>
+                    <text x="425" y="142" fill="#f43f5e" fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Invoice</text>
+                    <text x="425" y="227" fill="#10b981" fontSize="7" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Payment</text>
                   </>
                 )}
 
                 {/* Downstream Partner Automation */}
                 {showAutomation && (
-                  <text x="192" y="278" fill="#10b981" fontSize="8.5" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Partner PO & Invoice Automation</text>
+                  <text x="202" y="292" fill="#10b981" fontSize="8.5" fontWeight="bold" fontFamily="monospace" textAnchor="middle">Partner PO & Invoice Automation</text>
                 )}
               </svg>
             </div>
@@ -1010,8 +1010,8 @@ export default function SupplierFeaturesFlow() {
         <div
           style={{
             position: 'sticky',
-            top: 0,
-            height: '100vh',
+            top: 'max(80px, calc(50vh - 340px))',
+            height: '680px',
             overflow: 'hidden',
             background: 'white',
           }}

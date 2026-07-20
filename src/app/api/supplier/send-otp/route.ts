@@ -12,7 +12,7 @@ function generateOtp() {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { name, businessName, email, phone, city, businessType } = body;
+  const { name, businessName, email, phone, city, businessType, teamSize, role, integrationMode } = body;
 
   if (!name || !businessName || !email || !phone) {
     return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
@@ -23,7 +23,19 @@ export async function POST(req: NextRequest) {
   const senderName = process.env.BREVO_SENDER_NAME ?? 'FactWise';
 
   if (!apiKey || !senderEmail) {
-    return NextResponse.json({ error: 'Email service not configured.' }, { status: 500 });
+    const otp = generateOtp();
+    const expires = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+    supplierOtpStore.set(email.toLowerCase(), {
+      otp,
+      expires,
+      formData: { name, businessName, email, phone, city: city ?? '', businessType: businessType ?? '', teamSize: teamSize ?? '', role: role ?? '', integrationMode: integrationMode ?? '' },
+    });
+    
+    console.log('\n=============================================');
+    console.log(`[DEMO MODE] OTP for ${email}: ${otp}`);
+    console.log('=============================================\n');
+    return NextResponse.json({ ok: true, demo: true });
   }
 
   const otp = generateOtp();
@@ -32,7 +44,7 @@ export async function POST(req: NextRequest) {
   supplierOtpStore.set(email.toLowerCase(), {
     otp,
     expires,
-    formData: { name, businessName, email, phone, city: city ?? '', businessType: businessType ?? '' },
+    formData: { name, businessName, email, phone, city: city ?? '', businessType: businessType ?? '', teamSize: teamSize ?? '', role: role ?? '', integrationMode: integrationMode ?? '' },
   });
 
   const firstName = name.split(' ')[0];

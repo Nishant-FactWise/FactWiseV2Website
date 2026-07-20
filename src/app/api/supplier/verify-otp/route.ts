@@ -25,14 +25,18 @@ export async function POST(req: NextRequest) {
 
   supplierOtpStore.delete(email.toLowerCase());
 
-  const { name, businessName, phone, city, businessType } = record.formData;
+  const { name, businessName, phone, city, businessType, teamSize, role, integrationMode } = record.formData;
 
   const apiKey = process.env.BREVO_API_KEY;
   const senderEmail = process.env.BREVO_SENDER_EMAIL;
   const senderName = process.env.BREVO_SENDER_NAME ?? 'FactWise';
 
   if (!apiKey || !senderEmail) {
-    return NextResponse.json({ error: 'Email service not configured.' }, { status: 500 });
+    console.log('\n=============================================');
+    console.log(`[DEMO MODE] Vendor ${name} successfully verified!`);
+    console.log(`Payload captured:`, record.formData);
+    console.log('=============================================\n');
+    return NextResponse.json({ ok: true, demo: true });
   }
 
   const send = (payload: object) =>
@@ -178,6 +182,9 @@ export async function POST(req: NextRequest) {
                   ${[
                     ['Email', `<a href="mailto:${email}" style="color:#3666ff;text-decoration:none;font-weight:600;">${email}</a>`],
                     ['Phone', phone || '—'],
+                    ['Integration', integrationMode || '—'],
+                    ['Team Size', teamSize || '—'],
+                    ['Role', role || '—'],
                     ['City / State', city || '—'],
                     ['Business Type', businessType || '—'],
                   ].map(([label, value], i, arr) => `

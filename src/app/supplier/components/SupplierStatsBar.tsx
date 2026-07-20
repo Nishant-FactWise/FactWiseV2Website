@@ -7,19 +7,11 @@ import { TrendingUp, Zap, Users, Clock } from 'lucide-react';
 const stats = [
   {
     icon: Users,
-    value: '12,000+',
+    value: '6000+',
     label: 'Active Suppliers',
-    color: '#4f8bff',
-    bg: 'rgba(79,139,255,0.08)',
-    border: 'rgba(79,139,255,0.18)',
-  },
-  {
-    icon: TrendingUp,
-    value: '94%',
-    label: 'Quote Win Rate',
-    color: '#10b981',
-    bg: 'rgba(16,185,129,0.08)',
-    border: 'rgba(16,185,129,0.18)',
+    color: '#3b82f6',
+    bg: 'rgba(59,130,246,0.08)',
+    border: 'rgba(59,130,246,0.18)',
   },
   {
     icon: Zap,
@@ -31,7 +23,7 @@ const stats = [
   },
   {
     icon: Clock,
-    value: '3×',
+    value: '3x',
     label: 'Faster Than Email',
     color: '#a78bfa',
     bg: 'rgba(167,139,250,0.08)',
@@ -70,7 +62,7 @@ export default function SupplierStatsBar() {
         }}
       >
         <div
-          className="grid grid-cols-2 xl:grid-cols-4"
+          className="grid grid-cols-1 md:grid-cols-3"
           style={{ gap: 0 }}
         >
           {stats.map((stat, i) => {
@@ -86,10 +78,9 @@ export default function SupplierStatsBar() {
                   alignItems: 'center',
                   gap: 16,
                   padding: '28px 32px',
-                  borderRight: i < stats.length - 1 ? '1px solid #e8edf3' : 'none',
                   position: 'relative',
                 }}
-                className={i % 2 === 0 ? 'border-b xl:border-b-0 border-[#e8edf3]' : 'xl:border-b-0'}
+                className={i !== stats.length - 1 ? 'border-b md:border-b-0 md:border-r border-[#e8edf3]' : ''}
               >
                 {/* Icon bubble */}
                 <div

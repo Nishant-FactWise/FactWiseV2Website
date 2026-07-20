@@ -19,44 +19,38 @@ import {
 const capabilities = [
   {
     icon: AnimatedBotIcon,
-    title: "AI-Powered Quote Drafting",
-    description:
-      "Draft quotes instantly from customer RFQs. FactWise reads any layout, matches your internal part numbers, and prepares responses automatically.",
+    title: "AI-Powered Price Matching",
+    description: "When an RFQ lands, AI automatically matches every line item against your pricing repository — MPN, manufacturer, MOQ, SPQ — and picks the best price without anyone touching it.",
+    href: "#",
+  },
+  {
+    icon: AnimatedBrainCircuitIcon,
+    title: "Automated Negotiation Response",
+    description: "When a buyer sends a counter-negotiation, FactWise AI evaluates it against your pricing rules and responds automatically — accepting, countering, or holding firm based on your criteria.",
     href: "#",
   },
   {
     icon: AnimatedTrendingUpIcon,
     title: "Volume Tier Pricing",
-    description:
-      "Define custom MOQ, SPQ, and tiered manufacturer pricing. FactWise automatically applies volume discounts to every bid.",
-    href: "#",
-  },
-  {
-    icon: AnimatedZapIcon,
-    title: "Instant BOM Processing",
-    description:
-      "Process massive multi-line BOMs in seconds. FactWise structures, matches manufacturer part numbers (MPNs), and flags quantities automatically.",
-    href: "#",
-  },
-  {
-    icon: AnimatedSearchCheckIcon,
-    title: "Smart Risk Warnings",
-    description:
-      "Flag deadline changes, currency mismatches, and freight terms instantly before dispatching quotes, keeping every transaction secure.",
-    href: "#",
-  },
-  {
-    icon: AnimatedBrainCircuitIcon,
-    title: "Downstream Automation",
-    description:
-      "Convert winning quotes into POs, invoices, and payment syncs automatically. Streamline order processing with zero manual reformatting.",
+    description: "MOQ, SPQ, and tiered pricing structured in your repository, so quotes reflect the right price at the right quantity automatically.",
     href: "#",
   },
   {
     icon: AnimatedLightbulbIcon,
-    title: "API ERP Sync",
-    description:
-      "Sync your ERP system directly to customer RFQs, POs, and invoicing endpoints. Trigger quotes automatically from your pricing logic.",
+    title: "Pricing Repository, Fully Automated",
+    description: "Store your MPN-wise pricing, MOQ, SPQ, and manufacturer details once — FactWise pulls from it instantly to auto-respond to every matching RFQ.",
+    href: "#",
+  },
+  {
+    icon: AnimatedSearchCheckIcon,
+    title: "RFQ Deadline Visibility",
+    description: "A single view of every RFQ you've been invited to, sorted by how close the deadline is, so nothing slips through.",
+    href: "#",
+  },
+  {
+    icon: AnimatedZapIcon,
+    title: "Open API, ERP-Synced",
+    description: "Connect your ERP once — FactWise pulls RFQ data and pushes responses back automatically, keeping both systems in sync.",
     href: "#",
   },
 ];

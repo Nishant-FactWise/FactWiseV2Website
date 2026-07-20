@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { activeSmoother } from './SmoothScroll';
+
+const LENIS_ROUTES = ['/about', '/careers', '/inquiry-to-quote', '/requisitions-to-po', '/invoice-to-pay', '/platform', '/supplier'];
 
 /**
  * Reset scroll to the top of the page on every client-side route change.
@@ -19,33 +21,49 @@ import { activeSmoother } from './SmoothScroll';
  */
 export default function ScrollToTop() {
   const pathname = usePathname();
+  const isLenisRoute = LENIS_ROUTES.includes(pathname);
 
+  /*
+   * useLayoutEffect fires synchronously before paint.
+   * We must purge GSAP transforms BEFORE the browser renders the new route,
+   * otherwise position:sticky containers break due to transformed ancestors.
+   */
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined' || window.location.hash) return;
+
+    // Kill ALL lingering ScrollTriggers from the previous route.
+    ScrollTrigger.getAll().forEach(st => st.kill());
+
+    // On Lenis routes, aggressively clear transforms from scroll containers
+    if (isLenisRoute) {
+      const content = document.getElementById('smooth-content');
+      const wrapper = document.getElementById('smooth-wrapper');
+      if (content) {
+        content.style.transform = '';
+        content.style.willChange = '';
+      }
+      if (wrapper) {
+        wrapper.style.transform = '';
+      }
+    }
+
+    // Reset scroll position
+    try {
+      activeSmoother?.scrollTo(0, false);
+    } catch {
+      /* smoother torn down mid-transition */
+    }
+    window.scrollTo(0, 0);
+  }, [pathname, isLenisRoute]);
+
+  /*
+   * Deferred refreshes — as SPA client navigation hydrates, elements
+   * take several hundred ms to reach their final settled DOM height.
+   * Refresh ScrollTrigger silently as layout settles.
+   */
   useEffect(() => {
     if (typeof window === 'undefined' || window.location.hash) return;
 
-    // Kill ALL lingering ScrollTriggers from the previous route before anything else.
-    // Stale pin-spacers from pinned pages (e.g. /supplier, /inquiry-to-quote) create
-    // the blank white gap at the top when navigating away if not explicitly killed.
-    ScrollTrigger.getAll().forEach(st => st.kill());
-
-    const toTop = () => {
-      // GSAP ScrollSmoother (active on most routes). false = jump, don't animate.
-      try {
-        activeSmoother?.scrollTo(0, false);
-      } catch {
-        /* smoother torn down mid-transition — native reset below still applies */
-      }
-      window.scrollTo(0, 0);
-      ScrollTrigger.refresh();
-    };
-
-    // Reset now, and again next frame once the route's smoother has re-initialized.
-    toTop();
-    const raf = requestAnimationFrame(toTop);
-
-    // As SPA client navigation hydrates, elements (mockups, Framer Motion entrance animations, fonts)
-    // take several hundred milliseconds to reach their final settled DOM height.
-    // Refresh ScrollTrigger silently as layout settles so pinned pin-spacer calculations are accurate.
     const refreshAndScroll = () => {
       window.scrollTo(0, 0);
       ScrollTrigger.refresh();
@@ -54,6 +72,7 @@ export default function ScrollToTop() {
       ScrollTrigger.refresh();
     };
 
+    const raf = requestAnimationFrame(refreshAndScroll);
     const t1 = setTimeout(refreshAndScroll, 150);
     const t2 = setTimeout(refreshOnly, 500);
     const t3 = setTimeout(refreshOnly, 1200);
@@ -68,3 +87,4 @@ export default function ScrollToTop() {
 
   return null;
 }
+

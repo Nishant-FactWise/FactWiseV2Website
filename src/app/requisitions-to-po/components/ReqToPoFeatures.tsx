@@ -224,7 +224,7 @@ function FeatureCard({
 /* ─── Main section ─── */
 export default function ReqToPoFeatures() {
   return (
-    <section className="relative w-full bg-white py-28 overflow-hidden">
+    <section className="relative w-full bg-white pt-8 pb-28 overflow-hidden">
       {/* Decorative dot-grid background */}
       <div
         aria-hidden

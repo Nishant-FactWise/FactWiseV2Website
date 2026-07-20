@@ -29,6 +29,7 @@ export const AnimatedBotIcon = ({ isHovered }: { isHovered: boolean }) => {
           cy="12"
           r="9"
           fill="url(#orbGrad)"
+          initial={{ scale: 1, opacity: 0.5 }}
           animate={isHovered ? { scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] } : { scale: 1, opacity: 0.5 }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -39,6 +40,7 @@ export const AnimatedBotIcon = ({ isHovered }: { isHovered: boolean }) => {
           stroke="url(#botGrad)"
           strokeWidth="1.75"
           strokeLinecap="round"
+          initial={{ rotate: 0 }}
           animate={isHovered ? { rotate: 360 } : { rotate: 0 }}
           transition={isHovered ? { duration: 4, repeat: Infinity, ease: 'linear' } : springTransition}
           style={{ originX: '12px', originY: '12px' }}
@@ -50,6 +52,7 @@ export const AnimatedBotIcon = ({ isHovered }: { isHovered: boolean }) => {
           cy="12"
           r="4.5"
           fill="url(#botGrad)"
+          initial={{ scale: 1 }}
           animate={isHovered ? { scale: [1, 1.25, 0.95, 1] } : { scale: 1 }}
           transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -60,6 +63,7 @@ export const AnimatedBotIcon = ({ isHovered }: { isHovered: boolean }) => {
           cy="6"
           r="1.5"
           fill="#8b5cf6"
+          initial={{ y: 0, x: 0 }}
           animate={isHovered ? { y: [-2, 2, -2], x: [1, -1, 1] } : { y: 0, x: 0 }}
           transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -68,6 +72,7 @@ export const AnimatedBotIcon = ({ isHovered }: { isHovered: boolean }) => {
           cy="18"
           r="1.5"
           fill="#3666ff"
+          initial={{ y: 0, x: 0 }}
           animate={isHovered ? { y: [2, -2, 2], x: [-1, 1, -1] } : { y: 0, x: 0 }}
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -76,6 +81,7 @@ export const AnimatedBotIcon = ({ isHovered }: { isHovered: boolean }) => {
           cy="6"
           r="1"
           fill="#00b884"
+          initial={{ scale: 1 }}
           animate={isHovered ? { scale: [1, 1.6, 1] } : { scale: 1 }}
           transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -132,7 +138,8 @@ export const AnimatedTrendingUpIcon = ({ isHovered }: { isHovered: boolean }) =>
           fill="#00b884"
           stroke="#white"
           strokeWidth="1"
-          animate={isHovered ? { scale: [1, 1.4, 1], y: [-0.5, 0.5, -0.5] } : { scale: 1 }}
+          initial={{ scale: 1, y: 0 }}
+          animate={isHovered ? { scale: [1, 1.4, 1], y: [-0.5, 0.5, -0.5] } : { scale: 1, y: 0 }}
           transition={{ duration: 1.5, repeat: Infinity }}
         />
       </svg>
@@ -163,16 +170,18 @@ export const AnimatedZapIcon = ({ isHovered }: { isHovered: boolean }) => {
           r="8"
           fill="#3666ff"
           opacity={0.05}
+          initial={{ scale: 1, opacity: 0.05 }}
           animate={isHovered ? { scale: [1, 1.3, 1], opacity: [0.05, 0.15, 0.05] } : { scale: 1, opacity: 0.05 }}
           transition={{ duration: 1.6, repeat: Infinity }}
         />
 
         {/* Double Lightning Bolt Layer */}
         <motion.g
+          initial={{ x: 0, y: 0 }}
           animate={isHovered ? {
             y: [-0.5, 0.5, -0.7, 0.5, 0],
             x: [0.3, -0.3, 0.5, -0.2, 0],
-          } : {}}
+          } : { x: 0, y: 0 }}
           transition={{ duration: 0.4, repeat: Infinity, repeatType: 'mirror' }}
         >
           {/* Back shadow bolt */}
@@ -227,7 +236,8 @@ export const AnimatedSearchCheckIcon = ({ isHovered }: { isHovered: boolean }) =
           r="8"
           stroke="#e2e8f0"
           strokeWidth="1"
-          animate={isHovered ? { scale: [1, 1.12, 1] } : {}}
+          initial={{ scale: 1 }}
+          animate={isHovered ? { scale: [1, 1.12, 1] } : { scale: 1 }}
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
         />
 
@@ -239,7 +249,8 @@ export const AnimatedSearchCheckIcon = ({ isHovered }: { isHovered: boolean }) =
           stroke="url(#searchGrad)"
           strokeWidth="1.8"
           fill="white"
-          animate={isHovered ? { scale: [1, 1.06, 1], x: [-0.5, 0.5, -0.5] } : {}}
+          initial={{ scale: 1, x: 0 }}
+          animate={isHovered ? { scale: [1, 1.06, 1], x: [-0.5, 0.5, -0.5] } : { scale: 1, x: 0 }}
           transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         />
 
@@ -249,7 +260,8 @@ export const AnimatedSearchCheckIcon = ({ isHovered }: { isHovered: boolean }) =
           stroke="url(#searchGrad)"
           strokeWidth="2.2"
           strokeLinecap="round"
-          animate={isHovered ? { x: [-0.5, 0.5, -0.5], y: [-0.5, 0.5, -0.5] } : {}}
+          initial={{ x: 0, y: 0 }}
+          animate={isHovered ? { x: [-0.5, 0.5, -0.5], y: [-0.5, 0.5, -0.5] } : { x: 0, y: 0 }}
           transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         />
 
@@ -290,6 +302,7 @@ export const AnimatedBrainCircuitIcon = ({ isHovered }: { isHovered: boolean }) 
           stroke="url(#brainGrad)"
           strokeWidth="1"
           strokeDasharray="4 6"
+          initial={{ strokeDashoffset: 0 }}
           animate={isHovered ? { strokeDashoffset: -20 } : { strokeDashoffset: 0 }}
           transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
           className="opacity-60"
@@ -311,10 +324,11 @@ export const AnimatedBrainCircuitIcon = ({ isHovered }: { isHovered: boolean }) 
             fill={node.c}
             stroke="white"
             strokeWidth="0.8"
+            initial={{ scale: 1, fill: node.c }}
             animate={isHovered ? {
               scale: [1, 1.4, 0.9, 1],
               fill: [node.c, '#3666ff', '#8b5cf6', node.c]
-            } : { scale: 1 }}
+            } : { scale: 1, fill: node.c }}
             transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.15 }}
           />
         ))}
@@ -341,6 +355,7 @@ export const AnimatedLightbulbIcon = ({ isHovered }: { isHovered: boolean }) => 
           cy="11"
           r="8"
           fill="url(#lightGlow)"
+          initial={{ scale: 0.9, opacity: 0.3 }}
           animate={isHovered ? { scale: [0.85, 1.15, 0.85], opacity: [0.5, 1, 0.5] } : { scale: 0.9, opacity: 0.3 }}
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -352,6 +367,7 @@ export const AnimatedLightbulbIcon = ({ isHovered }: { isHovered: boolean }) => 
           strokeWidth={1.8}
           strokeLinecap="round"
           fill="none"
+          initial={{ strokeWidth: 1.8, opacity: 1 }}
           animate={isHovered ? { strokeWidth: [1.8, 2.5, 1.8], opacity: [0.6, 1, 0.6] } : { strokeWidth: 1.8, opacity: 1 }}
           transition={{ duration: 1.2, repeat: Infinity }}
         />
@@ -382,7 +398,8 @@ export const AnimatedLightbulbIcon = ({ isHovered }: { isHovered: boolean }) => 
             stroke="#3666ff"
             strokeWidth="1.5"
             strokeLinecap="round"
-            animate={isHovered ? { scale: [1, 1.35, 1], opacity: [0.4, 1, 0.4] } : { opacity: 0.3 }}
+            initial={{ scale: 1, opacity: 0.3 }}
+            animate={isHovered ? { scale: [1, 1.35, 1], opacity: [0.4, 1, 0.4] } : { scale: 1, opacity: 0.3 }}
             transition={{ duration: 1, repeat: Infinity, delay: idx * 0.25 }}
             style={{ originX: '12px', originY: '11px' }}
           />
