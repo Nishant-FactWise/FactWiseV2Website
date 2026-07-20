@@ -7,6 +7,7 @@ import SupplierProblemsSection from "./components/SupplierProblemsSection";
 import SupplierFeaturesFlow from "./components/SupplierFeaturesFlow";
 import SupplierCapabilities from "./components/SupplierCapabilities";
 import { FeatureSteps } from "@/components/ui/feature-section";
+import SupplierStatsBar from "./components/SupplierStatsBar";
 
 const supplierBenefits = [
   {
@@ -39,6 +40,7 @@ export default function SupplierPage() {
   return (
     <main className="min-h-screen bg-white">
       <SupplierHero />
+      <SupplierStatsBar />
       <SupplierProblemsSection />
       <SupplierFeaturesFlow />
       <FeatureSteps 

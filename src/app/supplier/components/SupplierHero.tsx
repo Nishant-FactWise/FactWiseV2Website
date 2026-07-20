@@ -413,14 +413,14 @@ export default function SupplierHero() {
       />
 
       <div
-        className="grid grid-cols-1 xl:grid-cols-[1fr_1.1fr] gap-12 items-center"
+        className="grid grid-cols-1 xl:grid-cols-[1fr_1.25fr] gap-8 items-center"
         style={{
           maxWidth: 1440,
           margin: '0 auto',
-          padding: '120px 24px 60px',
+          padding: '120px 24px 100px',
           position: 'relative',
           zIndex: 10,
-          minHeight: 'calc(100vh - 80px)',
+          minHeight: '100vh',
         }}
       >
         {/* Left Column */}
@@ -491,14 +491,14 @@ export default function SupplierHero() {
                 background: 'linear-gradient(135deg,#4f8bff,#2a6cff)',
                 color: 'white',
                 border: 'none',
-                padding: '14px 28px',
+                padding: '12px 22px',
                 borderRadius: 100,
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: 600,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 10,
+                gap: 8,
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.1) inset, 0 12px 40px rgba(42,108,255,0.4)',
                 fontFamily: 'var(--font-inter)',
               }}
@@ -506,24 +506,24 @@ export default function SupplierHero() {
               Get Started as Supplier
               <span
                 style={{
-                  width: 28,
-                  height: 28,
+                  width: 24,
+                  height: 24,
                   borderRadius: '50%',
                   background: 'rgba(255,255,255,0.18)',
                   display: 'grid',
                   placeItems: 'center',
                 }}
               >
-                <ArrowRight className="size-3.5" />
+                <ArrowRight className="size-3" />
               </span>
             </button>
 
             <a
               href="#supplier-problems"
               style={{
-                padding: '14px 24px',
+                padding: '12px 20px',
                 borderRadius: 100,
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: 600,
                 color: 'white',
                 background: 'rgba(255,255,255,0.06)',
@@ -553,7 +553,7 @@ export default function SupplierHero() {
         </motion.div>
 
         {/* Right Column (Desktop Dashboard Mockup + Floating Widgets) */}
-        <div className="hidden xl:block">
+        <div className="hidden xl:block" style={{ paddingLeft: 48 }}>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -564,9 +564,9 @@ export default function SupplierHero() {
             <div
               style={{
                 position: 'absolute',
-                left: 30,
+                left: 60,
                 top: 0,
-                width: 'calc(100% + 40px)',
+                width: 'calc(100% + 80px)',
                 height: 520,
                 borderRadius: '16px 0 0 16px',
                 border: '1px solid rgba(120,150,220,0.18)',
