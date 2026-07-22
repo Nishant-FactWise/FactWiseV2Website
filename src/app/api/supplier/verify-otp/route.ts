@@ -51,12 +51,14 @@ export async function POST(req: NextRequest) {
     });
 
   const firstName = name.split(' ')[0];
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://factwise.io';
+  const detailsUrl = `${baseUrl}/supplier-onboarding/details?email=${encodeURIComponent(email)}&company=${encodeURIComponent(businessName)}&name=${encodeURIComponent(name)}`;
 
   // ── Welcome email to vendor ──────────────────────────────────────────────
   const userEmail = {
     sender: { name: senderName, email: senderEmail },
     to: [{ email, name }],
-    subject: 'Welcome to FactWise — Your Vendor Registration is Received',
+    subject: 'Welcome to FactWise — Complete Your Vendor Registration',
     htmlContent: `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -73,34 +75,38 @@ export async function POST(req: NextRequest) {
         <tr>
           <td style="padding:40px;">
             <p style="margin:0 0 8px;font-size:24px;font-weight:700;color:#1a1d2e;letter-spacing:-0.5px;">Welcome aboard, ${firstName}! 🎉</p>
-            <p style="margin:0 0 28px;font-size:15px;color:#64748b;line-height:1.6;">
+            <p style="margin:0 0 24px;font-size:15px;color:#64748b;line-height:1.6;">
               Thank you for registering <strong style="color:#1a1d2e;">${businessName}</strong> on the FactWise Supplier Network.
               We're thrilled to have you with us.
             </p>
 
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4ff;border:1px solid #c7d7fe;border-radius:12px;margin-bottom:28px;">
               <tr><td style="padding:24px;">
-                <p style="margin:0 0 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:#3666ff;">Next Steps — Complete Your Onboarding</p>
-                <p style="margin:0 0 12px;font-size:14px;color:#1a1d2e;line-height:1.6;">
-                  To activate your vendor account, please <strong>reply to this email</strong> with the following documents and details:
+                <p style="margin:0 0 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:#3666ff;">Action Required — Complete Your Onboarding</p>
+                <p style="margin:0 0 16px;font-size:14px;color:#1a1d2e;line-height:1.6;">
+                  To activate your vendor account, please click the button below to submit your basic details (GST, PAN, Bank & Category details):
                 </p>
-                <table width="100%" cellpadding="0" cellspacing="0">
+                
+                <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
                   ${[
-                    ['GST Number', 'Your GSTIN (mandatory for invoicing)'],
-                    ['PAN Number', 'Business or proprietor PAN'],
+                    ['GST & PAN Numbers', 'Mandatory for vendor verification'],
                     ['Product / Service Categories', 'Primary categories you supply'],
                     ['Bank Account Details', 'Account no., IFSC, bank name (for payments)'],
                     ['Business Address', 'Registered business address'],
                   ].map(([item, desc], i, arr) => `
                   <tr>
-                    <td style="padding:8px 0;${i < arr.length - 1 ? 'border-bottom:1px solid #dde8ff;' : ''}vertical-align:top;width:180px;">
+                    <td style="padding:6px 0;${i < arr.length - 1 ? 'border-bottom:1px solid #dde8ff;' : ''}vertical-align:top;width:180px;">
                       <span style="font-size:12px;font-weight:700;color:#1a1d2e;">✓ ${item}</span>
                     </td>
-                    <td style="padding:8px 0;${i < arr.length - 1 ? 'border-bottom:1px solid #dde8ff;' : ''}">
+                    <td style="padding:6px 0;${i < arr.length - 1 ? 'border-bottom:1px solid #dde8ff;' : ''}">
                       <span style="font-size:12px;color:#64748b;">${desc}</span>
                     </td>
                   </tr>`).join('')}
                 </table>
+
+                <div style="text-align:center;padding-top:8px;">
+                  <a href="${detailsUrl}" style="display:inline-block;background:#3666ff;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;padding:14px 28px;border-radius:8px;box-shadow:0 4px 12px rgba(54,102,255,0.25);">Complete Vendor Details Form →</a>
+                </div>
               </td></tr>
             </table>
 
@@ -115,7 +121,9 @@ export async function POST(req: NextRequest) {
               <li>Set up AI-powered auto-response for quotes</li>
             </ul>
 
-            <a href="https://factwise.io/supplier" style="display:inline-block;background:#3666ff;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;padding:14px 28px;border-radius:8px;">Learn More About FactWise →</a>
+            <div style="text-align:center;">
+              <a href="${detailsUrl}" style="display:inline-block;background:#1a1d2e;color:#ffffff;text-decoration:none;font-size:13px;font-weight:600;padding:10px 20px;border-radius:6px;">Fill Verification Details →</a>
+            </div>
           </td>
         </tr>
         <tr>
