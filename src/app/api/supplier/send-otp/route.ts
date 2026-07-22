@@ -12,31 +12,27 @@ function generateOtp() {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { name, businessName, email, phone, city, businessType, teamSize, role, integrationMode } = body;
+  const {
+    name,
+    businessName,
+    email,
+    factwiseRegisteredEmail,
+    phone,
+    teamSize,
+    role,
+    gstin,
+    customerName,
+    address,
+    integrationMode,
+  } = body;
 
-  if (!name || !businessName || !email || !phone) {
-    return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
+  if (!name || !businessName || !email || !gstin || !customerName || !address) {
+    return NextResponse.json({ error: 'Please fill in all mandatory fields.' }, { status: 400 });
   }
 
   const apiKey = process.env.BREVO_API_KEY;
   const senderEmail = process.env.BREVO_SENDER_EMAIL;
   const senderName = process.env.BREVO_SENDER_NAME ?? 'FactWise';
-
-  if (!apiKey || !senderEmail) {
-    const otp = generateOtp();
-    const expires = Date.now() + 10 * 60 * 1000; // 10 minutes
-
-    supplierOtpStore.set(email.toLowerCase(), {
-      otp,
-      expires,
-      formData: { name, businessName, email, phone, city: city ?? '', businessType: businessType ?? '', teamSize: teamSize ?? '', role: role ?? '', integrationMode: integrationMode ?? '' },
-    });
-    
-    console.log('\n=============================================');
-    console.log(`[DEMO MODE] OTP for ${email}: ${otp}`);
-    console.log('=============================================\n');
-    return NextResponse.json({ ok: true, demo: true });
-  }
 
   const otp = generateOtp();
   const expires = Date.now() + 10 * 60 * 1000; // 10 minutes
@@ -44,8 +40,27 @@ export async function POST(req: NextRequest) {
   supplierOtpStore.set(email.toLowerCase(), {
     otp,
     expires,
-    formData: { name, businessName, email, phone, city: city ?? '', businessType: businessType ?? '', teamSize: teamSize ?? '', role: role ?? '', integrationMode: integrationMode ?? '' },
+    formData: {
+      name,
+      businessName,
+      email,
+      factwiseRegisteredEmail: factwiseRegisteredEmail ?? email,
+      phone: phone ?? '',
+      teamSize: teamSize ?? '',
+      role: role ?? '',
+      gstin: gstin ?? '',
+      customerName: customerName ?? '',
+      address: address ?? '',
+      integrationMode: integrationMode ?? '',
+    },
   });
+
+  if (!apiKey || !senderEmail) {
+    console.log('\n=============================================');
+    console.log(`[DEMO MODE] OTP for ${email}: ${otp}`);
+    console.log('=============================================\n');
+    return NextResponse.json({ ok: true, demo: true });
+  }
 
   const firstName = name.split(' ')[0];
 

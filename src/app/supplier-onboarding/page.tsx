@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, ArrowLeft, Loader2, Cpu, Globe, Zap, Search, ChevronDown, Check, Mail, FileSpreadsheet, Server, Laptop } from 'lucide-react';
+import { CheckCircle2, ArrowLeft, Loader2, Cpu, Globe, Search, ChevronDown, Check, Mail, FileSpreadsheet, Server, Laptop, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -30,7 +30,6 @@ function Dropdown({ options, value, onChange, placeholder = 'Select...', require
 
   return (
     <div ref={ref} className="relative">
-      {/* Hidden native select for form validation */}
       <select
         required={required}
         value={value}
@@ -67,7 +66,7 @@ function Dropdown({ options, value, onChange, placeholder = 'Select...', require
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.97 }}
             transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute z-50 mt-1.5 w-full bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden py-1"
+            className="absolute z-50 mt-1.5 w-full bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden py-1 max-h-56 overflow-y-auto"
           >
             {options.map(o => (
               <li key={o.value}>
@@ -92,7 +91,7 @@ function Dropdown({ options, value, onChange, placeholder = 'Select...', require
   );
 }
 
-/* ── Page ────────────────────────────────────────────────────────────────── */
+/* ── Page Component ──────────────────────────────────────────────────────── */
 type Step = 'options' | 'form' | 'otp' | 'success';
 
 export default function SupplierOnboardingPage() {
@@ -104,13 +103,41 @@ export default function SupplierOnboardingPage() {
   const [error, setError] = useState('');
   const [teamSize, setTeamSize] = useState('');
   const [role, setRole] = useState('');
+  
+  // Basic info & Customer tag states
   const [pendingEmail, setPendingEmail] = useState('');
   const [pendingName, setPendingName] = useState('');
   const [pendingPayload, setPendingPayload] = useState<Record<string, string>>({});
+  const [customers, setCustomers] = useState<string[]>([]);
+  const [currentCustomerInput, setCurrentCustomerInput] = useState('');
+  
+  // OTP states
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [resendCooldown, setResendCooldown] = useState(0);
+
   const formRef = useRef<HTMLFormElement>(null);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const addCustomerTag = () => {
+    const trimmed = currentCustomerInput.trim().replace(/^,+|,+$/g, '');
+    if (trimmed && !customers.includes(trimmed)) {
+      setCustomers(prev => [...prev, trimmed]);
+      setCurrentCustomerInput('');
+    }
+  };
+
+  const handleCustomerKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      addCustomerTag();
+    } else if (e.key === 'Backspace' && !currentCustomerInput && customers.length > 0) {
+      setCustomers(prev => prev.slice(0, -1));
+    }
+  };
+
+  const removeCustomerTag = (index: number) => {
+    setCustomers(prev => prev.filter((_, i) => i !== index));
+  };
 
   // Resend cooldown ticker
   useEffect(() => {
@@ -119,9 +146,23 @@ export default function SupplierOnboardingPage() {
     return () => clearTimeout(t);
   }, [resendCooldown]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmitForm = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    const finalCustomers = [...customers];
+    const pendingTag = currentCustomerInput.trim().replace(/^,+|,+$/g, '');
+    if (pendingTag && !finalCustomers.includes(pendingTag)) {
+      finalCustomers.push(pendingTag);
+      setCustomers(finalCustomers);
+      setCurrentCustomerInput('');
+    }
+
+    if (finalCustomers.length === 0) {
+      setError('Please enter at least one customer working with FactWise and press Enter.');
+      return;
+    }
+
     setLoading(true);
 
     const fd = new FormData(formRef.current!);
@@ -129,9 +170,13 @@ export default function SupplierOnboardingPage() {
       name: fd.get('name') as string,
       businessName: fd.get('company') as string,
       email: fd.get('email') as string,
+      factwiseRegisteredEmail: fd.get('factwiseRegisteredEmail') as string,
       phone: fd.get('phone') as string,
-      teamSize,
-      role,
+      teamSize: '',
+      role: '',
+      gstin: fd.get('gstin') as string,
+      customerName: finalCustomers.join(', '),
+      address: fd.get('address') as string,
       integrationMode: selectedIntegration,
     };
 
@@ -179,7 +224,7 @@ export default function SupplierOnboardingPage() {
     }
   };
 
-  const handleVerify = async () => {
+  const handleVerifyOtp = async () => {
     const code = otp.join('');
     if (code.length < 6) { setError('Please enter the 6-digit code.'); return; }
     setError('');
@@ -245,24 +290,32 @@ export default function SupplierOnboardingPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#020617] text-white flex flex-col relative overflow-hidden font-sans">
-
-      {/* Background */}
+    <main className="min-h-screen bg-[#020617] text-white flex flex-col relative overflow-y-auto font-sans">
+      {/* Ambient Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-blue-500/10 blur-[120px]" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-500/5 blur-[120px]" />
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'linear-gradient(rgba(120,150,220,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(120,150,220,0.04) 1px,transparent 1px)',
-          backgroundSize: '64px 64px',
-          maskImage: 'radial-gradient(ellipse at center,black 30%,transparent 80%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at center,black 30%,transparent 80%)'
-        }} />
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(120,150,220,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(120,150,220,0.04) 1px,transparent 1px)',
+            backgroundSize: '64px 64px',
+            maskImage: 'radial-gradient(ellipse at center,black 30%,transparent 80%)',
+            WebkitMaskImage: 'radial-gradient(ellipse at center,black 30%,transparent 80%)',
+          }}
+        />
       </div>
 
-      {/* Navbar */}
+      {/* Header */}
       <header className="relative z-20 w-full px-6 py-6 flex items-center justify-between max-w-350 mx-auto">
         <div className="flex items-center gap-2 text-white font-bold text-xl tracking-tight">
-          <img src="/logowhite.webp" alt="FactWise Logo" className="h-7 w-auto rounded-tl-[15%] rounded-br-[15%]" style={{ clipPath: 'inset(2% 0 0 2%)' }} />
+          <img
+            src="/logowhite.webp"
+            alt="FactWise Logo"
+            className="h-7 w-auto rounded-tl-[15%] rounded-br-[15%]"
+            style={{ clipPath: 'inset(2% 0 0 2%)' }}
+          />
           <span>FactWise</span>
         </div>
         <Link
@@ -274,10 +327,11 @@ export default function SupplierOnboardingPage() {
         </Link>
       </header>
 
-      {/* Card */}
-      <div className="relative z-10 flex-1 flex items-center justify-center p-6 py-12 w-full mx-auto min-h-0">
+      {/* Main Multi-Step Card */}
+      <div className="relative z-10 flex-1 flex items-center justify-center p-6 py-6 lg:py-10 w-full mx-auto">
         <AnimatePresence mode="wait" initial={false}>
           {step === 'options' ? (
+            /* STEP 1: Integration Options */
             <motion.div
               key="options"
               initial={{ opacity: 0, y: 20 }}
@@ -323,7 +377,7 @@ export default function SupplierOnboardingPage() {
                 </div>
               </div>
 
-              {/* Right: Integration Options */}
+              {/* Right */}
               <div className="flex-[1.1] p-8 lg:p-12 bg-slate-50/50 flex flex-col justify-center overflow-y-auto">
                 <div className="mb-6">
                   <h3 className="text-xl font-semibold text-slate-900 mb-1">How would you like to respond?</h3>
@@ -369,6 +423,7 @@ export default function SupplierOnboardingPage() {
               </div>
             </motion.div>
           ) : step === 'form' ? (
+            /* STEP 2: Comprehensive Single Form */
             <motion.div
               key="form"
               initial={{ opacity: 0, y: 20 }}
@@ -379,7 +434,7 @@ export default function SupplierOnboardingPage() {
               className="flex flex-col lg:flex-row bg-white rounded-3xl border border-slate-200 shadow-2xl overflow-hidden"
             >
               {/* Left */}
-              <div className="flex-1 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-slate-100 relative overflow-y-auto">
+              <div className="flex-1 p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-slate-100 relative">
                 <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3666ff]/5 to-transparent pointer-events-none" />
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-6">
@@ -417,83 +472,107 @@ export default function SupplierOnboardingPage() {
                 </div>
               </div>
 
-              {/* Right: Form */}
-              <div className="flex-[1.1] p-8 lg:p-12 bg-slate-50/50 flex flex-col justify-center overflow-y-auto">
-                <div className="mb-6">
+              {/* Right Form */}
+              <div className="flex-[1.1] p-6 lg:p-10 bg-slate-50/50 flex flex-col justify-center">
+                <div className="mb-4">
                   <h3 className="text-xl font-semibold text-slate-900 mb-1">Create your profile</h3>
                   <p className="text-slate-500 text-sm font-light">Enter your details to register as a supplier.</p>
                 </div>
 
-                <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+                <form ref={formRef} onSubmit={handleSubmitForm} className="space-y-3.5">
                   {/* Name + Company */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="space-y-1.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div className="space-y-1">
                       <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Full Name *</label>
-                      <input required name="name" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="Jane Smith" />
+                      <input required name="name" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="Jane Smith" />
                     </div>
-                    <div className="space-y-1.5">
+                    <div className="space-y-1">
                       <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Company *</label>
-                      <input required name="company" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="e.g. Global Industries" />
+                      <input required name="company" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="e.g. Global Industries" />
                     </div>
                   </div>
 
-                  {/* Email */}
-                  <div className="space-y-1.5">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Work Email *</label>
-                    <input required name="email" type="email" className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="jane@company.com" />
+                  {/* Contact / Work Email */}
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Contact / Work Email *</label>
+                    <input required name="email" type="email" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="jane@company.com" />
                   </div>
 
-                  {/* Phone */}
-                  <div className="space-y-1.5">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Phone (Optional)</label>
-                    <div className="relative flex rounded-lg border border-slate-200 bg-white hover:border-slate-300 transition-all shadow-sm focus-within:border-[#3666ff] focus-within:ring-4 focus-within:ring-[#3666ff]/10">
-                      <select
-                        defaultValue="+91"
-                        className="bg-transparent pl-3 pr-6 py-2.5 text-slate-900 text-sm border-r border-slate-200 outline-none cursor-pointer rounded-l-lg appearance-none font-medium"
-                        style={{
-                          backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E")`,
-                          backgroundRepeat: 'no-repeat',
-                          backgroundPosition: 'right 4px center',
-                          backgroundSize: '14px 14px',
-                        }}
-                      >
-                        <option value="+91">🇮🇳 +91</option>
-                        <option value="+1">🇺🇸 +1</option>
-                        <option value="+44">🇬🇧 +44</option>
-                        <option value="+971">🇦🇪 +971</option>
-                        <option value="+65">🇸🇬 +65</option>
-                        <option value="+61">🇦🇺 +61</option>
-                        <option value="+49">🇩🇪 +49</option>
-                        <option value="+33">🇫🇷 +33</option>
-                        <option value="+81">🇯🇵 +81</option>
-                        <option value="+86">🇨🇳 +86</option>
-                      </select>
-                      <input name="phone" type="tel" className="flex-1 bg-transparent px-3 py-2.5 text-slate-900 focus:outline-none placeholder:text-slate-400 text-sm" placeholder="99999 99999" />
+                  {/* Email registered with FactWise */}
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Email registered with FactWise *</label>
+                    <input required name="factwiseRegisteredEmail" type="email" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="Enter email registered with FactWise" />
+                    <p className="text-[10px] text-slate-400 ml-1">Email address associated with your FactWise portal account</p>
+                  </div>
+
+                  {/* GST / Tax ID + Phone */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div className="space-y-1">
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">GST / Tax ID *</label>
+                      <input required name="gstin" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm uppercase font-mono tracking-wider" placeholder="e.g. 27AAAAA0000A1Z5" />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Phone (Optional)</label>
+                      <div className="relative flex rounded-lg border border-slate-200 bg-white hover:border-slate-300 transition-all shadow-sm focus-within:border-[#3666ff] focus-within:ring-4 focus-within:ring-[#3666ff]/10">
+                        <select
+                          defaultValue="+91"
+                          className="bg-transparent pl-2 pr-5 py-2 text-slate-900 text-sm border-r border-slate-200 outline-none cursor-pointer rounded-l-lg appearance-none font-medium"
+                          style={{
+                            backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E")`,
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'right 3px center',
+                            backgroundSize: '12px 12px',
+                          }}
+                        >
+                          <option value="+91">🇮🇳 +91</option>
+                          <option value="+1">🇺🇸 +1</option>
+                          <option value="+44">🇬🇧 +44</option>
+                          <option value="+971">🇦🇪 +971</option>
+                          <option value="+65">🇸🇬 +65</option>
+                          <option value="+61">🇦🇺 +61</option>
+                          <option value="+49">🇩🇪 +49</option>
+                          <option value="+33">🇫🇷 +33</option>
+                          <option value="+81">🇯🇵 +81</option>
+                          <option value="+86">🇨🇳 +86</option>
+                        </select>
+                        <input name="phone" type="tel" className="flex-1 bg-transparent px-2.5 py-2 text-slate-900 focus:outline-none placeholder:text-slate-400 text-sm" placeholder="99999 99999" />
+                      </div>
                     </div>
                   </div>
 
-                  {/* Team Size + Role */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Team Size *</label>
-                      <Dropdown
-                        required
-                        options={teamSizeOptions}
-                        value={teamSize}
-                        onChange={setTeamSize}
-                        placeholder="Select..."
+                  {/* Customer working with FactWise */}
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Customer working with FactWise *</label>
+                    <div className="flex flex-wrap gap-1.5 p-2 bg-white border border-slate-200 rounded-lg min-h-[42px] focus-within:border-[#3666ff] focus-within:ring-4 focus-within:ring-[#3666ff]/10 hover:border-slate-300 transition-all shadow-sm">
+                      {customers.map((c, idx) => (
+                        <span key={idx} className="inline-flex items-center gap-1 bg-[#3666ff]/10 text-[#3666ff] text-xs font-semibold px-2.5 py-1 rounded-md border border-[#3666ff]/20">
+                          {c}
+                          <button
+                            type="button"
+                            onClick={() => removeCustomerTag(idx)}
+                            className="hover:text-red-500 transition-colors ml-0.5"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </span>
+                      ))}
+                      <input
+                        type="text"
+                        value={currentCustomerInput}
+                        onChange={e => setCurrentCustomerInput(e.target.value)}
+                        onKeyDown={handleCustomerKeyDown}
+                        onBlur={addCustomerTag}
+                        placeholder={customers.length === 0 ? "Type buyer name and press Enter..." : "Type another & press Enter..."}
+                        className="flex-1 min-w-[150px] bg-transparent text-slate-900 focus:outline-none text-sm placeholder:text-slate-400 px-1 py-0.5"
                       />
                     </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Your Role *</label>
-                      <Dropdown
-                        required
-                        options={roleOptions}
-                        value={role}
-                        onChange={setRole}
-                        placeholder="Select..."
-                      />
-                    </div>
+                    <p className="text-[10px] text-slate-400 ml-1">Type customer company name and press Enter to add</p>
+                  </div>
+
+                  {/* Company Legal Address */}
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Company Legal Address *</label>
+                    <textarea required name="address" rows={2} className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm resize-none" placeholder="Enter registered legal business address, city, state & pincode" />
                   </div>
 
                   {/* Submit */}
@@ -505,6 +584,7 @@ export default function SupplierOnboardingPage() {
                     )}
                     <button
                       disabled={loading}
+                      type="submit"
                       className="w-full py-3.5 bg-[#3666ff] text-white rounded-lg font-bold shadow-[0_0_20px_rgba(54,102,255,0.2)] hover:bg-[#3666ff]/90 hover:scale-[1.01] hover:shadow-lg hover:shadow-[#3666ff]/30 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 text-sm"
                     >
                       {loading ? <Loader2 className="animate-spin w-5 h-5" /> : 'Complete Registration'}
@@ -517,6 +597,7 @@ export default function SupplierOnboardingPage() {
               </div>
             </motion.div>
           ) : step === 'otp' ? (
+            /* STEP 3: OTP Verification */
             <motion.div
               key="otp"
               initial={{ opacity: 0, y: 16 }}
@@ -565,7 +646,7 @@ export default function SupplierOnboardingPage() {
                 )}
 
                 <button
-                  onClick={handleVerify}
+                  onClick={handleVerifyOtp}
                   disabled={loading || otp.join('').length < 6}
                   className="w-full py-3.5 bg-[#3666ff] text-white rounded-xl font-bold shadow-[0_0_20px_rgba(54,102,255,0.2)] hover:bg-[#3666ff]/90 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 text-sm mb-4"
                 >
@@ -596,6 +677,7 @@ export default function SupplierOnboardingPage() {
               </div>
             </motion.div>
           ) : (
+            /* STEP 4: Success Confirmation */
             <motion.div
               key="success"
               initial={{ opacity: 0, y: 16 }}

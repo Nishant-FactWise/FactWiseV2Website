@@ -105,7 +105,12 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 		};
 	}, [open]);
 
-	if (pathname === '/demo' || pathname === '/supplier-onboarding') {
+	if (
+		pathname === '/demo' || 
+		pathname === '/supplier-onboarding' || 
+		pathname?.startsWith('/supplier-onboarding') ||
+		pathname?.startsWith('/supplier onboarding')
+	) {
 		return null;
 	}
 
