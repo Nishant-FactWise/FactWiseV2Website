@@ -81,31 +81,14 @@ export async function POST(req: NextRequest) {
             </p>
 
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4ff;border:1px solid #c7d7fe;border-radius:12px;margin-bottom:28px;">
-              <tr><td style="padding:24px;">
-                <p style="margin:0 0 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:#3666ff;">Action Required — Complete Your Onboarding</p>
-                <p style="margin:0 0 16px;font-size:14px;color:#1a1d2e;line-height:1.6;">
-                  To activate your vendor account, please click the button below to submit your basic details (GST, PAN, Bank & Category details):
+              <tr><td style="padding:28px;text-align:center;">
+                <p style="margin:0 0 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:#3666ff;">Action Required — Complete Your Onboarding</p>
+                <p style="margin:0 0 20px;font-size:14px;color:#1a1d2e;line-height:1.6;">
+                  To activate your vendor account, please click the button below and fill in your basic profile details:
                 </p>
                 
-                <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
-                  ${[
-                    ['GST & PAN Numbers', 'Mandatory for vendor verification'],
-                    ['Product / Service Categories', 'Primary categories you supply'],
-                    ['Bank Account Details', 'Account no., IFSC, bank name (for payments)'],
-                    ['Business Address', 'Registered business address'],
-                  ].map(([item, desc], i, arr) => `
-                  <tr>
-                    <td style="padding:6px 0;${i < arr.length - 1 ? 'border-bottom:1px solid #dde8ff;' : ''}vertical-align:top;width:180px;">
-                      <span style="font-size:12px;font-weight:700;color:#1a1d2e;">✓ ${item}</span>
-                    </td>
-                    <td style="padding:6px 0;${i < arr.length - 1 ? 'border-bottom:1px solid #dde8ff;' : ''}">
-                      <span style="font-size:12px;color:#64748b;">${desc}</span>
-                    </td>
-                  </tr>`).join('')}
-                </table>
-
-                <div style="text-align:center;padding-top:8px;">
-                  <a href="${detailsUrl}" style="display:inline-block;background:#3666ff;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;padding:14px 28px;border-radius:8px;box-shadow:0 4px 12px rgba(54,102,255,0.25);">Complete Vendor Details Form →</a>
+                <div>
+                  <a href="${detailsUrl}" style="display:inline-block;background:#3666ff;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;padding:14px 32px;border-radius:8px;box-shadow:0 4px 14px rgba(54,102,255,0.3);">Complete Vendor Profile →</a>
                 </div>
               </td></tr>
             </table>
@@ -114,16 +97,12 @@ export async function POST(req: NextRequest) {
               Our onboarding team will verify your details and <strong style="color:#1a1d2e;">activate your account within 2 business days</strong>.
               Once activated, you'll be able to:
             </p>
-            <ul style="margin:0 0 28px;padding-left:20px;color:#64748b;font-size:14px;line-height:2;">
+            <ul style="margin:0 0 24px;padding-left:20px;color:#64748b;font-size:14px;line-height:2;">
               <li>Receive and respond to RFQs directly from buyers</li>
               <li>Upload invoices and track payment status</li>
               <li>Build and publish your item catalogue</li>
               <li>Set up AI-powered auto-response for quotes</li>
             </ul>
-
-            <div style="text-align:center;">
-              <a href="${detailsUrl}" style="display:inline-block;background:#1a1d2e;color:#ffffff;text-decoration:none;font-size:13px;font-weight:600;padding:10px 20px;border-radius:6px;">Fill Verification Details →</a>
-            </div>
           </td>
         </tr>
         <tr>

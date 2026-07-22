@@ -1,95 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useRef, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, ArrowLeft, Loader2, Cpu, Globe, Search, FileSpreadsheet, Building2, CreditCard, ShieldCheck, ChevronDown, Check } from 'lucide-react';
+import { CheckCircle2, ArrowLeft, Loader2, Building2, ShieldCheck, Mail, User, Briefcase, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-
-/* ── Custom Dropdown Component ─────────────────────────────────────────────── */
-interface DropdownProps {
-  options: { value: string; label: string }[];
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-  required?: boolean;
-}
-
-function CustomDropdown({ options, value, onChange, placeholder = 'Select...', required }: DropdownProps) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const selected = options.find(o => o.value === value);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
-
-  return (
-    <div ref={ref} className="relative">
-      <select
-        required={required}
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        tabIndex={-1}
-        aria-hidden
-        className="absolute inset-0 opacity-0 pointer-events-none w-full h-full"
-      >
-        <option value="" />
-        {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-      </select>
-
-      <button
-        type="button"
-        onClick={() => setOpen(p => !p)}
-        className={`w-full flex items-center justify-between bg-white border rounded-lg px-4 py-2.5 text-sm transition-all shadow-sm
-          ${open
-            ? 'border-[#3666ff] ring-4 ring-[#3666ff]/10'
-            : 'border-slate-200 hover:border-slate-300'
-          }`}
-      >
-        <span className={selected ? 'text-slate-900 font-medium' : 'text-slate-400'}>
-          {selected ? selected.label : placeholder}
-        </span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
-          <ChevronDown className="w-4 h-4 text-slate-400" />
-        </motion.span>
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.ul
-            initial={{ opacity: 0, y: -6, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -6, scale: 0.97 }}
-            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute z-50 mt-1.5 w-full max-h-56 overflow-y-auto bg-white border border-slate-200 rounded-xl shadow-xl py-1"
-          >
-            {options.map(o => (
-              <li key={o.value}>
-                <button
-                  type="button"
-                  onClick={() => { onChange(o.value); setOpen(false); }}
-                  className={`w-full flex items-center justify-between px-4 py-2.5 text-sm transition-colors
-                    ${value === o.value
-                      ? 'bg-[#3666ff]/8 text-[#3666ff] font-semibold'
-                      : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
-                    }`}
-                >
-                  {o.label}
-                  {value === o.value && <Check className="w-3.5 h-3.5 text-[#3666ff]" />}
-                </button>
-              </li>
-            ))}
-          </motion.ul>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
 
 function SupplierOnboardingDetailsForm() {
   const router = useRouter();
@@ -100,15 +15,8 @@ function SupplierOnboardingDetailsForm() {
   const [email, setEmail] = useState('');
 
   const [gstin, setGstin] = useState('');
-  const [pan, setPan] = useState('');
-  const [category, setCategory] = useState('');
-  const [bankName, setBankName] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
-  const [ifscCode, setIfscCode] = useState('');
+  const [customerName, setCustomerName] = useState('');
   const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [pincode, setPincode] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -125,34 +33,20 @@ function SupplierOnboardingDetailsForm() {
     if (qpName) setName(qpName);
   }, [searchParams]);
 
-  const categoryOptions = [
-    { value: 'Electronics & Components', label: 'Electronics & Components' },
-    { value: 'Raw Materials & Metals', label: 'Raw Materials & Metals' },
-    { value: 'Industrial Machinery & Tools', label: 'Industrial Machinery & Tools' },
-    { value: 'Metal Fabrication & Machining', label: 'Metal Fabrication & Machining' },
-    { value: 'Chemicals & Plastics', label: 'Chemicals & Plastics' },
-    { value: 'IT & Software Services', label: 'IT & Software Services' },
-    { value: 'Packaging & Supplies', label: 'Packaging & Supplies' },
-    { value: 'Logistics & Freight', label: 'Logistics & Freight' },
-    { value: 'MRO & Safety Equipment', label: 'MRO & Safety Equipment' },
-    { value: 'Other Services', label: 'Other Services' },
-  ];
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    // Basic format checks
-    if (gstin.trim().length < 15) {
-      setError('Please enter a valid 15-character GSTIN (e.g. 27AAAAA0000A1Z5).');
+    if (!gstin.trim()) {
+      setError('Please enter your GST / Tax ID.');
       return;
     }
-    if (pan.trim().length < 10) {
-      setError('Please enter a valid 10-character PAN number (e.g. ABCDE1234F).');
+    if (!customerName.trim()) {
+      setError('Please enter the customer / buyer you are working with on FactWise.');
       return;
     }
-    if (ifscCode.trim().length < 11) {
-      setError('Please enter a valid 11-character IFSC code (e.g. SBIN0001234).');
+    if (!address.trim()) {
+      setError('Please enter your Company Legal Address.');
       return;
     }
 
@@ -163,15 +57,8 @@ function SupplierOnboardingDetailsForm() {
       company,
       email,
       gstin: gstin.toUpperCase().trim(),
-      pan: pan.toUpperCase().trim(),
-      category,
-      bankName,
-      accountNumber,
-      ifscCode: ifscCode.toUpperCase().trim(),
-      address,
-      city,
-      state,
-      pincode,
+      customerName: customerName.trim(),
+      address: address.trim(),
     };
 
     try {
@@ -252,33 +139,32 @@ function SupplierOnboardingDetailsForm() {
                   <div className="flex items-center gap-3 mb-6">
                     <div className="h-px w-6 bg-[#3666ff]/80" />
                     <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3666ff]/80">
-                      Vendor Qualification
+                      Supplier Network
                     </span>
                   </div>
                   <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight mb-4 text-slate-900 leading-[1.1]">
                     Complete Your <br />
-                    <span className="text-[#3666ff]">Vendor Profile.</span>
+                    <span className="text-[#3666ff]">Vendor Details.</span>
                   </h1>
                   <p className="text-slate-500 mb-6 text-sm leading-relaxed">
-                    Enter your registered tax, banking, and category details to activate your FactWise Supplier Network account and start receiving buyer RFQs.
+                    Please provide your tax ID, company legal address, and the customer you are engaging with on FactWise to complete your supplier profile.
                   </p>
 
                   <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 mb-8 space-y-3">
                     <div className="flex items-center gap-2.5 text-[#3666ff] font-semibold text-xs uppercase tracking-wider">
                       <ShieldCheck className="w-4 h-4" />
-                      <span>Encrypted & Verification-Ready</span>
+                      <span>Verified Onboarding</span>
                     </div>
                     <p className="text-slate-600 text-xs leading-relaxed">
-                      Your tax and bank details are processed securely and shared only with verified enterprise buyers on the FactWise platform.
+                      Your details will be reviewed by our onboarding team to activate your vendor account and streamline purchase orders with your buyer.
                     </p>
                   </div>
 
-                  <ul className="space-y-6">
+                  <ul className="space-y-5">
                     {[
-                      { icon: <Building2 size={18} />, title: 'Tax & GST Verification', desc: 'Ensure fast invoicing and automated GST compliance for purchase orders.' },
-                      { icon: <CreditCard size={18} />, title: 'Direct Payment Routing', desc: 'Secure bank account linking for seamless settlement of approved invoices.' },
-                      { icon: <FileSpreadsheet size={18} />, title: 'Instant Excel & Catalogue', desc: 'Download templates, work offline, and drag-and-drop back with zero manual entry.' },
-                      { icon: <Cpu size={18} />, title: 'AI Auto-Response', desc: 'Store pricing repositories and let AI automatically quote incoming RFQs.' },
+                      { icon: <User size={18} />, title: 'Pre-filled Profile', desc: 'Your registered name and email are automatically linked.' },
+                      { icon: <Building2 size={18} />, title: 'GST / Tax Identification', desc: 'Required for tax invoicing and legal vendor verification.' },
+                      { icon: <Briefcase size={18} />, title: 'Customer Association', desc: 'Links your account to your buyer customer on FactWise.' },
                     ].map((item, i) => (
                       <li key={i} className="flex gap-4 items-start group">
                         <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center text-[#3666ff] shrink-0 transition-colors group-hover:border-[#3666ff]/50 mt-1">
@@ -297,198 +183,104 @@ function SupplierOnboardingDetailsForm() {
               {/* Right Panel Form */}
               <div className="flex-[1.1] p-8 lg:p-12 bg-slate-50/50 flex flex-col justify-center overflow-y-auto">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-1">Vendor Information</h3>
-                  <p className="text-slate-500 text-sm font-light">Fill in your tax and banking credentials below.</p>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-1">Fill Your Details</h3>
+                  <p className="text-slate-500 text-sm font-light">Please verify and fill the mandatory vendor details below.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  {/* Basic Pre-filled Info */}
+                  {/* Pre-filled Info: Name + Email */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
-                        Contact Person *
+                        Full Name *
                       </label>
-                      <input
-                        required
-                        type="text"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm"
-                        placeholder="Jane Smith"
-                      />
+                      <div className="relative">
+                        <input
+                          required
+                          type="text"
+                          value={name}
+                          onChange={e => setName(e.target.value)}
+                          className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm"
+                          placeholder="Jane Smith"
+                        />
+                      </div>
                     </div>
+
                     <div className="space-y-1.5">
                       <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
-                        Company Name *
+                        User Email *
                       </label>
-                      <input
-                        required
-                        type="text"
-                        value={company}
-                        onChange={e => setCompany(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm"
-                        placeholder="e.g. Global Industries"
-                      />
+                      <div className="relative">
+                        <input
+                          required
+                          type="email"
+                          value={email}
+                          onChange={e => setEmail(e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm"
+                          placeholder="jane@company.com"
+                        />
+                      </div>
                     </div>
                   </div>
 
+                  {/* Vendor Company */}
                   <div className="space-y-1.5">
                     <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
-                      Work Email *
-                    </label>
-                    <input
-                      required
-                      type="email"
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm"
-                      placeholder="jane@company.com"
-                    />
-                  </div>
-
-                  <hr className="border-slate-200/60 my-2" />
-
-                  {/* Tax Details */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
-                        GSTIN Number *
-                      </label>
-                      <input
-                        required
-                        maxLength={15}
-                        type="text"
-                        value={gstin}
-                        onChange={e => setGstin(e.target.value.toUpperCase())}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm uppercase font-mono tracking-wider"
-                        placeholder="27AAAAA0000A1Z5"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
-                        PAN Number *
-                      </label>
-                      <input
-                        required
-                        maxLength={10}
-                        type="text"
-                        value={pan}
-                        onChange={e => setPan(e.target.value.toUpperCase())}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm uppercase font-mono tracking-wider"
-                        placeholder="ABCDE1234F"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Category */}
-                  <div className="space-y-1.5">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
-                      Primary Product / Service Category *
-                    </label>
-                    <CustomDropdown
-                      required
-                      options={categoryOptions}
-                      value={category}
-                      onChange={setCategory}
-                      placeholder="Select category..."
-                    />
-                  </div>
-
-                  <hr className="border-slate-200/60 my-2" />
-
-                  {/* Banking Details */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="space-y-1.5 sm:col-span-1">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
-                        Bank Name *
-                      </label>
-                      <input
-                        required
-                        type="text"
-                        value={bankName}
-                        onChange={e => setBankName(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm"
-                        placeholder="HDFC Bank"
-                      />
-                    </div>
-                    <div className="space-y-1.5 sm:col-span-1">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
-                        Account No. *
-                      </label>
-                      <input
-                        required
-                        type="text"
-                        value={accountNumber}
-                        onChange={e => setAccountNumber(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm font-mono"
-                        placeholder="50100234567890"
-                      />
-                    </div>
-                    <div className="space-y-1.5 sm:col-span-1">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
-                        IFSC Code *
-                      </label>
-                      <input
-                        required
-                        maxLength={11}
-                        type="text"
-                        value={ifscCode}
-                        onChange={e => setIfscCode(e.target.value.toUpperCase())}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm uppercase font-mono"
-                        placeholder="HDFC0001234"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Address */}
-                  <div className="space-y-1.5">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
-                      Registered Business Address *
+                      Vendor Company *
                     </label>
                     <input
                       required
                       type="text"
-                      value={address}
-                      onChange={e => setAddress(e.target.value)}
+                      value={company}
+                      onChange={e => setCompany(e.target.value)}
                       className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm"
-                      placeholder="Plot No. 42, Industrial Area Phase 1"
+                      placeholder="e.g. Global Industries Ltd."
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">City *</label>
-                      <input
-                        required
-                        type="text"
-                        value={city}
-                        onChange={e => setCity(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm"
-                        placeholder="Mumbai"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">State *</label>
-                      <input
-                        required
-                        type="text"
-                        value={state}
-                        onChange={e => setState(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm"
-                        placeholder="Maharashtra"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Pincode *</label>
-                      <input
-                        required
-                        type="text"
-                        value={pincode}
-                        onChange={e => setPincode(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm font-mono"
-                        placeholder="400001"
-                      />
-                    </div>
+                  {/* GST / Tax ID */}
+                  <div className="space-y-1.5">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
+                      GST / Tax ID *
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      value={gstin}
+                      onChange={e => setGstin(e.target.value.toUpperCase())}
+                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm uppercase font-mono tracking-wider"
+                      placeholder="e.g. 27AAAAA0000A1Z5 or Tax ID"
+                    />
+                  </div>
+
+                  {/* Customer working with FactWise */}
+                  <div className="space-y-1.5">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
+                      Customer working with FactWise *
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      value={customerName}
+                      onChange={e => setCustomerName(e.target.value)}
+                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm"
+                      placeholder="Enter customer / buyer company name"
+                    />
+                  </div>
+
+                  {/* Company Legal Address */}
+                  <div className="space-y-1.5">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">
+                      Company Legal Address *
+                    </label>
+                    <textarea
+                      required
+                      rows={3}
+                      value={address}
+                      onChange={e => setAddress(e.target.value)}
+                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm resize-none"
+                      placeholder="Enter registered legal business address, city, state & pincode"
+                    />
                   </div>
 
                   {/* Submit Button */}
@@ -503,7 +295,7 @@ function SupplierOnboardingDetailsForm() {
                       type="submit"
                       className="w-full py-3.5 bg-[#3666ff] text-white rounded-lg font-bold shadow-[0_0_20px_rgba(54,102,255,0.2)] hover:bg-[#3666ff]/90 hover:scale-[1.01] hover:shadow-lg hover:shadow-[#3666ff]/30 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 text-sm"
                     >
-                      {loading ? <Loader2 className="animate-spin w-5 h-5" /> : 'Submit Onboarding Details'}
+                      {loading ? <Loader2 className="animate-spin w-5 h-5" /> : 'Submit Profile Details'}
                     </button>
                     <p className="text-center text-slate-500 text-[9px] mt-4 font-medium uppercase tracking-wider">
                       Secure Verification &bull; FactWise Supplier Platform
@@ -530,7 +322,7 @@ function SupplierOnboardingDetailsForm() {
                 Details Submitted!
               </h1>
               <p className="text-slate-500 mb-8 relative z-10 leading-relaxed text-sm">
-                Thank you, <strong className="text-slate-800">{name}</strong>. We have received the tax and banking details for <strong className="text-slate-800">{company}</strong>. Our team will complete verification within 1-2 business days.
+                Thank you, <strong className="text-slate-800">{name}</strong>. We have received the details for <strong className="text-slate-800">{company}</strong>. Our team will complete verification within 1-2 business days.
               </p>
               <div className="relative z-10">
                 <button

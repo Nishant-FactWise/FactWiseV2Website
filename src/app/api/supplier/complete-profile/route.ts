@@ -2,25 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const {
-      name,
-      company,
-      email,
-      gstin,
-      pan,
-      category,
-      accountNumber,
-      ifscCode,
-      bankName,
-      address,
-      city,
-      state,
-      pincode,
-    } = await req.json();
+    const { name, company, email, gstin, customerName, address } = await req.json();
 
-    if (!email || !gstin || !pan || !accountNumber || !ifscCode || !bankName) {
+    if (!email || !gstin || !company || !customerName || !address) {
       return NextResponse.json(
-        { error: 'Please fill in all mandatory details (GST, PAN, Bank Details).' },
+        { error: 'Please fill in all required fields (GST/Tax ID, Customer Name, and Address).' },
         { status: 400 }
       );
     }
@@ -32,9 +18,9 @@ export async function POST(req: NextRequest) {
     if (!apiKey || !senderEmail) {
       console.log('\n=============================================');
       console.log(`[DEMO MODE] Vendor Details Submitted for ${name} (${company})!`);
-      console.log(`GSTIN: ${gstin} | PAN: ${pan}`);
-      console.log(`Bank: ${bankName} (${accountNumber}, IFSC: ${ifscCode})`);
-      console.log(`Category: ${category} | Address: ${address}, ${city}, ${state} - ${pincode}`);
+      console.log(`GST/Tax ID: ${gstin}`);
+      console.log(`Customer working with FactWise: ${customerName}`);
+      console.log(`Company Legal Address: ${address}`);
       console.log('=============================================\n');
       return NextResponse.json({ ok: true, demo: true });
     }
@@ -83,7 +69,7 @@ export async function POST(req: NextRequest) {
         <tr>
           <td style="padding:32px 36px 8px;">
             <p style="margin:0;font-size:22px;font-weight:700;color:#1a1d2e;">Vendor Profile Details Received</p>
-            <p style="margin:6px 0 0;font-size:13px;color:#64748b;">The vendor has completed their tax, banking, and category details.</p>
+            <p style="margin:6px 0 0;font-size:13px;color:#64748b;">The vendor has completed their tax ID, customer association, and legal address details.</p>
           </td>
         </tr>
         <tr>
@@ -98,17 +84,15 @@ export async function POST(req: NextRequest) {
               <tr><td style="padding:0 20px;">
                 <table width="100%" cellpadding="0" cellspacing="0">
                   ${[
-                    ['GSTIN Number', gstin],
-                    ['PAN Number', pan],
-                    ['Product / Service Category', category || 'Not specified'],
-                    ['Bank Name', bankName],
-                    ['Account Number', accountNumber],
-                    ['IFSC Code', ifscCode],
-                    ['Registered Address', `${address || ''}, ${city || ''}, ${state || ''} - ${pincode || ''}`],
-                    ['Contact Email', `<a href="mailto:${email}" style="color:#3666ff;text-decoration:none;font-weight:600;">${email}</a>`],
+                    ['Vendor Company', company || '—'],
+                    ['Contact Person', name || '—'],
+                    ['User Email', `<a href="mailto:${email}" style="color:#3666ff;text-decoration:none;font-weight:600;">${email}</a>`],
+                    ['GST / Tax ID', gstin],
+                    ['Customer working with FactWise', customerName],
+                    ['Company Legal Address', address],
                   ].map(([label, value], i, arr) => `
                   <tr>
-                    <td style="padding:12px 0;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.1em;width:160px;${i < arr.length - 1 ? 'border-bottom:1px solid #f1f5f9;' : ''}">${label}</td>
+                    <td style="padding:12px 0;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.1em;width:180px;${i < arr.length - 1 ? 'border-bottom:1px solid #f1f5f9;' : ''}">${label}</td>
                     <td style="padding:12px 0;font-size:13px;color:#1a1d2e;font-weight:500;${i < arr.length - 1 ? 'border-bottom:1px solid #f1f5f9;' : ''}">${value}</td>
                   </tr>`).join('')}
                 </table>
@@ -153,7 +137,7 @@ export async function POST(req: NextRequest) {
               Thank you, <strong>${name}</strong>. We have received your profile details for <strong>${company || 'your business'}</strong>.
             </p>
             <p style="margin:0 0 24px;font-size:14px;color:#64748b;line-height:1.6;">
-              Our onboarding and compliance team is currently verifying your GSTIN (<code>${gstin}</code>) and banking details. Your vendor account will be fully activated within 1 to 2 business days.
+              Our onboarding team is reviewing your tax ID (<code>${gstin}</code>) and customer association. Your vendor account will be fully activated within 1 to 2 business days.
             </p>
             <a href="https://factwise.io/supplier" style="display:inline-block;background:#3666ff;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;padding:12px 24px;border-radius:8px;">Explore FactWise Supplier Network →</a>
           </td>
