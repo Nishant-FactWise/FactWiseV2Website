@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, ArrowLeft, Loader2, Cpu, Globe, Search, FileSpreadsheet, Building2, CreditCard, ShieldCheck, ChevronDown, Check } from 'lucide-react';
 import Link from 'next/link';
@@ -91,7 +91,7 @@ function CustomDropdown({ options, value, onChange, placeholder = 'Select...', r
   );
 }
 
-export default function SupplierOnboardingDetailsPage() {
+function SupplierOnboardingDetailsForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -545,5 +545,19 @@ export default function SupplierOnboardingDetailsPage() {
         </AnimatePresence>
       </div>
     </main>
+  );
+}
+
+export default function SupplierOnboardingDetailsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-[#3666ff]" />
+        </div>
+      }
+    >
+      <SupplierOnboardingDetailsForm />
+    </Suspense>
   );
 }
