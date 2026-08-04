@@ -16,8 +16,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((post) => post.slug !== "benefits-digital-transformation-procurement-smb")
     .map((post) => ({
       url: `${base}/blog/post/${post.slug}`,
-      lastModified: now,
-      changeFrequency: "weekly",
+      // Use the real last-updated date from Hygraph so Google doesn't see
+      // every post as "always changing" (which tanks crawl prioritisation).
+      // Fall back to a reasonable fixed date for posts with no date field.
+      lastModified: post.lastUpdated ? new Date(post.lastUpdated) : new Date("2024-01-01"),
+      changeFrequency: "monthly" as const,
       priority: 0.8,
     }));
 

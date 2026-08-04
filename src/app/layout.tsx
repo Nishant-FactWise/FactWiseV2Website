@@ -214,74 +214,6 @@ const websiteSchema = {
   },
 };
 
-const videoSchema = {
-  "@context": "https://schema.org",
-  "@type": "VideoObject",
-  "@id": "https://factwise.io/#hero-video",
-  name: "FactWise — AI-Powered Source-to-Pay Platform for Procurement",
-  description:
-    "See how FactWise automates the complete source-to-pay procurement cycle — from requisitions and RFQs to purchase orders, invoice matching, and payments — in one connected platform.",
-  thumbnailUrl: "https://factwise.io/factwise-hero-poster.jpg",
-  uploadDate: "2024-01-01T00:00:00Z",
-  contentUrl: "https://factwise.io/FinalIphone.mp4",
-  embedUrl: "https://factwise.io",
-  publisher: { "@id": "https://factwise.io/#organization" },
-  inLanguage: "en-US",
-};
-
-const softwareSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "@id": "https://factwise.io/#software",
-  name: "FactWise",
-  alternateName: "FactWise Source-to-Pay Platform",
-  applicationCategory: "BusinessApplication",
-  applicationSubCategory: "Procurement Software",
-  operatingSystem: "Web Browser",
-  url: "https://factwise.io",
-  description:
-    "FactWise is an AI-powered source-to-pay procurement platform for manufacturers. It automates requisition management, RFQ and vendor sourcing, AI negotiation, purchase order generation, invoice capture, 4-way matching, and payment processing.",
-  screenshot: "https://factwise.io/logo.png",
-  softwareVersion: "2.0",
-  releaseNotes: "https://factwise.io/blog",
-  featureList: [
-    "AI-powered Requisition to Purchase Order Automation",
-    "Automated RFQ and Vendor Sourcing",
-    "AI Negotiation Engine",
-    "Landed Cost Analysis",
-    "4-Way Invoice Matching (PO / GR / QC / Contract)",
-    "Inquiry to Quote Automation",
-    "BOM Cost Intelligence",
-    "Integrated Vendor Management",
-    "Automated Payment Processing",
-    "Multi-level Approval Workflows",
-    "Goods Receipt and Quality Check Integration",
-    "Spend Analytics Dashboard",
-  ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    reviewCount: "45",
-    bestRating: "5",
-    worstRating: "1",
-    ratingExplanation: "Based on customer reviews on G2 and Capterra",
-  },
-  offers: {
-    "@type": "Offer",
-    availability: "https://schema.org/OnlineOnly",
-    priceSpecification: {
-      "@type": "PriceSpecification",
-      price: "0",
-      priceCurrency: "INR",
-      description: "Contact for pricing — request a demo at factwise.io/demo",
-    },
-    seller: { "@id": "https://factwise.io/#organization" },
-  },
-  publisher: { "@id": "https://factwise.io/#organization" },
-  author: { "@id": "https://factwise.io/#organization" },
-};
-
-
 
 export default function RootLayout({
   children,
@@ -387,14 +319,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }}
         />
         <div className="noise-bg" />
         <ScrollToTop />

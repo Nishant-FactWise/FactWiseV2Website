@@ -225,7 +225,7 @@ export default function DocumentationContent() {
           {/* CTA */}
           <div className="mt-14 overflow-hidden rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-8 text-center md:p-10">
             <h3 className="text-xl font-bold text-slate-900 md:text-2xl">Can&rsquo;t find what you need?</h3>
-            <p className="mx-auto mt-2 max-w-md text-[14px] text-slate-500 md:text-[15px]">
+            <p className="mx-auto mt-2 max-w-[450px] text-[14px] text-slate-500 md:text-[15px]">
               Book a demo for a guided walkthrough, or reach our team and we&rsquo;ll point you to the right place.
             </p>
             <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">

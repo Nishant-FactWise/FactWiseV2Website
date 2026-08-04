@@ -27,7 +27,7 @@ export const CTASection = () => {
             </h2>
             
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
-              <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-md">
+              <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-[448px]">
                 We're hiring across engineering, design, product and customer success. 
                 Come see if there's a fit.
               </p>

@@ -7,7 +7,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/cgi-bin/", "/header-demo"],
+        disallow: [
+          "/cgi-bin/",
+          "/header-demo",
+          // Prevent indexing of referral-tracking URLs like /?ref=alternativestack.com
+          // that GSC flags as "Alternate page with proper canonical tag"
+          "/?ref=",
+          // Prevent indexing of /blog?q={search_term_string} (unfilled Google Ads placeholder)
+          "/blog?q=",
+        ],
       },
       // Explicitly welcome major AI crawlers for AEO visibility
       { userAgent: "GPTBot", allow: "/" },          // ChatGPT / OpenAI

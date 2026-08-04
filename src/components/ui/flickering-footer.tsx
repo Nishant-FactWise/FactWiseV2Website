@@ -28,6 +28,7 @@ const footerLinks = [
     links: [
       { name: "Blog", href: "/blog" },
       { name: "FAQ", href: "/faq" },
+      { name: "Glossary", href: "/glossary" },
     ],
   },
   {

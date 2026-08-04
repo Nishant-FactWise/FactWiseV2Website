@@ -77,7 +77,7 @@ export default function DetailedWorkflow() {
                   </div>
                   <div className="space-y-2">
                     <h4 className="text-lg font-bold text-[#1A1D2E]" style={{ fontFamily: 'var(--font-display)' }}>{step.title}</h4>
-                    <p className="text-sm text-slate-500 leading-relaxed max-w-md font-medium" style={{ fontFamily: 'var(--font-inter)' }}>
+                    <p className="text-sm text-slate-500 leading-relaxed max-w-[448px] font-medium" style={{ fontFamily: 'var(--font-inter)' }}>
                       {step.desc}
                     </p>
                   </div>

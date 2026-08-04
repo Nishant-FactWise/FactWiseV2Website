@@ -33,8 +33,14 @@ function normalizeHref(href: string | undefined): string {
   }
   
   // Check if it's an external domain name missing the protocol prefix
-  const domainRegex = /^[a-zA-Z0-9][-a-zA-Z0-9.]*\.[a-zA-Z]{2,}(?:\/.*)?$/;
-  const commonDomains = ["google.com", "microsoft.com", "ibm.com", "walmart.com", "dell.com", "amazon.com", "ge.com", "unilever.com", "proactis.com", "dole.com", "rolls-royce"];
+  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}(?:\/.*)?$/;
+  const commonDomains = [
+    "google.com", "microsoft.com", "ibm.com", "walmart.com", "dell.com",
+    "amazon.com", "ge.com", "unilever.com", "proactis.com", "dole.com",
+    "rolls-royce", "apple.com", "def.com", "tesla.com", "samsung.com",
+    "siemens.com", "honeywell.com", "3m.com", "caterpillar.com", "bosch.com",
+    "philips.com", "ford.com", "toyota.com", "nestle.com", "danone.com",
+  ];
   const isCommon = commonDomains.some(d => trimmed.toLowerCase().includes(d));
   
   if (domainRegex.test(trimmed) || isCommon) {

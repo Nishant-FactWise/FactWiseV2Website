@@ -19,7 +19,7 @@ export const StorySection = () => {
             className="md:col-span-5"
           >
             <div 
-              className="relative mx-auto w-full min-w-[280px] sm:min-w-[320px] max-w-md rounded-[40px] md:rounded-[48px] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl group"
+              className="relative mx-auto w-full min-w-[280px] sm:min-w-[320px] max-w-[448px] rounded-[40px] md:rounded-[48px] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl group"
               style={{ aspectRatio: '4/5' }}
             >
               {/* Base Image Layer */}

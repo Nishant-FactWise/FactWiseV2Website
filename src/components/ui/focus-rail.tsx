@@ -262,7 +262,7 @@ export function FocusRail({
                   {activeItem.title}
                 </h2>
                 {activeItem.description && (
-                  <p className="max-w-md text-[#6b6b7a]">
+                  <p className="max-w-[448px] text-[#6b6b7a]">
                     {activeItem.description}
                   </p>
                 )}

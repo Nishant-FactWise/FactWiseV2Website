@@ -1,5 +1,14 @@
 const ENDPOINT = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
 
+/** Force http:// → https:// on Cloudinary (and any other) image URLs.
+ *  Hygraph stores the plain `url` field as http://, which next/image rejects
+ *  because remotePatterns only allows https://. The `secure_url` field is
+ *  always https://, but some older posts only have `url`. */
+function toHttps(url: string | undefined | null): string | undefined {
+  if (!url) return undefined;
+  return url.startsWith("http://") ? "https://" + url.slice(7) : url;
+}
+
 async function gql<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
   if (!ENDPOINT) {
     throw new Error("NEXT_PUBLIC_GRAPHCMS_ENDPOINT is not set");
@@ -63,6 +72,7 @@ export type HygraphPost = {
 
 export type SlugListPost = {
   slug: string;
+  lastUpdated?: string | null;
 };
 
 export async function getPostDetails(slug: string): Promise<HygraphPost | null> {
@@ -94,7 +104,19 @@ export async function getPostDetails(slug: string): Promise<HygraphPost | null> 
     }
   `;
   const data = await gql<{ post: HygraphPost | null }>(query, { slug });
-  return data.post;
+  const post = data.post;
+  // Sanitize image URLs: upgrade http:// → https:// so next/image doesn't 4xx
+  if (post?.featuredPicture) {
+    post.featuredPicture.url = toHttps(post.featuredPicture.url);
+    post.featuredPicture.secure_url = toHttps(post.featuredPicture.secure_url);
+  }
+  if (post?.featuredImage) {
+    post.featuredImage.url = toHttps(post.featuredImage.url) ?? post.featuredImage.url;
+  }
+  if (post?.author?.photo) {
+    post.author.photo.url = toHttps(post.author.photo.url) ?? post.author.photo.url;
+  }
+  return post;
 }
 
 export async function getAllPostSlugs(): Promise<SlugListPost[]> {
@@ -102,6 +124,7 @@ export async function getAllPostSlugs(): Promise<SlugListPost[]> {
     query GetAllSlugs {
       posts(first: 500) {
         slug
+        lastUpdated
       }
     }
   `;
@@ -140,5 +163,15 @@ export async function getSimilarPosts(
     }
   `;
   const data = await gql<{ posts: SimilarPost[] }>(query, { slug, categories });
-  return data.posts;
+  // Sanitize image URLs on similar posts too
+  return data.posts.map(p => ({
+    ...p,
+    featuredPicture: p.featuredPicture ? {
+      url: toHttps(p.featuredPicture.url),
+      secure_url: toHttps(p.featuredPicture.secure_url),
+    } : null,
+    featuredImage: p.featuredImage ? {
+      url: toHttps(p.featuredImage.url) ?? p.featuredImage.url,
+    } : null,
+  }));
 }

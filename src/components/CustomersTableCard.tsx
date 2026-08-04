@@ -151,7 +151,7 @@ export default function CustomersTableCard({
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
             {title}
           </h2>
-          <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-md">
+          <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-[448px]">
             {subtitle}
           </p>
         </div>

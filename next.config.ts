@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
         hostname: 'res.cloudinary.com',
       },
       {
+        protocol: 'http',
+        hostname: 'res.cloudinary.com',
+      },
+      {
         protocol: 'https',
         hostname: '**.graphassets.com',
       },
@@ -27,6 +31,66 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // ── Canonical cleanup: strip ?ref= referral parameter from homepage ────
+      // Prevents Google from treating /?ref=alternativestack.com (and similar)
+      // as an "alternate page" instead of the canonical https://factwise.io
+      {
+        source: "/",
+        has: [{ type: "query", key: "ref" }],
+        destination: "/",
+        permanent: true,
+      },
+      // ── Canonical cleanup: strip any ?q= search parameter from /blog ───────
+      // Prevents Google from indexing /blog?q={search_term_string} (an unfilled
+      // Google Ads dynamic insertion placeholder) as an alternate page.
+      {
+        source: "/blog",
+        has: [{ type: "query", key: "q" }],
+        destination: "/blog",
+        permanent: true,
+      },
+      // ── Fix typo in blog post slug ────────────────────────────────────────
+      // 'purchase-orderd' (extra 'd') → 'purchase-order' (correct)
+      {
+        source: "/blog/post/effective-communication-purchase-orderd",
+        destination: "/blog/post/effective-communication-purchase-order",
+        permanent: true,
+      },
+
+      // ── Old URL formats (no hyphens) ──────────────────────────────────────
+      // External sites link to these old-style URLs from a previous site version
+      { source: "/termsandconditions", destination: "/terms-of-service", permanent: true },
+      { source: "/privacypolicy",      destination: "/privacy-policy",   permanent: true },
+      { source: "/signup",             destination: "/demo",             permanent: true },
+
+      // ── /careers/:slug → /careers ─────────────────────────────────────────
+      // Old career links used /careers/{role} (e.g. /careers/analyst, /careers/sde).
+      // Actual job pages live at /careers/jobs/{slug}. Since old slugs don't
+      // map 1:1 to new slugs, redirect everything to the careers listing.
+      // The :slug((?!jobs).*) excludes the /careers/jobs/* dynamic route.
+      {
+        source: "/careers/:slug((?!jobs).*)",
+        destination: "/careers",
+        permanent: true,
+      },
+
+      // ── Blog posts with bare domain names as slugs ────────────────────────
+      // Some Hygraph posts had links like href="apple.com" (missing https://).
+      // The RichText normalizer now fixes future renders, but Google already
+      // crawled these as /blog/post/apple.com etc. Redirect to the real site.
+      { source: "/blog/post/apple.com",    destination: "https://www.apple.com",    permanent: true },
+      { source: "/blog/post/unilever.com", destination: "https://www.unilever.com", permanent: true },
+      { source: "/blog/post/def.com",      destination: "https://www.def.com",      permanent: true },
+
+      // ── /blog/search → /blog ─────────────────────────────────────────────
+      // Blog search is handled via ?q= param, not a /search route
+      { source: "/blog/search", destination: "/blog", permanent: true },
+
+      // ── Removed / renamed blog post slugs ────────────────────────────────
+      // These posts were crawled by Google but no longer exist in Hygraph or
+      // were renamed. Redirect to /blog to preserve link equity.
+      { source: "/blog/post/procurement-impacts-scm",       destination: "/blog/post/procurement-impact-scm",    permanent: true },
+      { source: "/blog/post/elevate-supplier-performance-procurement-softwarec", destination: "/blog/post/elevate-supplier-performance-procurement-software", permanent: true },
       {
         source: "/solutions",
         destination: "/inquiry-to-quote",
