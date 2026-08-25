@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 import BomCostSection from './BomCostSection';
 import Section32SourceAINegotiate from './Section32SourceAINegotiate';
@@ -23,6 +24,7 @@ const gradientBg =
     'white';
 
 export default function QuoteToOrderFlowV2() {
+    const t = useLocalizedText();
     const [isDesktop, setIsDesktop] = useState(false);
     const [activePanel, setActivePanel] = useState(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -77,7 +79,7 @@ export default function QuoteToOrderFlowV2() {
                         fontFamily: 'var(--font-inter)',
                     }}>
                         <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#3666ff', display: 'inline-block', animation: 'qtof-pulse 2s infinite' }} />
-                        The FactWise Inquiry to Quote Engine
+                        {t('The FactWise Inquiry to Quote Engine')}
                     </div>
                     <h2 style={{
                         fontSize: 'clamp(32px, 3.4vw, 52px)', fontWeight: 600,
@@ -85,10 +87,10 @@ export default function QuoteToOrderFlowV2() {
                         color: '#0D1117', margin: '0 0 16px',
                         fontFamily: 'var(--font-display)',
                     }}>
-                        How FactWise Automates <span style={{ color: '#3666ff' }}>Every Step</span>
+                        {t('How FactWise Automates')} <span style={{ color: '#3666ff' }}>{t('Every Step')}</span>
                     </h2>
                     <p style={{ fontSize: 17, lineHeight: 1.65, color: '#64748b', maxWidth: 640, margin: '0 auto', fontFamily: 'var(--font-inter)' }}>
-                        From the first BOM line to the final customer quote — intelligent at every step, automated at every turn.
+                        {t('From the first BOM line to the final customer quote — intelligent at every step, automated at every turn.')}
                     </p>
                 </div>
             </section>
@@ -97,9 +99,9 @@ export default function QuoteToOrderFlowV2() {
             <div
                 ref={wrapperRef}
                 className="hidden lg:block"
-                style={{ height: `${TOTAL * 100}vh`, position: 'relative' }}
+                style={{ height: `${(TOTAL - 1) * 100}vh`, position: 'relative' }}
             >
-                <div style={{ position: 'sticky', top: 'max(80px, calc(50vh - 340px))', height: '680px', overflow: 'hidden', background: 'white' }}>
+                <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: 'white' }}>
 
                     {/* Panel 0 — BOM (base, always behind) */}
                     <div style={{ position: 'absolute', inset: 0, zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'white' }}>

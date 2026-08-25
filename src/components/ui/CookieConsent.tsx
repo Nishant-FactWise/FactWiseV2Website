@@ -4,6 +4,10 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cookie, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { getPathLocale, localizePath } from '@/lib/i18n';
+import { localizeTerminology } from '@/lib/localized-terminology';
+import { messages } from '@/lib/messages';
 
 /**
  * Cookie consent banner wired to Google Consent Mode v2.
@@ -177,6 +181,11 @@ function Toggle({
 }
 
 export default function CookieConsent() {
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const textMap = messages[locale].textMap;
+  const t = (source: string) => localizeTerminology(textMap[source] ?? source, locale);
+
   // The stored choice, read from localStorage as an external store.
   const raw = React.useSyncExternalStore<string | null | typeof PENDING>(
     subscribeStorage,
@@ -272,7 +281,7 @@ export default function CookieConsent() {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           role="dialog"
           aria-modal="false"
-          aria-label="Cookie consent"
+          aria-label={t('Cookie consent')}
           className="fixed bottom-4 left-4 right-4 z-[100] md:left-6 md:right-auto md:bottom-6 md:w-[420px]"
         >
           <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/95 p-6 shadow-[0_20px_60px_-12px_rgba(16,24,40,0.18)] backdrop-blur-xl">
@@ -285,22 +294,21 @@ export default function CookieConsent() {
                   <Cookie className="h-5 w-5" />
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-base font-bold text-slate-900">We value your privacy</h2>
+                  <h2 className="text-base font-bold text-slate-900">{t('We value your privacy')}</h2>
                   <p className="mt-1 text-[13px] leading-relaxed text-slate-500">
-                    We use cookies to keep the site running, understand how it&apos;s used, and improve
-                    your experience. You can accept all, reject non-essential, or choose what to allow.{' '}
+                    {t("We use cookies to keep the site running, understand how it's used, and improve your experience. You can accept all, reject non-essential, or choose what to allow.")}{' '}
                     <Link
-                      href="/cookie-policy"
+                      href={localizePath('/cookie-policy', locale)}
                       className="font-medium text-[#3666ff] hover:underline"
                     >
-                      Cookie Policy
+                      {t('Cookie Policy')}
                     </Link>
                     .
                   </p>
                 </div>
                 <button
                   type="button"
-                  aria-label="Dismiss and reject non-essential cookies"
+                  aria-label={t('Dismiss and reject non-essential cookies')}
                   onClick={rejectAll}
                   className="-mr-1 -mt-1 rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
                 >
@@ -321,29 +329,29 @@ export default function CookieConsent() {
                     <div className="mb-4 space-y-3 rounded-2xl border border-slate-100 bg-slate-50/70 p-4">
                       <div className="flex items-center justify-between gap-4">
                         <div>
-                          <p className="text-[13px] font-semibold text-slate-800">Strictly necessary</p>
-                          <p className="text-[11px] text-slate-500">Required for the site to function. Always on.</p>
+                          <p className="text-[13px] font-semibold text-slate-800">{t('Strictly necessary')}</p>
+                          <p className="text-[11px] text-slate-500">{t('Required for the site to function. Always on.')}</p>
                         </div>
-                        <Toggle checked disabled label="Strictly necessary cookies (always on)" />
+                        <Toggle checked disabled label={t('Strictly necessary cookies (always on)')} />
                       </div>
                       <div className="flex items-center justify-between gap-4 border-t border-slate-200/70 pt-3">
                         <div>
-                          <p className="text-[13px] font-semibold text-slate-800">Analytics</p>
-                          <p className="text-[11px] text-slate-500">Helps us understand usage (Google Analytics).</p>
+                          <p className="text-[13px] font-semibold text-slate-800">{t('Analytics')}</p>
+                          <p className="text-[11px] text-slate-500">{t('Helps us understand usage (Google Analytics).')}</p>
                         </div>
-                        <Toggle checked={analytics} onChange={setAnalytics} label="Analytics cookies" />
+                        <Toggle checked={analytics} onChange={setAnalytics} label={t('Analytics cookies')} />
                       </div>
                       <div className="flex items-center justify-between gap-4 border-t border-slate-200/70 pt-3">
                         <div>
-                          <p className="text-[13px] font-semibold text-slate-800">Marketing</p>
-                          <p className="text-[11px] text-slate-500">Used to measure and personalize campaigns.</p>
+                          <p className="text-[13px] font-semibold text-slate-800">{t('Marketing')}</p>
+                          <p className="text-[11px] text-slate-500">{t('Used to measure and personalize campaigns.')}</p>
                         </div>
-                        <Toggle checked={marketing} onChange={setMarketing} label="Marketing cookies" />
+                        <Toggle checked={marketing} onChange={setMarketing} label={t('Marketing cookies')} />
                       </div>
                       <div className="flex items-center justify-between gap-4 border-t border-slate-200/70 pt-3">
                         <div className="pr-2">
-                          <p className="text-[13px] font-semibold text-slate-800">Delete cookies</p>
-                          <p className="text-[11px] text-slate-500">Forget my choice and remove analytics &amp; marketing cookies.</p>
+                          <p className="text-[13px] font-semibold text-slate-800">{t('Delete cookies')}</p>
+                          <p className="text-[11px] text-slate-500">{t('Forget my choice and remove analytics & marketing cookies.')}</p>
                         </div>
                         <button
                           type="button"
@@ -351,7 +359,7 @@ export default function CookieConsent() {
                           className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-red-200 bg-white px-3 py-1.5 text-[12px] font-semibold text-red-600 transition-colors hover:bg-red-50"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
-                          Delete
+                          {t('Delete')}
                         </button>
                       </div>
                     </div>
@@ -367,14 +375,14 @@ export default function CookieConsent() {
                     onClick={rejectAll}
                     className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-[13px] font-semibold text-slate-700 transition-colors hover:bg-slate-50"
                   >
-                    Reject
+                    {t('Reject')}
                   </button>
                   <button
                     type="button"
                     onClick={acceptAll}
                     className="flex-1 rounded-xl bg-[#3666ff] px-4 py-2.5 text-[13px] font-semibold text-white shadow-sm transition-all hover:bg-[#2b54e0] hover:shadow-md"
                   >
-                    Accept all
+                    {t('Accept all')}
                   </button>
                 </div>
                 {showPrefs ? (
@@ -383,7 +391,7 @@ export default function CookieConsent() {
                     onClick={saveChoices}
                     className="w-full rounded-xl bg-slate-900 px-4 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-slate-800"
                   >
-                    Save my choices
+                    {t('Save my choices')}
                   </button>
                 ) : (
                   <button
@@ -391,7 +399,7 @@ export default function CookieConsent() {
                     onClick={() => setShowPrefs(true)}
                     className="w-full text-center text-[12px] font-semibold uppercase tracking-wider text-slate-400 transition-colors hover:text-slate-600"
                   >
-                    Manage preferences
+                    {t('Manage preferences')}
                   </button>
                 )}
               </div>

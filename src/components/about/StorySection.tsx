@@ -3,8 +3,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { getPathLocale } from '@/lib/i18n';
+import { messages } from '@/lib/messages';
 
 export const StorySection = () => {
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const t = (source: string) => messages[locale].textMap[source] ?? source;
+
   return (
     <section className="py-16 md:py-24 px-6 md:px-14 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -31,7 +38,7 @@ export const StorySection = () => {
               >
                 <img 
                   src="/procurement_team_collab_1778762496149.png" 
-                  alt="Team Collaboration" 
+                  alt={t("Team Collaboration")} 
                   className="w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover:opacity-80 transition-opacity duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
@@ -70,7 +77,7 @@ export const StorySection = () => {
                 <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
                   <Check className="w-3 h-3 md:w-3.5 md:h-3.5" />
                 </div>
-                <span className="text-[10px] md:text-[11px] font-bold text-slate-900 whitespace-nowrap">Sourcing event closed</span>
+                <span className="text-[10px] md:text-[11px] font-bold text-slate-900 whitespace-nowrap">{t("Sourcing event closed")}</span>
               </motion.div>
 
               <motion.div
@@ -83,7 +90,7 @@ export const StorySection = () => {
                 <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-blue-500 flex items-center justify-center text-white shrink-0">
                   <Check className="w-3 h-3 md:w-3.5 md:h-3.5" />
                 </div>
-                <span className="text-[10px] md:text-[11px] font-bold text-slate-900 whitespace-nowrap">Invoice matched</span>
+                <span className="text-[10px] md:text-[11px] font-bold text-slate-900 whitespace-nowrap">{t("Invoice matched")}</span>
               </motion.div>
             </div>
           </motion.div>
@@ -98,24 +105,20 @@ export const StorySection = () => {
           >
             <div className="flex flex-col items-start">
               <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
-                The Story
+                {t("The Story")}
               </div>
             </div>
             
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.1] tracking-tighter mb-8 md:mb-10">
-              A Platform Built For The <span className="text-[#3666ff] font-instrument italic font-medium">Complexity</span> Of Real Procurement.
+              {t("A Platform Built For The")} <span className="text-[#3666ff] font-instrument italic font-medium">{t("Complexity")}</span> {t("Of Real Procurement.")}
             </h2>
             
             <div className="space-y-6 md:space-y-8 text-slate-600 text-justify text-base md:text-lg leading-relaxed max-w-xl">
               <p>
-                FactWise was founded by procurement and engineering veterans who watched 
-                enterprise buyers wrestle with disconnected tools, slow approvals, and 
-                supplier data scattered across spreadsheets.
+                {t("FactWise was founded by procurement and engineering veterans who watched enterprise buyers wrestle with disconnected tools, slow approvals, and supplier data scattered across spreadsheets.")}
               </p>
               <p>
-                So we built one platform—opinionated where it matters, flexible where it 
-                should be—that connects sourcing, contracts, suppliers, and payments end-to-end. 
-                The result: faster cycles, cleaner data, and happier teams.
+                {t("So we built one platform—opinionated where it matters, flexible where it should be—that connects sourcing, contracts, suppliers, and payments end-to-end. The result: faster cycles, cleaner data, and happier teams.")}
               </p>
             </div>
 
@@ -128,15 +131,15 @@ export const StorySection = () => {
             >
               <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm font-bold text-slate-900 uppercase tracking-widest">
                 <div className="w-2 h-2 rounded-full bg-[#3666ff]" />
-                Founded in 2021
+                {t("Founded in 2021")}
               </div>
               <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm font-bold text-slate-900 uppercase tracking-widest">
                 <div className="w-2 h-2 rounded-full bg-[#3666ff]" />
-                Remote-First
+                {t("Remote-First")}
               </div>
               <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm font-bold text-slate-900 uppercase tracking-widest">
                 <div className="w-2 h-2 rounded-full bg-[#3666ff]" />
-                Enterprise-Grade
+                {t("Enterprise-Grade")}
               </div>
             </motion.div>
           </motion.div>

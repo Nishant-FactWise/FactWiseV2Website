@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from './ui/ScrollReveal';
 import './ProductFlowCombined.css';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 /* ─── Node layout (from ProductFlowShowcase) ─────────────────────────
    Each node is centred at (x%, y%) of the 4/3 canvas. HX/HY are the
@@ -212,6 +213,7 @@ function CheckIcon({ size = 11 }: { size?: number }) {
 /* ─── Component ─────────────────────────────────────────────────────── */
 
 export default function ProductFlowCombined() {
+  const t = useLocalizedText();
   const [flowIdx, setFlowIdx] = useState(0);
   const [runIdx, setRunIdx] = useState(0);
   const [revealed, setRevealed] = useState(1);
@@ -309,7 +311,7 @@ export default function ProductFlowCombined() {
           <div style={{ textAlign: 'center', marginBottom: '48px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <ScrollReveal delay={0.1}>
               <div style={{ display: 'inline-flex', alignItems: 'center', padding: '6px 16px', borderRadius: '99px', background: '#eff6ff', border: '1px solid #dbeafe', color: '#3666ff', fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '24px' }}>
-                AI-Powered Workflows
+                {t('AI-Powered Workflows')}
               </div>
             </ScrollReveal>
 
@@ -320,8 +322,8 @@ export default function ProductFlowCombined() {
               transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]"
             >
-              Automate Every Way You Procure. <br />
-              <span style={{ color: '#3666ff' }}>One Platform.</span>
+              {t('Automate Every Way You Procure. ')}<br />
+              <span style={{ color: '#3666ff' }}>{t('One Platform.')}</span>
             </motion.h2>
 
             <motion.p
@@ -331,7 +333,7 @@ export default function ProductFlowCombined() {
               transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
               style={{ color: '#64748b', maxWidth: '720px', fontSize: '18px', lineHeight: 1.6, fontWeight: 500, margin: 0 }}
             >
-              Every manufacturer procures differently — some start with a customer RFQ, some with a requisition, some with a vendor invoice. FactWise handles all three, end to end.
+              {t('Every manufacturer procures differently — some start with a customer RFQ, some with a requisition, some with a vendor invoice. FactWise handles all three, end to end.')}
             </motion.p>
           </div>
 
@@ -344,7 +346,7 @@ export default function ProductFlowCombined() {
                 style={flowIdx === i ? { background: f.color, borderColor: f.color, boxShadow: `0 4px 12px ${f.color}40` } : {}}
                 onClick={() => selectFlow(i)}
               >
-                {f.name}
+                {t(f.name)}
               </button>
             ))}
           </div>
@@ -471,14 +473,14 @@ export default function ProductFlowCombined() {
                           <div className="pfc-node-open">
                             <div className="pfc-node-open-head">
                               <span className="pfc-node-open-dot" />
-                              <span className="pfc-node-open-label">{node.label}</span>
+                              <span className="pfc-node-open-label">{t(node.label)}</span>
                             </div>
                             <div className="pfc-node-open-detail">
                               <span className="pfc-node-open-check"><CheckIcon size={7} /></span>
-                              <span>{NODE_DETAIL[node.id] || 'Processing'}</span>
+                              <span>{t(NODE_DETAIL[node.id] || 'Processing')}</span>
                             </div>
                           </div>
-                        ) : node.label}
+                        ) : t(node.label)}
                       </div>
                     );
                   })}
@@ -512,18 +514,18 @@ export default function ProductFlowCombined() {
                       <div className={cls}>
                         <div className="pfc-mcard-head">
                           <span className="pfc-mcard-dot" />
-                          <span className="pfc-mcard-label">{node?.label}</span>
+                          <span className="pfc-mcard-label">{node ? t(node.label) : ''}</span>
                         </div>
                         {isVisited && (
                           <div className="pfc-mcard-detail">
                             <span className="pfc-mcard-check"><CheckIcon size={7} /></span>
-                            <span>{NODE_DETAIL[id] || 'Processing'}</span>
+                            <span>{t(NODE_DETAIL[id] || 'Processing')}</span>
                           </div>
                         )}
                         {isVisited && feeders.length > 0 && (
                           <div className="pfc-mcard-feeders">
                             {feeders.map((sid) => (
-                              <span key={sid} className="pfc-mcard-feeder">{NODE_BY_ID[sid]?.label}</span>
+                              <span key={sid} className="pfc-mcard-feeder">{NODE_BY_ID[sid] ? t(NODE_BY_ID[sid].label) : ''}</span>
                             ))}
                           </div>
                         )}
@@ -547,8 +549,8 @@ export default function ProductFlowCombined() {
                       <div style={{ marginBottom: '14px' }}>
                         <span style={{ textTransform: 'uppercase', letterSpacing: '2.5px', fontSize: '10px', fontWeight: 700, color: flow.color }} />
                       </div>
-                      <h3 className="pfc-sidebar-title">{flow.name}</h3>
-                      <p className="pfc-sidebar-desc">{flow.description}</p>
+                      <h3 className="pfc-sidebar-title">{t(flow.name)}</h3>
+                      <p className="pfc-sidebar-desc">{t(flow.description)}</p>
 
                       <ul className="pfc-list">
                         {bullets.map((b, i) => (
@@ -558,7 +560,7 @@ export default function ProductFlowCombined() {
                                 <path d="M1 5l3.5 3.5 6.5-7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                               </svg>
                             </span>
-                            <span className="pfc-feat-text">{b}</span>
+                            <span className="pfc-feat-text">{t(b)}</span>
                           </li>
                         ))}
                       </ul>

@@ -7,6 +7,7 @@ import {
   HelpCircle, Award, Zap, Upload, Eye, Database, Layers
 } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import { useLocalizedText } from "@/hooks/useLocalizedText";
 
 /* ============ DATA ============ */
 const VENDORS = [
@@ -162,6 +163,7 @@ function PillDeck({ icon: Icon, label, lit }: any) {
 
 /* ============ MAIN CLASS COMPONENT ============ */
 export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { speed?: number; onPhaseChange?: (phase: number) => void }) {
+  const t = useLocalizedText();
   const [phase, setPhase] = useState(0);
   const [qmarks, setQmarks] = useState(0);
   const [bidRows, setBidRows] = useState(0);
@@ -420,12 +422,12 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
             {/* Header */}
             <div className="flex items-center justify-between shrink-0">
               <div>
-                <h3 className="text-[13px] font-extrabold text-slate-900 tracking-tight leading-none">Decision Intelligence</h3>
-                <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-[0.14em] mt-1">The Right Data at Every Decision Point</p>
+                <h3 className="text-[13px] font-extrabold text-slate-900 tracking-tight leading-none">{t("Decision Intelligence")}</h3>
+                <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-[0.14em] mt-1">{t("The Right Data at Every Decision Point")}</p>
               </div>
               <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-indigo-50 border border-indigo-100 rounded-full text-[8.5px] font-bold text-indigo-600 tracking-wide shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
-                Live Engine
+                {t("Live Engine")}
               </div>
             </div>
 
@@ -435,7 +437,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
               
               <div className="flex items-center justify-between mb-3 shrink-0 z-10">
                 <h4 className="text-[10px] font-bold text-slate-700 tracking-wide">
-                  {phase === 1 ? "Operating Without Data" :
+                  {t(phase === 1 ? "Operating Without Data" :
                    phase === 2 ? "Operational Signal Locked" :
                    phase === 3 ? "Real-Time Bid Intelligence" :
                    phase === 4 ? "Historical Pricing Trend" :
@@ -444,7 +446,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                    phase === 7 ? "Live Margin KPIs" :
                    phase === 8 ? "Smart Recommendation" :
                    phase === 9 ? "Consolidated Decision Captured" :
-                   "Command Center"}
+                   "Command Center")}
                 </h4>
                 <div className="flex items-center gap-2 shrink-0">
                   <div className="flex gap-1">
@@ -458,7 +460,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                   </div>
                   <span className="text-[8px] font-semibold text-indigo-600 flex items-center gap-1 whitespace-nowrap bg-indigo-50/60 border border-indigo-100/40 px-1.5 py-0.5 rounded-md">
                     <span className="w-1 h-1 rounded-full bg-indigo-500 animate-pulse" />
-                    Auto-Processing
+                    {t("Auto-Processing")}
                   </span>
                 </div>
               </div>
@@ -489,7 +491,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                       ))}
                       <div className="w-64 bg-white border border-slate-200 rounded-xl p-3 shadow-lg z-10 pointer-events-auto">
                         <h5 className="font-extrabold text-slate-800 text-[10px] flex items-center gap-1.5 mb-2">
-                          <HelpCircle className="w-4 h-4 text-slate-400" /> Which vendor wins this award?
+                          <HelpCircle className="w-4 h-4 text-slate-400" /> {t("Which vendor wins this award?")}
                         </h5>
                         <div className="space-y-1.5">
                           {VENDORS.slice(0, 3).map((v) => (
@@ -503,7 +505,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                           ))}
                         </div>
                         <p className="mt-2.5 text-[8.5px] text-slate-400 font-semibold italic text-center select-none">
-                          Decision made on gut feel...
+                          {t("Decision made on gut feel...")}
                         </p>
                       </div>
                     </motion.div>
@@ -526,8 +528,8 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                         </div>
                       </div>
                       <div className="text-center mt-2">
-                        <h5 className="text-[14px] font-bold text-slate-800 tracking-tight">Operational Signal Locked</h5>
-                        <p className="text-[10px] text-slate-400 font-medium mt-1">Connecting historical prices, vendor metrics, & raw bids...</p>
+                        <h5 className="text-[14px] font-bold text-slate-800 tracking-tight">{t("Operational Signal Locked")}</h5>
+                        <p className="text-[10px] text-slate-400 font-medium mt-1">{t("Connecting historical prices, vendor metrics, & raw bids...")}</p>
                       </div>
                     </motion.div>
                   )}
@@ -544,10 +546,10 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                     >
                       <div className="grid grid-cols-[28px_1.5fr_0.9fr_0.9fr_1fr_20px] gap-2 items-center px-2 py-1 text-[8px] font-bold uppercase text-slate-400 tracking-wider">
                         <div></div>
-                        <div>Vendor</div>
-                        <div>Quote</div>
+                        <div>{t("Vendor")}</div>
+                        <div>{t("Quote")}</div>
                         <div>vs LY</div>
-                        <div>Score</div>
+                        <div>{t("Score")}</div>
                         <div></div>
                       </div>
                       <div className="space-y-1.5">
@@ -596,7 +598,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                       className="absolute inset-0 flex flex-col"
                     >
                       <div className="flex items-center justify-between mb-2 px-1 shrink-0">
-                        <span className="text-[10px] font-semibold text-slate-700">12-Month Historical Pricing · SKU-1003</span>
+                        <span className="text-[10px] font-semibold text-slate-700">{t("12-Month Historical Pricing · SKU-1003")}</span>
                         <div className="flex gap-3 text-[9px] font-medium text-slate-500 leading-none select-none">
                           <span className="flex items-center gap-1"><span className="w-2.5 h-0.5 bg-indigo-500 rounded" />Bharat Steel</span>
                           <span className="flex items-center gap-1"><span className="w-2.5 h-0.5 bg-cyan-500 rounded" />SKF</span>
@@ -669,7 +671,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                         </div>
                         {/* Y-Axis Title */}
                         <div className="absolute right-2 top-[-2px] text-[7.5px] font-semibold text-slate-500 select-none">
-                          Price
+                          {t("Price")}
                         </div>
                         {/* X-Axis HTML Labels */}
                         <div className="absolute left-3 right-8 bottom-3.5 flex justify-between text-[8px] font-medium text-slate-400 select-none">
@@ -679,7 +681,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                         </div>
                         {/* X-Axis Title */}
                         <div className="absolute left-1/2 -translate-x-1/2 bottom-0 text-[7.5px] font-semibold text-slate-500 select-none">
-                          Month
+                          {t("Month")}
                         </div>
                       </div>
                     </motion.div>
@@ -760,7 +762,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                         </svg>
                         <div className="absolute inset-0 flex flex-col items-center justify-center leading-none pointer-events-none select-none">
                           <span className="text-base font-bold text-slate-800">₹2.7 Cr</span>
-                          <span className="text-[8px] text-slate-400 font-medium uppercase tracking-wider mt-1.5">YTD Spend</span>
+                          <span className="text-[8px] text-slate-400 font-medium uppercase tracking-wider mt-1.5">{t("YTD Spend")}</span>
                         </div>
                       </div>
                       <div className="flex-1 flex flex-col gap-2 overflow-y-auto min-w-0 pr-1">
@@ -854,7 +856,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                           </div>
                           <div className={cn("flex items-center gap-2.5 transition-all duration-300 text-[9.5px] text-slate-600", recRows > 1 ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1.5")}>
                             <span className="w-5 h-5 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0"><Star className="w-3.5 h-3.5" /></span>
-                            <span>Vendor score 91/100 — OTD 96%, Quality rating: A+</span>
+                            <span>{t("Vendor score 91/100 — OTD 96%, Quality rating: A+")}</span>
                           </div>
                           <div className={cn("flex items-center gap-2.5 transition-all duration-300 text-[9.5px] text-slate-600", recRows > 2 ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1.5")}>
                             <span className="w-5 h-5 rounded-md bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><Shield className="w-3.5 h-3.5" /></span>
@@ -887,7 +889,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                         ) : (
                           <>
                             <Zap className="w-3.5 h-3.5 shrink-0 fill-white" />
-                            <span>Award Bharat Steel</span>
+                            <span>{t("Award Bharat Steel")}</span>
                           </>
                         )}
                       </div>
@@ -917,7 +919,7 @@ export default function AnalyticsAnimation({ speed = 0.5, onPhaseChange }: { spe
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_6px_#818cf8] shrink-0 mt-[3px] animate-pulse" />
                   <p className="text-[12px] font-semibold text-slate-600 leading-relaxed tracking-wide m-0">
-                    {captions[phase]}
+                    {t(captions[phase])}
                   </p>
                 </motion.div>
               )}

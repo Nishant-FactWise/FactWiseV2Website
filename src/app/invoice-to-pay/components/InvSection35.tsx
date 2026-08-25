@@ -191,7 +191,7 @@ export default function InvSection35({ isActive = true }: { isActive?: boolean }
                                                 initial={false}
                                                 animate={{
                                                     scale: reached ? 1.0 : 0.85,
-                                                    backgroundColor: reached ? '#10b981' : phase === 1 && i === 0 ? '#3666ff' : 'white',
+                                                    backgroundColor: reached ? '#10b981' : phase === 1 && i === 0 ? '#3666ff' : '#ffffff',
                                                     borderColor: reached ? '#10b981' : phase === 1 && i === 0 ? '#3666ff' : '#cbd5e1',
                                                 }}
                                                 style={{

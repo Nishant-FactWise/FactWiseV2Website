@@ -4,18 +4,21 @@ import * as React from "react"
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useLocalizedText } from '@/hooks/useLocalizedText'
 
 // ============================================================================
 // Widget 1: Invoice chaos — multi-channel inbox vs structured invoice form
 // ============================================================================
 function InvoiceChaosWidget({ isHovered }: { isHovered: boolean }) {
+  const t = useLocalizedText()
+
   return (
     <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div className="flex justify-between items-center border-b border-slate-200/60 pb-1.5">
-        <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">AP Inbox · Today</span>
+        <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">{t('AP Inbox · Today')}</span>
         <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-red-50 border border-red-200 text-red-600 font-semibold flex items-center gap-1">
           <span className="h-1 w-1 rounded-full bg-red-500 animate-pulse" />
-          14 unsorted
+          {t('14 unsorted')}
         </span>
       </div>
 
@@ -26,15 +29,15 @@ function InvoiceChaosWidget({ isHovered }: { isHovered: boolean }) {
           { src:'📄 Paper',    msg:'FluidTech invoice handed at reception',    tone:'text-blue-500'   },
         ].map(item => (
           <div key={item.src} className="flex items-start gap-2 bg-white p-1.5 rounded border border-slate-100 shadow-3xs">
-            <span className={`${item.tone} shrink-0 font-bold`}>{item.src}</span>
-            <div className="text-slate-400 leading-tight">{item.msg}</div>
+            <span className={`${item.tone} shrink-0 font-bold`}>{t(item.src)}</span>
+            <div className="text-slate-400 leading-tight">{t(item.msg)}</div>
           </div>
         ))}
       </div>
 
       <div className="flex justify-between items-center text-[8.5px] text-slate-400 border-t border-slate-200/60 pt-1.5">
-        <span>Re-keyed manually · errors creep in</span>
-        <span className="text-red-500 font-bold">⚠️ 0% match-ready</span>
+        <span>{t('Re-keyed manually · errors creep in')}</span>
+        <span className="text-red-500 font-bold">⚠️ {t('0% match-ready')}</span>
       </div>
 
       {/* Hover overlay: structured FW invoice */}
@@ -45,18 +48,18 @@ function InvoiceChaosWidget({ isHovered }: { isHovered: boolean }) {
         className="absolute inset-0 bg-white p-3 flex flex-col gap-2 z-20 border-l-4 border-l-[#3666ff] rounded-r-xl shadow-md"
       >
         <div className="flex justify-between items-center">
-          <span className="text-[8.5px] font-mono text-[#3666ff] font-bold uppercase tracking-widest">FW Invoice · Parsed</span>
-          <span className="text-[7.5px] bg-emerald-50 border border-emerald-200 text-emerald-700 px-1 rounded font-bold">✓ Structured</span>
+          <span className="text-[8.5px] font-mono text-[#3666ff] font-bold uppercase tracking-widest">{t('FW Invoice · Parsed')}</span>
+          <span className="text-[7.5px] bg-emerald-50 border border-emerald-200 text-emerald-700 px-1 rounded font-bold">✓ {t('Structured')}</span>
         </div>
         <div className="space-y-1.5 text-[8.5px]">
           {[
             { label:'Invoice #', value:'INV-90412' },
             { label:'Vendor',    value:'Apex Industrial' },
-            { label:'PO Ref',    value:'PO-8810 · Auto-linked' },
-            { label:'Value',     value:'₹14,910 · Ready to match', green: true },
+            { label:'PO Ref',    value:`PO-8810 · ${t('Auto-linked')}` },
+            { label:'Value',     value:`₹14,910 · ${t('Ready to match')}`, green: true },
           ].map(f => (
             <div key={f.label} className="flex justify-between bg-slate-50 px-2 py-1 rounded border border-slate-100">
-              <span className="text-slate-400 font-medium">{f.label}</span>
+              <span className="text-slate-400 font-medium">{t(f.label)}</span>
               <span className={`font-bold ${f.green ? 'text-emerald-600' : 'text-slate-700'}`}>{f.value}</span>
             </div>
           ))}
@@ -70,12 +73,14 @@ function InvoiceChaosWidget({ isHovered }: { isHovered: boolean }) {
 // Widget 2: Goods Receipt visibility — paper log vs digital GR
 // ============================================================================
 function GRVisibilityWidget({ isHovered }: { isHovered: boolean }) {
+  const t = useLocalizedText()
+
   return (
     <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div className="flex justify-between items-center mb-1.5">
-        <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">Today's Deliveries</span>
+        <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">{t("Today's Deliveries")}</span>
         <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-semibold">
-          ⚠️ Paper Log
+          ⚠️ {t('Paper Log')}
         </span>
       </div>
 
@@ -87,13 +92,13 @@ function GRVisibilityWidget({ isHovered }: { isHovered: boolean }) {
         ].map(r => (
           <div key={r.item} className="flex items-center justify-between bg-white p-1.5 rounded border border-slate-100 shadow-3xs">
             <span className="font-mono text-slate-400 text-[8px]">{r.ref}</span>
-            <span className="text-slate-600 font-medium">{r.item}</span>
-            <span className="font-mono font-bold text-amber-500">{r.note}</span>
+            <span className="text-slate-600 font-medium">{t(r.item)}</span>
+            <span className="font-mono font-bold text-amber-500">{t(r.note)}</span>
           </div>
         ))}
         <div className="flex justify-between items-center px-1.5 pt-1 border-t border-slate-200/60">
-          <span className="text-slate-500 font-bold">Recorded on paper · Not in system</span>
-          <span className="font-mono font-bold text-red-500 text-[9px]">0% visibility</span>
+          <span className="text-slate-500 font-bold">{t('Recorded on paper · Not in system')}</span>
+          <span className="font-mono font-bold text-red-500 text-[9px]">{t('0% visibility')}</span>
         </div>
       </div>
 
@@ -104,23 +109,23 @@ function GRVisibilityWidget({ isHovered }: { isHovered: boolean }) {
         className="absolute inset-0 bg-white/97 backdrop-blur-[1.5px] flex items-center justify-center p-3 text-center pointer-events-none z-10"
       >
         <div className="bg-slate-900 border border-slate-800 text-white rounded-xl p-3 shadow-lg flex flex-col items-center max-w-[95%] w-full gap-2">
-          <span className="text-[8px] font-mono tracking-widest text-emerald-400 uppercase font-bold">FW Goods Receipt · GRN-7841</span>
+          <span className="text-[8px] font-mono tracking-widest text-emerald-400 uppercase font-bold">{t('FW Goods Receipt · GRN-7841')}</span>
           <div className="grid grid-cols-3 gap-2 text-[8.5px] w-full">
             <div className="bg-white/10 rounded p-1.5">
-              <div className="text-slate-400 text-[7px] uppercase">Ordered</div>
+              <div className="text-slate-400 text-[7px] uppercase">{t('Ordered')}</div>
               <div className="font-bold text-white">200 pcs</div>
             </div>
             <div className="bg-white/10 rounded p-1.5">
-              <div className="text-slate-400 text-[7px] uppercase">Received</div>
+              <div className="text-slate-400 text-[7px] uppercase">{t('Received')}</div>
               <div className="font-bold text-white">186 pcs</div>
             </div>
             <div className="bg-amber-900/50 rounded p-1.5 border border-amber-700/40">
-              <div className="text-amber-400 text-[7px] uppercase">Short</div>
+              <div className="text-amber-400 text-[7px] uppercase">{t('Short')}</div>
               <div className="font-bold text-amber-300">14 pcs</div>
             </div>
           </div>
           <div className="text-[8.5px] text-slate-300 mt-1 leading-tight font-medium">
-            Status: <span className="text-emerald-400 font-bold">Logged · Auto-linked to PO</span>
+            {t('Status:')} <span className="text-emerald-400 font-bold">{t('Logged · Auto-linked to PO')}</span>
           </div>
         </div>
       </motion.div>
@@ -132,38 +137,40 @@ function GRVisibilityWidget({ isHovered }: { isHovered: boolean }) {
 // Widget 3: QC lost on paper vs digital QC report
 // ============================================================================
 function QCLostWidget({ isHovered }: { isHovered: boolean }) {
+  const t = useLocalizedText()
+
   return (
     <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div className="flex justify-between items-center border-b border-slate-200/60 pb-1.5">
-        <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">QC · Shop Floor</span>
+        <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">{t('QC · Shop Floor')}</span>
         <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-semibold flex items-center gap-1">
           <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-ping" />
-          Not in system
+          {t('Not in system')}
         </span>
       </div>
 
       <div className="space-y-1.5 my-2">
         <div className="bg-white p-1.5 rounded border border-slate-100 shadow-3xs text-[8.5px]">
           <div className="flex justify-between text-slate-400 font-bold mb-0.5">
-            <span>💬 WhatsApp · QC Lead</span>
-            <span>2 hrs ago</span>
+            <span>{t('💬 WhatsApp · QC Lead')}</span>
+            <span>{t('2 hrs ago')}</span>
           </div>
-          <p className="text-slate-600 truncate leading-tight font-medium">"12 pcs rejected from Apex batch — visible scratches"</p>
+          <p className="text-slate-600 truncate leading-tight font-medium">{t('"12 pcs rejected from Apex batch — visible scratches"')}</p>
         </div>
         <div className="bg-white p-1.5 rounded border border-slate-100 shadow-3xs text-[8.5px]">
           <div className="flex justify-between text-slate-400 font-bold mb-0.5">
-            <span>📓 Notebook entry</span>
-            <span className="text-red-500 font-bold flex items-center gap-0.5">⏰ Not synced</span>
+            <span>{t('📓 Notebook entry')}</span>
+            <span className="text-red-500 font-bold flex items-center gap-0.5">⏰ {t('Not synced')}</span>
           </div>
-          <p className="text-slate-600 truncate leading-tight font-medium">"Secondary inspection passed — line A, no PO ref noted"</p>
+          <p className="text-slate-600 truncate leading-tight font-medium">{t('"Secondary inspection passed — line A, no PO ref noted"')}</p>
         </div>
       </div>
 
       <div className="flex justify-between items-center text-[8.5px] text-slate-400 border-t border-slate-200/60 pt-1.5">
-        <span>Rejection data: lost</span>
+        <span>{t('Rejection data: lost')}</span>
         <span className="flex items-center gap-1 text-amber-600 font-bold uppercase tracking-wider">
           <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1.5, ease: 'linear' }} className="inline-block text-[10px]">⏳</motion.span>
-          Payment proceeds blind
+          {t('Payment proceeds blind')}
         </span>
       </div>
 
@@ -174,20 +181,20 @@ function QCLostWidget({ isHovered }: { isHovered: boolean }) {
         className="absolute inset-0 bg-white p-3.5 flex flex-col justify-between z-20 border-l-4 border-l-[#3666ff] shadow-md rounded-r-xl"
       >
         <div className="flex justify-between items-center mb-1">
-          <span className="text-[8.5px] font-mono text-[#3666ff] font-bold uppercase tracking-widest">FW QC · QCR-2204</span>
-          <span className="text-[7.5px] bg-emerald-50 border border-emerald-200 text-emerald-700 px-1 rounded font-bold">⚡ Linked</span>
+          <span className="text-[8.5px] font-mono text-[#3666ff] font-bold uppercase tracking-widest">{t('FW QC · QCR-2204')}</span>
+          <span className="text-[7.5px] bg-emerald-50 border border-emerald-200 text-emerald-700 px-1 rounded font-bold">⚡ {t('Linked')}</span>
         </div>
         <div className="space-y-1.5 text-[8.5px]">
           <div className="bg-slate-50 border border-slate-200/60 p-1.5 rounded flex items-start gap-1.5 shadow-3xs">
             <span className="text-emerald-600 shrink-0">✅</span>
             <div>
-              <div className="font-bold text-slate-700 leading-tight">Primary · 186 pcs accepted</div>
-              <div className="text-slate-400 text-[7.5px] mt-0.5 leading-tight font-medium">Tied to GRN-7841 · PO-8810 · INV-90412</div>
+              <div className="font-bold text-slate-700 leading-tight">{t('Primary · 186 pcs accepted')}</div>
+              <div className="text-slate-400 text-[7.5px] mt-0.5 leading-tight font-medium">{t('Tied to GRN-7841 · PO-8810 · INV-90412')}</div>
             </div>
           </div>
           <div className="bg-slate-50 border border-slate-200/60 px-2 py-1 rounded flex items-center justify-between font-bold shadow-3xs">
-            <span className="text-amber-600">Rejected: 12 pcs</span>
-            <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded text-emerald-700">Deduct ₹504 from payment</span>
+            <span className="text-amber-600">{t('Rejected: 12 pcs')}</span>
+            <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded text-emerald-700">{t('Deduct ₹504 from payment')}</span>
           </div>
         </div>
       </motion.div>
@@ -199,11 +206,13 @@ function QCLostWidget({ isHovered }: { isHovered: boolean }) {
 // Widget 4: Manual matching vs AI 4-way match
 // ============================================================================
 function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
+  const t = useLocalizedText()
+
   return (
     <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div>
         <div className="flex justify-between items-center mb-1.5">
-          <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">Manual Match — Apex INV</span>
+          <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">{t('Manual Match — Apex INV')}</span>
           <span
             className={`text-[8px] px-1.5 py-0.5 rounded-full font-bold transition-all duration-300 ${
               isHovered
@@ -211,7 +220,7 @@ function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
                 : 'bg-red-50 border border-red-200 text-red-600'
             }`}
           >
-            {isHovered ? '✓ Match' : '🚫 Mismatch'}
+            {isHovered ? `✓ ${t('Match')}` : `🚫 ${t('Mismatch')}`}
           </span>
         </div>
         <div className="grid grid-cols-3 gap-1 text-[8.5px]">
@@ -221,7 +230,7 @@ function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
             { lbl:'Invoice', val:'₹14,910', tone:'text-slate-700' },
           ].map(c => (
             <div key={c.lbl} className="bg-white p-1.5 rounded border border-slate-200/60 text-center shadow-3xs">
-              <div className="text-[7px] text-slate-400 font-bold uppercase tracking-wider">{c.lbl}</div>
+              <div className="text-[7px] text-slate-400 font-bold uppercase tracking-wider">{t(c.lbl)}</div>
               <div className={`text-[10px] font-mono font-bold ${c.tone}`}>{c.val}</div>
             </div>
           ))}
@@ -230,8 +239,8 @@ function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
 
       <div className="relative bg-white border border-slate-200/40 p-2 rounded text-[8.5px] overflow-hidden flex flex-col gap-1 shadow-3xs">
         <div className="flex justify-between text-slate-500 font-bold">
-          <span>Manual reconciliation</span>
-          <span className="text-slate-400 text-[8px] font-medium">Auditing line items ▼</span>
+          <span>{t('Manual reconciliation')}</span>
+          <span className="text-slate-400 text-[8px] font-medium">{t('Auditing line items')} ▼</span>
         </div>
         <motion.div
           initial={{ height: 0, opacity: 0 }}
@@ -239,22 +248,22 @@ function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
           className="overflow-hidden space-y-1 mt-1 text-[7.5px] border-t border-slate-100 pt-1"
         >
           <div className="flex justify-between text-slate-500 font-medium">
-            <span>QC rejected 12 pcs</span>
+            <span>{t('QC rejected 12 pcs')}</span>
             <span className="font-mono text-red-500 font-bold">-₹504</span>
           </div>
           <div className="flex justify-between text-slate-500 font-medium">
-            <span>Short-shipped 14 pcs</span>
+            <span>{t('Short-shipped 14 pcs')}</span>
             <span className="font-mono text-red-500 font-bold">-₹588</span>
           </div>
           <div className="flex justify-between text-slate-500 font-medium">
-            <span>Early-pay discount missed</span>
+            <span>{t('Early-pay discount missed')}</span>
             <span className="font-mono text-red-500 font-bold">-₹298</span>
           </div>
         </motion.div>
       </div>
 
       <div className="flex justify-between items-center pt-1.5 border-t border-slate-200/60 text-[9px] font-bold">
-        <span className="text-slate-500 font-bold">Final Liability:</span>
+        <span className="text-slate-500 font-bold">{t('Final Liability:')}</span>
         <div className="relative w-[68px] h-[14px] text-right font-mono font-bold">
           <motion.span initial={{ opacity:1, y:0 }} animate={isHovered ? { opacity:0, y:-10 } : { opacity:1, y:0 }} className="absolute right-0 text-red-500 text-[10px]">₹14,910 ⚠️</motion.span>
           <motion.span initial={{ opacity:0, y:10 }} animate={isHovered ? { opacity:1, y:0 } : { opacity:0, y:10 }} className="absolute right-0 text-emerald-600 text-[10px]">✓ ₹13,520</motion.span>
@@ -268,10 +277,12 @@ function ManualMatchingWidget({ isHovered }: { isHovered: boolean }) {
 // Widget 5: No end-to-end visibility vs unified status tracker
 // ============================================================================
 function NoVisibilityWidget({ isHovered }: { isHovered: boolean }) {
+  const t = useLocalizedText()
+
   return (
     <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div className="flex justify-between items-center border-b border-slate-200/60 pb-1">
-        <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">INV-90412 · Status</span>
+        <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">{t('INV-90412 · Status')}</span>
         <span
           className={`text-[8px] px-1.5 py-0.5 rounded-full font-semibold transition-all duration-300 ${
             isHovered
@@ -279,27 +290,27 @@ function NoVisibilityWidget({ isHovered }: { isHovered: boolean }) {
               : 'bg-red-50 border border-red-200 text-red-500'
           }`}
         >
-          {isHovered ? '✓ Known' : '🚫 Unknown'}
+          {isHovered ? `✓ ${t('Known')}` : `🚫 ${t('Unknown')}`}
         </span>
       </div>
 
       <div className="grid grid-cols-2 gap-px bg-slate-200 rounded p-px font-mono text-[8px] my-1">
-        <div className="bg-slate-50 p-1 text-slate-400 font-bold">Stage</div>
-        <div className="bg-slate-50 p-1 text-slate-400 font-bold">Status</div>
-        <div className="bg-white p-1 text-slate-600 font-medium">GR done?</div>
-        <div className="bg-white p-1 text-amber-600 font-bold italic">unclear</div>
-        <div className="bg-white p-1 text-slate-600 font-medium">QC signed?</div>
-        <div className="bg-white p-1 text-amber-600 font-bold italic">no record</div>
-        <div className="bg-white p-1 text-slate-700 font-bold">Approval?</div>
+        <div className="bg-slate-50 p-1 text-slate-400 font-bold">{t('Stage')}</div>
+        <div className="bg-slate-50 p-1 text-slate-400 font-bold">{t('Status')}</div>
+        <div className="bg-white p-1 text-slate-600 font-medium">{t('GR done?')}</div>
+        <div className="bg-white p-1 text-amber-600 font-bold italic">{t('unclear')}</div>
+        <div className="bg-white p-1 text-slate-600 font-medium">{t('QC signed?')}</div>
+        <div className="bg-white p-1 text-amber-600 font-bold italic">{t('no record')}</div>
+        <div className="bg-white p-1 text-slate-700 font-bold">{t('Approval?')}</div>
         <div className="bg-white p-1 relative h-[14px]">
-          <motion.div initial={{ opacity:1, scale:1 }} animate={isHovered ? { opacity:0, scale:0.8 } : { opacity:1, scale:1 }} className="text-red-500 font-bold font-mono text-[7.5px] bg-red-50 px-1 rounded border border-red-200/50 leading-tight w-fit">?? chasing</motion.div>
-          <motion.div initial={{ opacity:0, scale:0.8 }} animate={isHovered ? { opacity:1, scale:1 } : { opacity:0, scale:0.8 }} className="absolute inset-0 p-1 text-emerald-600 font-bold font-mono text-[8.5px]">✓ Cleared</motion.div>
+          <motion.div initial={{ opacity:1, scale:1 }} animate={isHovered ? { opacity:0, scale:0.8 } : { opacity:1, scale:1 }} className="text-red-500 font-bold font-mono text-[7.5px] bg-red-50 px-1 rounded border border-red-200/50 leading-tight w-fit">{t('?? chasing')}</motion.div>
+          <motion.div initial={{ opacity:0, scale:0.8 }} animate={isHovered ? { opacity:1, scale:1 } : { opacity:0, scale:0.8 }} className="absolute inset-0 p-1 text-emerald-600 font-bold font-mono text-[8.5px]">✓ {t('Cleared')}</motion.div>
         </div>
       </div>
 
       <div className="flex justify-between items-center text-[8.5px] text-slate-400 border-t border-slate-200/60 pt-1">
-        <span>Finance · Vendor · QC all chasing</span>
-        <span className="text-red-500 font-bold">⚠️ Everyone working blind</span>
+        <span>{t('Finance · Vendor · QC all chasing')}</span>
+        <span className="text-red-500 font-bold">⚠️ {t('Everyone working blind')}</span>
       </div>
 
       <motion.div
@@ -308,8 +319,8 @@ function NoVisibilityWidget({ isHovered }: { isHovered: boolean }) {
         transition={{ delay: 0.2, type: 'spring', stiffness: 120 }}
         className="absolute bottom-0 left-0 right-0 bg-emerald-600 border-t border-emerald-500 p-2 text-[8.5px] text-white flex items-center justify-between font-bold shadow-lg"
       >
-        <span>✨ Full audit trail · GR → QC → Match → Pay</span>
-        <span className="text-[7.5px] bg-white/20 px-1.5 rounded font-mono font-bold">Live</span>
+        <span>✨ {t('Full audit trail · GR → QC → Match → Pay')}</span>
+        <span className="text-[7.5px] bg-white/20 px-1.5 rounded font-mono font-bold">{t('Live')}</span>
       </motion.div>
     </div>
   )
@@ -377,6 +388,7 @@ function renderWidget(id: string, isHovered: boolean) {
 }
 
 export default function InvoiceProblemSection() {
+  const t = useLocalizedText()
   const [hoveredCardId, setHoveredCardId] = React.useState<string | null>(null)
   const scrollContainerRef = React.useRef<HTMLDivElement>(null)
 
@@ -404,15 +416,15 @@ export default function InvoiceProblemSection() {
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-pulse" />
-              Payables Vulnerabilities
+              {t('Payables Vulnerabilities')}
             </div>
 
             <h2
               className="text-[24px] sm:text-[36px] md:text-[48px] font-semibold text-slate-900 mb-6 leading-[1.15] tracking-[-0.03em]"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              Where Most Teams Lose <br />
-              <span className="text-[#3666ff]">Money and Trust.</span>
+              {t('Where Most Teams Lose')} <br />
+              <span className="text-[#3666ff]">{t('Money and Trust.')}</span>
             </h2>
           </div>
 
@@ -420,14 +432,14 @@ export default function InvoiceProblemSection() {
             <button
               onClick={() => scroll('left')}
               className="size-11 rounded-full border border-slate-200/80 bg-white hover:border-[#3666ff]/50 hover:bg-blue-50/20 text-slate-500 hover:text-[#3666ff] active:scale-95 transition-all flex items-center justify-center shadow-xs cursor-pointer"
-              aria-label="Scroll left"
+              aria-label={t('Scroll left')}
             >
               <ChevronLeft className="size-5" />
             </button>
             <button
               onClick={() => scroll('right')}
               className="size-11 rounded-full border border-slate-200/80 bg-white hover:border-[#3666ff]/50 hover:bg-blue-50/20 text-slate-500 hover:text-[#3666ff] active:scale-95 transition-all flex items-center justify-center shadow-xs cursor-pointer"
-              aria-label="Scroll right"
+              aria-label={t('Scroll right')}
             >
               <ChevronRight className="size-5" />
             </button>
@@ -456,10 +468,10 @@ export default function InvoiceProblemSection() {
 
               <div className="flex flex-col gap-3 relative z-10 text-left">
                 <h3 className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.015em] text-slate-800 leading-snug" style={{ fontFamily: 'var(--font-display)' }}>
-                  {prob.subtitle}
+                  {t(prob.subtitle)}
                 </h3>
                 <p className="text-[12px] sm:text-[13px] text-slate-400 leading-relaxed font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                  {prob.description}
+                  {t(prob.description)}
                 </p>
               </div>
 
@@ -470,12 +482,12 @@ export default function InvoiceProblemSection() {
               <div className="pt-3 border-t border-slate-100 relative z-10">
                 <div className="relative h-5 overflow-hidden">
                   <div className="absolute inset-0 flex items-center justify-between transition-all duration-300 transform group-hover:-translate-y-full group-hover:opacity-0">
-                    <span className="text-[9px] font-bold tracking-wider font-mono text-slate-400">LEAKING VALUE</span>
+                    <span className="text-[9px] font-bold tracking-wider font-mono text-slate-400">{t('LEAKING VALUE')}</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff]/80" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-between transition-all duration-300 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
                     <span className="text-[10px] font-bold text-[#3666ff] flex items-center gap-1">
-                      See Solution
+                      {t('See Solution')}
                       <span className="transition-transform duration-300 group-hover:translate-x-0.5">➔</span>
                     </span>
                   </div>

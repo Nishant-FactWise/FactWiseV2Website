@@ -4,6 +4,9 @@ import * as React from "react"
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { getPathLocale, localizePath } from '@/lib/i18n'
+import { useLocalizedText } from '@/hooks/useLocalizedText'
 
 const IcFile     = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
 const IcTruck    = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
@@ -13,6 +16,7 @@ const IcShield   = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="n
 const IcBar      = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
 
 function WhiteDashboard() {
+  const t = useLocalizedText()
   const mono = "'JetBrains Mono', monospace"
   const invoices = [
     { id:'INV-90412', vendor:'Apex Industrial',  value:'₹14,910', status:'4-Way Matched', statusColor:'#10b981', bg:'rgba(16,185,129,0.08)',  border:'rgba(16,185,129,0.2)' },
@@ -41,7 +45,7 @@ function WhiteDashboard() {
             </div>
             FactWise
           </div>
-          <div style={{fontSize:8,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.1em',padding:'4px 6px 3px',fontWeight:600}}>Payables</div>
+          <div style={{fontSize:8,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.1em',padding:'4px 6px 3px',fontWeight:600}}>{t('Payables')}</div>
           {[
             {ic:<IcFile/>,   label:'Invoices',         active:true},
             {ic:<IcTruck/>,  label:'Goods Receipts'},
@@ -50,13 +54,13 @@ function WhiteDashboard() {
           ].map(({ic,label,active})=>(
             <div key={label} style={{ display:'flex',alignItems:'center',gap:7, padding:'5px 7px',borderRadius:5,fontSize:10,fontWeight:500, color:active?'#3666ff':'#64748b', background:active?'rgba(54,102,255,0.07)':'transparent', border:active?'1px solid rgba(54,102,255,0.14)':'1px solid transparent', marginBottom:1 }}>
               <span style={{color:active?'#3666ff':'#94a3b8',display:'inline-flex'}}>{ic}</span>
-              {label}
+              {t(label)}
             </div>
           ))}
-          <div style={{fontSize:8,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.1em',padding:'8px 6px 3px',fontWeight:600}}>Reports</div>
+          <div style={{fontSize:8,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.1em',padding:'8px 6px 3px',fontWeight:600}}>{t('Reports')}</div>
           {[{ic:<IcBar/>,label:'Spend Analytics'},{ic:<IcCheck/>,label:'Audit Trail'}].map(({ic,label})=>(
             <div key={label} style={{display:'flex',alignItems:'center',gap:7,padding:'5px 7px',borderRadius:5,fontSize:10,color:'#64748b',marginBottom:1}}>
-              <span style={{color:'#94a3b8',display:'inline-flex'}}>{ic}</span>{label}
+              <span style={{color:'#94a3b8',display:'inline-flex'}}>{ic}</span>{t(label)}
             </div>
           ))}
         </div>
@@ -65,12 +69,12 @@ function WhiteDashboard() {
         <div style={{ padding:'16px 18px', overflow:'hidden', display:'flex', flexDirection:'column', gap:12 }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
             <div>
-              <div style={{fontSize:13,fontWeight:700,color:'#1A1D2E',letterSpacing:'-0.01em'}}>Invoice Dashboard</div>
-              <div style={{fontSize:9,color:'#94a3b8',marginTop:2}}>Q3 · 218 invoices · 24 pending payment</div>
+              <div style={{fontSize:13,fontWeight:700,color:'#1A1D2E',letterSpacing:'-0.01em'}}>{t('Invoice Dashboard')}</div>
+              <div style={{fontSize:9,color:'#94a3b8',marginTop:2}}>{t('Q3 · 218 invoices · 24 pending payment')}</div>
             </div>
             <div style={{ display:'inline-flex',alignItems:'center',gap:4, padding:'3px 8px',borderRadius:5,fontSize:9,fontWeight:600, background:'rgba(0,184,132,0.08)',color:'#059669', border:'1px solid rgba(0,184,132,0.2)' }}>
               <span style={{width:5,height:5,borderRadius:'50%',background:'#10b981',display:'inline-block'}}/>
-              4-Way Match Active
+              {t('4-Way Match Active')}
             </div>
           </div>
 
@@ -82,9 +86,9 @@ function WhiteDashboard() {
               {label:'Cleared This Qtr',  value:'₹3.1M',  delta:'↑ 18% on-time'},
             ].map(k=>(
               <div key={k.label} style={{ background:'white',border:'1px solid #f1f5f9',borderRadius:8,padding:'9px 11px',boxShadow:'0 1px 3px rgba(15,23,42,0.04)' }}>
-                <div style={{fontSize:8,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>{k.label}</div>
+                <div style={{fontSize:8,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>{t(k.label)}</div>
                 <div style={{fontSize:16,fontWeight:700,color:'#1A1D2E',letterSpacing:'-0.02em',marginBottom:2}}>{k.value}</div>
-                <div style={{fontSize:9,color:'#10b981',fontWeight:500}}>{k.delta}</div>
+                <div style={{fontSize:9,color:'#10b981',fontWeight:500}}>{t(k.delta)}</div>
               </div>
             ))}
           </div>
@@ -92,11 +96,11 @@ function WhiteDashboard() {
           {/* Invoices table */}
           <div style={{ background:'white',border:'1px solid #f1f5f9',borderRadius:8,overflow:'hidden',boxShadow:'0 1px 3px rgba(15,23,42,0.04)' }}>
             <div style={{ padding:'7px 12px',borderBottom:'1px solid #f1f5f9',display:'flex',justifyContent:'space-between',alignItems:'center',background:'#fafbfc' }}>
-              <span style={{fontSize:10,fontWeight:600,color:'#1A1D2E'}}>Active Invoices</span>
-              <span style={{fontSize:9,color:'#94a3b8',fontFamily:mono}}>Live</span>
+              <span style={{fontSize:10,fontWeight:600,color:'#1A1D2E'}}>{t('Active Invoices')}</span>
+              <span style={{fontSize:9,color:'#94a3b8',fontFamily:mono}}>{t('Live')}</span>
             </div>
             <div style={{ display:'grid',gridTemplateColumns:'0.9fr 1.4fr 0.8fr 1fr', padding:'5px 12px',fontSize:8,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.08em',borderBottom:'1px solid #f8fafc',background:'#fdfeff' }}>
-              <div>Invoice</div><div>Vendor</div><div>Value</div><div>Status</div>
+              <div>{t('Invoice')}</div><div>{t('Vendor')}</div><div>{t('Value')}</div><div>{t('Status')}</div>
             </div>
             {invoices.map((r,i)=>(
               <div key={r.id} style={{ display:'grid',gridTemplateColumns:'0.9fr 1.4fr 0.8fr 1fr', padding:'7px 12px',borderBottom:i<3?'1px solid #f8fafc':'none',fontSize:10,alignItems:'center' }}>
@@ -104,7 +108,7 @@ function WhiteDashboard() {
                 <div style={{fontWeight:600,color:'#1A1D2E',fontSize:10}}>{r.vendor}</div>
                 <div style={{fontFamily:mono,color:'#1A1D2E',fontSize:10,fontWeight:600}}>{r.value}</div>
                 <div style={{ display:'inline-flex',alignItems:'center',gap:4,padding:'2px 6px',borderRadius:4,fontSize:8,fontWeight:600,color:r.statusColor,background:r.bg,border:`1px solid ${r.border}`,width:'fit-content' }}>
-                  {r.status}
+                  {t(r.status)}
                 </div>
               </div>
             ))}
@@ -142,6 +146,9 @@ function FloatCard({ style, delay=0, yAmt=12, dur=6, children }: {
 }
 
 export default function InvoiceHero() {
+  const t = useLocalizedText()
+  const pathname = usePathname()
+  const locale = getPathLocale(pathname)
   const mono = "'JetBrains Mono', monospace"
 
   return (
@@ -177,12 +184,12 @@ export default function InvoiceHero() {
             lineHeight:1.15, letterSpacing:'-0.035em', marginBottom:24,
             fontFamily:'var(--font-display)',
           }}>
-            Every Invoice Verified. Every Payment Controlled.{' '}
+            {t('Every Invoice Verified. Every Payment Controlled.')}{' '}
             <span style={{
               background:'linear-gradient(135deg,#7ba6ff 0%,#4f8bff 50%,#2a6cff 100%)',
               WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
             }}>
-              Every Rupee Accounted For.
+              {t('Every Rupee Accounted For.')}
             </span>
           </h1>
 
@@ -193,13 +200,13 @@ export default function InvoiceHero() {
               marginBottom:40, maxWidth:520, fontFamily:'var(--font-inter)',
             }}
           >
-            Stop chasing invoices, matching documents by hand, and hoping nothing slips through. FactWise unifies every step from vendor invoice to final payment — with full validation, flexibility, and visibility.
+            {t('Stop chasing invoices, matching documents by hand, and hoping nothing slips through. FactWise unifies every step from vendor invoice to final payment — with full validation, flexibility, and visibility.')}
           </p>
 
           {/* CTA Buttons */}
           <div style={{ display:'flex', gap:14, alignItems:'center', marginBottom:48 }}>
             <Link
-              href="/demo"
+              href={localizePath('/demo', locale)}
               style={{
                 background:'linear-gradient(135deg,#4f8bff,#2a6cff)', color:'white', border:'none',
                 padding:'14px 24px 14px 28px', borderRadius:100, fontSize:15, fontWeight:600,
@@ -208,7 +215,7 @@ export default function InvoiceHero() {
                 fontFamily:'var(--font-inter)', textDecoration:'none', lineHeight:1,
               }}
             >
-              Get started
+              {t('Get started')}
               <span style={{ width:28, height:28, borderRadius:'50%', background:'rgba(255,255,255,0.18)', display:'grid', placeItems:'center' }}>
                 <ArrowRight style={{ width:14, height:14 }}/>
               </span>
@@ -245,7 +252,7 @@ export default function InvoiceHero() {
           <FloatCard delay={0.5} yAmt={12} dur={6} style={{ top:40, left:-45, width:240, padding:'10px 14px' }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:6 }}>
               <div>
-                <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>INV-90412 · Parsed</div>
+                <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>{t('INV-90412 · Parsed')}</div>
                 <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Apex Industrial · ₹14,910</div>
               </div>
               <div style={{ width:24, height:24, borderRadius:6, background:'rgba(54,102,255,0.08)', border:'1px solid rgba(54,102,255,0.2)', display:'grid', placeItems:'center', color:'#3666ff', fontSize:13 }}>AI</div>
@@ -260,7 +267,7 @@ export default function InvoiceHero() {
                 <span style={{ width:14, height:14, borderRadius:'50%', display:'grid', placeItems:'center', background: v.highlight ? 'rgba(54,102,255,0.1)' : v.done ? 'rgba(16,185,129,0.1)' : '#f1f5f9', fontSize:8, fontWeight:700, color: v.highlight ? '#3666ff' : v.done ? '#10b981' : '#94a3b8' }}>
                   {v.done ? '✓' : '·'}
                 </span>
-                <span style={{ color: v.highlight ? '#3666ff' : '#475569', fontWeight: v.highlight ? 700 : 400 }}>{v.stage}</span>
+                <span style={{ color: v.highlight ? '#3666ff' : '#475569', fontWeight: v.highlight ? 700 : 400 }}>{t(v.stage)}</span>
               </div>
             ))}
           </FloatCard>
@@ -269,8 +276,8 @@ export default function InvoiceHero() {
           <FloatCard delay={1.2} yAmt={10} dur={7} style={{ bottom:120, left:20, width:228 }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
               <div>
-                <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>4-Way Match · Verified</div>
-                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>PO · GR · QC · Invoice</div>
+                <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>{t('4-Way Match · Verified')}</div>
+                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>{t('PO · GR · QC · Invoice')}</div>
               </div>
               <div style={{ width:24, height:24, borderRadius:6, background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.2)', display:'grid', placeItems:'center', color:'#10b981', fontSize:13 }}>✓</div>
             </div>
@@ -278,7 +285,7 @@ export default function InvoiceHero() {
               <div style={{ width:'100%', height:'100%', borderRadius:3, background:'linear-gradient(90deg,#3666ff,#10b981)' }}/>
             </div>
             <div style={{ display:'flex', justifyContent:'space-between', fontSize:9, color:'#94a3b8' }}>
-              <span>0 discrepancies · ready to pay</span>
+              <span>{t('0 discrepancies · ready to pay')}</span>
               <span style={{ color:'#10b981', fontWeight:700, fontFamily:mono }}>100%</span>
             </div>
           </FloatCard>
@@ -287,15 +294,15 @@ export default function InvoiceHero() {
           <FloatCard delay={2.4} yAmt={14} dur={8} style={{ top:270, right:-40, width:260 }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:4 }}>
               <div>
-                <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>Payment Cleared</div>
+                <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>{t('Payment Cleared')}</div>
                 <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>PAY-4421 · Apex Industrial</div>
               </div>
-              <span style={{ padding:'2px 8px', borderRadius:5, fontSize:9, fontWeight:700, background:'rgba(0,184,132,0.08)', color:'#10b981', border:'1px solid rgba(0,184,132,0.2)' }}>✓ Paid</span>
+              <span style={{ padding:'2px 8px', borderRadius:5, fontSize:9, fontWeight:700, background:'rgba(0,184,132,0.08)', color:'#10b981', border:'1px solid rgba(0,184,132,0.2)' }}>✓ {t('Paid')}</span>
             </div>
             <div style={{ fontSize:24, fontWeight:700, letterSpacing:'-0.025em', fontFamily:mono, color:'#1A1D2E', margin:'7px 0 2px' }}>
               <span style={{ fontSize:13, color:'#94a3b8' }}>$</span>14,070
             </div>
-            <div style={{ fontSize:9, color:'#94a3b8', marginBottom:10 }}>Net of ₹840 QC deduction · 6% discount captured</div>
+            <div style={{ fontSize:9, color:'#94a3b8', marginBottom:10 }}>{t('Net of ₹840 QC deduction · 6% discount captured')}</div>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, paddingTop:10, borderTop:'1px solid #f1f5f9' }}>
               {[
                 {label:'Match cycle',    value:'2.1 hrs'},
@@ -304,8 +311,8 @@ export default function InvoiceHero() {
                 {label:'Audit trail',    value:'Complete'},
               ].map(q=>(
                 <div key={q.label}>
-                  <div style={{ fontSize:8, color:'#94a3b8', textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:2 }}>{q.label}</div>
-                  <div style={{ fontFamily:mono, fontWeight:600, fontSize:10, color:q.green?'#10b981':'#1A1D2E' }}>{q.value}</div>
+                  <div style={{ fontSize:8, color:'#94a3b8', textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:2 }}>{t(q.label)}</div>
+                  <div style={{ fontFamily:mono, fontWeight:600, fontSize:10, color:q.green?'#10b981':'#1A1D2E' }}>{t(q.value)}</div>
                 </div>
               ))}
             </div>

@@ -3,6 +3,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { StaggerTestimonials, TestimonialItem } from '@/components/ui/stagger-testimonials';
+import { usePathname } from 'next/navigation';
+import { getPathLocale } from '@/lib/i18n';
+import { messages } from '@/lib/messages';
 
 const TESTIMONIALS: TestimonialItem[] = [
   {
@@ -64,6 +67,15 @@ const TESTIMONIALS: TestimonialItem[] = [
 ];
 
 export const CareersTestimonials = () => {
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const t = (source: string) => messages[locale].textMap[source] ?? source;
+  const localizedTestimonials = TESTIMONIALS.map((item) => ({
+    ...item,
+    testimonial: t(item.testimonial),
+    role: t(item.role),
+  }));
+
   return (
     <section className="py-20 md:py-32 px-6 md:px-14 bg-slate-950 relative overflow-hidden">
       {/* Background Glows */}
@@ -80,7 +92,7 @@ export const CareersTestimonials = () => {
               viewport={{ once: true }}
               className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-6 shadow-sm"
             >
-              From the Team
+              {t("From the Team")}
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -89,9 +101,9 @@ export const CareersTestimonials = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-6xl font-bold text-white tracking-tighter"
             >
-              What people{' '}
-              <span className="text-[#3666ff] font-instrument italic font-medium">actually say</span>{' '}
-              about working here.
+              {t("What people")}{' '}
+              <span className="text-[#3666ff] font-instrument italic font-medium">{t("actually say")}</span>{' '}
+              {t("about working here.")}
             </motion.h2>
           </div>
 
@@ -104,7 +116,7 @@ export const CareersTestimonials = () => {
             className="text-white/30 text-sm max-w-[180px] text-right hidden md:block"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
-            Click a card or use the arrows to explore
+            {t("Click a card or use the arrows to explore")}
           </motion.p>
         </div>
 
@@ -115,7 +127,7 @@ export const CareersTestimonials = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <StaggerTestimonials testimonials={TESTIMONIALS} />
+          <StaggerTestimonials key={locale} testimonials={localizedTestimonials} />
         </motion.div>
       </div>
     </section>

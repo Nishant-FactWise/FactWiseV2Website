@@ -4,6 +4,7 @@ import * as React from "react"
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
+import { useLocalizedText } from '@/hooks/useLocalizedText'
 
 const IcList    = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
 const IcCheck   = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
@@ -15,10 +16,10 @@ const IcUsers   = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="no
 function WhiteDashboard() {
   const mono = "'JetBrains Mono', monospace"
   const reqs = [
-    { id:'REQ-1041', desc:'Hydraulic Seals × 200',   dept:'Engineering',  status:'Approved',   statusColor:'#10b981', bg:'rgba(16,185,129,0.08)', border:'rgba(16,185,129,0.2)' },
-    { id:'REQ-1042', desc:'Control Valves × 50',     dept:'Maintenance',  status:'Pending',    statusColor:'#f59e0b', bg:'rgba(245,158,11,0.08)', border:'rgba(245,158,11,0.2)'  },
-    { id:'REQ-1043', desc:'Safety Gloves × 500',     dept:'Operations',   status:'RFQ Sent',   statusColor:'#3666ff', bg:'rgba(54,102,255,0.08)', border:'rgba(54,102,255,0.2)'  },
-    { id:'REQ-1044', desc:'Pressure Gauges × 30',    dept:'Quality',      status:'PO Issued',  statusColor:'#8b5cf6', bg:'rgba(139,92,246,0.08)', border:'rgba(139,92,246,0.2)'  },
+    { id:'REQ-1041', desc:'Hydraulic Seals  200',   dept:'Engineering',  status:'Approved',   statusColor:'#10b981', bg:'rgba(16,185,129,0.08)', border:'rgba(16,185,129,0.2)' },
+    { id:'REQ-1042', desc:'Control Valves  50',     dept:'Maintenance',  status:'Pending',    statusColor:'#f59e0b', bg:'rgba(245,158,11,0.08)', border:'rgba(245,158,11,0.2)'  },
+    { id:'REQ-1043', desc:'Safety Gloves  500',     dept:'Operations',   status:'RFQ Sent',   statusColor:'#3666ff', bg:'rgba(54,102,255,0.08)', border:'rgba(54,102,255,0.2)'  },
+    { id:'REQ-1044', desc:'Pressure Gauges  30',    dept:'Quality',      status:'PO Issued',  statusColor:'#8b5cf6', bg:'rgba(139,92,246,0.08)', border:'rgba(139,92,246,0.2)'  },
   ]
   return (
     <div style={{ width:'100%', height:'100%', background:'white', borderRadius:12, overflow:'hidden', display:'flex', flexDirection:'column', fontFamily:"'Inter', sans-serif" }}>
@@ -66,7 +67,7 @@ function WhiteDashboard() {
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
             <div>
               <div style={{fontSize:13,fontWeight:700,color:'#1A1D2E',letterSpacing:'-0.01em'}}>Requisition Dashboard</div>
-              <div style={{fontSize:9,color:'#94a3b8',marginTop:2}}>Q3 · 142 requisitions · 18 pending approval</div>
+              <div style={{fontSize:9,color:'#94a3b8',marginTop:2}}>Q3  142 requisitions  18 pending approval</div>
             </div>
             <div style={{ display:'inline-flex',alignItems:'center',gap:4, padding:'3px 8px',borderRadius:5,fontSize:9,fontWeight:600, background:'rgba(0,184,132,0.08)',color:'#059669', border:'1px solid rgba(0,184,132,0.2)' }}>
               <span style={{width:5,height:5,borderRadius:'50%',background:'#10b981',display:'inline-block'}}/>
@@ -77,9 +78,9 @@ function WhiteDashboard() {
           {/* KPIs */}
           <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8 }}>
             {[
-              {label:'Open Reqs',      value:'38',      delta:'↑ 12 this week'},
-              {label:'Pending Approval',value:'18',     delta:'↓ 6 cleared today'},
-              {label:'POs Issued',     value:'₹2.4M',   delta:'↑ 22% vs last qtr'},
+              {label:'Open Reqs',      value:'38',      delta:' 12 this week'},
+              {label:'Pending Approval',value:'18',     delta:' 6 cleared today'},
+              {label:'POs Issued',     value:'2.4M',   delta:' 22% vs last qtr'},
             ].map(k=>(
               <div key={k.label} style={{ background:'white',border:'1px solid #f1f5f9',borderRadius:8,padding:'9px 11px',boxShadow:'0 1px 3px rgba(15,23,42,0.04)' }}>
                 <div style={{fontSize:8,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>{k.label}</div>
@@ -142,6 +143,7 @@ function FloatCard({ style, delay=0, yAmt=12, dur=6, children }: {
 }
 
 export default function ReqHero() {
+  const t = useLocalizedText()
   const mono = "'JetBrains Mono', monospace"
   const [isDesktop, setIsDesktop] = React.useState(false)
 
@@ -185,12 +187,12 @@ export default function ReqHero() {
             lineHeight: 1.15, letterSpacing: '-0.035em', marginBottom: 24,
             fontFamily: 'var(--font-display)',
           }}>
-            From Internal Request to Purchase Order.{' '}
+            {t('From Internal Request to Purchase Order.')}{' '}
             <span style={{
               background: 'linear-gradient(135deg,#7ba6ff 0%,#4f8bff 50%,#2a6cff 100%)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}>
-              Without the Back and Forth.
+              {t('Without the Back and Forth.')}
             </span>
           </h1>
 
@@ -201,7 +203,7 @@ export default function ReqHero() {
               marginBottom: 40, maxWidth: 520, fontFamily: 'var(--font-inter)',
             }}
           >
-            Requests get lost, approvals stall, and POs go out manually one by one. FactWise unifies every step into one intelligent flow — so requests move faster, sourcing gets smarter, and every PO ships with confidence.
+            {t('Requests get lost, approvals stall, and POs go out manually one by one. FactWise unifies every step into one intelligent flow so requests move faster, sourcing gets smarter, and every PO ships with confidence.')}
           </p>
 
           {/* CTA Buttons */}
@@ -216,7 +218,7 @@ export default function ReqHero() {
                 fontFamily:'var(--font-inter)', textDecoration:'none', lineHeight:1,
               }}
             >
-              Get started
+              {t('Get started')}
               <span style={{ width:28, height:28, borderRadius:'50%', background:'rgba(255,255,255,0.18)', display:'grid', placeItems:'center' }}>
                 <ArrowRight style={{ width:14, height:14 }}/>
               </span>
@@ -248,14 +250,14 @@ export default function ReqHero() {
             <WhiteDashboard />
           </div>
 
-          {/* Float card 1 — Approval triggered */}
+          {/* Float card 1  Approval triggered */}
           <FloatCard delay={0.5} yAmt={12} dur={6} style={{ top:40, left:-45, width:240, padding:'10px 14px' }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:6 }}>
               <div>
-                <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>REQ-1041 · Approved</div>
-                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Engineering · ₹14,800 value</div>
+                <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>REQ-1041  Approved</div>
+                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Engineering  14,800 value</div>
               </div>
-              <div style={{ width:24, height:24, borderRadius:6, background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.2)', display:'grid', placeItems:'center', color:'#10b981', fontSize:13 }}>✓</div>
+              <div style={{ width:24, height:24, borderRadius:6, background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.2)', display:'grid', placeItems:'center', color:'#10b981', fontSize:13 }}></div>
             </div>
             {[
               {stage:'Dept. Manager',   done:true},
@@ -265,21 +267,21 @@ export default function ReqHero() {
             ].map((v,i)=>(
               <div key={v.stage} style={{ display:'flex', alignItems:'center', gap:7, padding:'3px 0', fontSize:10, borderBottom:i<3?'1px solid #f8fafc':'none' }}>
                 <span style={{ width:14, height:14, borderRadius:'50%', display:'grid', placeItems:'center', background: v.highlight ? 'rgba(54,102,255,0.1)' : v.done ? 'rgba(16,185,129,0.1)' : '#f1f5f9', fontSize:8, fontWeight:700, color: v.highlight ? '#3666ff' : v.done ? '#10b981' : '#94a3b8' }}>
-                  {v.done ? '✓' : '·'}
+                  {v.done ? '' : ''}
                 </span>
                 <span style={{ color: v.highlight ? '#3666ff' : '#475569', fontWeight: v.highlight ? 700 : 400 }}>{v.stage}</span>
               </div>
             ))}
           </FloatCard>
 
-          {/* Float card 2 — RFQ Auto-sent */}
+          {/* Float card 2  RFQ Auto-sent */}
           <FloatCard delay={1.2} yAmt={10} dur={7} style={{ bottom:120, left:20, width:228 }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
               <div>
                 <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>RFQ Auto-dispatched</div>
-                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>6 vendors · REQ-1041</div>
+                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>6 vendors  REQ-1041</div>
               </div>
-              <div style={{ width:24, height:24, borderRadius:6, background:'rgba(54,102,255,0.08)', border:'1px solid rgba(54,102,255,0.2)', display:'grid', placeItems:'center', color:'#3666ff', fontSize:10 }}>📤</div>
+              <div style={{ width:24, height:24, borderRadius:6, background:'rgba(54,102,255,0.08)', border:'1px solid rgba(54,102,255,0.2)', display:'grid', placeItems:'center', color:'#3666ff', fontSize:10 }}></div>
             </div>
             <div style={{ height:5, background:'#f1f5f9', borderRadius:3, overflow:'hidden', margin:'10px 0 7px' }}>
               <div style={{ width:'83%', height:'100%', borderRadius:3, background:'linear-gradient(90deg,#3666ff,#10b981)' }}/>
@@ -290,14 +292,14 @@ export default function ReqHero() {
             </div>
           </FloatCard>
 
-          {/* Float card 3 — PO Generated */}
+          {/* Float card 3  PO Generated */}
           <FloatCard delay={2.4} yAmt={14} dur={8} style={{ top:270, right:-40, width:260 }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:4 }}>
               <div>
                 <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>PO Generated</div>
-                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>PO-3812 · Apex Industrial</div>
+                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>PO-3812  Apex Industrial</div>
               </div>
-              <span style={{ padding:'2px 8px', borderRadius:5, fontSize:9, fontWeight:700, background:'rgba(0,184,132,0.08)', color:'#10b981', border:'1px solid rgba(0,184,132,0.2)' }}>✓ Issued</span>
+              <span style={{ padding:'2px 8px', borderRadius:5, fontSize:9, fontWeight:700, background:'rgba(0,184,132,0.08)', color:'#10b981', border:'1px solid rgba(0,184,132,0.2)' }}> Issued</span>
             </div>
             <div style={{ fontSize:24, fontWeight:700, letterSpacing:'-0.025em', fontFamily:mono, color:'#1A1D2E', margin:'7px 0 2px' }}>
               <span style={{ fontSize:13, color:'#94a3b8' }}>$</span>14,200
@@ -306,7 +308,7 @@ export default function ReqHero() {
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, paddingTop:10, borderTop:'1px solid #f1f5f9' }}>
               {[
                 {label:'Requisitions',  value:'3 merged'},
-                {label:'Savings',       value:'₹1,840', green:true},
+                {label:'Savings',       value:'1,840', green:true},
                 {label:'Approval time', value:'4.2 hrs'},
                 {label:'PO cycle',      value:'< 1 day'},
               ].map(q=>(

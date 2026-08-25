@@ -15,6 +15,7 @@ import {
   AnimatedBrainCircuitIcon,
   AnimatedLightbulbIcon,
 } from "@/components/ui/animated-icons";
+import { useLocalizedText } from "@/hooks/useLocalizedText";
 
 /* ─── Feature data ─── */
 const features = [
@@ -78,6 +79,7 @@ function FeatureCard({
   comingSoon?: boolean;
   index: number;
 }) {
+  const t = useLocalizedText();
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -195,14 +197,14 @@ function FeatureCard({
         className="relative z-10 text-[17px] font-semibold text-[#0D1117] mb-3 leading-snug tracking-[-0.01em]"
         style={{ fontFamily: "var(--font-display)" }}
       >
-        {title}
+        {t(title)}
       </h3>
 
       <p
         className="relative z-10 text-sm text-slate-500 leading-relaxed flex-1 group-hover:text-slate-600 transition-colors duration-300"
         style={{ fontFamily: "var(--font-inter)" }}
       >
-        {description}
+        {t(description)}
       </p>
 
       {/* Footer */}
@@ -213,7 +215,7 @@ function FeatureCard({
               <span className="absolute inline-flex h-full w-full rounded-full bg-slate-300 opacity-75 animate-ping" />
               <span className="relative inline-flex size-1.5 rounded-full bg-slate-400" />
             </span>
-            Coming soon
+            {t("Coming soon")}
           </span>
         </div>
       )}
@@ -223,6 +225,7 @@ function FeatureCard({
 
 /* ─── Main section ─── */
 export default function ReqToPoFeatures() {
+  const t = useLocalizedText();
   return (
     <section className="relative w-full bg-white pt-8 pb-28 overflow-hidden">
       {/* Decorative dot-grid background */}
@@ -261,16 +264,16 @@ export default function ReqToPoFeatures() {
                 <span className="absolute inline-flex h-full w-full rounded-full bg-[#3666ff] opacity-75 animate-ping" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-[#3666ff]" />
               </span>
-              Core Capabilities
+              {t("Core Capabilities")}
             </motion.div>
 
             <h2
               className="text-[36px] md:text-[48px] font-semibold text-[#0D1117] mb-5 tracking-[-0.03em] leading-[1.1] max-w-2xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Powerful Features.{" "}
+              {t("Powerful Features.")}{" "}
               <span className="text-[#3666ff]">
-                Right Where You Need Them.
+                {t("Right Where You Need Them.")}
               </span>
             </h2>
 
@@ -290,13 +293,13 @@ export default function ReqToPoFeatures() {
                 className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-[0.18em]"
                 style={{ fontFamily: "var(--font-inter)" }}
               >
-                {String(features.length).padStart(2, "0")} capabilities
+                {String(features.length).padStart(2, "0")} {t("capabilities")}
               </span>
               <span
                 className="text-[10px] font-mono text-slate-300 tracking-wider mt-0.5"
                 style={{ fontFamily: "var(--font-inter)" }}
               >
-                · scroll to explore ·
+                 {t("scroll to explore")}
               </span>
             </div>
             <div className="h-10 w-px bg-gradient-to-b from-transparent via-slate-300 to-transparent" />

@@ -45,6 +45,7 @@ export default function SplashLoaderDoor() {
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [hasExited, setHasExited] = useState(false);
+  const hasExitedRef = useRef(false);
 
   // Prevent scrolling while active
   useEffect(() => {
@@ -59,7 +60,8 @@ export default function SplashLoaderDoor() {
   }, [isActive]);
 
   const triggerExitTransition = () => {
-    if (hasExited) return;
+    if (hasExitedRef.current) return;
+    hasExitedRef.current = true;
     setHasExited(true);
 
     if (leftPanel.current && rightPanel.current && contentWrapper.current) {
@@ -85,6 +87,14 @@ export default function SplashLoaderDoor() {
       setIsActive(false);
     }
   };
+
+  useEffect(() => {
+    const fallback = window.setTimeout(() => {
+      triggerExitTransition();
+    }, 5200);
+
+    return () => window.clearTimeout(fallback);
+  }, []);
 
   useEffect(() => {
     if (hasExited) return;
@@ -229,7 +239,8 @@ export default function SplashLoaderDoor() {
   }, { scope: container });
 
   const handleSkip = () => {
-    if (hasExited) return;
+    if (hasExitedRef.current) return;
+    hasExitedRef.current = true;
     setHasExited(true);
     if (timelineRef.current) {
       timelineRef.current.kill();
@@ -264,6 +275,7 @@ export default function SplashLoaderDoor() {
   return (
     <div
       ref={container}
+      data-no-localize
       onClick={handleSkip}
       className="fixed inset-0 z-[9999] overflow-hidden pointer-events-auto cursor-pointer force-animate"
     >

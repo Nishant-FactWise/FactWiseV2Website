@@ -4,7 +4,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, ArrowLeft, Loader2, Shield, Globe, Zap, Search, ChevronDown, Check, Mail } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { getPathLocale, localizePath } from '@/lib/i18n';
+import { localizeTerminology } from '@/lib/localized-terminology';
+import { messages } from '@/lib/messages';
 
 /* ── Custom Dropdown ─────────────────────────────────────────────────────── */
 interface DropdownProps {
@@ -97,6 +101,10 @@ type Step = 'form' | 'otp' | 'success';
 
 export default function DemoPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const textMap = messages[locale].textMap;
+  const t = (source: string) => localizeTerminology(textMap[source] ?? source, locale);
   const [step, setStep] = useState<Step>('form');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -141,7 +149,7 @@ export default function DemoPage() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error ?? 'Something went wrong.');
+        throw new Error(data.error ?? t('Something went wrong. Please try again.'));
       }
       setPendingEmail(payload.email);
       setPendingName(payload.name);
@@ -149,7 +157,7 @@ export default function DemoPage() {
       setResendCooldown(30);
       setStep('otp');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setError(err instanceof Error ? err.message : t('Something went wrong. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -179,7 +187,7 @@ export default function DemoPage() {
 
   const handleVerify = async () => {
     const code = otp.join('');
-    if (code.length < 6) { setError('Please enter the 6-digit code.'); return; }
+    if (code.length < 6) { setError(t('Please enter the 6-digit code.')); return; }
     setError('');
     setLoading(true);
     try {
@@ -190,11 +198,11 @@ export default function DemoPage() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error ?? 'Verification failed.');
+        throw new Error(data.error ?? t('Verification failed.'));
       }
       setStep('success');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Verification failed.');
+      setError(err instanceof Error ? err.message : t('Verification failed.'));
     } finally {
       setLoading(false);
     }
@@ -210,12 +218,12 @@ export default function DemoPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(pendingPayload),
       });
-      if (!res.ok) { const d = await res.json(); throw new Error(d.error); }
+      if (!res.ok) { const d = await res.json(); throw new Error(d.error ?? t('Failed to resend code.')); }
       setOtp(['', '', '', '', '', '']);
       setResendCooldown(30);
       otpRefs.current[0]?.focus();
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to resend code.');
+      setError(err instanceof Error ? err.message : t('Failed to resend code.'));
     } finally {
       setLoading(false);
     }
@@ -229,12 +237,12 @@ export default function DemoPage() {
   ];
 
   const roleOptions = [
-    { value: 'procurement', label: 'Procurement' },
-    { value: 'finance', label: 'Finance' },
-    { value: 'operations', label: 'Operations' },
-    { value: 'executive', label: 'Executive' },
-    { value: 'it', label: 'IT / Tech' },
-    { value: 'other', label: 'Other' },
+    { value: 'procurement', label: t('Procurement') },
+    { value: 'finance', label: t('Finance') },
+    { value: 'operations', label: t('Operations') },
+    { value: 'executive', label: t('Executive') },
+    { value: 'it', label: t('IT / Tech') },
+    { value: 'other', label: t('Other') },
   ];
 
   return (
@@ -258,13 +266,16 @@ export default function DemoPage() {
           <img src="/logowhite.webp" alt="FactWise Logo" className="h-7 w-auto rounded-tl-[15%] rounded-br-[15%]" style={{ clipPath: 'inset(2% 0 0 2%)' }} />
           <span>FactWise</span>
         </div>
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors bg-white/5 border border-white/10 px-4 py-2 rounded-full hover:bg-white/10"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to site
-        </Link>
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher />
+          <Link
+            href={localizePath('/', locale)}
+            className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors bg-white/5 border border-white/10 px-4 py-2 rounded-full hover:bg-white/10"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            {t('Back to site')}
+          </Link>
+        </div>
       </header>
 
       {/* Card */}
@@ -286,21 +297,21 @@ export default function DemoPage() {
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="h-px w-6 bg-[#3666ff]/80" />
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3666ff]/80">30-Minute Demo</span>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3666ff]/80">{t('30-Minute Demo')}</span>
                   </div>
                   <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight mb-4 text-slate-900 leading-[1.1]">
-                    See FactWise <br />
-                    <span className="text-[#3666ff]">in 30 minutes.</span>
+                    {t('See FactWise')} <br />
+                    <span className="text-[#3666ff]">{t('in 30 minutes.')}</span>
                   </h1>
                   <p className="text-slate-500 mb-6 text-sm leading-relaxed">
-                    A live walkthrough tailored to your procurement challenges — RFQ automation, approval chains, landed cost benchmarking, and risk management. All in one session.
+                    {t('A live walkthrough tailored to your procurement challenges — RFQ automation, approval chains, landed cost benchmarking, and risk management. All in one session.')}
                   </p>
                   <ul className="space-y-6">
                     {[
-                      { icon: <Zap size={18} />, title: 'Real-time RFQ automation', desc: 'Watch FactWise handle multi-currency bidding instantly.' },
-                      { icon: <Shield size={18} />, title: 'Approval chain & risk', desc: 'Granular workflows and transparent risk analysis.' },
-                      { icon: <Globe size={18} />, title: 'Landed cost benchmarking', desc: 'Automatically calculate landed costs globally.' },
-                      { icon: <Search size={18} />, title: 'End-to-end auditability', desc: 'Transparency from requisition to PO in one view.' },
+                      { icon: <Zap size={18} />, title: t('Real-time RFQ automation'), desc: t('Watch FactWise handle multi-currency bidding instantly.') },
+                      { icon: <Shield size={18} />, title: t('Approval chain & risk'), desc: t('Granular workflows and transparent risk analysis.') },
+                      { icon: <Globe size={18} />, title: t('Landed cost benchmarking'), desc: t('Automatically calculate landed costs globally.') },
+                      { icon: <Search size={18} />, title: t('End-to-end auditability'), desc: t('Transparency from requisition to PO in one view.') },
                     ].map((item, i) => (
                       <li key={i} className="flex gap-4 items-start group">
                         <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center text-[#3666ff] shrink-0 transition-colors group-hover:border-[#3666ff]/50 mt-1">
@@ -319,32 +330,32 @@ export default function DemoPage() {
               {/* Right: Form */}
               <div className="flex-[1.1] p-8 lg:p-12 bg-slate-50/50 flex flex-col justify-center overflow-y-auto">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-1">Book your demo</h3>
-                  <p className="text-slate-500 text-sm font-light">We'll confirm within 2 hours and tailor the session.</p>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-1">{t('Book your demo')}</h3>
+                  <p className="text-slate-500 text-sm font-light">{t("We'll confirm within 2 hours and tailor the session.")}</p>
                 </div>
 
                 <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                   {/* Name + Company */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Full Name *</label>
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Full Name *')}</label>
                       <input required name="name" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="Jane Smith" />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Company *</label>
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Company *')}</label>
                       <input required name="company" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="e.g. Global Industries" />
                     </div>
                   </div>
 
                   {/* Email */}
                   <div className="space-y-1.5">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Work Email *</label>
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Work Email *')}</label>
                     <input required name="email" type="email" className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="jane@company.com" />
                   </div>
 
                   {/* Phone */}
                   <div className="space-y-1.5">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Phone (Optional)</label>
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Phone (Optional)')}</label>
                     <div className="relative flex rounded-lg border border-slate-200 bg-white hover:border-slate-300 transition-all shadow-sm focus-within:border-[#3666ff] focus-within:ring-4 focus-within:ring-[#3666ff]/10">
                       <select
                         defaultValue="+91"
@@ -374,41 +385,41 @@ export default function DemoPage() {
                   {/* Team Size + Role — custom dropdowns */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Team Size *</label>
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Team Size *')}</label>
                       <Dropdown
                         required
                         options={teamSizeOptions}
                         value={teamSize}
                         onChange={setTeamSize}
-                        placeholder="Select..."
+                        placeholder={t('Select...')}
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Your Role *</label>
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Your Role *')}</label>
                       <Dropdown
                         required
                         options={roleOptions}
                         value={role}
                         onChange={setRole}
-                        placeholder="Select..."
+                        placeholder={t('Select...')}
                       />
                     </div>
                   </div>
 
                   {/* Biggest Challenge */}
                   <div className="space-y-1.5">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Biggest Challenge</label>
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Biggest Challenge')}</label>
                     <input
                       type="text"
                       list="challenges"
                       className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all text-sm shadow-sm placeholder:text-slate-400"
-                      placeholder="e.g. Slow RFQ processes, or type your own..."
+                      placeholder={t('e.g. Slow RFQ processes, or type your own...')}
                       name="challenge"
                     />
                     <datalist id="challenges">
-                      <option value="Slow RFQ processes" />
-                      <option value="Landed cost calculations" />
-                      <option value="Vendor compliance & risk" />
+                      <option value={t('Slow RFQ processes')} />
+                      <option value={t('Landed cost calculations')} />
+                      <option value={t('Vendor compliance & risk')} />
                     </datalist>
                   </div>
 
@@ -423,10 +434,10 @@ export default function DemoPage() {
                       disabled={loading}
                       className="w-full py-3.5 bg-[#3666ff] text-white rounded-lg font-bold shadow-[0_0_20px_rgba(54,102,255,0.2)] hover:bg-[#3666ff]/90 hover:scale-[1.01] hover:shadow-lg hover:shadow-[#3666ff]/30 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 text-sm"
                     >
-                      {loading ? <Loader2 className="animate-spin w-5 h-5" /> : 'Book Demo'}
+                      {loading ? <Loader2 className="animate-spin w-5 h-5" /> : t('Book Demo')}
                     </button>
                     <p className="text-center text-slate-500 text-[9px] mt-4 font-medium uppercase tracking-wider">
-                      Secure scheduling • No credit card required
+                      {t('Secure scheduling • No credit card required')}
                     </p>
                   </div>
                 </form>
@@ -449,9 +460,9 @@ export default function DemoPage() {
                   <Mail size={28} className="text-[#3666ff]" />
                 </div>
 
-                <h2 className="text-2xl font-bold text-slate-900 tracking-tight mb-2">Check your email</h2>
+                <h2 className="text-2xl font-bold text-slate-900 tracking-tight mb-2">{t('Check your email')}</h2>
                 <p className="text-slate-500 text-sm leading-relaxed mb-8">
-                  We sent a 6-digit code to<br />
+                  {t('We sent a 6-digit code to')}<br />
                   <span className="font-semibold text-slate-700">{pendingEmail}</span>
                 </p>
 
@@ -485,20 +496,20 @@ export default function DemoPage() {
                   disabled={loading || otp.join('').length < 6}
                   className="w-full py-3.5 bg-[#3666ff] text-white rounded-xl font-bold shadow-[0_0_20px_rgba(54,102,255,0.2)] hover:bg-[#3666ff]/90 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 text-sm mb-4"
                 >
-                  {loading ? <Loader2 className="animate-spin w-4 h-4" /> : 'Verify & Confirm'}
+                  {loading ? <Loader2 className="animate-spin w-4 h-4" /> : t('Verify & Confirm')}
                 </button>
 
                 <div className="flex items-center justify-center gap-1 text-sm text-slate-500">
-                  <span>Didn&apos;t receive it?</span>
+                  <span>{t("Didn't receive it?")}</span>
                   {resendCooldown > 0 ? (
-                    <span className="text-slate-400 font-medium">Resend in {resendCooldown}s</span>
+                    <span className="text-slate-400 font-medium">{t('Resend in')} {resendCooldown}s</span>
                   ) : (
                     <button
                       onClick={handleResend}
                       disabled={loading}
                       className="text-[#3666ff] font-semibold hover:underline disabled:opacity-50"
                     >
-                      Resend
+                      {t('Resend')}
                     </button>
                   )}
                 </div>
@@ -507,7 +518,7 @@ export default function DemoPage() {
                   onClick={() => { setStep('form'); setError(''); setOtp(['','','','','','']); }}
                   className="mt-4 flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 transition-colors mx-auto"
                 >
-                  <ArrowLeft size={12} /> Back to form
+                  <ArrowLeft size={12} /> {t('Back to form')}
                 </button>
               </div>
             </motion.div>
@@ -524,17 +535,17 @@ export default function DemoPage() {
                 <CheckCircle2 size={40} className="text-white" />
               </div>
               <h1 className="text-3xl font-bold mb-2 relative z-10 text-slate-900 tracking-tight">
-                You&apos;re confirmed, {pendingName.split(' ')[0]}.
+                {t("You're confirmed,")} {pendingName.split(' ')[0]}.
               </h1>
               <p className="text-slate-500 mb-10 relative z-10 leading-relaxed text-sm">
-                Our solutions team will reach out within <strong className="text-slate-700">2 hours</strong> to schedule your personalised 30-minute demo.
+                {t('Our solutions team will reach out within')} <strong className="text-slate-700">{t('2 hours')}</strong> {t('to schedule your personalised 30-minute demo.')}
               </p>
               <div className="relative z-10">
                 <button
-                  onClick={() => router.push('/')}
+                  onClick={() => router.push(localizePath('/', locale))}
                   className="inline-flex items-center gap-2 bg-[#3666ff] text-white text-sm font-bold px-8 py-3.5 rounded-xl hover:bg-[#3666ff]/90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-[0_0_20px_rgba(54,102,255,0.3)]"
                 >
-                  Explore FactWise →
+                  {t('Explore FactWise →')}
                 </button>
               </div>
             </motion.div>

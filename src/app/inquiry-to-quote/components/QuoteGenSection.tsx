@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import QuoteGenAnimation from './QuoteGenAnimation';
 import { Check } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 export default function QuoteGenSection() {
+    const t = useLocalizedText();
     const [quotePhaseAnim, setQuotePhaseAnim] = useState<number>(0);
     const [isQuoteAuto, setIsQuoteAuto] = useState<boolean>(true);
     const [quoteMenuStep, setQuoteMenuStep] = useState<number | null>(null);
@@ -80,17 +82,17 @@ export default function QuoteGenSection() {
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff]" />
-                    Quote Generation & Analytics
+                    {t('Quote Generation & Analytics')}
                 </div>
                 <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
-                    Automate Quote Generation. <br />
-                    <span className="text-[#3666ff]">Built to Win.</span>
+                    {t('Automate Quote Generation.')} <br />
+                    <span className="text-[#3666ff]">{t('Built to Win.')}</span>
                 </h3>
                 <p className="text-slate-400 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Select the best bids — FactWise automates quote generation in one click. Every line item priced, every landed cost calculated, every BOM rolled up automatically. No manual calculation. No margin errors.
+                    {t('Select the best bids — FactWise automates quote generation in one click. Every line item priced, every landed cost calculated, every BOM rolled up automatically. No manual calculation. No margin errors.')}
                 </p>
                 <p className="text-slate-400 text-[15px] leading-[1.65] font-normal" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Then use AI to go deep on what&apos;s inside your quote — ask any question about your costs, find where your biggest expenses are hiding, see which categories drive spend, and model how costs shift across order volumes. Every insight you need to sharpen your quote and send it before anyone else.
+                    {t("Then use AI to go deep on what's inside your quote — ask any question about your costs, find where your biggest expenses are hiding, see which categories drive spend, and model how costs shift across order volumes. Every insight you need to sharpen your quote and send it before anyone else.")}
                 </p>
 
                 <div className="flex flex-col gap-2 mt-8 mb-8 text-left">
@@ -125,13 +127,13 @@ export default function QuoteGenSection() {
                                 <span className={`text-[13.5px] font-bold tracking-tight ${
                                     isQuoteMenuStepActive(item.phase) ? 'text-[#3666ff]' : isQuoteMenuStepDone(item.phase) ? 'text-slate-700' : 'text-slate-500'
                                 }`}>
-                                    {item.title}
+                                    {t(item.title)}
                                 </span>
                             </div>
                             {isQuoteMenuStepActive(item.phase) && (
                                 <span className="relative z-10 text-[9px] font-black text-emerald-600 bg-emerald-50/80 border border-emerald-100 px-2.5 py-1 rounded-full font-mono uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
                                     <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                    Active
+                                    {t('Active')}
                                 </span>
                             )}
                         </div>

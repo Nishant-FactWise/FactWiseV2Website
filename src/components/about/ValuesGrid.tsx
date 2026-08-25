@@ -3,6 +3,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Star, Zap, Users } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { getPathLocale } from '@/lib/i18n';
+import { messages } from '@/lib/messages';
 
 const VALUES = [
   {
@@ -44,6 +47,10 @@ const VALUES = [
 ];
 
 export const ValuesGrid = () => {
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const t = (source: string) => messages[locale].textMap[source] ?? source;
+
   return (
     <section className="py-20 md:py-32 px-6 md:px-14 bg-white relative">
       <div className="max-w-7xl mx-auto relative z-10">
@@ -56,7 +63,7 @@ export const ValuesGrid = () => {
           transition={{ duration: 0.6 }}
           className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8"
         >
-          Our Values
+          {t("Our Values")}
         </motion.div>
 
         {/* Heading */}
@@ -68,7 +75,7 @@ export const ValuesGrid = () => {
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.05] tracking-tighter mb-12"
           >
-            The Values <span className="font-instrument italic font-medium text-[#3666ff]">That Ship</span> With Every Line Of Code.
+            {t("The Values")} <span className="font-instrument italic font-medium text-[#3666ff]">{t("That Ship")}</span> {t("With Every Line Of Code.")}
           </motion.h2>
         </div>
 
@@ -126,10 +133,10 @@ export const ValuesGrid = () => {
                 </div>
 
                 <h3 className="text-xl md:text-2xl font-bold text-slate-900 mt-6 md:mt-10 mb-3 md:mb-4 tracking-tight leading-snug">
-                  {value.title}
+                  {t(value.title)}
                 </h3>
                 <p className="text-slate-500 text-sm md:text-base leading-relaxed">
-                  {value.desc}
+                  {t(value.desc)}
                 </p>
               </div>
 
@@ -137,7 +144,7 @@ export const ValuesGrid = () => {
                 <div className="flex items-center gap-2">
                   <div className="size-2 rounded-full bg-[#3666ff]/30 group-hover:bg-[#3666ff] transition-colors duration-500" />
                   <span className="text-[10px] font-bold text-[#3666ff] uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-x-[-8px] group-hover:translate-x-0 transition-all duration-500">
-                    {value.tag}
+                    {t(value.tag)}
                   </span>
                 </div>
               </div>

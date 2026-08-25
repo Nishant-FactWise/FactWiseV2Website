@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 /* ──────────────────────────────────────────────────────────────────────
    SECTION 3.3 — See True Landed Cost. Shortlist with Confidence.
@@ -226,6 +227,7 @@ const LC_STYLE = `
 `;
 
 export default function Section33LandedCostXRay({ isActive = true }: { isActive?: boolean }) {
+    const t = useLocalizedText();
     const [step, setStep] = useState<number>(0);
     const [isAuto, setIsAuto] = useState<boolean>(true);
 
@@ -297,14 +299,14 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-                    Section 3.3 · Landed Cost Analytics
+                    {t('Section 3.3 · Landed Cost Analytics')}
                 </div>
                 <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
-                    Know your True Landed Cost. <br />
-                    <span className="text-[#3666ff]">Before you Quote.</span>
+                    {t('Know your True Landed Cost.')} <br />
+                    <span className="text-[#3666ff]">{t('Before you Quote.')}</span>
                 </h3>
                 <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
-                    FactWise automatically applies your custom landed cost formulas across every bid — normalizing currencies and factoring in duties, freight, insurance, and packaging. Drill into vendor performance at a glance — competitive, non-competitive, and excluded bids per supplier. FactWise Recommended Analytics surfaces the best bid per item based on your own criteria — so when you quote your customer, every number is backed by true cost, not guesswork.
+                    {t('FactWise automatically applies your custom landed cost formulas across every bid — normalizing currencies and factoring in duties, freight, insurance, and packaging. Drill into vendor performance at a glance — competitive, non-competitive, and excluded bids per supplier. FactWise Recommended Analytics surfaces the best bid per item based on your own criteria — so when you quote your customer, every number is backed by true cost, not guesswork.')}
                 </p>
 
                 <div className="flex flex-col gap-2 mt-8 text-left">
@@ -328,11 +330,11 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                                     <Check className="size-3.5" strokeWidth={3} />
                                 </div>
                                 <span className={`text-[13.5px] font-bold tracking-tight ${activeMenu === item.p ? 'text-[#3666ff]' : activeMenu > item.p ? 'text-slate-700' : 'text-slate-500'
-                                }`}>{item.title}</span>
+                                }`}>{t(item.title)}</span>
                             </div>
                             {activeMenu === item.p && (
                                 <span className="relative z-10 text-[9px] font-black text-emerald-600 bg-emerald-50/80 border border-emerald-100 px-2.5 py-1 rounded-full font-mono uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
-                                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />Active
+                                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />{t('Active')}
                                 </span>
                             )}
                         </div>
@@ -350,11 +352,11 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
             >
                 <div className="lc-root">
                     <div className="lc-chrome">
-                        <div className="lc-url">app.factwise.io / compare / RFQ-208</div>
+                        <div className="lc-url">{t('app.factwise.io / compare / RFQ-208')}</div>
                         <div className="lc-toggleWrap">
                             <div className={`lc-toggle ${toggleOn ? 'act' : ''}`}>
                                 <LCI.Calc s={11} />
-                                Apply landed-cost formula
+                                {t('Apply landed-cost formula')}
                                 <span className="sw" />
                             </div>
                         </div>
@@ -364,9 +366,9 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                         <div className="lc-grid-wrap">
                             <div className="lc-grid-hd">
                                 <LCI.Scan s={11} />
-                                <span className="l">Bid comparison · per-unit</span>
+                                <span className="l">{t('Bid comparison · per-unit')}</span>
                                 <span className={`mode ${toggleOn ? 'act' : ''}`}>
-                                    {toggleOn ? 'LANDED COST · INR' : 'RAW QUOTE'}
+                                    {toggleOn ? t('LANDED COST · INR') : t('RAW QUOTE')}
                                 </span>
                             </div>
 
@@ -388,7 +390,7 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                                     <React.Fragment key={it.id}>
                                         <div className="lc-icell">
                                             <span style={{ fontWeight: 700, color: '#0b1322' }}>{it.name}</span>
-                                            <span className="qty">qty {it.qty}</span>
+                                            <span className="qty">{t('qty')} {it.qty}</span>
                                         </div>
                                         {LC_VENDORS.map((v) => {
                                             const c = LC_BIDS[v.id][it.id];
@@ -418,8 +420,8 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                                 ))}
 
                                 <div className="lc-icell" style={{ background: 'transparent', border: 'none', padding: '7px 4px' }}>
-                                    <span style={{ fontWeight: 800, color: '#0b1322', fontSize: 10.5 }}>Total · 200 units</span>
-                                    <span className="qty">3 items rolled up</span>
+                                    <span style={{ fontWeight: 800, color: '#0b1322', fontSize: 10.5 }}>{t('Total · 200 units')}</span>
+                                    <span className="qty">{t('3 items rolled up')}</span>
                                 </div>
                                 {LC_VENDORS.map((v) => {
                                     const isWin = winnerOn && v.id === winnerId;
@@ -433,11 +435,11 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                                             </span>
                                             {v.id === 'B' && (
                                                 <span className={`lc-pin ${naive ? 'show' : (toggleOn ? 'show dead' : '')}`}>
-                                                    Lowest quote
+                                                    {t('Lowest quote')}
                                                 </span>
                                             )}
                                             {isWin && (
-                                                <span className="lc-trophy show"><LCI.Trophy s={10} /> BEST</span>
+                                                <span className="lc-trophy show"><LCI.Trophy s={10} /> {t('BEST')}</span>
                                             )}
                                         </div>
                                     );
@@ -450,7 +452,7 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                                         <span className="sw" style={{ background: L.bg, opacity: 0.85 }} />{L.name}
                                     </span>
                                 ))}
-                                <span className="it" style={{ marginLeft: 'auto', color: '#0b1322' }}>FX → INR · auto</span>
+                                <span className="it" style={{ marginLeft: 'auto', color: '#0b1322' }}>{t('FX → INR · auto')}</span>
                             </div>
 
                             {scanRun && <div className="lc-scan on" />}
@@ -460,7 +462,7 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                             <div className="lc-card">
                                 <div className="lc-rec-hd">
                                     <div className="b"><LCI.Spark s={12} /></div>
-                                    <div className="ttl">FW <span>Recommended</span></div>
+                                    <div className="ttl">FW <span>{t('Recommended')}</span></div>
                                 </div>
                                 <div className={`lc-conf ${aiReveal ? '' : 'dim'}`}>
                                     <svg viewBox="0 0 36 36" className="ring">
@@ -474,7 +476,7 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                                     </svg>
                                     <div>
                                         <div className="num">{aiReveal ? '94%' : '—'}</div>
-                                        <div className="lbl"><strong>Confidence · Vendor {winnerId}</strong><br />per your criteria</div>
+                                        <div className="lbl"><strong>{t('Confidence · Vendor')} {winnerId}</strong><br />{t('per your criteria')}</div>
                                     </div>
                                 </div>
                                 <div className="lc-reasons">
@@ -491,7 +493,7 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                                     ))}
                                 </div>
                                 <div className={`lc-award ${awardGlow ? 'glow' : ''}`}>
-                                    <LCI.Trophy s={12} /> Shortlist · {LC_VENDORS.find((v) => v.id === winnerId)?.name} · {lcL(totals[winnerId])}
+                                    <LCI.Trophy s={12} /> {t('Shortlist')} · {LC_VENDORS.find((v) => v.id === winnerId)?.name} · {lcL(totals[winnerId])}
                                 </div>
                             </div>
 
@@ -500,13 +502,13 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                                     <div className="b" style={{ background: '#eff4ff', color: '#3666ff' }}>
                                         <LCI.Calc s={11} />
                                     </div>
-                                    <div className="ttl">Bid analytics</div>
+                                    <div className="ttl">{t('Bid analytics')}</div>
                                 </div>
                                 <div className="lc-kpis">
-                                    <div className="lc-kpi"><div className="l">Competitive</div><div className="v good">4</div></div>
-                                    <div className="lc-kpi"><div className="l">Excluded</div><div className="v bad">0</div></div>
-                                    <div className="lc-kpi"><div className="l">Savings</div><div className="v good">−{totals.B ? ((1 - totals[winnerId] / totals.B) * 100).toFixed(1) : '0'}%</div></div>
-                                    <div className="lc-kpi"><div className="l">Cycle</div><div className="v">3 d</div></div>
+                                    <div className="lc-kpi"><div className="l">{t('Competitive')}</div><div className="v good">4</div></div>
+                                    <div className="lc-kpi"><div className="l">{t('Excluded')}</div><div className="v bad">0</div></div>
+                                    <div className="lc-kpi"><div className="l">{t('Savings')}</div><div className="v good">−{totals.B ? ((1 - totals[winnerId] / totals.B) * 100).toFixed(1) : '0'}%</div></div>
+                                    <div className="lc-kpi"><div className="l">{t('Cycle')}</div><div className="v">3 d</div></div>
                                 </div>
                             </div>
                         </div>

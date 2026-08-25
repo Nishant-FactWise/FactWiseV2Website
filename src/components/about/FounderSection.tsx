@@ -2,8 +2,15 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
+import { getPathLocale } from '@/lib/i18n';
+import { messages } from '@/lib/messages';
 
 export const FounderSection = () => {
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const t = (source: string) => messages[locale].textMap[source] ?? source;
+
   return (
     <section className="py-8 px-6 md:px-14 bg-white">
       <div
@@ -30,7 +37,7 @@ export const FounderSection = () => {
               className="md:col-span-7 flex flex-col items-start"
             >
               <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8 shadow-sm">
-                Leadership
+                {t("Leadership")}
               </div>
 
               <motion.h2 
@@ -39,7 +46,7 @@ export const FounderSection = () => {
                 viewport={{ once: false }}
                 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.1] tracking-tighter mb-8 overflow-hidden py-1"
               >
-                {"A Word From ".split("").map((char, index) => (
+                {t("A Word From ").split("").map((char, index) => (
                   <motion.span
                     key={index}
                     variants={{
@@ -57,7 +64,7 @@ export const FounderSection = () => {
                   </motion.span>
                 ))}
                 <span className="text-[#3666ff] font-instrument italic font-medium inline-block">
-                  {"The Founder".split("").map((char, index) => (
+                  {t("The Founder").split("").map((char, index) => (
                     <motion.span
                       key={index}
                       variants={{
@@ -83,21 +90,14 @@ export const FounderSection = () => {
 
               <div className="space-y-5 text-slate-500 text-justify text-base md:text-lg leading-relaxed max-w-2xl">
                 <p>
-                  When I started this journey, my vision was simple. I wanted to create
-                  something that brings value, fosters connection, and makes a meaningful
-                  impact. Every step we've taken has been guided by a passion for innovation
-                  and a commitment to putting people first.
+                  {t("When I started this journey, my vision was simple. I wanted to create something that brings value, fosters connection, and makes a meaningful impact. Every step we've taken has been guided by a passion for innovation and a commitment to putting people first.")}
                 </p>
                 <p>
-                  This is not just a brand. It is a community, a space where ideas grow,
-                  challenges are met with creativity, and every voice matters. None of this
-                  would be possible without your support, trust, and belief in what we stand
-                  for.
+                  {t("This is not just a brand. It is a community, a space where ideas grow, challenges are met with creativity, and every voice matters. None of this would be possible without your support, trust, and belief in what we stand for.")}
                 </p>
                 <div className="mt-10 p-6 border-l-2 border-[#3666ff] bg-blue-50/30 rounded-r-2xl max-w-2xl">
                   <p className="font-semibold text-slate-900 italic font-instrument text-xl leading-relaxed">
-                    "Together, we are building something truly special, and I can't wait to see
-                    what the future holds."
+                    {t("\"Together, we are building something truly special, and I can't wait to see what the future holds.\"")}
                   </p>
                 </div>
               </div>
@@ -115,7 +115,7 @@ export const FounderSection = () => {
                 <div className="aspect-[4/5] rounded-[40px] overflow-hidden shadow-2xl relative z-10 border-4 border-white/30">
                   <img
                     src="/founder-hero.png"
-                    alt="Stawan Kamani - Founder of FactWise"
+                    alt={t("Stawan Kamani - Founder of FactWise")}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -131,7 +131,7 @@ export const FounderSection = () => {
                   <div className="flex flex-col gap-1">
                     <div className="text-lg font-bold text-slate-900 tracking-tight">Stawan Kamani</div>
                     <div className="text-[#3666ff] font-bold uppercase tracking-[0.15em] text-[10px]">
-                      Founder & CEO
+                      {t("Founder & CEO")}
                     </div>
                   </div>
                 </motion.div>

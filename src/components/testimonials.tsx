@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import ScrollReveal from './ui/ScrollReveal';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 const testimonials = [
     {
@@ -49,7 +50,7 @@ const testimonials = [
         name: "Kinjal Shah",
         role: "CEO",
         company: "Gem Corp",
-        content: "FactWise excels in analytics — their AI innovation transforms analysis into a user-friendly experience. Breaking free from old formats, we've minimized Excel dependency, witnessing a data-driven revolution.",
+        content: "FactWise excels in analytics â€” their AI innovation transforms analysis into a user-friendly experience. Breaking free from old formats, we've minimized Excel dependency, witnessing a data-driven revolution.",
         color: "bg-pink-100 text-pink-700",
         logo: "/gemcorp.png"
     },
@@ -92,6 +93,7 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
+    const tText = useLocalizedText();
     const [showMore, setShowMore] = useState(false);
 
     const toggleShowMore = () => {
@@ -118,13 +120,13 @@ export default function Testimonials() {
                 <div className="mx-auto max-w-3xl text-center mb-12">
                     <ScrollReveal delay={0.1}>
                         <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#4A6FFF] text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
-                            Testimonials
+                            {tText('Testimonials')}
                         </div>
                     </ScrollReveal>
 
                     <ScrollReveal>
                         <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]">
-                            Trusted by the <span className="text-[#3666ff]">Best in the Business.</span>
+                            {tText('Trusted by the ')}<span className="text-[#3666ff]">{tText('Best in the Business.')}</span>
                         </h2>
                     </ScrollReveal>
 
@@ -135,12 +137,12 @@ export default function Testimonials() {
                         transition={{ duration: 0.5, delay: 0.4 }}
                         className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto font-medium"
                     >
-                        Join hundreds of high-performing procurement teams already using FactWise to automate and scale.
+                        {tText('Join hundreds of high-performing procurement teams already using FactWise to automate and scale.')}
                     </motion.p>
                 </div>
 
                 <div className="flex flex-col gap-4">
-                    {/* Bento Grid — single column on phones (3 cards before View More),
+                    {/* Bento Grid â€” single column on phones (3 cards before View More),
                         2 cols on tablet, 4-col bento on desktop. */}
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 items-stretch p-2 md:p-4 overflow-visible">
                         {testimonials.slice(0, 6).map((t, i) => {
@@ -186,7 +188,7 @@ export default function Testimonials() {
                                                 className={`${isLarge ? "text-base md:text-lg" : "text-xs md:text-sm"} font-medium leading-relaxed tracking-tight text-[#1A1D2E]`}
                                                 style={{ fontFamily: 'var(--font-inter)' }}
                                             >
-                                                “{t.content}
+                                                â€œ{tText(t.content)}
                                             </p>
                                         </div>
                                         <div className="flex items-center mt-auto pt-3 border-t border-slate-50 relative z-10">
@@ -207,7 +209,7 @@ export default function Testimonials() {
                                                         className="block text-[10px] uppercase tracking-wider font-semibold text-[#7B82A8]"
                                                         style={{ fontFamily: 'var(--font-inter)' }}
                                                     >
-                                                        {t.role}{t.company ? `, ${t.company}` : ''}
+                                                        {tText(t.role)}{t.company ? `, ${t.company}` : ''}
                                                     </span>
                                                 </div>
                                             </div>
@@ -270,7 +272,7 @@ export default function Testimonials() {
                                                                 className={`${isLarge ? "text-base md:text-lg" : "text-xs md:text-sm"} font-medium leading-relaxed tracking-tight text-[#1A1D2E]`}
                                                                 style={{ fontFamily: 'var(--font-inter)' }}
                                                             >
-                                                                “{t.content}
+                                                                â€œ{tText(t.content)}
                                                             </p>
                                                         </div>
                                                         <div className="flex items-center mt-auto pt-4 border-t border-slate-50 relative z-10">
@@ -291,7 +293,7 @@ export default function Testimonials() {
                                                                         className="block text-[10px] uppercase tracking-wider font-semibold text-[#7B82A8]"
                                                                         style={{ fontFamily: 'var(--font-inter)' }}
                                                                     >
-                                                                        {t.role}{t.company ? `, ${t.company}` : ''}
+                                                                        {tText(t.role)}{t.company ? `, ${t.company}` : ''}
                                                                     </span>
                                                                 </div>
                                                             </div>
@@ -313,7 +315,7 @@ export default function Testimonials() {
                         className="slide-button"
                         style={{ '--clr': '#4A6FFF' } as React.CSSProperties}
                     >
-                        <span>{showMore ? "Show Less" : "View More"}</span>
+                        <span>{showMore ? tText("Show Less") : tText("View More")}</span>
                         <div className="slide-button__icon-wrapper">
                             {showMore ? (
                                 <>
@@ -334,3 +336,4 @@ export default function Testimonials() {
         </section>
     );
 }
+

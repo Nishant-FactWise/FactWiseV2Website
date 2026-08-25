@@ -1,11 +1,12 @@
 import { MetadataRoute } from "next";
 import { getAllPostSlugs } from "@/lib/blog/hygraph";
+import type { SlugListPost } from "@/lib/blog/hygraph";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://factwise.io";
   const now = new Date();
   
-  let blogSlugs: { slug: string }[] = [];
+  let blogSlugs: SlugListPost[] = [];
   try {
     blogSlugs = await getAllPostSlugs();
   } catch (err) {

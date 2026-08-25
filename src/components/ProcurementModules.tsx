@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { Check, ArrowRight, ShieldCheck, ZapIcon, BarChart3 } from "lucide-react";
@@ -6,13 +6,15 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useLocalizedText } from "@/hooks/useLocalizedText";
+import { getPathLocale, localizePath } from "@/lib/i18n";
 
 const modules = [
   {
     tag: "QUOTE AUTOMATION",
     title: "Inquiry to Quote",
-    description: "From BOM to customer quote in record time — intelligent sourcing, automated negotiations, and true landed-cost analytics.",
+    description: "From BOM to customer quote in record time â€” intelligent sourcing, automated negotiations, and true landed-cost analytics.",
     imageUrl: "/images/quote-order.png",
     features: [
       "BOM & cost intelligence",
@@ -25,7 +27,7 @@ const modules = [
   {
     tag: "SOURCING AUTOMATION",
     title: "Requisition to PO",
-    description: "Raise, approve, source, and issue purchase orders in one seamless flow — without the back and forth.",
+    description: "Raise, approve, source, and issue purchase orders in one seamless flow â€” without the back and forth.",
     imageUrl: "/images/req-po.png",
     features: [
       "Combine requisitions for bulk pricing",
@@ -38,12 +40,12 @@ const modules = [
   {
     tag: "INVOICE AUTOMATION",
     title: "Invoice to Pay",
-    description: "Every invoice validated against PO, GR, QC, and contract terms — so you always pay the right amount.",
+    description: "Every invoice validated against PO, GR, QC, and contract terms â€” so you always pay the right amount.",
     imageUrl: "/images/invoice-pay.png",
     features: [
       "AI-powered invoice generation",
       "Flexible GR, QC & payment sequencing",
-      "Always pay the right amount — automatically",
+      "Always pay the right amount â€” automatically",
     ],
     href: "/invoice-to-pay",
     icon: ZapIcon
@@ -308,6 +310,9 @@ const CARDS_STYLE = `
 
 function Card({ module, index }: { module: typeof modules[0], index: number }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const translate = useLocalizedText();
+  const locale = getPathLocale(pathname);
 
   // Theme configuration
   const t = {
@@ -323,19 +328,19 @@ function Card({ module, index }: { module: typeof modules[0], index: number }) {
   return (
     <div
       className={`fw-card fw-card-${t.colorKey} ${isFeatured ? "featured" : ""}`}
-      onClick={() => router.push(module.href)}
+      onClick={() => router.push(localizePath(module.href, locale))}
     >
       <div className="fw-card-bar"></div>
       <div className="fw-card-header">
         <div className="fw-card-meta">
-          <span className={`fw-card-badge ${t.badgeClass}`}>{module.tag}</span>
-          {isFeatured && <span className="fw-popular-pill">⚡ Most popular</span>}
+          <span className={`fw-card-badge ${t.badgeClass}`}>{translate(module.tag)}</span>
+          {isFeatured && <span className="fw-popular-pill">{translate('⚡ Most popular')}</span>}
         </div>
         <div className={`fw-card-icon ${t.iconClass}`}>
           <module.icon className="w-5 h-5" style={{ color: t.iconStroke }} />
         </div>
-        <h2 className="fw-card-title">{module.title}</h2>
-        <p className="fw-card-desc">{module.description}</p>
+        <h2 className="fw-card-title">{translate(module.title)}</h2>
+        <p className="fw-card-desc">{translate(module.description)}</p>
       </div>
 
       <div className="fw-card-divider mt-4"></div>
@@ -347,13 +352,13 @@ function Card({ module, index }: { module: typeof modules[0], index: number }) {
                 <polyline points="2,6 5,9 10,3"/>
               </svg>
             </span>
-            {feature}
+            {translate(feature)}
           </div>
         ))}
       </div>
 
       {/* "Explore solution" CTA hidden until per-module destinations are
-          wired — the button previously did nothing on click. */}
+          wired â€” the button previously did nothing on click. */}
     </div>
   );
 }
@@ -361,6 +366,7 @@ function Card({ module, index }: { module: typeof modules[0], index: number }) {
 import ScrollReveal from "./ui/ScrollReveal";
 
 export default function ProcurementModules() {
+  const translate = useLocalizedText();
   return (
     <section className="py-20 relative bg-white overflow-hidden factwise-cards-section">
       <style dangerouslySetInnerHTML={{ __html: CARDS_STYLE }} />
@@ -373,13 +379,13 @@ export default function ProcurementModules() {
           className="mx-auto max-w-3xl text-center mb-12"
         >
           <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#4A6FFF] text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
-            Platform Modules
+            {translate('Platform Modules')}
           </div>
           <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]">
-            Smarter <span className="text-[#3666ff]">Manufacturing</span> Starts Here
+            {translate('Smarter ')}<span className="text-[#3666ff]">{translate('Manufacturing')}</span> {translate('Starts Here')}
           </h2>
           <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto font-medium">
-            Scalable, enterprise-ready modules designed to automate every workflow manufacturers depend on — from first inquiry to final payment.
+            {translate('Scalable, enterprise-ready modules designed to automate every workflow manufacturers depend on — from first inquiry to final payment.')}
           </p>
         </motion.div>
 

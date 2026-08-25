@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { X, Store, Zap, Link2, ArrowRight, ArrowLeft, CheckCircle, Loader2, RefreshCw } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { getPathLocale, localizePath } from '@/lib/i18n';
 
 /* ─── Types ──────────────────────────────────────────────────────────────── */
 type Path = 'vendor' | 'pricing' | 'api' | null;
@@ -26,11 +28,10 @@ interface EnquiryForm {
 }
 
 /* ─── Slide animation ────────────────────────────────────────────────────── */
-const slide = {
+const slide: Variants = {
   initial: (dir: number) => ({ x: dir * 40, opacity: 0 }),
-  animate: { x: 0, opacity: 1 },
-  exit: (dir: number) => ({ x: dir * -40, opacity: 0 }),
-  transition: { duration: 0.28, ease: [0.32, 0, 0.67, 0] },
+  animate: { x: 0, opacity: 1, transition: { duration: 0.28, ease: 'easeInOut' } },
+  exit: (dir: number) => ({ x: dir * -40, opacity: 0, transition: { duration: 0.28, ease: 'easeInOut' } }),
 };
 
 /* ─── Path option cards ──────────────────────────────────────────────────── */
@@ -115,6 +116,8 @@ function Field({
    MAIN MODAL
 ═══════════════════════════════════════════════════════════════════════════ */
 export default function SupplierModal({ onClose }: { onClose: () => void }) {
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
   const [step, setStep] = useState<Step>('choose');
   const [dir, setDir] = useState(1);
   const [path, setPath] = useState<Path>(null);
@@ -350,7 +353,7 @@ export default function SupplierModal({ onClose }: { onClose: () => void }) {
 
             {/* ══ STEP 1: Choose Path ══ */}
             {step === 'choose' && (
-              <motion.div key="choose" custom={dir} {...slide}>
+              <motion.div key="choose" custom={dir} variants={slide} initial="initial" animate="animate" exit="exit">
                 <p style={{ margin: '0 0 16px', fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>
                   Choose how you'd like to work with FactWise — we'll tailor the experience for you.
                 </p>
@@ -398,7 +401,7 @@ export default function SupplierModal({ onClose }: { onClose: () => void }) {
 
             {/* ══ STEP 2: Form ══ */}
             {step === 'form' && (
-              <motion.div key="form" custom={dir} {...slide}>
+              <motion.div key="form" custom={dir} variants={slide} initial="initial" animate="animate" exit="exit">
                 {path === 'vendor' ? (
                   /* ── Vendor registration form ── */
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -501,7 +504,7 @@ export default function SupplierModal({ onClose }: { onClose: () => void }) {
 
             {/* ══ STEP 3: OTP ══ */}
             {step === 'otp' && (
-              <motion.div key="otp" custom={dir} {...slide}>
+              <motion.div key="otp" custom={dir} variants={slide} initial="initial" animate="animate" exit="exit">
                 <p style={{ margin: '0 0 6px', fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>
                   We sent a 6-digit code to
                 </p>
@@ -580,7 +583,7 @@ export default function SupplierModal({ onClose }: { onClose: () => void }) {
 
             {/* ══ STEP 4: Success ══ */}
             {step === 'success' && (
-              <motion.div key="success" custom={dir} {...slide}>
+              <motion.div key="success" custom={dir} variants={slide} initial="initial" animate="animate" exit="exit">
                 <div style={{ textAlign: 'center', padding: '16px 0 8px' }}>
                   <div style={{
                     width: 72, height: 72, borderRadius: '50%', margin: '0 auto 20px',
@@ -613,7 +616,7 @@ export default function SupplierModal({ onClose }: { onClose: () => void }) {
                       Done
                     </button>
                     <a
-                      href="/supplier"
+                      href={localizePath('/supplier', locale)}
                       style={{ fontSize: 13, color: '#3666ff', textDecoration: 'none', fontWeight: 600 }}
                     >
                       Explore Supplier Features →

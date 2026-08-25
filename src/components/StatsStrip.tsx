@@ -1,8 +1,9 @@
-'use client';
+﻿'use client';
 
 import { useRef, useEffect, useState } from 'react';
 import { motion, useInView, animate, useMotionValue, useTransform } from 'framer-motion';
 import { GLOBAL_LAYOUT } from './LayoutConfig';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 const STATS = [
   {
@@ -54,8 +55,14 @@ function Counter({ value, inView }: { value: string; inView: boolean }) {
 }
 
 export default function StatsStrip() {
+  const t = useLocalizedText();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
+  const stats = STATS.map((stat) => ({
+    ...stat,
+    label: t(stat.label),
+    sub: t(stat.sub),
+  }));
 
   return (
     <section
@@ -72,7 +79,7 @@ export default function StatsStrip() {
         style={GLOBAL_LAYOUT.containerStyle}
       >
 
-        {/* Left — value prop text */}
+        {/* Left â€” value prop text */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -89,8 +96,7 @@ export default function StatsStrip() {
               color: '#7B82A8',
             }}
           >
-            Procurement is where it starts — not where it ends. FactWise automates every workflow — from quotes and vendors to orders,
-            approvals, and payments — so your team spends less time chasing and more time closing.
+            {t('Procurement is where it starts — not where it ends. FactWise automates every workflow — from quotes and vendors to orders, approvals, and payments — so your team spends less time chasing and more time closing.')}
 
           </p>
         </motion.div>
@@ -101,11 +107,11 @@ export default function StatsStrip() {
           style={{ background: 'rgba(74,111,255,0.1)' }}
         />
 
-        {/* Right — 3 stats (always a row, resized to fit on phones) */}
+        {/* Right â€” 3 stats (always a row, resized to fit on phones) */}
         <div className="flex-1 flex flex-row items-stretch divide-x w-full"
           style={{ '--tw-divide-opacity': 1 } as React.CSSProperties}
         >
-          {STATS.map((stat, i) => (
+          {stats.map((stat, i) => (
             <motion.div
               key={stat.value}
               initial={{ opacity: 0, y: 18 }}

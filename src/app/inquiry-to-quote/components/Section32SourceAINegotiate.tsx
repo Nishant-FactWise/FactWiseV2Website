@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 /* ──────────────────────────────────────────────────────────────────────
    SECTION 3.2 — Source in Minutes. Negotiate Using AI.
@@ -33,7 +34,6 @@ const SN_VENDORS = [
     { id: 'V5', name: 'Vendor E', tag: 'Forging', score: 79, region: 'IN', tone: '#10b981' },
 ];
 
-const SN_CURVE = [4.60, 4.55, 4.50, 4.46, 4.42, 4.39];
 
 const SN_CHAT = [
     { who: 'bot', round: 'R1', text: 'Target landed ₹4.60L. Match or counter?' },
@@ -253,6 +253,7 @@ const SN_STYLE = `
 
 /* ============ COMPONENT ============ */
 export default function Section32SourceAINegotiate({ isActive = true }: { isActive?: boolean }) {
+  const t = useLocalizedText();
     const [step, setStep] = useState<number>(0);
     const [isAuto, setIsAuto] = useState<boolean>(true);
 
@@ -296,10 +297,7 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
     const channelCut = step >= 5;
     const messagesShown = Math.max(0, step - 5);
     const round = step < 7 ? 'R1' : step < 9 ? 'R2' : 'R3';
-    const priceIdx = Math.min(SN_CURVE.length - 1, Math.max(0, step - 5));
-    const currentPrice = SN_CURVE[priceIdx];
     const lockedIn = step === 10;
-    const critActive = step >= 7;
 
     const activeMenu = stepToMenu(step);
 
@@ -318,26 +316,26 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                     style={{ fontFamily: 'var(--font-inter)' }}
                 >
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-                    Section 3.2 · Intelligent Sourcing
+                    {t('Section 3.2 · Intelligent Sourcing')}
                 </div>
                 <h3
                     className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]"
                     style={{ fontFamily: 'var(--font-display)' }}
                 >
-                    Source in Minutes. <br />
-                    <span className="text-[#3666ff]">Negotiate Using AI.</span>
+                    {t('Source in Minutes.')} <br />
+                    <span className="text-[#3666ff]">{t('Negotiate Using AI.')}</span>
                 </h3>
                 <p
                     className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify"
                     style={{ fontFamily: 'var(--font-inter)' }}
                 >
-                    FactWise auto-selects vendors from manufacturer tags and part history, pre-fills target prices, and flags warnings before you send. Category templates get your event live in minutes — and vendors respond directly on the platform.
+                    {t('FactWise auto-selects vendors from manufacturer tags and part history, pre-fills target prices, and flags warnings before you send. Category templates get your event live in minutes — and vendors respond directly on the platform.')}
                 </p>
                 <p
                     className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify"
                     style={{ fontFamily: 'var(--font-inter)' }}
                 >
-                    When it&apos;s time to negotiate, FactWise&apos;s AI drives every vendor to their best price against your criteria — or take control yourself. Every counter-offer tracked, every round visible. Better prices, every time.
+                    {t("When it's time to negotiate, FactWise's AI drives every vendor to their best price against your criteria — or take control yourself. Every counter-offer tracked, every round visible. Better prices, every time.")}
                 </p>
 
                 <div className="flex flex-col gap-2 mt-8 text-left">
@@ -361,11 +359,11 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                                     <Check className="size-3.5" strokeWidth={3} />
                                 </div>
                                 <span className={`text-[13.5px] font-bold tracking-tight ${activeMenu === item.p ? 'text-[#3666ff]' : activeMenu > item.p ? 'text-slate-700' : 'text-slate-500'
-                                }`}>{item.title}</span>
+                                }`}>{t(item.title)}</span>
                             </div>
                             {activeMenu === item.p && (
                                 <span className="relative z-10 text-[9px] font-black text-emerald-600 bg-emerald-50/80 border border-emerald-100 px-2.5 py-1 rounded-full font-mono uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
-                                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />Active
+                                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />{t('Active')}
                                 </span>
                             )}
                         </div>
@@ -383,8 +381,8 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
             >
                 <div className="sn-root">
                     <div className="sn-chrome">
-                        <div className="sn-url">app.factwise.io / sourcing / new-event</div>
-                        <div className="sn-pill"><span className="d" />FW Autobot · AI Negotiating</div>
+                        <div className="sn-url">{t('app.factwise.io / sourcing / new-event')}</div>
+                        <div className="sn-pill"><span className="d" />{t('FW Autobot · AI Negotiating')}</div>
                     </div>
 
                     <div className="sn-grid">
@@ -393,24 +391,24 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                             {/* Category dropdown */}
                             <div className={`sn-card ${categoryChosen ? 'glow' : ''}`}>
                                 <div className="sn-card-hd">
-                                    <span className="l">01 · Category</span>
+                                    <span className="l">{t('01 · Category')}</span>
                                     <span className="v" style={{ color: categoryChosen ? '#3666ff' : '#94a3b8' }}>
-                                        {categoryChosen ? 'Template loaded' : 'Choose template'}
+                                        {categoryChosen ? t('Template loaded') : t('Choose template')}
                                     </span>
                                 </div>
                                 <div className={`sn-dd ${ddOpen ? 'act' : ''}`}>
-                                    {!categoryChosen && <span className="placeholder">Select category…</span>}
-                                    {categoryChosen && <span>Electronics · PCB · SMT</span>}
+                                    {!categoryChosen && <span className="placeholder">{t('Select category…')}</span>}
+                                    {categoryChosen && <span>{t('Electronics · PCB · SMT')}</span>}
                                     <span className="chev"><SNI.Chevron s={11} /></span>
                                     <div className={`sn-dd-menu ${ddOpen ? 'show' : ''}`}>
                                         <div className={`sn-dd-item ${step === 1 ? 'hov' : ''}`}>
-                                            <span>Electronics · PCB · SMT</span><span className="key">12 items</span>
+                                            <span>{t('Electronics · PCB · SMT')}</span><span className="key">12 {t('items')}</span>
                                         </div>
                                         <div className="sn-dd-item">
-                                            <span>Mechanical · Forging</span><span className="key">8 items</span>
+                                            <span>{t('Mechanical · Forging')}</span><span className="key">8 {t('items')}</span>
                                         </div>
                                         <div className="sn-dd-item">
-                                            <span>Logistics · 3PL</span><span className="key">4 items</span>
+                                            <span>{t('Logistics · 3PL')}</span><span className="key">4 {t('items')}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -419,9 +417,9 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                             {/* Auto-filled tiles */}
                             <div className="sn-card">
                                 <div className="sn-card-hd">
-                                    <span className="l">02 · Auto-filled</span>
+                                    <span className="l">{t('02 · Auto-filled')}</span>
                                     <span className="v" style={{ color: tilesFilled ? '#3666ff' : '#94a3b8' }}>
-                                        <SNI.Spark s={10} /> from history
+                                        <SNI.Spark s={10} /> {t('from history')}
                                     </span>
                                 </div>
                                 <div className="sn-tiles">
@@ -429,12 +427,12 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                                         { k: 'Target price', v: '₹4.60L', s: 'last 6m avg' },
                                         { k: 'Line items', v: '12', s: 'BOM pulled' },
                                         { k: 'Closes in', v: '48h', s: 'auto reminders' },
-                                    ].map((t, i) => (
+                                    ].map((tile, i) => (
                                         <div key={i} className={`sn-tile ${tilesIn ? 'in' : ''} ${tilesFilled ? 'filled' : ''}`}
                                             style={{ transitionDelay: `${i * 0.08}s` }}>
-                                            <div className="k">{t.k}</div>
-                                            <div className="v">{t.v}</div>
-                                            <div className="s">{t.s}</div>
+                                        <div className="k">{t(tile.k)}</div>
+                                        <div className="v">{tile.v}</div>
+                                        <div className="s">{t(tile.s)}</div>
                                         </div>
                                     ))}
                                 </div>
@@ -446,7 +444,7 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                                     ].map((w, i) => (
                                         <div key={i} className={`sn-warn ${tilesFilled ? 'in' : ''}`}
                                             style={{ transitionDelay: `${0.35 + i * 0.08}s` }}>
-                                            <SNI.Warn s={9} />{w}
+                                            <SNI.Warn s={9} />{t(w)}
                                         </div>
                                     ))}
                                 </div>
@@ -455,9 +453,9 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                             {/* Vendor auto-pick */}
                             <div className="sn-card">
                                 <div className="sn-card-hd">
-                                    <span className="l">03 · Vendors auto-picked</span>
+                                    <span className="l">{t('03 · Vendors auto-picked')}</span>
                                     <span className="v" style={{ color: vendorsPicked ? '#3666ff' : '#94a3b8' }}>
-                                        by tag + history
+                                        {t('by tag + history')}
                                     </span>
                                 </div>
                                 <div className="sn-vlist">
@@ -477,7 +475,7 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
 
                             {/* Send button */}
                             <div className={`sn-send ${sendPressed ? 'pressed' : ''}`}>
-                                <SNI.Send s={11} />Send Event · invite 5 vendors
+                                <SNI.Send s={11} />{t('Send Event · invite 5 vendors')}
                             </div>
                         </div>
 
@@ -486,20 +484,20 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                             {/* Channels */}
                             <div className="sn-card" style={{ padding: '9px 11px' }}>
                                 <div className="sn-card-hd">
-                                    <span className="l">04 · Channel</span>
+                                    <span className="l">{t('04 · Channel')}</span>
                                     <span className="v" style={{ color: channelCut ? '#047857' : '#94a3b8' }}>
-                                        <SNI.Bell s={9} /> Auto-reminders on
+                                        <SNI.Bell s={9} /> {t('Auto-reminders on')}
                                     </span>
                                 </div>
                                 <div className="sn-chans">
                                     <div className={`sn-chan dead ${channelCut ? 'cut' : ''}`}>
                                         <span className="ico"><SNI.Mail s={11} /></span>
-                                        Email back-and-forth
+                                        {t('Email back-and-forth')}
                                     </div>
                                     <div className={`sn-chan ${channelCut ? 'live' : ''}`}>
                                         <span className="ico"><SNI.Globe s={11} /></span>
-                                        On-platform reply
-                                        <span className="badge">LIVE</span>
+                                        {t('On-platform reply')}
+                                        <span className="badge">{t('LIVE')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -508,7 +506,7 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                             <div className="sn-stage">
                                 <div className="sn-stage-hd">
                                     <div className="b"><SNI.Bot s={13} /></div>
-                                    <div className="ttl">FW Autobot <span>· auto-negotiating</span></div>
+                                    <div className="ttl">FW Autobot <span>{t('· auto-negotiating')}</span></div>
                                     <div className="rnd">{round}</div>
                                 </div>
 
@@ -523,7 +521,7 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                                                     <span className="tag">{m.round}</span>
                                                     {m.text.split(/(₹[\d.]+L?)/).map((part, j) => /₹/.test(part)
                                                         ? <span key={j} className="mono">{part}</span>
-                                                        : <React.Fragment key={j}>{part}</React.Fragment>)}
+                                                        : <React.Fragment key={j}>{t(part)}</React.Fragment>)}
                                                 </div>
                                                 {m.who === 'vendor' && <div className="av">V</div>}
                                             </div>
@@ -536,9 +534,9 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                     </div>
 
                     <div className="sn-foot">
-                        <div className="seal"><SNI.Bot s={11} /> Negotiation · 3 rounds</div>
+                        <div className="seal"><SNI.Bot s={11} /> {t('Negotiation · 3 rounds')}</div>
                         <div className={`stamp ${lockedIn ? 'in' : ''}`}>
-                            <SNI.Check s={10} /> LOCKED · ₹4.39L · saved 4.6%
+                            <SNI.Check s={10} /> {t('LOCKED · ₹4.39L · saved 4.6%')}
                         </div>
                     </div>
                 </div>

@@ -6,14 +6,19 @@ import SplashLoaderDoor from './SplashLoaderDoor';
 
 export default function ConditionalSplashLoader() {
   const pathname = usePathname();
+  const isDevelopment = process.env.NODE_ENV === 'development';
   
   // 1. Initialize state synchronously matching the server exactly.
   // By defaulting to `true` on the home page, the server renders the Splash Loader immediately.
   // This physically covers the screen, completely preventing the 0.2s flash of the website content.
-  const [shouldPlay, setShouldPlay] = useState(pathname === '/');
+  const [shouldPlay, setShouldPlay] = useState(!isDevelopment && pathname === '/');
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (isDevelopment) {
+      setShouldPlay(false);
+      return;
+    }
 
     // 2. Now that we are safely on the client, we check sessionStorage
     let isReload = false;
@@ -45,7 +50,7 @@ export default function ConditionalSplashLoader() {
       sessionStorage.setItem('hasPlayedSplash', 'true');
       setShouldPlay(false);
     }
-  }, [pathname]);
+  }, [isDevelopment, pathname]);
 
   if (!shouldPlay) return null;
 

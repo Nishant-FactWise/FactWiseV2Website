@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import BomCostAnimation from './BomCostAnimation';
 import { Check } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 export default function BomCostSection() {
+    const t = useLocalizedText();
     const [isBomAuto, setIsBomAuto] = useState<boolean>(true);
     const [bomMenuStep, setBomMenuStep] = useState<number | null>(null);
     const [bomPhase, setBomPhase] = useState<number>(1);
@@ -39,27 +41,27 @@ export default function BomCostSection() {
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-                    BOM & Cost Intelligence
+                    {t('BOM & Cost Intelligence')}
                 </div>
                 <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
-                    AI-Driven BOM Intelligence.
+                    {t('AI-Driven BOM Intelligence.')}
 
  <br />
-                    <span className="text-[#3666ff]">Every Part. Every Cost.</span>
+                    <span className="text-[#3666ff]">{t('Every Part. Every Cost.')}</span>
                 </h3>
                 <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Build complex multi-level BOMs with alternates in a single import. FactWise surfaces accurate line-item costs — distributor, past PO, quote, and contract prices — before any RFQ goes out.
+                    {t('Build complex multi-level BOMs with alternates in a single import. FactWise surfaces accurate line-item costs — distributor, past PO, quote, and contract prices — before any RFQ goes out.')}
                 </p>
                 <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Every revision is tracked automatically. Compare versions side by side and ask AI any question about cost changes or sourcing insights — no spreadsheet digging.
+                    {t('Every revision is tracked automatically. Compare versions side by side and ask AI any question about cost changes or sourcing insights — no spreadsheet digging.')}
                 </p>
 
                 <div className="flex flex-col gap-2 mt-8 text-left">
                     {[
-                        { step: 1, title: "Multi-Level BOM Import" },
-                        { step: 2, title: "Alternates on Every Line" },
-                        { step: 3, title: "Line-Level Cost Intelligence" },
-                        { step: 4, title: "Ask AI About Your BOM" },
+                        { step: 1, title: 'Multi-Level BOM Import' },
+                        { step: 2, title: 'Alternates on Every Line' },
+                        { step: 3, title: 'Line-Level Cost Intelligence' },
+                        { step: 4, title: 'Ask AI About Your BOM' },
                     ].map((item) => (
                         <div
                             key={item.step}
@@ -88,13 +90,13 @@ export default function BomCostSection() {
                                     : isBomStepDone(item.step) ? 'text-slate-700'
                                     : 'text-slate-500'
                                 }`}>
-                                    {item.title}
+                                    {t(item.title)}
                                 </span>
                             </div>
                             {isBomStepActive(item.step) && (
                                 <span className="relative z-10 text-[9px] font-black text-emerald-600 bg-emerald-50/80 border border-emerald-100 px-2.5 py-1 rounded-full font-mono uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
                                     <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                    Active
+                                    {t('Active')}
                                 </span>
                             )}
                         </div>

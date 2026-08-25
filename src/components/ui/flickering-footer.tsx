@@ -3,6 +3,10 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { Mail } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { getPathLocale, localizePath } from '@/lib/i18n';
+import { localizeTerminology } from '@/lib/localized-terminology';
+import { messages } from '@/lib/messages';
 import { OPEN_PREFERENCES_EVENT } from './CookieConsent';
 
 const LinkedinIcon = () => (
@@ -72,6 +76,15 @@ const AnimatedContainer = ({ children, delay = 0 }: { children: React.ReactNode;
 };
 
 export function FlickeringFooter() {
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const textMap = messages[locale].textMap;
+  const t = (source: string) => localizeTerminology(textMap[source] ?? source, locale);
+  const visibleFooterLinks = footerLinks.map((section) => ({
+    ...section,
+    links: section.links.filter((link) => locale === 'en' || link.href !== '/blog'),
+  }));
+
   return (
     <footer style={{ width: '100%', background: '#f8fafc', position: 'relative', overflow: 'hidden' }}>
 
@@ -92,13 +105,13 @@ export function FlickeringFooter() {
           {/* Brand block */}
           <AnimatedContainer delay={0}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-              <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, textDecoration: 'none' }}>
+              <Link href={localizePath('/', locale)} style={{ display: 'inline-flex', alignItems: 'center', gap: 12, textDecoration: 'none' }}>
                 <img src="/logo.webp" alt="FactWise" style={{ height: 40, width: 'auto', borderRadius: 4 }} />
                 <span style={{ fontSize: 22, fontWeight: 700, color: '#1A1D2E', letterSpacing: '-0.03em' }}>FactWise</span>
               </Link>
 
               <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7, maxWidth: 260, margin: 0 }}>
-                Source-to-pay procurement intelligence for manufacturing enterprises.
+                {t('Source-to-pay procurement intelligence for manufacturing enterprises.')}
               </p>
 
               {/* Social icons */}
@@ -107,7 +120,7 @@ export function FlickeringFooter() {
                   <a
                     key={s.name}
                     href={s.href}
-                    aria-label={s.name}
+                    aria-label={t(s.name)}
                     target={s.href.startsWith('http') ? '_blank' : undefined}
                     rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     style={{
@@ -149,7 +162,7 @@ export function FlickeringFooter() {
 
           {/* Nav columns */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '32px 24px' }} className="footer-nav-grid">
-            {footerLinks.map((section, idx) => (
+            {visibleFooterLinks.map((section, idx) => (
               <AnimatedContainer key={section.title} delay={0.08 + idx * 0.06}>
                 <div>
                   <h4 style={{
@@ -157,13 +170,13 @@ export function FlickeringFooter() {
                     textTransform: 'uppercase', color: '#94a3b8',
                     marginBottom: 16, marginTop: 0,
                   }}>
-                    {section.title}
+                    {t(section.title)}
                   </h4>
                   <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 11 }}>
                     {section.links.map(link => (
                       <li key={link.name}>
                         <Link
-                          href={link.href}
+                          href={localizePath(link.href, locale)}
                           style={{
                             fontSize: 14, fontWeight: 500,
                             color: '#475569', textDecoration: 'none',
@@ -173,7 +186,7 @@ export function FlickeringFooter() {
                           onMouseEnter={e => (e.currentTarget.style.color = '#3666ff')}
                           onMouseLeave={e => (e.currentTarget.style.color = '#475569')}
                         >
-                          {link.name}
+                          {t(link.name)}
                         </Link>
                       </li>
                     ))}
@@ -194,7 +207,7 @@ export function FlickeringFooter() {
           alignItems: 'center', justifyContent: 'space-between', gap: 16,
         }}>
           <p style={{ fontSize: 11, color: '#94a3b8', margin: 0, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-            © 2026 FactWise Technologies. All rights reserved.
+            © 2026 FactWise Technologies. {t('All rights reserved.')}
           </p>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'center' }}>
@@ -203,7 +216,7 @@ export function FlickeringFooter() {
               ['Terms of Service', '/terms-of-service'],
               ['DPDP Compliance', '/dpdp-compliance'],
             ].map(([label, href]) => (
-              <Link key={label} href={href} style={{
+              <Link key={label} href={localizePath(href, locale)} style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: '0.08em',
                 textTransform: 'uppercase', color: '#94a3b8',
                 textDecoration: 'none', transition: 'color 0.18s ease',
@@ -211,7 +224,7 @@ export function FlickeringFooter() {
                 onMouseEnter={e => (e.currentTarget.style.color = '#1A1D2E')}
                 onMouseLeave={e => (e.currentTarget.style.color = '#94a3b8')}
               >
-                {label}
+                {t(label)}
               </Link>
             ))}
             <button
@@ -226,7 +239,7 @@ export function FlickeringFooter() {
               onMouseEnter={e => (e.currentTarget.style.color = '#1A1D2E')}
               onMouseLeave={e => (e.currentTarget.style.color = '#94a3b8')}
             >
-              Cookie Settings
+              {t('Cookie Settings')}
             </button>
           </div>
         </div>
@@ -241,3 +254,4 @@ export function FlickeringFooter() {
     </footer>
   );
 }
+

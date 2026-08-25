@@ -1,20 +1,46 @@
 'use client';
 
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import { ReactLenis } from 'lenis/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HelpCircle, Search, Plus, ArrowRight, Mail } from 'lucide-react';
 import { FlickeringFooter } from '@/components/ui/flickering-footer';
 import { faqCategories } from './faq-data';
+import { faqExtraTextMap } from '@/lib/faq-extra-text';
+import { getPathLocale, localizePath } from '@/lib/i18n';
+import { localizeTerminology } from '@/lib/localized-terminology';
 import { cn } from '@/lib/utils';
 
 export default function FaqContent() {
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const demoHref = localizePath('/demo', locale);
+  const textMap = faqExtraTextMap[locale];
+  const t = React.useCallback(
+    (source: string) => localizeTerminology(textMap[source] ?? source, locale),
+    [locale, textMap],
+  );
   const [query, setQuery] = React.useState('');
   const [openId, setOpenId] = React.useState<string | null>(faqCategories[0].items[0].q);
 
+  const localizedCategories = React.useMemo(
+    () =>
+      faqCategories.map((category) => ({
+        category: t(category.category),
+        sourceCategory: category.category,
+        items: category.items.map((item) => ({
+          id: item.q,
+          q: t(item.q),
+          a: t(item.a),
+        })),
+      })),
+    [t],
+  );
+
   const q = query.trim().toLowerCase();
   const filtered = q
-    ? faqCategories
+    ? localizedCategories
         .map((c) => ({
           ...c,
           items: c.items.filter(
@@ -22,7 +48,7 @@ export default function FaqContent() {
           ),
         }))
         .filter((c) => c.items.length > 0)
-    : faqCategories;
+    : localizedCategories;
 
   return (
     <ReactLenis root options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}>
@@ -38,13 +64,13 @@ export default function FaqContent() {
           <div className="text-center space-y-4 mb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold tracking-wide uppercase">
               <HelpCircle className="w-3.5 h-3.5" />
-              Help Center
+              {t('Help Center')}
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] pb-1.5 bg-gradient-to-r from-slate-900 via-slate-800 to-[#3666ff] bg-clip-text text-transparent">
-              Frequently Asked Questions
+              {t('Frequently Asked Questions')}
             </h1>
             <p className="text-slate-500 text-base max-w-xl mx-auto">
-              Answers to common questions about FactWise, our AI-powered source-to-pay platform, and how it works for manufacturers.
+              {t('Answers to common questions about FactWise, our AI-powered source-to-pay platform, and how it works for manufacturers.')}
             </p>
           </div>
 
@@ -55,8 +81,8 @@ export default function FaqContent() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search questions..."
-              aria-label="Search frequently asked questions"
+              placeholder={t('Search questions...')}
+              aria-label={t('Search frequently asked questions')}
               className="w-full rounded-2xl border border-slate-200 bg-white/90 pl-11 pr-4 py-3.5 text-[14px] text-slate-700 shadow-sm outline-none transition-colors placeholder:text-slate-400 focus:border-[#3666ff] focus:ring-2 focus:ring-[#3666ff]/20"
             />
           </div>
@@ -65,9 +91,9 @@ export default function FaqContent() {
           {filtered.length === 0 ? (
             <div className="rounded-3xl border border-slate-200/80 bg-white p-10 text-center">
               <p className="text-slate-500 text-[15px]">
-                No questions match &ldquo;{query}&rdquo;. Try a different search, or{' '}
+                {t('No questions match')} &ldquo;{query}&rdquo;. {t('Try a different search, or')}{' '}
                 <a href="mailto:support@factwise.io" className="font-semibold text-[#3666ff] hover:underline">
-                  ask our team
+                  {t('ask our team')}
                 </a>
                 .
               </p>
@@ -75,21 +101,21 @@ export default function FaqContent() {
           ) : (
             <div className="space-y-10">
               {filtered.map((category) => (
-                <section key={category.category}>
+                <section key={category.sourceCategory}>
                   <h2 className="mb-4 text-[12px] font-bold uppercase tracking-[0.2em] text-[#3666ff]">
                     {category.category}
                   </h2>
                   <div className="space-y-3">
                     {category.items.map((item) => {
-                      const isOpen = openId === item.q;
+                      const isOpen = openId === item.id;
                       return (
                         <div
-                          key={item.q}
+                          key={item.id}
                           className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_4px_20px_rgb(0,0,0,0.02)] transition-shadow hover:shadow-[0_8px_30px_rgb(0,0,0,0.05)]"
                         >
                           <button
                             type="button"
-                            onClick={() => setOpenId(isOpen ? null : item.q)}
+                            onClick={() => setOpenId(isOpen ? null : item.id)}
                             aria-expanded={isOpen}
                             className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left md:px-6"
                           >
@@ -131,16 +157,16 @@ export default function FaqContent() {
 
           {/* CTA */}
           <div className="mt-14 overflow-hidden rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-8 text-center md:p-10">
-            <h3 className="text-xl font-bold text-slate-900 md:text-2xl">Still have questions?</h3>
+            <h3 className="text-xl font-bold text-slate-900 md:text-2xl">{t('Still have questions?')}</h3>
             <p className="mt-2 text-[14px] text-slate-500 md:text-[15px]">
-              Book a demo and our team will walk you through FactWise and how it fits your procurement workflow.
+              {t('Book a demo and our team will walk you through FactWise and how it fits your procurement workflow.')}
             </p>
             <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <a
-                href="/demo"
+                href={demoHref}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#3666ff] px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-all hover:bg-[#2b54e0] hover:shadow-md"
               >
-                Book a demo
+                {t('Book a demo')}
                 <ArrowRight className="h-4 w-4" />
               </a>
               <a
@@ -148,7 +174,7 @@ export default function FaqContent() {
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-[14px] font-semibold text-slate-700 transition-colors hover:bg-slate-50"
               >
                 <Mail className="h-4 w-4" />
-                Email support
+                {t('Email support')}
               </a>
             </div>
           </div>

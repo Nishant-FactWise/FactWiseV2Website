@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useRef, useState } from "react";
 import {
@@ -15,55 +15,56 @@ import {
   AnimatedBrainCircuitIcon,
   AnimatedLightbulbIcon,
 } from "@/components/ui/animated-icons";
+import { useLocalizedText } from "@/hooks/useLocalizedText";
 
-/* ─── Feature data ─── */
+/* â”€â”€â”€ Feature data â”€â”€â”€ */
 const features = [
   {
     icon: AnimatedBotIcon,
     title: "AI-Powered BOM Structuring.",
     description:
-      "Upload any BOM in any format — FactWise's AI cleans, structures, and fills every gap automatically. No reformatting. No manual entry.",
+      "Upload any BOM in any format â€” FactWise's AI cleans, structures, and fills every gap automatically. No reformatting. No manual entry.",
     href: "#",
   },
   {
     icon: AnimatedTrendingUpIcon,
     title: "Line-Item Cost Intelligence",
     description:
-      "Before a single RFQ goes out, see distributor prices, past PO rates, historical quotes, and contract prices at every line item — so every target price is grounded in real data.",
+      "Before a single RFQ goes out, see distributor prices, past PO rates, historical quotes, and contract prices at every line item â€” so every target price is grounded in real data.",
     href: "#",
   },
   {
     icon: AnimatedZapIcon,
     title: "Cut Quoting Time by 50%.",
     description:
-      "From customer inquiry to winning quote — in days, not weeks. Every step automated, every bottleneck eliminated.",
+      "From customer inquiry to winning quote â€” in days, not weeks. Every step automated, every bottleneck eliminated.",
     href: "#",
   },
   {
     icon: AnimatedSearchCheckIcon,
     title: "Smart Warnings.",
     description:
-      "FactWise flags high target rates, duplicate items across events, and contract mismatches — automatically — so every decision is made with complete context, not discovered after the damage is done.",
+      "FactWise flags high target rates, duplicate items across events, and contract mismatches â€” automatically â€” so every decision is made with complete context, not discovered after the damage is done.",
     href: "#",
   },
   {
     icon: AnimatedBrainCircuitIcon,
     title: "AI Powered Analytics.",
     description:
-      "AI-powered analytics agents surface the insights that matter — best bids, hidden costs, margin risks — so every award decision is backed by intelligence, not instinct.",
+      "AI-powered analytics agents surface the insights that matter â€” best bids, hidden costs, margin risks â€” so every award decision is backed by intelligence, not instinct.",
     href: "#",
   },
   {
     icon: AnimatedLightbulbIcon,
     title: "Formula Driven Quoting.",
     description:
-      "Build your own landed cost formula once — FactWise applies it automatically across every vendor, every bid, and every customer quote. Always accurate. Always yours.",
+      "Build your own landed cost formula once â€” FactWise applies it automatically across every vendor, every bid, and every customer quote. Always accurate. Always yours.",
     href: "#",
     comingSoon: false,
   },
 ];
 
-/* ─── Single card with mouse-tracking glow & micro-interactions ─── */
+/* â”€â”€â”€ Single card with mouse-tracking glow & micro-interactions â”€â”€â”€ */
 function FeatureCard({
   icon: Icon,
   title,
@@ -79,6 +80,7 @@ function FeatureCard({
   comingSoon?: boolean;
   index: number;
 }) {
+  const t = useLocalizedText();
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -132,7 +134,7 @@ function FeatureCard({
           : undefined
       }
     >
-      {/* Animated border glow — sits on the card edge using a mask */}
+      {/* Animated border glow â€” sits on the card edge using a mask */}
       <motion.div
         aria-hidden
         className="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -155,7 +157,7 @@ function FeatureCard({
         style={{ background: glowBackground }}
       />
 
-      {/* Top accent line — sweeps in on hover */}
+      {/* Top accent line â€” sweeps in on hover */}
       <div
         aria-hidden
         className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#3666ff] to-transparent origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-[600ms] ease-out"
@@ -196,14 +198,14 @@ function FeatureCard({
         className="relative z-10 text-[17px] font-semibold text-[#0D1117] mb-3 leading-snug tracking-[-0.01em]"
         style={{ fontFamily: "var(--font-display)" }}
       >
-        {title}
+        {t(title)}
       </h3>
 
       <p
         className="relative z-10 text-sm text-slate-500 leading-relaxed flex-1 group-hover:text-slate-600 transition-colors duration-300"
         style={{ fontFamily: "var(--font-inter)" }}
       >
-        {description}
+        {t(description)}
       </p>
 
       {/* Footer */}
@@ -214,7 +216,7 @@ function FeatureCard({
               <span className="absolute inline-flex h-full w-full rounded-full bg-slate-300 opacity-75 animate-ping" />
               <span className="relative inline-flex size-1.5 rounded-full bg-slate-400" />
             </span>
-            Coming soon
+            {t("Coming soon")}
           </span>
         </div>
       )}
@@ -222,8 +224,9 @@ function FeatureCard({
   );
 }
 
-/* ─── Main section ─── */
+/* â”€â”€â”€ Main section â”€â”€â”€ */
 export default function QuoteToOrderFeatures() {
+  const t = useLocalizedText();
   return (
     <section className="relative w-full bg-white pt-8 pb-28 overflow-hidden">
       {/* Decorative dot-grid background */}
@@ -262,16 +265,16 @@ export default function QuoteToOrderFeatures() {
                 <span className="absolute inline-flex h-full w-full rounded-full bg-[#3666ff] opacity-75 animate-ping" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-[#3666ff]" />
               </span>
-              Enterprise Features
+              {t("Enterprise Features")}
             </motion.div>
 
             <h2
               className="text-[36px] md:text-[48px] font-semibold text-[#0D1117] mb-5 tracking-[-0.03em] leading-[1.1] max-w-2xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Powerful Features.{" "}
+              {t("Powerful Features.")}{" "}
               <span className="text-[#3666ff]">
-                Right Where You Need Them.
+                {t("Right Where You Need Them.")}
               </span>
             </h2>
 
@@ -279,8 +282,7 @@ export default function QuoteToOrderFeatures() {
               className="text-[17px] md:text-[18px] text-slate-400 max-w-2xl leading-[1.65] font-normal"
               style={{ fontFamily: "var(--font-inter)" }}
             >
-              Every tool your team needs to move faster and decide smarter —
-              built into the flow, not bolted on.
+              {t("Every tool your team needs to move faster and decide smarter — built into the flow, not bolted on.")}
             </p>
           </div>
 
@@ -297,13 +299,13 @@ export default function QuoteToOrderFeatures() {
                 className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-[0.18em]"
                 style={{ fontFamily: "var(--font-inter)" }}
               >
-                {String(features.length).padStart(2, "0")} capabilities
+                {String(features.length).padStart(2, "0")} {t("capabilities")}
               </span>
               <span
                 className="text-[10px] font-mono text-slate-300 tracking-wider mt-0.5"
                 style={{ fontFamily: "var(--font-inter)" }}
               >
-                · scroll to explore ·
+                · {t("scroll to explore")} ·
               </span>
             </div>
             <div className="h-10 w-px bg-gradient-to-b from-transparent via-slate-300 to-transparent" />
@@ -311,7 +313,7 @@ export default function QuoteToOrderFeatures() {
         </motion.div>
       </div>
 
-      {/* Grid — bordered cards with shared borders */}
+      {/* Grid â€” bordered cards with shared borders */}
       <div className="relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

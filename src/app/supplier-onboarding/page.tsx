@@ -4,7 +4,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, ArrowLeft, Loader2, Cpu, Globe, Search, ChevronDown, Check, Mail, FileSpreadsheet, Server, Laptop, X } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { getPathLocale, localizePath } from '@/lib/i18n';
+import { localizeTerminology } from '@/lib/localized-terminology';
+import { messages } from '@/lib/messages';
 
 /* ── Custom Dropdown ─────────────────────────────────────────────────────── */
 interface DropdownProps {
@@ -96,6 +100,10 @@ type Step = 'options' | 'form' | 'otp' | 'success';
 
 export default function SupplierOnboardingPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const textMap = messages[locale].textMap;
+  const t = (source: string) => localizeTerminology(textMap[source] ?? source, locale);
   const [step, setStep] = useState<Step>('options');
   const [selectedIntegration, setSelectedIntegration] = useState('');
   
@@ -159,7 +167,7 @@ export default function SupplierOnboardingPage() {
     }
 
     if (finalCustomers.length === 0) {
-      setError('Please enter at least one customer working with FactWise and press Enter.');
+      setError(t('Please enter at least one customer working with FactWise and press Enter.'));
       return;
     }
 
@@ -188,7 +196,7 @@ export default function SupplierOnboardingPage() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error ?? 'Something went wrong.');
+        throw new Error(data.error ?? t('Something went wrong. Please try again.'));
       }
       setPendingEmail(payload.email);
       setPendingName(payload.name);
@@ -196,7 +204,7 @@ export default function SupplierOnboardingPage() {
       setResendCooldown(30);
       setStep('otp');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setError(err instanceof Error ? err.message : t('Something went wrong. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -226,7 +234,7 @@ export default function SupplierOnboardingPage() {
 
   const handleVerifyOtp = async () => {
     const code = otp.join('');
-    if (code.length < 6) { setError('Please enter the 6-digit code.'); return; }
+    if (code.length < 6) { setError(t('Please enter the 6-digit code.')); return; }
     setError('');
     setLoading(true);
     try {
@@ -237,11 +245,11 @@ export default function SupplierOnboardingPage() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error ?? 'Verification failed.');
+        throw new Error(data.error ?? t('Verification failed.'));
       }
       setStep('success');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Verification failed.');
+      setError(err instanceof Error ? err.message : t('Verification failed.'));
     } finally {
       setLoading(false);
     }
@@ -257,12 +265,12 @@ export default function SupplierOnboardingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(pendingPayload),
       });
-      if (!res.ok) { const d = await res.json(); throw new Error(d.error); }
+      if (!res.ok) { const d = await res.json(); throw new Error(d.error ?? t('Failed to resend code.')); }
       setOtp(['', '', '', '', '', '']);
       setResendCooldown(30);
       otpRefs.current[0]?.focus();
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to resend code.');
+      setError(err instanceof Error ? err.message : t('Failed to resend code.'));
     } finally {
       setLoading(false);
     }
@@ -276,17 +284,24 @@ export default function SupplierOnboardingPage() {
   ];
 
   const roleOptions = [
-    { value: 'sales', label: 'Sales / Account Management' },
-    { value: 'operations', label: 'Operations' },
-    { value: 'finance', label: 'Finance' },
-    { value: 'executive', label: 'Executive' },
-    { value: 'other', label: 'Other' },
+    { value: 'sales', label: t('Sales / Account Management') },
+    { value: 'operations', label: t('Operations') },
+    { value: 'finance', label: t('Finance') },
+    { value: 'executive', label: t('Executive') },
+    { value: 'other', label: t('Other') },
   ];
 
   const integrationOptions = [
-    { id: 'excel', icon: <FileSpreadsheet className="w-6 h-6" />, title: 'Excel / Offline', desc: 'Download templates, work offline, and upload back.' },
-    { id: 'platform', icon: <Laptop className="w-6 h-6" />, title: 'Platform Dashboard', desc: 'Log in and manage quotes directly on FactWise.' },
-    { id: 'api', icon: <Server className="w-6 h-6" />, title: 'API Integration', desc: 'Connect your ERP and respond automatically.' },
+    { id: 'excel', icon: <FileSpreadsheet className="w-6 h-6" />, title: t('Excel / Offline'), desc: t('Download templates, work offline, and upload back.') },
+    { id: 'platform', icon: <Laptop className="w-6 h-6" />, title: t('Platform Dashboard'), desc: t('Log in and manage quotes directly on FactWise.') },
+    { id: 'api', icon: <Server className="w-6 h-6" />, title: t('API Integration'), desc: t('Connect your ERP and respond automatically.') },
+  ];
+
+  const supplierHighlights = [
+    { icon: <FileSpreadsheet size={18} />, title: t('Instant Excel Upload'), desc: t('Download templates, work offline, and drag-and-drop back with zero manual entry.') },
+    { icon: <Cpu size={18} />, title: t('AI Auto-Response'), desc: t('Store your pricing repo and let AI automatically match and quote on incoming RFQs.') },
+    { icon: <Globe size={18} />, title: t('Zero Portal Friction'), desc: t('No more juggling multiple buyer portals. Connect once and manage everything.') },
+    { icon: <Search size={18} />, title: t('Open API Access'), desc: t('Pull data directly into your ERP and respond back with zero manual intervention.') },
   ];
 
   return (
@@ -318,13 +333,16 @@ export default function SupplierOnboardingPage() {
           />
           <span>FactWise</span>
         </div>
-        <Link
-          href="/supplier"
-          className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors bg-white/5 border border-white/10 px-4 py-2 rounded-full hover:bg-white/10"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Suppliers
-        </Link>
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher />
+          <Link
+            href={localizePath('/supplier', locale)}
+            className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors bg-white/5 border border-white/10 px-4 py-2 rounded-full hover:bg-white/10"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            {t('Back to Suppliers')}
+          </Link>
+        </div>
       </header>
 
       {/* Main Multi-Step Card */}
@@ -347,22 +365,17 @@ export default function SupplierOnboardingPage() {
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="h-px w-6 bg-[#3666ff]/80" />
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3666ff]/80">Supplier Network</span>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3666ff]/80">{t('Supplier Network')}</span>
                   </div>
                   <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight mb-4 text-slate-900 leading-[1.1]">
-                    Get Started as <br />
-                    <span className="text-[#3666ff]">a Supplier.</span>
+                    {t('Get Started as')} <br />
+                    <span className="text-[#3666ff]">{t('a Supplier.')}</span>
                   </h1>
                   <p className="text-slate-500 mb-6 text-sm leading-relaxed">
-                    Join the FactWise Supplier Network to engage with buyers effortlessly. Choose your preferred way to respond — via our platform, Excel, or direct API integration.
+                    {t('Join the FactWise Supplier Network to engage with buyers effortlessly. Choose your preferred way to respond — via our platform, Excel, or direct API integration.')}
                   </p>
                   <ul className="space-y-6">
-                    {[
-                      { icon: <FileSpreadsheet size={18} />, title: 'Instant Excel Upload', desc: 'Download templates, work offline, and drag-and-drop back with zero manual entry.' },
-                      { icon: <Cpu size={18} />, title: 'AI Auto-Response', desc: 'Store your pricing repo and let AI automatically match and quote on incoming RFQs.' },
-                      { icon: <Globe size={18} />, title: 'Zero Portal Friction', desc: 'No more juggling multiple buyer portals. Connect once and manage everything.' },
-                      { icon: <Search size={18} />, title: 'Open API Access', desc: 'Pull data directly into your ERP and respond back with zero manual intervention.' },
-                    ].map((item, i) => (
+                    {supplierHighlights.map((item, i) => (
                       <li key={i} className="flex gap-4 items-start group">
                         <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center text-[#3666ff] shrink-0 transition-colors group-hover:border-[#3666ff]/50 mt-1">
                           {item.icon}
@@ -380,8 +393,8 @@ export default function SupplierOnboardingPage() {
               {/* Right */}
               <div className="flex-[1.1] p-8 lg:p-12 bg-slate-50/50 flex flex-col justify-center overflow-y-auto">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-1">How would you like to respond?</h3>
-                  <p className="text-slate-500 text-sm font-light">Select your preferred integration method to proceed.</p>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-1">{t('How would you like to respond?')}</h3>
+                  <p className="text-slate-500 text-sm font-light">{t('Select your preferred integration method to proceed.')}</p>
                 </div>
 
                 <div className="space-y-4">
@@ -417,7 +430,7 @@ export default function SupplierOnboardingPage() {
                     onClick={() => setStep('form')}
                     className="w-full py-3.5 bg-[#3666ff] text-white rounded-lg font-bold shadow-[0_0_20px_rgba(54,102,255,0.2)] hover:bg-[#3666ff]/90 hover:scale-[1.01] hover:shadow-lg hover:shadow-[#3666ff]/30 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 text-sm"
                   >
-                    Continue
+                    {t('Continue')}
                   </button>
                 </div>
               </div>
@@ -442,22 +455,17 @@ export default function SupplierOnboardingPage() {
                       <ArrowLeft className="w-4 h-4" />
                     </button>
                     <div className="h-px w-6 bg-[#3666ff]/80" />
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3666ff]/80">Supplier Network</span>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3666ff]/80">{t('Supplier Network')}</span>
                   </div>
                   <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight mb-4 text-slate-900 leading-[1.1]">
-                    Get Started as <br />
-                    <span className="text-[#3666ff]">a Supplier.</span>
+                    {t('Get Started as')} <br />
+                    <span className="text-[#3666ff]">{t('a Supplier.')}</span>
                   </h1>
                   <p className="text-slate-500 mb-6 text-sm leading-relaxed">
-                    Join the FactWise Supplier Network to engage with buyers effortlessly. Choose your preferred way to respond — via our platform, Excel, or direct API integration.
+                    {t('Join the FactWise Supplier Network to engage with buyers effortlessly. Choose your preferred way to respond — via our platform, Excel, or direct API integration.')}
                   </p>
                   <ul className="space-y-6">
-                    {[
-                      { icon: <FileSpreadsheet size={18} />, title: 'Instant Excel Upload', desc: 'Download templates, work offline, and drag-and-drop back with zero manual entry.' },
-                      { icon: <Cpu size={18} />, title: 'AI Auto-Response', desc: 'Store your pricing repo and let AI automatically match and quote on incoming RFQs.' },
-                      { icon: <Globe size={18} />, title: 'Zero Portal Friction', desc: 'No more juggling multiple buyer portals. Connect once and manage everything.' },
-                      { icon: <Search size={18} />, title: 'Open API Access', desc: 'Pull data directly into your ERP and respond back with zero manual intervention.' },
-                    ].map((item, i) => (
+                    {supplierHighlights.map((item, i) => (
                       <li key={i} className="flex gap-4 items-start group">
                         <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center text-[#3666ff] shrink-0 transition-colors group-hover:border-[#3666ff]/50 mt-1">
                           {item.icon}
@@ -475,44 +483,44 @@ export default function SupplierOnboardingPage() {
               {/* Right Form */}
               <div className="flex-[1.1] p-6 lg:p-10 bg-slate-50/50 flex flex-col justify-center">
                 <div className="mb-4">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-1">Create your profile</h3>
-                  <p className="text-slate-500 text-sm font-light">Enter your details to register as a supplier.</p>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-1">{t('Create your profile')}</h3>
+                  <p className="text-slate-500 text-sm font-light">{t('Enter your details to register as a supplier.')}</p>
                 </div>
 
                 <form ref={formRef} onSubmit={handleSubmitForm} className="space-y-3.5">
                   {/* Name + Company */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Full Name *</label>
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Full Name *')}</label>
                       <input required name="name" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="Jane Smith" />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Company *</label>
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Company *')}</label>
                       <input required name="company" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="e.g. Global Industries" />
                     </div>
                   </div>
 
                   {/* Contact / Work Email */}
                   <div className="space-y-1">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Contact / Work Email *</label>
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Contact / Work Email *')}</label>
                     <input required name="email" type="email" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="jane@company.com" />
                   </div>
 
                   {/* Email registered with FactWise */}
                   <div className="space-y-1">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Email registered with FactWise *</label>
-                    <input required name="factwiseRegisteredEmail" type="email" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder="Enter email registered with FactWise" />
-                    <p className="text-[10px] text-slate-400 ml-1">Email address associated with your FactWise portal account</p>
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Email registered with FactWise *')}</label>
+                    <input required name="factwiseRegisteredEmail" type="email" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm" placeholder={t('Enter email registered with FactWise')} />
+                    <p className="text-[10px] text-slate-400 ml-1">{t('Email address associated with your FactWise portal account')}</p>
                   </div>
 
                   {/* GST / Tax ID + Phone */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">GST / Tax ID *</label>
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('GST / Tax ID *')}</label>
                       <input required name="gstin" type="text" className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm uppercase font-mono tracking-wider" placeholder="e.g. 27AAAAA0000A1Z5" />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Phone (Optional)</label>
+                      <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Phone (Optional)')}</label>
                       <div className="relative flex rounded-lg border border-slate-200 bg-white hover:border-slate-300 transition-all shadow-sm focus-within:border-[#3666ff] focus-within:ring-4 focus-within:ring-[#3666ff]/10">
                         <select
                           defaultValue="+91"
@@ -542,7 +550,7 @@ export default function SupplierOnboardingPage() {
 
                   {/* Customer working with FactWise */}
                   <div className="space-y-1">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Customer working with FactWise *</label>
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Customer working with FactWise *')}</label>
                     <div className="flex flex-wrap gap-1.5 p-2 bg-white border border-slate-200 rounded-lg min-h-[42px] focus-within:border-[#3666ff] focus-within:ring-4 focus-within:ring-[#3666ff]/10 hover:border-slate-300 transition-all shadow-sm">
                       {customers.map((c, idx) => (
                         <span key={idx} className="inline-flex items-center gap-1 bg-[#3666ff]/10 text-[#3666ff] text-xs font-semibold px-2.5 py-1 rounded-md border border-[#3666ff]/20">
@@ -562,17 +570,17 @@ export default function SupplierOnboardingPage() {
                         onChange={e => setCurrentCustomerInput(e.target.value)}
                         onKeyDown={handleCustomerKeyDown}
                         onBlur={addCustomerTag}
-                        placeholder={customers.length === 0 ? "Type buyer name and press Enter..." : "Type another & press Enter..."}
+                        placeholder={customers.length === 0 ? t("Type buyer name and press Enter...") : t("Type another & press Enter...")}
                         className="flex-1 min-w-[150px] bg-transparent text-slate-900 focus:outline-none text-sm placeholder:text-slate-400 px-1 py-0.5"
                       />
                     </div>
-                    <p className="text-[10px] text-slate-400 ml-1">Type customer company name and press Enter to add</p>
+                    <p className="text-[10px] text-slate-400 ml-1">{t('Type customer company name and press Enter to add')}</p>
                   </div>
 
                   {/* Company Legal Address */}
                   <div className="space-y-1">
-                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">Company Legal Address *</label>
-                    <textarea required name="address" rows={2} className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm resize-none" placeholder="Enter registered legal business address, city, state & pincode" />
+                    <label className="text-[9px] font-bold uppercase tracking-[0.15em] text-slate-500 ml-1">{t('Company Legal Address *')}</label>
+                    <textarea required name="address" rows={2} className="w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-slate-900 focus:outline-none focus:border-[#3666ff] focus:ring-4 focus:ring-[#3666ff]/10 hover:border-slate-300 transition-all placeholder:text-slate-400 text-sm shadow-sm resize-none" placeholder={t('Enter registered legal business address, city, state & pincode')} />
                   </div>
 
                   {/* Submit */}
@@ -587,10 +595,10 @@ export default function SupplierOnboardingPage() {
                       type="submit"
                       className="w-full py-3.5 bg-[#3666ff] text-white rounded-lg font-bold shadow-[0_0_20px_rgba(54,102,255,0.2)] hover:bg-[#3666ff]/90 hover:scale-[1.01] hover:shadow-lg hover:shadow-[#3666ff]/30 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 text-sm"
                     >
-                      {loading ? <Loader2 className="animate-spin w-5 h-5" /> : 'Complete Registration'}
+                      {loading ? <Loader2 className="animate-spin w-5 h-5" /> : t('Complete Registration')}
                     </button>
                     <p className="text-center text-slate-500 text-[9px] mt-4 font-medium uppercase tracking-wider">
-                      Secure processing • No credit card required
+                      {t('Secure processing • No credit card required')}
                     </p>
                   </div>
                 </form>
@@ -614,9 +622,9 @@ export default function SupplierOnboardingPage() {
                   <Mail size={28} className="text-[#3666ff]" />
                 </div>
 
-                <h2 className="text-2xl font-bold text-slate-900 tracking-tight mb-2">Check your email</h2>
+                <h2 className="text-2xl font-bold text-slate-900 tracking-tight mb-2">{t('Check your email')}</h2>
                 <p className="text-slate-500 text-sm leading-relaxed mb-8">
-                  We sent a 6-digit code to<br />
+                  {t('We sent a 6-digit code to')}<br />
                   <span className="font-semibold text-slate-700">{pendingEmail}</span>
                 </p>
 
@@ -650,20 +658,20 @@ export default function SupplierOnboardingPage() {
                   disabled={loading || otp.join('').length < 6}
                   className="w-full py-3.5 bg-[#3666ff] text-white rounded-xl font-bold shadow-[0_0_20px_rgba(54,102,255,0.2)] hover:bg-[#3666ff]/90 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 text-sm mb-4"
                 >
-                  {loading ? <Loader2 className="animate-spin w-4 h-4" /> : 'Verify & Confirm'}
+                  {loading ? <Loader2 className="animate-spin w-4 h-4" /> : t('Verify & Confirm')}
                 </button>
 
                 <div className="flex items-center justify-center gap-1 text-sm text-slate-500">
-                  <span>Didn&apos;t receive it?</span>
+                  <span>{t("Didn't receive it?")}</span>
                   {resendCooldown > 0 ? (
-                    <span className="text-slate-400 font-medium">Resend in {resendCooldown}s</span>
+                    <span className="text-slate-400 font-medium">{t('Resend in')} {resendCooldown}s</span>
                   ) : (
                     <button
                       onClick={handleResend}
                       disabled={loading}
                       className="text-[#3666ff] font-semibold hover:underline disabled:opacity-50"
                     >
-                      Resend
+                      {t('Resend')}
                     </button>
                   )}
                 </div>
@@ -672,7 +680,7 @@ export default function SupplierOnboardingPage() {
                   onClick={() => { setStep('form'); setError(''); setOtp(['','','','','','']); }}
                   className="mt-4 flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 transition-colors mx-auto"
                 >
-                  <ArrowLeft size={12} /> Back to form
+                  <ArrowLeft size={12} /> {t('Back to form')}
                 </button>
               </div>
             </motion.div>
@@ -690,17 +698,17 @@ export default function SupplierOnboardingPage() {
                 <CheckCircle2 size={40} className="text-white" />
               </div>
               <h1 className="text-3xl font-bold mb-2 relative z-10 text-slate-900 tracking-tight">
-                Welcome, {pendingName.split(' ')[0]}!
+                {t('Welcome,')} {pendingName.split(' ')[0]}!
               </h1>
               <p className="text-slate-500 mb-10 relative z-10 leading-relaxed text-sm">
-                You're all set. Our team will reach out shortly to finalise your supplier onboarding and {selectedIntegration === 'api' ? 'API setup' : 'platform access'}.
+                {t("You're all set. Our team will reach out shortly to finalise your supplier onboarding and")} {selectedIntegration === 'api' ? t('API setup') : t('platform access')}.
               </p>
               <div className="relative z-10">
                 <button
-                  onClick={() => router.push('/supplier')}
+                  onClick={() => router.push(localizePath('/supplier', locale))}
                   className="inline-flex items-center gap-2 bg-[#3666ff] text-white text-sm font-bold px-8 py-3.5 rounded-xl hover:bg-[#3666ff]/90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-[0_0_20px_rgba(54,102,255,0.3)]"
                 >
-                  Return to Suppliers →
+                  {t('Return to Suppliers →')}
                 </button>
               </div>
             </motion.div>

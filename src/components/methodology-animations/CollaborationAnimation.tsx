@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, Fragment } from 'react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 /* ===================== TYPES ===================== */
 
@@ -429,6 +430,7 @@ function coGetEndpoint(target: string, rootEl: HTMLElement): { x: number; y: num
 /* ===================== COMPONENT ===================== */
 
 export default function CollaborationAnimation({ speed = 1 }: { speed?: number }) {
+  const t = useLocalizedText();
   const [phaseIdx, setPhaseIdx] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -469,10 +471,10 @@ export default function CollaborationAnimation({ speed = 1 }: { speed?: number }
           <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
-          app.factwise.io · One workspace
+          app.factwise.io · {t('One workspace')}
         </div>
         <div className="co-chrome-spacer" />
-        <div className="co-chrome-live"><span className="pulse" />Live · in real time</div>
+        <div className="co-chrome-live"><span className="pulse" />{t('Live · in real time')}</div>
       </div>
 
       {/* Phase rail */}
@@ -481,7 +483,7 @@ export default function CollaborationAnimation({ speed = 1 }: { speed?: number }
           <Fragment key={p.id}>
             <div className={`co-rail-step${i === phaseIdx ? ' active' : ''}${i < phaseIdx ? ' done' : ''}`}>
               <span className="n">{p.badge}</span>
-              <span>{p.label}</span>
+              <span>{t(p.label)}</span>
             </div>
             {i < CO_PHASES.length - 1 && <div className="co-rail-sep" />}
           </Fragment>
@@ -493,7 +495,7 @@ export default function CollaborationAnimation({ speed = 1 }: { speed?: number }
         {/* Left: internal modules */}
         <div className="co-col-mod">
           <div className="co-col-head">
-            <span className="l">Internal · 5 teams</span>
+            <span className="l">{t('Internal · 5 teams')}</span>
             <span className="b">SSO</span>
           </div>
           {CO_MODULES.map((m) => {
@@ -516,7 +518,7 @@ export default function CollaborationAnimation({ speed = 1 }: { speed?: number }
                 <div className="info">
                   <div className="n">{m.name}</div>
                   <div className="r">
-                    <span>{m.role}</span>
+                    <span>{t(m.role)}</span>
                     <COI.Lock s={9} />
                   </div>
                 </div>
@@ -586,12 +588,13 @@ export default function CollaborationAnimation({ speed = 1 }: { speed?: number }
 /* ===================== PANELS ===================== */
 
 function ReqPanel({ phase }: { phase: COPhase }) {
+  const t = useLocalizedText();
   const show = phase.id === 'request' || phase.id === 'route';
   return (
     <div className={`co-panel${show ? ' show' : ''}`}>
       <div className="co-panel-head">
         <div>
-          <div className="t">Purchase Request · Smart Pump Assembly</div>
+          <div className="t">{t('Purchase Request · Smart Pump Assembly')}</div>
         </div>
         <div
           className="stamp"
@@ -601,7 +604,7 @@ function ReqPanel({ phase }: { phase: COPhase }) {
             color: phase.id === 'route' ? '#047857' : '#3666ff',
           }}
         >
-          {phase.id === 'route' ? '→ Sourcing' : 'Draft'}
+          {phase.id === 'route' ? t('→ Sourcing') : t('Draft')}
         </div>
       </div>
       {[
@@ -624,19 +627,20 @@ function ReqPanel({ phase }: { phase: COPhase }) {
 }
 
 function RfqPanel({ phase }: { phase: COPhase }) {
+  const t = useLocalizedText();
   const show = phase.id === 'rfq';
   return (
     <div className={`co-panel${show ? ' show' : ''}`}>
       <div className="co-panel-head">
-        <div className="t">RFQ-208 · Pump assembly · Q3</div>
+        <div className="t">{t('RFQ-208 · Pump assembly · Q3')}</div>
         <div className="stamp" style={{ background: '#ecfeff', border: '1px solid #a5f3fc', color: '#0e7490' }}>
-          Live
+          {t('Live')}
         </div>
       </div>
       <div className="co-rfq-head">
-        <span className="chip">12 line items</span>
-        <span className="chip">Target ₹4.95L</span>
-        <span className="chip">Closes 48h</span>
+        <span className="chip">{t('12 line items')}</span>
+        <span className="chip">{t('Target ₹4.95L')}</span>
+        <span className="chip">{t('Closes 48h')}</span>
       </div>
       <div className="co-rfq-inv">
         {CO_VENDORS.map((v) => (
@@ -645,12 +649,12 @@ function RfqPanel({ phase }: { phase: COPhase }) {
               {v.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
             </div>
             <div className="n">{v.name}</div>
-            <div className="st">Invited</div>
+            <div className="st">{t('Invited')}</div>
           </div>
         ))}
       </div>
       <div className="co-rfq-foot">
-        <span>Auto-selected by tag + history</span>
+        <span>{t('Auto-selected by tag + history')}</span>
         <span className="v">FW Autobot</span>
       </div>
     </div>
@@ -658,19 +662,20 @@ function RfqPanel({ phase }: { phase: COPhase }) {
 }
 
 function BidsPanel({ phase }: { phase: COPhase }) {
+  const t = useLocalizedText();
   const show = phase.id === 'bids';
   return (
     <div className={`co-panel${show ? ' show' : ''}`}>
       <div className="co-panel-head">
-        <div className="t">Bid Comparison · landed cost</div>
+        <div className="t">{t('Bid Comparison · landed cost')}</div>
         <div className="stamp" style={{ background: '#fef6e7', border: '1px solid #fde3ad', color: '#b45309' }}>
-          3 bids in
+          {t('3 bids in')}
         </div>
       </div>
       <div className="co-bid-row head">
-        <span /><span>Vendor</span>
-        <span style={{ textAlign: 'right' }}>Landed</span>
-        <span style={{ textAlign: 'right' }}>Δ Target</span><span />
+        <span /><span>{t('Vendor')}</span>
+        <span style={{ textAlign: 'right' }}>{t('Landed')}</span>
+        <span style={{ textAlign: 'right' }}>{t('Δ Target')}</span><span />
       </div>
       {[
         { v: CO_VENDORS[0], price: '₹4.79L', delta: '−3.2%', neg: true,  win: true  },
@@ -691,7 +696,7 @@ function BidsPanel({ phase }: { phase: COPhase }) {
         marginTop: 8, padding: '5px 7px', background: '#f9fafc', borderRadius: 6,
         display: 'flex', justifyContent: 'space-between', fontSize: 9.5, color: '#475569',
       }}>
-        <span>Currency-normalised · duty + freight applied</span>
+        <span>{t('Currency-normalised · duty + freight applied')}</span>
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: '#1A1D2E' }}>INR ↔ INR ↔ SGD</span>
       </div>
     </div>
@@ -699,33 +704,34 @@ function BidsPanel({ phase }: { phase: COPhase }) {
 }
 
 function NegotiatePanel({ phase }: { phase: COPhase }) {
+  const t = useLocalizedText();
   const show = phase.id === 'negotiate';
   return (
     <div className={`co-panel${show ? ' show' : ''}`}>
       <div className="co-panel-head">
-        <div className="t">Auto-negotiation · Round 2</div>
+        <div className="t">{t('Auto-negotiation · Round 2')}</div>
         <div className="stamp" style={{ background: '#eff4ff', border: '1px solid #d8e2ff', color: '#3666ff' }}>
-          <COI.Bot s={9} /> Autobot
+          <COI.Bot s={9} /> {t('Autobot')}
         </div>
       </div>
       <div className="co-msg bot">
         <div className="av"><COI.Bot s={10} /></div>
-        <div className="bub">Target landed cost <span className="mono">₹4.60L</span>. Can you match?</div>
+        <div className="bub">{t('Target landed cost')} <span className="mono">₹4.60L</span>. {t('Can you match?')}</div>
       </div>
       <div className="co-msg vendor">
-        <div className="bub">Counter at <span className="mono">₹4.68L</span> · FOB Mumbai.</div>
+        <div className="bub">{t('Counter at')} <span className="mono">₹4.68L</span> · {t('FOB Mumbai.')}</div>
         <div className="av">A</div>
       </div>
       <div className="co-msg bot">
         <div className="av"><COI.Bot s={10} /></div>
-        <div className="bub">Accepted. Lead time + payment terms locked.</div>
+        <div className="bub">{t('Accepted. Lead time + payment terms locked.')}</div>
       </div>
       <div style={{
         marginTop: 6, padding: '5px 8px', background: '#ecfdf5', borderRadius: 6,
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         border: '1px solid #bbf2db', fontSize: 9.5,
       }}>
-        <span style={{ color: '#047857', fontWeight: 600 }}>Savings vs initial bid</span>
+        <span style={{ color: '#047857', fontWeight: 600 }}>{t('Savings vs initial bid')}</span>
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, color: '#047857' }}>−₹11,200 · 2.3%</span>
       </div>
     </div>
@@ -733,23 +739,24 @@ function NegotiatePanel({ phase }: { phase: COPhase }) {
 }
 
 function ApprovePanel({ phase }: { phase: COPhase }) {
+  const t = useLocalizedText();
   const show = phase.id === 'approve';
   return (
     <div className={`co-panel${show ? ' show' : ''}`}>
       <div className="co-panel-head">
-        <div className="t">Award approval · APR-441</div>
+        <div className="t">{t('Award approval · APR-441')}</div>
         <div className="stamp" style={{ background: '#f3f0ff', border: '1px solid #ddd5ff', color: '#7c3aed' }}>
           Vikram K.
         </div>
       </div>
       <div className="co-app" style={{ position: 'relative' }}>
-        <div className="row"><span className="k">Award to</span><span className="v">ACME Mfg</span></div>
-        <div className="row"><span className="k">Total value</span><span className="v">₹4.68L</span></div>
-        <div className="row"><span className="k">Saving</span><span className="v tone">−4.6% vs target</span></div>
-        <div className="row"><span className="k">Risk score</span><span className="v">A · low</span></div>
+        <div className="row"><span className="k">{t('Award to')}</span><span className="v">ACME Mfg</span></div>
+        <div className="row"><span className="k">{t('Total value')}</span><span className="v">₹4.68L</span></div>
+        <div className="row"><span className="k">{t('Saving')}</span><span className="v tone">{t('−4.6% vs target')}</span></div>
+        <div className="row"><span className="k">{t('Risk score')}</span><span className="v">{t('A · low')}</span></div>
         <div className="actions">
-          <div className="btn no">Reject</div>
-          <div className="btn ok"><COI.Check s={10} /> Approve award</div>
+          <div className="btn no">{t('Reject')}</div>
+          <div className="btn ok"><COI.Check s={10} /> {t('Approve award')}</div>
         </div>
       </div>
       {show && (
@@ -761,7 +768,7 @@ function ApprovePanel({ phase }: { phase: COPhase }) {
           animation: 'co-stamp 0.55s 0.35s cubic-bezier(0.34,1.56,0.64,1) both',
           background: 'rgba(255,255,255,0.85)',
         }}>
-          APPROVED
+          {t('APPROVED')}
         </div>
       )}
     </div>
@@ -769,28 +776,29 @@ function ApprovePanel({ phase }: { phase: COPhase }) {
 }
 
 function PoPanel({ phase }: { phase: COPhase }) {
+  const t = useLocalizedText();
   const show = phase.id === 'po';
   return (
     <div className={`co-panel${show ? ' show' : ''}`}>
       <div className="co-panel-head">
-        <div className="t">Purchase Order · sent to vendor</div>
+        <div className="t">{t('Purchase Order · sent to vendor')}</div>
         <div className="stamp" style={{ background: '#fef6e7', border: '1px solid #fde3ad', color: '#b45309' }}>
-          Issued
+          {t('Issued')}
         </div>
       </div>
       <div className="co-po">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span className="doc-id">PO-882</span>
-          <span style={{ fontSize: 9, color: '#92400e', fontFamily: "'JetBrains Mono', monospace" }}>Visible to ACME · live</span>
+          <span style={{ fontSize: 9, color: '#92400e', fontFamily: "'JetBrains Mono', monospace" }}>{t('Visible to ACME · live')}</span>
         </div>
         <div className="grid2">
-          <div><div className="k">Vendor</div><div className="v">ACME Mfg</div></div>
-          <div><div className="k">Total</div><div className="v">₹4,68,000</div></div>
-          <div><div className="k">Delivery</div><div className="v">Mumbai · 14 days</div></div>
-          <div><div className="k">Payment terms</div><div className="v">Net 30 · 3-way match</div></div>
+          <div><div className="k">{t('Vendor')}</div><div className="v">ACME Mfg</div></div>
+          <div><div className="k">{t('Total')}</div><div className="v">₹4,68,000</div></div>
+          <div><div className="k">{t('Delivery')}</div><div className="v">{t('Mumbai · 14 days')}</div></div>
+          <div><div className="k">{t('Payment terms')}</div><div className="v">{t('Net 30 · 3-way match')}</div></div>
         </div>
         <div className="sig">
-          <span className="lbl">Authorised:</span>
+          <span className="lbl">{t('Authorised:')}</span>
           <span className="name">Anika R.</span>
         </div>
       </div>
@@ -799,20 +807,21 @@ function PoPanel({ phase }: { phase: COPhase }) {
 }
 
 function InvoicePanel({ phase }: { phase: COPhase }) {
+  const t = useLocalizedText();
   const show = phase.id === 'invoice';
   return (
     <div className={`co-panel${show ? ' show' : ''}`}>
       <div className="co-panel-head">
-        <div className="t">Vendor invoice · on-platform</div>
+        <div className="t">{t('Vendor invoice · on-platform')}</div>
         <div className="stamp" style={{ background: '#ecfdf5', border: '1px solid #bbf2db', color: '#047857' }}>
-          3-way matched
+          {t('3-way matched')}
         </div>
       </div>
       <div className="co-inv">
         <div className="top">
           <div>
             <div className="id">INV-119</div>
-            <div className="sub">From ACME Mfg · raised in FactWise</div>
+            <div className="sub">{t('From ACME Mfg · raised in FactWise')}</div>
           </div>
           <div className="match">
             <span className="pill"><COI.Check s={8} />PO</span>
@@ -821,14 +830,14 @@ function InvoicePanel({ phase }: { phase: COPhase }) {
           </div>
         </div>
         <div className="total">
-          <span className="l">Invoice total</span>
+          <span className="l">{t('Invoice total')}</span>
           <span className="v">₹4,68,000</span>
         </div>
         <div style={{
           marginTop: 7, padding: '6px 8px', background: '#fafbff', borderRadius: 6,
           fontSize: 9.5, color: '#475569', display: 'flex', justifyContent: 'space-between',
         }}>
-          <span>Auto-matched in context · no email chase</span>
+          <span>{t('Auto-matched in context · no email chase')}</span>
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: '#3666ff' }}>→ Finance</span>
         </div>
       </div>
@@ -837,13 +846,14 @@ function InvoicePanel({ phase }: { phase: COPhase }) {
 }
 
 function PayPanel({ phase }: { phase: COPhase }) {
+  const t = useLocalizedText();
   const show = phase.id === 'pay';
   return (
     <div className={`co-panel${show ? ' show' : ''}`}>
       <div className="co-panel-head">
-        <div className="t">Payment released</div>
+        <div className="t">{t('Payment released')}</div>
         <div className="stamp" style={{ background: '#ecfdf5', border: '1px solid #bbf2db', color: '#047857' }}>
-          Settled · UTR-77410
+          {t('Settled · UTR-77410')}
         </div>
       </div>
       {show && (
@@ -854,8 +864,8 @@ function PayPanel({ phase }: { phase: COPhase }) {
             </svg>
           </div>
           <div className="info">
-            <div className="t">Paid to ACME Mfg</div>
-            <div className="s">ACME notified · in real time</div>
+            <div className="t">{t('Paid to ACME Mfg')}</div>
+            <div className="s">{t('ACME notified · in real time')}</div>
           </div>
           <div className="amt">₹4.68L</div>
         </div>
@@ -865,9 +875,9 @@ function PayPanel({ phase }: { phase: COPhase }) {
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         fontSize: 10, color: '#475569',
       }}>
-        <span>End-to-end cycle time</span>
+        <span>{t('End-to-end cycle time')}</span>
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, color: '#0b1322', fontSize: 11 }}>
-          REQ → PAID · 6 days
+          {t('REQ → PAID · 6 days')}
         </span>
       </div>
       <div style={{
@@ -875,8 +885,8 @@ function PayPanel({ phase }: { phase: COPhase }) {
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         fontSize: 9.5, color: '#64748b',
       }}>
-        <span>Every step · every stakeholder · one platform</span>
-        <span style={{ color: '#00b884', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.06em' }}>↻ loop</span>
+        <span>{t('Every step · every stakeholder · one platform')}</span>
+        <span style={{ color: '#00b884', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.06em' }}>{t('↻ loop')}</span>
       </div>
     </div>
   );

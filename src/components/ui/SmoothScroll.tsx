@@ -1,18 +1,16 @@
 'use client';
 
-import { useRef, useEffect, useLayoutEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollSmoother } from 'gsap/ScrollSmoother';
-import { useGSAP } from '@gsap/react';
+import { useRef, useEffect, useLayoutEffect, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 const LENIS_ROUTES = ['/about', '/careers', '/inquiry-to-quote', '/requisitions-to-po', '/invoice-to-pay', '/platform', '/supplier'];
 
+function isLenisRoute(pathname: string) {
+  return LENIS_ROUTES.some((route) => pathname === route || pathname.endsWith(route));
+}
+
 // Global so ScrollReveal can read smoother scroll position reliably
-export let activeSmoother: ScrollSmoother | null = null;
+export let activeSmoother: { kill: () => void; scrollTo: (target: number, smooth?: boolean) => void } | null = null;
 
 /**
  * Aggressively strip every GSAP-applied inline style from the scroll containers.
@@ -45,10 +43,10 @@ function purgeGSAPStyles() {
   document.body.style.height = '';
 }
 
-export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+export default function SmoothScroll({ children }: { children: ReactNode }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const usesLenis = LENIS_ROUTES.includes(pathname);
+  const usesLenis = isLenisRoute(pathname);
 
   /*
    * useLayoutEffect fires synchronously BEFORE the browser paints.
@@ -66,32 +64,49 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     }
   }, [pathname, usesLenis]);
 
-  useGSAP(() => {
+  useEffect(() => {
+    let cancelled = false;
+
     if (typeof window !== 'undefined') {
       window.history.scrollRestoration = 'manual';
-      ScrollTrigger.clearScrollMemory();
     }
 
     if (usesLenis) return;
 
-    activeSmoother = ScrollSmoother.create({
-      wrapper: '#smooth-wrapper',
-      content: '#smooth-content',
-      smooth: 0.8,
-      effects: true,
-      ignoreMobileResize: true,
+    Promise.all([
+      import('gsap'),
+      import('gsap/ScrollTrigger'),
+      import('gsap/ScrollSmoother'),
+    ]).then(([gsapModule, scrollTriggerModule, scrollSmootherModule]) => {
+      if (cancelled) return;
+
+      const gsap = gsapModule.gsap;
+      const ScrollTrigger = scrollTriggerModule.ScrollTrigger;
+      const ScrollSmoother = scrollSmootherModule.ScrollSmoother;
+
+      gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+      ScrollTrigger.clearScrollMemory();
+
+      activeSmoother = ScrollSmoother.create({
+        wrapper: '#smooth-wrapper',
+        content: '#smooth-content',
+        smooth: 0.8,
+        effects: true,
+        ignoreMobileResize: true,
+      });
+
+      ScrollTrigger.refresh();
     });
 
-    ScrollTrigger.refresh();
-
     return () => {
+      cancelled = true;
       if (activeSmoother) {
         activeSmoother.kill();
         activeSmoother = null;
       }
       purgeGSAPStyles();
     };
-  }, { scope: wrapperRef, dependencies: [pathname] });
+  }, [pathname, usesLenis]);
 
   return (
     <div 

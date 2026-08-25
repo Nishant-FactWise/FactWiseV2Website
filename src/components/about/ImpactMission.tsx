@@ -2,6 +2,9 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
+import { getPathLocale } from '@/lib/i18n';
+import { messages } from '@/lib/messages';
 import MorphingSVG from './MorphingSVG';
 import { AboutCounter } from './AboutCounter';
 
@@ -50,6 +53,10 @@ function AnimatedTitle({ text, base = 0 }: { text: string; base?: number }) {
 }
 
 export const ImpactMission = () => {
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const t = (source: string) => messages[locale].textMap[source] ?? source;
+
   return (
     <section className="py-8 px-6 md:px-14 bg-white">
       <div
@@ -77,7 +84,7 @@ export const ImpactMission = () => {
             {/* Right: Text Content */}
             <div className="md:col-span-7 flex flex-col items-start">
             <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
-              Impact & Mission
+              {t("Impact & Mission")}
             </div>
 
             <motion.h2
@@ -86,10 +93,10 @@ export const ImpactMission = () => {
               viewport={{ once: false }}
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.05] tracking-tighter mb-8 overflow-hidden py-2"
             >
-              <AnimatedTitle text="Automating Every Workflow" base={0} />
+              <AnimatedTitle text={t("Automating Every Workflow")} base={0} />
               <br className="md:hidden" />
               <span className="text-[#3666ff] font-instrument italic font-medium">
-                <AnimatedTitle text="Manufacturers Depend On." base={26} />
+                <AnimatedTitle text={t("Manufacturers Depend On.")} base={26} />
               </span>
             </motion.h2>
               <motion.div
@@ -100,14 +107,11 @@ export const ImpactMission = () => {
                 className="space-y-6"
               >
                 <p className="text-slate-600 text-lg md:text-xl leading-relaxed">
-                  We are building the operating system for modern manufacturing and connecting every team,
-                  every vendor, and every workflow into one intelligent platform. FactWise automates
-                  the complex, eliminates the manual, and gives manufacturers the clarity to make
-                  better decisions, faster.
+                  {t("We are building the operating system for modern manufacturing and connecting every team, every vendor, and every workflow into one intelligent platform. FactWise automates the complex, eliminates the manual, and gives manufacturers the clarity to make better decisions, faster.")}
                 </p>
                 <div className="pt-4 border-t border-slate-200">
                   <p className="text-slate-900 font-semibold text-lg italic">
-                    MISSION: Delight users and provide sustainable, positive impact to the organizations we serve.
+                    {t("MISSION: Delight users and provide sustainable, positive impact to the organizations we serve.")}
                   </p>
                 </div>
               </motion.div>
@@ -126,7 +130,7 @@ export const ImpactMission = () => {
                 <div className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
                   <AboutCounter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
                 </div>
-                <div className="text-sm text-slate-500 leading-tight uppercase tracking-wider font-medium">{stat.label}</div>
+                <div className="text-sm text-slate-500 leading-tight uppercase tracking-wider font-medium">{t(stat.label)}</div>
               </div>
             ))}
           </motion.div>

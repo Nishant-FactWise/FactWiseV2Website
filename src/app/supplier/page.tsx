@@ -8,6 +8,7 @@ import SupplierFeaturesFlow from "./components/SupplierFeaturesFlow";
 import SupplierCapabilities from "./components/SupplierCapabilities";
 import { FeatureSteps } from "@/components/ui/feature-section";
 import SupplierStatsBar from "./components/SupplierStatsBar";
+import ScopedLocaleText from "@/components/ScopedLocaleText";
 
 const supplierBenefits = [
   {
@@ -37,8 +38,11 @@ const supplierBenefits = [
 ];
 
 export default function SupplierPage() {
+  const mainRef = React.useRef<HTMLElement | null>(null);
+
   return (
-    <main className="min-h-screen bg-white">
+    <main ref={mainRef} className="min-h-screen bg-white">
+      <ScopedLocaleText rootRef={mainRef} />
       <SupplierHero />
       <SupplierStatsBar />
       <SupplierProblemsSection />

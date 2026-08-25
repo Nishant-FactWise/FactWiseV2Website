@@ -8,9 +8,11 @@ import { Header } from "@/components/ui/header-2";
 import CookieConsent from "@/components/ui/CookieConsent";
 import ConditionalSplashLoader from "@/components/ConditionalSplashLoader";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
+import LocaleRuntime from "@/components/LocaleRuntime";
 
 const GTM_ID = "GTM-K6XQZW7";
 const GA4_ID = "G-Y5X31H49ZS";
+const enableAnalytics = process.env.NODE_ENV === "production";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -223,6 +225,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${geist.variable}`}>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
+  const locale = location.pathname.split('/')[1];
+  const meta = {
+    zh: ['zh-CN', 'ltr'], es: ['es', 'ltr'], ja: ['ja', 'ltr'],
+    de: ['de', 'ltr'], fr: ['fr', 'ltr'], ko: ['ko', 'ltr'],
+    pt: ['pt-BR', 'ltr'], it: ['it', 'ltr'], ar: ['ar', 'rtl']
+  }[locale];
+  if (meta) { document.documentElement.lang = meta[0]; document.documentElement.dir = meta[1]; }
+})();`,
+          }}
+        />
         {/*
           Hero video preload — kick off the WebM fetch the moment HTML
           starts parsing, before React mounts or ScrollSmoother runs. On
@@ -236,20 +251,6 @@ export default function RootLayout({
           as="image"
           href="/TexturedGradient.webp"
           type="image/webp"
-        />
-        <link
-          rel="preload"
-          as="video"
-          href="/Final_iphone_mobileVersion.mp4"
-          type="video/mp4"
-          media="(max-width: 767px)"
-        />
-        <link
-          rel="preload"
-          as="video"
-          href="/FinalIphone.mp4"
-          type="video/mp4"
-          media="(min-width: 768px)"
         />
         <link rel="llms-context" href="/llms.txt" />
         <link rel="llms-context-full" href="/llms-full.txt" />
@@ -283,35 +284,42 @@ gtag('set', 'ads_data_redaction', true);`,
 }`,
           }}
         />
-        <Script id="gtm" strategy="afterInteractive">
-          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        {enableAnalytics && (
+          <>
+            <Script id="gtm" strategy="afterInteractive">
+              {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${GTM_ID}');`}
-        </Script>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
+            </Script>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="gtag-init" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GA4_ID}');`}
-        </Script>
+            </Script>
+          </>
+        )}
       </head>
       <body className={inter.className} suppressHydrationWarning>
-        <AnalyticsTracker />
+        <LocaleRuntime />
+        {enableAnalytics && <AnalyticsTracker />}
         <ConditionalSplashLoader />
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
+        {enableAnalytics && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}

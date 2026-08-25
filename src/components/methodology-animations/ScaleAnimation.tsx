@@ -30,6 +30,7 @@ import {
   Layers, Plus, Check, ArrowRight,
   Workflow, GitFork, Grid3x3, Cog
 } from "lucide-react";
+import { useLocalizedText } from "@/hooks/useLocalizedText";
 
 /* ============ TYPES ============ */
 type NodeLevel = 0 | 1 | 2 | 3 | "alt";
@@ -419,6 +420,8 @@ function useCount(target: number, active: boolean, dur = 1000): number {
 
 /* ============ MAIN COMPONENT ============ */
 export default function ScaleAnimation({ speed = 0.5, onPhaseChange }: ScaleAnimationProps) {
+  const t = useLocalizedText();
+
   useEffect(() => {
     if (document.getElementById("bs-style")) return;
     const s = document.createElement("style");
@@ -530,10 +533,10 @@ export default function ScaleAnimation({ speed = 0.5, onPhaseChange }: ScaleAnim
             <div className="bs-main">
               <div className="bs-headStrip">
                 <div>
-                  <h3>BOM Explorer · RFQ</h3>
-                  <div className="bs-sub">Multi-level · Sub-BOMs · At any scale</div>
+                  <h3>{t("BOM Explorer · RFQ")}</h3>
+                  <div className="bs-sub">{t("Multi-level · Sub-BOMs · At any scale")}</div>
                 </div>
-                <div className="bs-livePill">Live</div>
+                <div className="bs-livePill">{t("Live")}</div>
               </div>
 
               <div className="bs-stage">
@@ -572,7 +575,7 @@ export default function ScaleAnimation({ speed = 0.5, onPhaseChange }: ScaleAnim
                     <span style={{ fontSize: 18, fontWeight: 800, color: "#1e3a8a", letterSpacing: "-0.02em", lineHeight: 1 }}>3000 items</span>
                     <span style={{ fontSize: 18, fontWeight: 800, color: "#3666ff", letterSpacing: "-0.02em", lineHeight: 1 }}>100 vendors</span>
                   </div>
-                  <span style={{ fontSize: 8.5, fontWeight: 700, color: "#64748b", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 2 }}>At any scale</span>
+                    <span style={{ fontSize: 8.5, fontWeight: 700, color: "#64748b", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 2 }}>{t("At any scale")}</span>
                 </div>
 
                 {/* RFQ scene — visible during phase 5 */}
@@ -592,7 +595,7 @@ export default function ScaleAnimation({ speed = 0.5, onPhaseChange }: ScaleAnim
                           transition: "opacity 0.45s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
                         }}>
                           <span style={{ color: r.color, fontWeight: 800 }}>{r.plant}</span>
-                          <span style={{ color: "#94a3b8", fontWeight: 600, fontSize: 10 }}>{r.qty.toLocaleString()} qty</span>
+                          <span style={{ color: "#94a3b8", fontWeight: 600, fontSize: 10 }}>{r.qty.toLocaleString()} {t("qty")}</span>
                         </div>
                       ))}
                     </div>
@@ -622,15 +625,15 @@ export default function ScaleAnimation({ speed = 0.5, onPhaseChange }: ScaleAnim
                     }}>
                       <span style={{ background: "#00b884", color: "white", fontSize: 9, fontWeight: 800, padding: "3px 8px", borderRadius: 4, letterSpacing: "0.06em" }}>RFQ</span>
                       <div style={{ fontSize: 17, fontWeight: 800, marginTop: 7, color: "#0b1322", letterSpacing: "-0.01em" }}>RFQ-EVT-9043</div>
-                      <div style={{ fontSize: 10, color: "#64748b", marginTop: 2 }}>3 plants · 100 vendors</div>
+                      <div style={{ fontSize: 10, color: "#64748b", marginTop: 2 }}>{t("3 plants · 100 vendors")}</div>
                       <div style={{ display: "flex", gap: 18, marginTop: 11, paddingTop: 9, borderTop: "1px dashed rgba(15,23,42,0.1)" }}>
                         <div>
                           <div style={{ fontSize: 18, fontWeight: 800, color: "#00b884", lineHeight: 1 }}>−12%</div>
-                          <div style={{ fontSize: 8.5, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: 3 }}>Price</div>
+                          <div style={{ fontSize: 8.5, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: 3 }}>{t("Price")}</div>
                         </div>
                         <div>
                           <div style={{ fontSize: 18, fontWeight: 800, color: "#3666ff", lineHeight: 1 }}>3×</div>
-                          <div style={{ fontSize: 8.5, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: 3 }}>Leverage</div>
+                          <div style={{ fontSize: 8.5, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: 3 }}>{t("Leverage")}</div>
                         </div>
                       </div>
                     </div>
@@ -659,18 +662,19 @@ function BSPill({ icon, label, lit }: { icon: React.ReactNode; label: string; li
 
 /* ============ SCENE: HERO ============ */
 function SceneHero({ active }: { active: boolean }) {
+  const t = useLocalizedText();
   return (
     <div className={"bs-scene " + (active ? "on" : "")}>
       <div className="bs-heroStage">
         <div className={"bs-heroProduct " + (active ? "in" : "")}>
           <div className="bs-heroImg"><Cog className="w-11 h-11" strokeWidth={1.6} /></div>
           <div className="bs-heroTag">{ROOT.sku}</div>
-          <div className="bs-heroTitle">{ROOT.name}</div>
-          <div className="bs-heroMeta">Tier-1 OEM · Production unit</div>
+          <div className="bs-heroTitle">{t(ROOT.name)}</div>
+          <div className="bs-heroMeta">{t("Tier-1 OEM · Production unit")}</div>
           <div className="bs-heroStats">
-            <div className="hs"><div className="v">4</div><div className="l">Levels</div></div>
-            <div className="hs"><div className="v">{ROOT.parts}</div><div className="l">Parts</div></div>
-            <div className="hs"><div className="v">18</div><div className="l">Vendors</div></div>
+            <div className="hs"><div className="v">4</div><div className="l">{t("Levels")}</div></div>
+            <div className="hs"><div className="v">{ROOT.parts}</div><div className="l">{t("Parts")}</div></div>
+            <div className="hs"><div className="v">18</div><div className="l">{t("Vendors")}</div></div>
           </div>
         </div>
         <div className={"bs-q " + (active ? "in" : "")} style={{ left: "12%", top: "22%", animationDelay: "0s" }}>?</div>
@@ -691,6 +695,7 @@ interface SceneGraphProps {
   graphTransform: string;
 }
 function SceneGraph({ active, phase, l1n, l2n, l3n, altn, edges, graphTransform }: SceneGraphProps) {
+  const t = useLocalizedText();
   const containerRef = useRef<HTMLDivElement>(null);
   const [dims, setDims] = useState({ w: 600, h: 300 });
 
@@ -774,7 +779,7 @@ function SceneGraph({ active, phase, l1n, l2n, l3n, altn, edges, graphTransform 
                     <span className="altPill">ALT</span>
                     <span className="vendor">{n.vendor}</span>
                   </div>
-                  <div className="nname">{n.name}</div>
+                  <div className="nname">{t(n.name)}</div>
                 </>
               ) : (
                 <>
@@ -782,10 +787,10 @@ function SceneGraph({ active, phase, l1n, l2n, l3n, altn, edges, graphTransform 
                     <span className="nsku">{n.sku}</span>
                     <span className="nqty">×{n.qty}</span>
                   </div>
-                  <div className="nname">{n.name}</div>
-                  {n.parts && n.level !== 0 && <div className="nfoot">{n.parts} parts</div>}
+                  <div className="nname">{t(n.name)}</div>
+                  {n.parts && n.level !== 0 && <div className="nfoot">{n.parts} {t("parts")}</div>}
                   {n.level === 2 && n.altFocus && phase >= 5 && (
-                    <div className="nfoot" style={{ color: "#069668" }}>+3 alternates</div>
+                    <div className="nfoot" style={{ color: "#069668" }}>{t("+3 alternates")}</div>
                   )}
                 </>
               )}
@@ -801,6 +806,7 @@ function SceneGraph({ active, phase, l1n, l2n, l3n, altn, edges, graphTransform 
 
 /* ============ SCENE: COMBINE ============ */
 function SceneCombine({ active, combined }: { active: boolean; combined: boolean }) {
+  const t = useLocalizedText();
   return (
     <div className={"bs-scene " + (active ? "on" : "")}>
       <div className="bs-combineStage">
@@ -820,8 +826,8 @@ function SceneCombine({ active, combined }: { active: boolean; combined: boolean
               <span className="ri">{it.id}</span>
             </div>
             <div className="rm">
-              <span>{it.lines} lines</span>
-              <span style={{ color: it.color, fontWeight: 700 }}>{it.qty.toLocaleString()} qty</span>
+              <span>{it.lines} {t("lines")}</span>
+              <span style={{ color: it.color, fontWeight: 700 }}>{it.qty.toLocaleString()} {t("qty")}</span>
             </div>
           </div>
         ))}
@@ -839,11 +845,11 @@ function SceneCombine({ active, combined }: { active: boolean; combined: boolean
           transform: combined ? "translateY(-50%) scale(1)" : "translateY(-50%) scale(0.85)",
         }}>
           <span className="coTag">RFQ</span>
-          <h5>RFQ-EVT-9043 · 3 plants</h5>
-          <div className="coMeta">54 lines · 3,300 units · 100 vendors</div>
+          <h5>{t("RFQ-EVT-9043 · 3 plants")}</h5>
+          <div className="coMeta">{t("54 lines · 3,300 units · 100 vendors")}</div>
           <div className="coStats">
-            <div className="coStat"><div className="v">−12%</div><div className="l">Quoted price</div></div>
-            <div className="coStat"><div className="v">3×</div><div className="l">Vendor leverage</div></div>
+            <div className="coStat"><div className="v">−12%</div><div className="l">{t("Quoted price")}</div></div>
+            <div className="coStat"><div className="v">3×</div><div className="l">{t("Vendor leverage")}</div></div>
           </div>
         </div>
       </div>
@@ -853,6 +859,7 @@ function SceneCombine({ active, combined }: { active: boolean; combined: boolean
 
 /* ============ SCENE: FINALE ============ */
 function SceneFinale({ active, chips }: { active: boolean; chips: number }) {
+  const t = useLocalizedText();
   const v = useCount(40, active, 1300);
   void chips;
   return (
@@ -860,11 +867,11 @@ function SceneFinale({ active, chips }: { active: boolean; chips: number }) {
       <div className="bs-finale">
         <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
           <div className="bs-fbig">{v}%</div>
-          <div style={{ fontSize: 20, fontWeight: 800, color: "#0b1322" }}>faster</div>
+          <div style={{ fontSize: 20, fontWeight: 800, color: "#0b1322" }}>{t("faster")}</div>
         </div>
-        <div className="bs-fsub">At any scale</div>
+        <div className="bs-fsub">{t("At any scale")}</div>
         <div className="bs-compare">
-          <div className="col before"><div className="v">480 min</div><div className="l">Manual</div></div>
+          <div className="col before"><div className="v">480 min</div><div className="l">{t("Manual")}</div></div>
           <div className="arrow"><ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} /></div>
           <div className="col after"><div className="v">48 min</div><div className="l">FactWise</div></div>
         </div>

@@ -7,10 +7,16 @@ import {
     ChevronLeft,
     ChevronRight
 } from 'lucide-react'
+import { useLocalizedText } from '@/hooks/useLocalizedText'
 
 // ============================================================================
 // Custom Widget Components for Premium Light-Theme Visuals
 // ============================================================================
+
+function Text({ value }: { value: string }) {
+    const t = useLocalizedText();
+    return <>{t(value)}</>;
+}
 
 /**
  * Card 01: BOM Complexity Widget (Light Theme)
@@ -491,7 +497,7 @@ const problems: ProblemItem[] = [
         number: "02",
         emoji: "🟡",
         title: "Vendor Communication",
-        subtitle: " Sourcing runs on emails nobody tracks.",
+        subtitle: "Sourcing runs on emails nobody tracks.",
         description: "RFQs over email, follow-ups unanswered, responses scattered across inboxes — days pass before bids land, and half the data is missing."
     },
     {
@@ -499,7 +505,7 @@ const problems: ProblemItem[] = [
         number: "03",
         emoji: "🔵",
         title: "Hidden Costs",
-        subtitle: " The cheapest bid is not always the cheapest purchase.",
+        subtitle: "The cheapest bid is not always the cheapest purchase.",
         description: "Unit-price comparisons miss duty, freight, insurance, packaging. Award on the wrong number and the margin gap only surfaces after the PO ships."
     },
     {
@@ -513,8 +519,15 @@ const problems: ProblemItem[] = [
 ];
 
 export default function ProblemSection() {
+    const t = useLocalizedText();
     const [hoveredCardId, setHoveredCardId] = React.useState<string | null>(null);
     const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+    const localizedProblems = problems.map((problem) => ({
+        ...problem,
+        title: t(problem.title),
+        subtitle: t(problem.subtitle),
+        description: t(problem.description),
+    }));
 
     const scrollToSolution = (problemId: string) => {
         const problemToSolutionMap: Record<string, { id: string; step: number }> = {
@@ -592,7 +605,7 @@ export default function ProblemSection() {
                             style={{ fontFamily: 'var(--font-inter)' }}
                         >
                             <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-pulse" />
-                            Sourcing Vulnerabilities
+                            {t('Sourcing Vulnerabilities')}
                         </div>
 
                         <h2
@@ -606,8 +619,8 @@ export default function ProblemSection() {
                                 fontFamily: 'var(--font-display)',
                             }}
                         >
-                            Where Most Manufacturers <br />
-                            <span className="text-[#3666ff]">Lose Time and Money.</span>
+                            {t('Where Most Manufacturers')} <br />
+                            <span className="text-[#3666ff]">{t('Lose Time and Money.')}</span>
                         </h2>
                     </div>
 
@@ -635,7 +648,7 @@ export default function ProblemSection() {
                     ref={scrollContainerRef}
                     className="flex overflow-x-auto gap-4 sm:gap-6 pb-8 pt-2 px-6 xl:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative"
                 >
-                    {problems.map((prob, idx) => (
+                    {localizedProblems.map((prob, idx) => (
                         <motion.div
                             key={prob.id}
                             initial={{ opacity: 0, y: 24 }}
@@ -690,7 +703,7 @@ export default function ProblemSection() {
                                     {/* Hover State: See Solution Button */}
                                     <div className="absolute inset-0 flex items-center justify-between transition-all duration-300 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
                                         <span className="text-[10px] font-bold text-[#3666ff] flex items-center gap-1">
-                                            See Solution
+                                            {t('See Solution')}
                                             <span className="transition-transform duration-300 group-hover:translate-x-0.5">➔</span>
                                         </span>
                                     </div>

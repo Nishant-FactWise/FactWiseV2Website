@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Play, Pause, FileText, Zap } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 const ALLOC_ITEMS = [
     { item:'Hydraulic Seals', total:500, vendors:[{ name:'Vendor A', qty:350, pct:70, primary:true }, { name:'Vendor E',  qty:150, pct:30, primary:false }] },
@@ -11,13 +12,14 @@ const ALLOC_ITEMS = [
 ];
 
 const POS_GENERATED = [
-    { id:'PO-8810', vendor:'Vendor A', items:1, qty:'350 pcs',  value:'₹14,910', status:'Issued' },
-    { id:'PO-8811', vendor:'Vendor D', items:1, qty:'50 units', value:'₹2,215',  status:'Issued' },
-    { id:'PO-8812', vendor:'Vendor B', items:1, qty:'30 units', value:'₹1,392',  status:'Issued' },
-    { id:'PO-8813', vendor:'Vendor E', items:1, qty:'150 pcs',  value:'₹6,570',  status:'Issued' },
+    { id:'PO-8810', vendor:'Vendor A', items:1, qty:'350 pcs',  value:'14,910', status:'Issued' },
+    { id:'PO-8811', vendor:'Vendor D', items:1, qty:'50 units', value:'2,215',  status:'Issued' },
+    { id:'PO-8812', vendor:'Vendor B', items:1, qty:'30 units', value:'1,392',  status:'Issued' },
+    { id:'PO-8813', vendor:'Vendor E', items:1, qty:'150 pcs',  value:'6,570',  status:'Issued' },
 ];
 
 export default function ReqSection35({ isActive = true }: { isActive?: boolean }) {
+    const t = useLocalizedText();
     const [phase, setPhase] = useState(1);
     const [isAuto, setIsAuto] = useState(true);
 
@@ -140,14 +142,14 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-                    PO Generation
+                    {t('PO Generation')}
                 </div>
                 <h3 className="text-[28px] md:text-[36px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
-                    Automate PO Generation.<br />
-                    <span className="text-[#3666ff]">In One Click.</span>
+                    {t('Automate PO Generation.')}<br />
+                    <span className="text-[#3666ff]">{t('In One Click.')}</span>
                 </h3>
                 <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Once bids are shortlisted, allocate quantities to the best-bidding vendors — split across multiple vendors per item and set backup allocations for security. When allocation is complete, FactWise generates every PO for the entire RFQ in a single click — every line item, vendor, and approval record attached. No manual creation, no missed lines, no delays.
+                    {t('Once bids are shortlisted, allocate quantities to the best-bidding vendors — split across multiple vendors per item and set backup allocations for security. When allocation is complete, FactWise generates every PO for the entire RFQ in a single click — every line item, vendor, and approval record attached. No manual creation, no missed lines, no delays.')}
                 </p>
                
 
@@ -173,11 +175,11 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                                 </div>
                                 <span className={`text-[13.5px] font-bold tracking-tight ${
                                     phase === item.p ? 'text-[#3666ff]' : phase > item.p ? 'text-slate-700' : 'text-slate-500'
-                                }`}>{item.title}</span>
+                                }`}>{t(item.title)}</span>
                             </div>
                             {phase === item.p && (
                                 <span className="relative z-10 text-[9px] font-black text-emerald-600 bg-emerald-50/80 border border-emerald-100 px-2.5 py-1 rounded-full font-mono uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
-                                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />Active
+                                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />{t('Active')}
                                 </span>
                             )}
                         </div>
@@ -258,10 +260,10 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                                 <div style={{ background:'white', border:'1px solid rgba(0,184,132,0.25)', borderRadius:10, padding:'10px 12px' }}>
                                     <div style={{ fontSize:9, fontWeight:800, color:'#00b884', fontFamily:"'JetBrains Mono',monospace", marginBottom:6 }}>PRIMARY ALLOCATION · CONFIRMED</div>
                                     {[
-                                        'Vendor A → 350 pcs Hydraulic Seals (70%)',
-                                        'Vendor D → 50 units Control Valves (100%)',
-                                        'Vendor B → 30 units Pressure Gauges (100%)',
-                                        'Vendor E → 150 pcs Hydraulic Seals (30%)',
+                                        'Vendor A   350 pcs Hydraulic Seals (70%)',
+                                        'Vendor D   50 units Control Valves (100%)',
+                                        'Vendor B   30 units Pressure Gauges (100%)',
+                                        'Vendor E   150 pcs Hydraulic Seals (30%)',
                                     ].map((line, i) => (
                                         <div key={i} style={{ fontSize:10, color:'#0b1322', fontWeight:600, padding:'3px 0', borderBottom:'1px solid rgba(15,23,42,0.04)', display:'flex', alignItems:'center', gap:7 }}>
                                             <Check size={10} color="#00b884" />
@@ -275,8 +277,8 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                                     <div style={{ background:'rgba(245,158,11,0.04)', border:'1px solid rgba(245,158,11,0.25)', borderRadius:10, padding:'10px 12px', animation:'s35-fadeIn .5s ease forwards' }}>
                                         <div style={{ fontSize:9, fontWeight:800, color:'#92400e', fontFamily:"'JetBrains Mono',monospace", marginBottom:6 }}>⬡ BACKUP ALLOCATION · FALLBACK SECURITY</div>
                                         {[
-                                            { primary:'Vendor A → Hyd. Seals', backup:'Vendor B → up to 500 pcs', trigger:'If Vendor A fails SLA' },
-                                            { primary:'Vendor D → Control Valves', backup:'Vendor E → up to 50 units', trigger:'If delivery delay > 5d' },
+                                            { primary:'Vendor A   Hyd. Seals', backup:'Vendor B   up to 500 pcs', trigger:'If Vendor A fails SLA' },
+                                            { primary:'Vendor D   Control Valves', backup:'Vendor E   up to 50 units', trigger:'If delivery delay > 5d' },
                                         ].map((row, i) => (
                                             <div key={i} style={{ fontSize:9, color:'#475569', padding:'5px 0', borderBottom:'1px solid rgba(245,158,11,0.1)' }}>
                                                 <div style={{ fontWeight:700, color:'#0b1322', marginBottom:2 }}>{row.primary}</div>
@@ -337,7 +339,7 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                                 {genState === 'done' && (
                                     <div style={{ padding:'8px 13px', background:'rgba(0,184,132,0.07)', border:'1px solid rgba(0,184,132,0.2)', borderRadius:9, fontSize:10, fontWeight:700, color:'#065f46', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                                         <span>✓ 4 POs issued · Zero manual entry · Zero errors</span>
-                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:800, color:'#00b884', fontSize:11 }}>₹25,087</span>
+                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:800, color:'#00b884', fontSize:11 }}>25,087</span>
                                     </div>
                                 )}
                             </div>
@@ -375,10 +377,10 @@ export default function ReqSection35({ isActive = true }: { isActive?: boolean }
                                 <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
                                     <div style={{ fontSize:9, fontWeight:800, color:'#94a3b8', letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:"'JetBrains Mono',monospace" }}>AUDIT TRAIL · FULL RECORD</div>
                                     {[
-                                        { event:'4 Requisitions raised & approved',     time:'Day 1',   ic:'📋' },
-                                        { event:'RFQ created from merged reqs',          time:'Day 1',   ic:'📤' },
-                                        { event:'6 vendors responded · AI negotiated',   time:'Day 5',   ic:'🤝' },
-                                        { event:'Shortlist & allocation approved',        time:'Day 6',   ic:'✅' },
+                                        { event:'4 Requisitions raised & approved',     time:'Day 1',   ic:'x9' },
+                                        { event:'RFQ created from merged reqs',          time:'Day 1',   ic:'x' },
+                                        { event:'6 vendors responded · AI negotiated',   time:'Day 5',   ic:'x' },
+                                        { event:'Shortlist & allocation approved',        time:'Day 6',   ic:'&' },
                                     ].slice(0, reqs).map((row, i) => (
                                         <div key={i} style={{ display:'flex', alignItems:'center', gap:10, padding:'8px 12px', background:'white', border:'1px solid rgba(15,23,42,0.07)', borderRadius:9, fontSize:10, color:'#475569', opacity: reqs > i ? 1 : 0, transform: reqs > i ? 'none' : 'translateX(-8px)', transition:'all .35s ease', transitionDelay:`${i*0.08}s` }}>
                                             <span style={{ fontSize:14, flexShrink:0 }}>{row.ic}</span>

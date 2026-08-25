@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Hero from '@/components/Hero';
 import StatsStrip from '@/components/StatsStrip';
 import CompanyMarquee from '@/components/CompanyMarquee';
+import HomeLocalizedMain from '@/components/HomeLocalizedMain';
 
 // ssr:false dynamic imports must live inside a Client Component — see ClientOnlySections.tsx
 import {
@@ -108,19 +109,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageFaqSchema) }}
       />
-      <main
-        style={{
-          minHeight: '100vh',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          overflowX: 'clip',
-          background: '#FFFFFF',
-          maxWidth: '100%',
-          margin: '0',
-        }}
-      >
+      <HomeLocalizedMain>
         <Hero />
 
         <div className="relative z-10 bg-white w-full hero-overlap-content" style={{ background: '#FFFFFF', zIndex: 10 }}>
@@ -138,7 +127,7 @@ export default function Home() {
           <ComplianceSection />
           <FlickeringFooter />
         </div>
-      </main>
+      </HomeLocalizedMain>
     </>
   );
 }

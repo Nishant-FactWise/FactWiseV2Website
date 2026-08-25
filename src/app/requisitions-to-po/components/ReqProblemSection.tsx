@@ -4,6 +4,12 @@ import * as React from "react"
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useLocalizedText } from '@/hooks/useLocalizedText'
+
+function Text({ value }: { value: string }) {
+  const t = useLocalizedText();
+  return <>{t(value)}</>;
+}
 
 // ============================================================================
 // Widget 1: Unstructured Requisitions — chaos inbox vs structured form
@@ -21,9 +27,9 @@ function ReqChaosWidget({ isHovered }: { isHovered: boolean }) {
 
       <div className="space-y-1.5 my-1.5 text-[8.5px]">
         {[
-          { from:'Rajesh (Ops)',    msg:'Need 200 safety gloves ASAP — call me',  channel:'📞 Call',  color:'text-orange-500' },
-          { from:'Priya (Eng)',     msg:'Req for control valves — see email below', channel:'✉️ Email', color:'text-blue-500'   },
-          { from:'Suresh (Maint)', msg:'WhatsApp: spare seals needed urgently!!',  channel:'💬 Chat',  color:'text-green-600'  },
+          { from:'Rajesh (Ops)',    msg:'Need 200 safety gloves ASAP — call me',  channel:'x Call',  color:'text-orange-500' },
+          { from:'Priya (Eng)',     msg:'Req for control valves — see email below', channel:'0️ Email', color:'text-blue-500'   },
+          { from:'Suresh (Maint)', msg:'WhatsApp: spare seals needed urgently!!',  channel:'x Chat',  color:'text-green-600'  },
         ].map(item => (
           <div key={item.from} className="flex items-start gap-2 bg-white p-1.5 rounded border border-slate-100 shadow-3xs">
             <span className={`${item.color} shrink-0 font-bold`}>{item.channel}</span>
@@ -55,7 +61,7 @@ function ReqChaosWidget({ isHovered }: { isHovered: boolean }) {
           {[
             { label:'Item', value:'Safety Gloves × 200' },
             { label:'Dept', value:'Operations' },
-            { label:'Approver', value:'Dept Manager → Finance' },
+            { label:'Approver', value:'Dept Manager   Finance' },
             { label:'Status', value:'In Approval Queue', green: true },
           ].map(f => (
             <div key={f.label} className="flex justify-between bg-slate-50 px-2 py-1 rounded border border-slate-100">
@@ -84,9 +90,9 @@ function BulkDiscountWidget({ isHovered }: { isHovered: boolean }) {
 
       <div className="space-y-1 text-[8.5px]">
         {[
-          { req:'REQ-1041', item:'Hydraulic Seals',  qty:'50 pcs',  unit:'₹18.40', total:'₹920' },
-          { req:'REQ-1043', item:'Hydraulic Seals',  qty:'60 pcs',  unit:'₹18.40', total:'₹1,104' },
-          { req:'REQ-1047', item:'Hydraulic Seals',  qty:'90 pcs',  unit:'₹18.40', total:'₹1,656' },
+          { req:'REQ-1041', item:'Hydraulic Seals',  qty:'50 pcs',  unit:'18.40', total:'920' },
+          { req:'REQ-1043', item:'Hydraulic Seals',  qty:'60 pcs',  unit:'18.40', total:'1,104' },
+          { req:'REQ-1047', item:'Hydraulic Seals',  qty:'90 pcs',  unit:'18.40', total:'1,656' },
         ].map(r => (
           <div key={r.req} className="flex items-center justify-between bg-white p-1.5 rounded border border-slate-100 shadow-3xs">
             <span className="font-mono text-slate-400 text-[8px]">{r.req}</span>
@@ -97,7 +103,7 @@ function BulkDiscountWidget({ isHovered }: { isHovered: boolean }) {
         ))}
         <div className="flex justify-between items-center px-1.5 pt-1 border-t border-slate-200/60">
           <span className="text-slate-500 font-bold">3 separate POs</span>
-          <span className="font-mono font-bold text-red-500 text-[9px]">Total: ₹3,680</span>
+          <span className="font-mono font-bold text-red-500 text-[9px]">Total: 3,680</span>
         </div>
       </div>
 
@@ -116,12 +122,12 @@ function BulkDiscountWidget({ isHovered }: { isHovered: boolean }) {
             </div>
             <div className="bg-emerald-900/50 rounded p-1.5 border border-emerald-700/40">
               <div className="text-emerald-400 text-[7px] uppercase">Bulk Rate</div>
-              <div className="font-bold text-emerald-300">₹14.90/pc</div>
+              <div className="font-bold text-emerald-300">14.90/pc</div>
             </div>
           </div>
           <div className="text-[8.5px] text-slate-300 mt-1 leading-tight font-medium">
-            Total: <span className="text-emerald-400 font-bold">₹2,980</span>
-            <span className="text-emerald-300 ml-2">↓ ₹700 saved (19%)</span>
+            Total: <span className="text-emerald-400 font-bold">2,980</span>
+            <span className="text-emerald-300 ml-2">  700 saved (19%)</span>
           </div>
         </div>
       </motion.div>
@@ -139,32 +145,32 @@ function EmailRFQWidget({ isHovered }: { isHovered: boolean }) {
         <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">RFQ: Control Valves</span>
         <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-semibold flex items-center gap-1">
           <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-ping" />
-          Unanswered (5d)
+          <Text value="Unanswered (5d)" />
         </span>
       </div>
 
       <div className="space-y-1.5 my-2">
         <div className="bg-white p-1.5 rounded border border-slate-100 shadow-3xs text-[8.5px]">
           <div className="flex justify-between text-slate-400 font-bold mb-0.5">
-            <span>✉️ To: Fluid Controls Ltd</span>
+            <span>0️ To: Fluid Controls Ltd</span>
             <span>5 days ago</span>
           </div>
-          <p className="text-slate-600 truncate leading-tight font-medium">Please quote best price for 50× DN50 control valves...</p>
+          <p className="text-slate-600 truncate leading-tight font-medium"><Text value="Please quote best price for 50 DN50 control valves..." /></p>
         </div>
         <div className="bg-white p-1.5 rounded border border-slate-100 shadow-3xs text-[8.5px]">
           <div className="flex justify-between text-slate-400 font-bold mb-0.5">
-            <span>✉️ To: Fluid Controls Ltd</span>
+            <span>0️ To: Fluid Controls Ltd</span>
             <span className="text-red-500 font-bold flex items-center gap-0.5">⏰ Overdue</span>
           </div>
-          <p className="text-slate-600 truncate leading-tight font-medium">Reminder: bid closing tomorrow — please respond urgently...</p>
+          <p className="text-slate-600 truncate leading-tight font-medium"><Text value="Reminder: bid closing tomorrow  please respond urgently..." /></p>
         </div>
       </div>
 
       <div className="flex justify-between items-center text-[8.5px] text-slate-400 border-t border-slate-200/60 pt-1.5">
-        <span>Vendors chased: 3 times</span>
+        <span><Text value="Vendors chased: 3 times" /></span>
         <span className="flex items-center gap-1 text-amber-600 font-bold uppercase tracking-wider">
           <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1.5, ease: 'linear' }} className="inline-block text-[10px]">⏳</motion.span>
-          Awaiting Bids...
+          <Text value="Awaiting Bids..." />
         </span>
       </div>
 
@@ -180,7 +186,7 @@ function EmailRFQWidget({ isHovered }: { isHovered: boolean }) {
         </div>
         <div className="space-y-1.5 text-[8.5px]">
           <div className="bg-slate-50 border border-slate-200/60 p-1.5 rounded flex items-start gap-1.5 shadow-3xs">
-            <span className="text-emerald-600 shrink-0">✅</span>
+            <span className="text-emerald-600 shrink-0">&</span>
             <div>
               <div className="font-bold text-slate-700 leading-tight">All Bids Collected</div>
               <div className="text-slate-400 text-[7.5px] mt-0.5 leading-tight font-medium">6 vendors responded · AI ranked by landed cost</div>
@@ -188,7 +194,7 @@ function EmailRFQWidget({ isHovered }: { isHovered: boolean }) {
           </div>
           <div className="bg-slate-50 border border-slate-200/60 px-2 py-1 rounded flex items-center justify-between text-emerald-600 font-bold shadow-3xs">
             <span>Best bid:</span>
-            <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded animate-pulse">✉️ ₹11,240 · Locked</span>
+            <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded animate-pulse">0️ 11,240 · Locked</span>
           </div>
         </div>
       </motion.div>
@@ -205,12 +211,12 @@ function LandedCostWidget({ isHovered }: { isHovered: boolean }) {
       <div>
         <div className="flex justify-between items-center mb-1.5">
           <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">Bid Comparison</span>
-          <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-600 font-bold">✅ Lowest Unit Price</span>
+          <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-600 font-bold">& Lowest Unit Price</span>
         </div>
         <div className="flex justify-between items-center bg-white p-2 rounded border border-slate-200/60 shadow-3xs">
           <div>
             <div className="text-[7.5px] text-slate-400 font-bold uppercase tracking-wider">Unit Price</div>
-            <div className="text-xs font-bold text-slate-800">₹22.00</div>
+            <div className="text-xs font-bold text-slate-800">22.00</div>
           </div>
           <div className="text-right">
             <div className="text-[7.5px] text-slate-400 font-bold uppercase tracking-wider">Vendor</div>
@@ -230,16 +236,16 @@ function LandedCostWidget({ isHovered }: { isHovered: boolean }) {
           className="overflow-hidden space-y-1 mt-1 text-[7.5px] border-t border-slate-100 pt-1"
         >
           <div className="flex justify-between text-slate-500 font-medium">
-            <span>✈️ International Freight</span>
-            <span className="font-mono text-red-500 font-bold">+₹3.80</span>
+            <span>️ International Freight</span>
+            <span className="font-mono text-red-500 font-bold">+3.80</span>
           </div>
           <div className="flex justify-between text-slate-500 font-medium">
-            <span>🏛️ Import Duties (BCD 10%)</span>
-            <span className="font-mono text-red-500 font-bold">+₹2.20</span>
+            <span>x️ Import Duties (BCD 10%)</span>
+            <span className="font-mono text-red-500 font-bold">+2.20</span>
           </div>
           <div className="flex justify-between text-slate-500 font-medium">
-            <span>📦 Packaging & Insurance</span>
-            <span className="font-mono text-red-500 font-bold">+₹1.40</span>
+            <span>x Packaging & Insurance</span>
+            <span className="font-mono text-red-500 font-bold">+1.40</span>
           </div>
         </motion.div>
       </div>
@@ -247,8 +253,8 @@ function LandedCostWidget({ isHovered }: { isHovered: boolean }) {
       <div className="flex justify-between items-center pt-1.5 border-t border-slate-200/60 text-[9px] font-bold">
         <span className="text-slate-500 font-bold">True Landed Cost:</span>
         <div className="relative w-[55px] h-[14px] text-right font-mono font-bold">
-          <motion.span initial={{ opacity:1, y:0 }} animate={isHovered ? { opacity:0, y:-10 } : { opacity:1, y:0 }} className="absolute right-0 text-slate-800 text-[10px]">₹22.00</motion.span>
-          <motion.span initial={{ opacity:0, y:10 }} animate={isHovered ? { opacity:1, y:0 } : { opacity:0, y:10 }} className="absolute right-0 text-red-500 text-[10px]">⚠️ ₹29.40</motion.span>
+          <motion.span initial={{ opacity:1, y:0 }} animate={isHovered ? { opacity:0, y:-10 } : { opacity:1, y:0 }} className="absolute right-0 text-slate-800 text-[10px]">22.00</motion.span>
+          <motion.span initial={{ opacity:0, y:10 }} animate={isHovered ? { opacity:1, y:0 } : { opacity:0, y:10 }} className="absolute right-0 text-red-500 text-[10px]">⚠️ 29.40</motion.span>
         </div>
       </div>
     </div>
@@ -263,7 +269,7 @@ function ManualPOWidget({ isHovered }: { isHovered: boolean }) {
     <div className="relative w-full h-[170px] sm:h-[185px] bg-[#F8F9FA] rounded-xl p-3 border border-slate-200/50 overflow-hidden font-sans text-left flex flex-col justify-between shadow-2xs">
       <div className="flex justify-between items-center border-b border-slate-200/60 pb-1">
         <span className="text-[8.5px] font-mono text-slate-400 font-bold uppercase tracking-wider">PO Creation — Manual</span>
-        <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-red-50 border border-red-200 text-red-500 font-semibold">🚫 Data Error</span>
+        <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-red-50 border border-red-200 text-red-500 font-semibold">x Data Error</span>
       </div>
 
       <div className="grid grid-cols-2 gap-px bg-slate-200 rounded p-px font-mono text-[8px] my-1">
@@ -272,11 +278,11 @@ function ManualPOWidget({ isHovered }: { isHovered: boolean }) {
         <div className="bg-white p-1 text-slate-600 font-medium">Vendor</div>
         <div className="bg-white p-1 text-slate-800 font-bold">Apex Ind.</div>
         <div className="bg-white p-1 text-slate-600 font-medium">Qty Ordered</div>
-        <div className="bg-white p-1 text-amber-600 font-bold italic">50 ← wrong?</div>
+        <div className="bg-white p-1 text-amber-600 font-bold italic">50   wrong?</div>
         <div className="bg-white p-1 text-slate-700 font-bold">Total Value</div>
         <div className="bg-white p-1 relative h-[14px]">
           <motion.div initial={{ opacity:1, scale:1 }} animate={isHovered ? { opacity:0, scale:0.8 } : { opacity:1, scale:1 }} className="text-red-500 font-bold font-mono text-[7.5px] bg-red-50 px-1 rounded border border-red-200/50 leading-tight w-fit">#REF!</motion.div>
-          <motion.div initial={{ opacity:0, scale:0.8 }} animate={isHovered ? { opacity:1, scale:1 } : { opacity:0, scale:0.8 }} className="absolute inset-0 p-1 text-emerald-600 font-bold font-mono text-[8.5px]">₹11,240</motion.div>
+          <motion.div initial={{ opacity:0, scale:0.8 }} animate={isHovered ? { opacity:1, scale:1 } : { opacity:0, scale:0.8 }} className="absolute inset-0 p-1 text-emerald-600 font-bold font-mono text-[8.5px]">11,240</motion.div>
         </div>
       </div>
 
@@ -309,7 +315,7 @@ const problems: ProblemItem[] = [
   {
     id: 'req-chaos',
     number: '01',
-    emoji: '🔴',
+    emoji: 'x',
     title: 'Unstructured Requisitions',
     subtitle: 'No structure, no tracking, no control.',
     description: 'Requisitions arrive from everywhere with no format or visibility. Things get missed, duplicated, or approved without the right oversight.',
@@ -317,7 +323,7 @@ const problems: ProblemItem[] = [
   {
     id: 'bulk-discount',
     number: '02',
-    emoji: '🟠',
+    emoji: 'xx',
     title: 'Missed Bulk Savings',
     subtitle: 'One req at a time means paying more than you should.',
     description: 'Separate orders miss bulk discounts. Combined quantities could unlock far better rates — but nobody consolidates.',
@@ -325,7 +331,7 @@ const problems: ProblemItem[] = [
   {
     id: 'email-rfq',
     number: '03',
-    emoji: '🟡',
+    emoji: 'xx',
     title: 'Email-Based RFQ Chaos',
     subtitle: 'Vendor bids scattered across emails nobody tracks.',
     description: 'Email RFQs go unanswered and responses get lost. By the time all bids arrive, days are gone and negotiations haven\'t started.',
@@ -333,7 +339,7 @@ const problems: ProblemItem[] = [
   {
     id: 'landed-cost',
     number: '04',
-    emoji: '🔵',
+    emoji: 'x',
     title: 'Hidden Landed Costs',
     subtitle: 'Unit price hides the true landed cost.',
     description: 'Duties, freight, and packaging don\'t show up until after the PO. By then, the margin is already gone.',
@@ -341,7 +347,7 @@ const problems: ProblemItem[] = [
   {
     id: 'manual-po',
     number: '05',
-    emoji: '🟣',
+    emoji: 'xx',
     title: 'Manual PO Creation',
     subtitle: 'Manual PO creation — slow, error-prone, unnecessary.',
     description: 'Teams copy PO data line by line after shortlisting. One error ships the wrong quantity; one delay stops production.',
@@ -360,8 +366,15 @@ function renderWidget(id: string, isHovered: boolean) {
 }
 
 export default function ReqProblemSection() {
+  const t = useLocalizedText();
   const [hoveredCardId, setHoveredCardId] = React.useState<string | null>(null)
   const scrollContainerRef = React.useRef<HTMLDivElement>(null)
+  const localizedProblems = problems.map((problem) => ({
+    ...problem,
+    title: t(problem.title),
+    subtitle: t(problem.subtitle),
+    description: t(problem.description),
+  }))
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
@@ -387,7 +400,7 @@ export default function ReqProblemSection() {
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-pulse" />
-              Procurement Vulnerabilities
+              {t('Procurement Vulnerabilities')}
             </div>
 
             <h2
@@ -401,8 +414,8 @@ export default function ReqProblemSection() {
                 fontFamily: 'var(--font-display)'
               }}
             >
-              Where Internal Procurement <br />
-              <span className="text-[#3666ff]">Breaks Down.</span>
+              {t('Where Internal Procurement')} <br />
+              <span className="text-[#3666ff]">{t('Breaks Down.')}</span>
             </h2>
           </div>
 
@@ -428,7 +441,7 @@ export default function ReqProblemSection() {
           ref={scrollContainerRef}
           className="flex overflow-x-auto gap-4 sm:gap-6 pb-8 pt-2 px-6 xl:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
-          {problems.map((prob, idx) => (
+          {localizedProblems.map((prob, idx) => (
             <motion.div
               key={prob.id}
               initial={{ opacity: 0, y: 24 }}
@@ -460,12 +473,12 @@ export default function ReqProblemSection() {
               <div className="pt-3 border-t border-slate-100 relative z-10">
                 <div className="relative h-5 overflow-hidden">
                   <div className="absolute inset-0 flex items-center justify-between transition-all duration-300 transform group-hover:-translate-y-full group-hover:opacity-0">
-                    <span className="text-[9px] font-bold tracking-wider font-mono text-slate-400">LEAKING VALUE</span>
+                    <span className="text-[9px] font-bold tracking-wider font-mono text-slate-400">{t('LEAKING VALUE')}</span>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff]/80" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-between transition-all duration-300 transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
                     <span className="text-[10px] font-bold text-[#3666ff] flex items-center gap-1">
-                      See Solution
+                      {t('See Solution')}
                       <span className="transition-transform duration-300 group-hover:translate-x-0.5">➔</span>
                     </span>
                   </div>

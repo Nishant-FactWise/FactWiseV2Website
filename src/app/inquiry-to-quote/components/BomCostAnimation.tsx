@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 /* ============================================================
  * BOM & Cost Intelligence — animated dashboard
@@ -361,6 +362,8 @@ export default function BomCostAnimation({
   onPhaseChange,
   onToggleAuto,
 }: BomCostAnimationProps) {
+  const t = useLocalizedText();
+  const manualPhase = activeMenuStep ?? controlledPhase;
 
   /* Inject stylesheet once */
   useEffect(() => {
@@ -511,22 +514,25 @@ export default function BomCostAnimation({
 
   /* ---------- Manual: snap to a step ---------- */
   useEffect(() => {
-    if (isAuto || controlledPhase == null) return;
-    setCurrentStep(controlledPhase);
-    onPhaseChangeRef.current?.(controlledPhase);
-    if (controlledPhase === 1) {
-      setS1Phase(3);
-    } else if (controlledPhase === 2) {
-      setS2SubPhase(4);
-      setS2L1n(L1.length);
-      setS2L2n(L2.length);
-      setS2L3n(L3.length);
-    } else if (controlledPhase === 3) {
-      setS3Cards(4); setS3Best(true);
-    } else if (controlledPhase === 4) {
-      setS4Chat(4);
-    }
-  }, [controlledPhase, isAuto]);
+    if (isAuto || manualPhase == null) return;
+    const applyManualPhase = () => {
+      setCurrentStep(manualPhase);
+      if (manualPhase === 1) {
+        setS1Phase(3);
+      } else if (manualPhase === 2) {
+        setS2SubPhase(4);
+        setS2L1n(L1.length);
+        setS2L2n(L2.length);
+        setS2L3n(L3.length);
+      } else if (manualPhase === 3) {
+        setS3Cards(4); setS3Best(true);
+      } else if (manualPhase === 4) {
+        setS4Chat(4);
+      }
+    };
+    queueMicrotask(applyManualPhase);
+    onPhaseChangeRef.current?.(manualPhase);
+  }, [manualPhase, isAuto]);
 
   /* ---------- Render helpers ---------- */
   const STEP_META: Record<number, { tag: string; title: string }> = {
@@ -544,13 +550,13 @@ export default function BomCostAnimation({
       <div className="bom-top">
         <div className="left">
           
-          <span className="brand">BOM Editor</span>
+          <span className="brand">{t('BOM Editor')}</span>
           <span className="sep">/</span>
-          <span className="crumb">FG-1041 · Smart Pump Assembly</span>
+          <span className="crumb">{t('FG-1041 · Smart Pump Assembly')}</span>
         </div>
         <div className="pill">
           <span className={'dot ' + (isAuto ? 'auto' : 'man')} />
-          <span className="lbl">{isAuto ? 'Auto-Pilot' : 'Manual'}</span>
+          <span className="lbl">{isAuto ? t('Auto-Pilot') : t('Manual')}</span>
         </div>
       </div>
 
@@ -561,10 +567,10 @@ export default function BomCostAnimation({
         <div className="bom-stageHead">
           <div className="L">
             <span className="pn">{meta.tag}</span>
-            <span className="tt">{meta.title}</span>
+            <span className="tt">{t(meta.title)}</span>
           </div>
           <div className="R">
-            {currentStep >= 2 && <span><b>7</b> lines · <b>3</b> tiers · <b>2</b> alts</span>}
+            {currentStep >= 2 && <span><b>7</b> {t('lines')} · <b>3</b> {t('tiers')} · <b>2</b> {t('alts')}</span>}
           </div>
         </div>
 
@@ -580,16 +586,16 @@ export default function BomCostAnimation({
                 {s1Phase >= 3 && <span className="check"><BI.Check s={12} /></span>}
               </div>
               <div className="s1-title">
-                {s1Phase <= 1 ? 'Drop your BOM' :
-                 s1Phase === 2 ? 'Parsing multi-level BOM…' :
-                 'BOM imported successfully'}
+                {s1Phase <= 1 ? t('Drop your BOM') :
+                 s1Phase === 2 ? t('Parsing multi-level BOM…') :
+                 t('BOM imported successfully')}
               </div>
               <div className="s1-sub">
                 {s1Phase <= 1
-                  ? 'Any format — Excel, CSV, supplier spec. Multi-level, alternates and revisions all handled.'
+                  ? t('Any format — Excel, CSV, supplier spec. Multi-level, alternates and revisions all handled.')
                   : s1Phase === 2
-                  ? 'Detecting hierarchy, units of measure, alternates and revision history…'
-                  : 'Seven lines parsed across three tiers — two approved alternates detected and linked at the line level.'}
+                  ? t('Detecting hierarchy, units of measure, alternates and revision history…')
+                  : t('Seven lines parsed across three tiers — two approved alternates detected and linked at the line level.')}
               </div>
               {s1Phase === 2 && <div className="s1-progress"><div className="fill" /></div>}
             </div>
@@ -602,9 +608,9 @@ export default function BomCostAnimation({
           <div className="flex justify-between items-center mb-3 px-1">
             <div className="flex items-center gap-2">
               <span className="text-[12px] font-bold text-slate-800">
-                {s2SubPhase === 2 ? 'Level 1 — Sub-Assemblies' :
-                 s2SubPhase === 3 ? 'Level 2 — Sub-BOM' :
-                 'Level 3 — Sub-Sub-BOM'}
+                {s2SubPhase === 2 ? t('Level 1 — Sub-Assemblies') :
+                 s2SubPhase === 3 ? t('Level 2 — Sub-BOM') :
+                 t('Level 3 — Sub-Sub-BOM')}
               </span>
               <span className="flex items-center gap-1 text-[9px] font-mono font-bold px-2 py-0.5 bg-indigo-50 text-indigo-600 rounded">
                 {s2SubPhase === 2 ? 'L1' :
@@ -658,7 +664,7 @@ export default function BomCostAnimation({
                     <span className="nqty">×{n.qty}</span>
                   </div>
                   <div className="nname">{n.name}</div>
-                  {n.parts && n.level !== 0 && <div className="nfoot">{n.parts} parts</div>}
+                  {n.parts && n.level !== 0 && <div className="nfoot">{n.parts} {t('parts')}</div>}
                   {isG23 && shown && (
                     <span className="alt-badge">+2 ALT</span>
                   )}
@@ -680,8 +686,8 @@ export default function BomCostAnimation({
                 </div>
               </div>
               <div className="R">
-                <div>price sources</div>
-                <b>4 matched</b>
+                    <div>{t('price sources')}</div>
+                    <b>4 {t('matched')}</b>
               </div>
             </div>
 
@@ -694,7 +700,7 @@ export default function BomCostAnimation({
                     <div className="head">
                       <span className="src">
                         <span className="srcdot" style={{ background: p.color }} />
-                        {p.src}
+                        {t(p.src)}
                       </span>
                       <span className="star"><BI.Star s={11} /></span>
                     </div>
@@ -724,7 +730,7 @@ export default function BomCostAnimation({
               {/* User message */}
               {s4Chat >= 2 && (
                 <div className="s4-chat-user">
-                  <div className="bubble">How do I add multiple BOMs for different finished goods?</div>
+                  <div className="bubble">{t('How do I add multiple BOMs for different finished goods?')}</div>
                   <div className="av">U</div>
                 </div>
               )}
@@ -743,7 +749,7 @@ export default function BomCostAnimation({
                   <div className="av">
                     <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="12" height="8" rx="2"/><path d="M8 2v3M5 1v2M11 1v2"/><circle cx="6" cy="9" r="1"/><circle cx="10" cy="9" r="1"/></svg>
                   </div>
-                  <div className="bubble">Upload all finished goods in one sheet — FactWise auto-detects each BOM hierarchy, links alternates, and rolls up costs per product instantly.</div>
+                  <div className="bubble">{t('Upload all finished goods in one sheet — FactWise auto-detects each BOM hierarchy, links alternates, and rolls up costs per product instantly.')}</div>
                 </div>
               )}
             </div>
@@ -751,7 +757,7 @@ export default function BomCostAnimation({
             {s4Chat >= 1 && (
               <div style={{ marginTop: 10, padding: '8px 12px', background: '#f8faff', border: '1px solid rgba(54,102,255,0.12)', borderRadius: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#3666ff', opacity: 0.7, flexShrink: 0, animation: 'bom-pulse 1.6s ease-in-out infinite' }} />
-                <span style={{ fontSize: 10, color: '#94a3b8', fontWeight: 500 }}>Ask our AI any question about your BOM costs</span>
+                <span style={{ fontSize: 10, color: '#94a3b8', fontWeight: 500 }}>{t('Ask our AI any question about your BOM costs')}</span>
               </div>
             )}
           </div>
@@ -760,7 +766,7 @@ export default function BomCostAnimation({
         {/* Narrative popup */}
         <div key={currentStep} className="bom-narrative">
           <span className="pdot" />
-          <span className="ntext">{NARRATIVE[currentStep]}</span>
+          <span className="ntext">{t(NARRATIVE[currentStep])}</span>
         </div>
       </div>
 
@@ -771,10 +777,10 @@ export default function BomCostAnimation({
             {isAuto ? <BI.Pause s={11} /> : <BI.Play s={11} />}
           </button>
           <span className="Lt">
-            {isAuto ? 'Autopilot active · cycling through all four steps' : 'Paused · click any step on the left to inspect'}
+            {isAuto ? t('Autopilot active · cycling through all four steps') : t('Paused · click any step on the left to inspect')}
           </span>
         </div>
-        <span className="R">FactWise Engine</span>
+        <span className="R">{t('FactWise Engine')}</span>
       </div>
     </div>
   );

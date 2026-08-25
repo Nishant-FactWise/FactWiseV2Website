@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { FlickeringFooter } from '@/components/ClientOnlySections';
+import GlossaryContent from './GlossaryContent';
 
 export const metadata: Metadata = {
   title: 'Procurement Glossary | Key Terms Explained',
@@ -145,6 +146,8 @@ export default function GlossaryPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
+      <GlossaryContent />
+      {false && (
       <main style={{ minHeight: '100vh', background: '#fff', fontFamily: 'var(--font-inter), sans-serif' }}>
 
         {/* Hero */}
@@ -179,7 +182,7 @@ export default function GlossaryPage() {
         {/* Terms */}
         <section style={{ maxWidth: 860, margin: '0 auto', padding: '64px 24px 80px' }}>
           <dl style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {terms.map((t, i) => (
+            {terms.map((t) => (
               <div
                 key={t.id}
                 id={t.id}
@@ -238,7 +241,7 @@ export default function GlossaryPage() {
               FactWise puts all of these workflows into practice — in one platform, built for manufacturers.
             </p>
             <a
-              href="/demo"
+              href="https://factwise.io/demo"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 8,
                 background: 'linear-gradient(135deg, #3666ff 0%, #5b8aff 100%)',
@@ -254,6 +257,7 @@ export default function GlossaryPage() {
 
         <FlickeringFooter />
       </main>
+      )}
     </>
   );
 }

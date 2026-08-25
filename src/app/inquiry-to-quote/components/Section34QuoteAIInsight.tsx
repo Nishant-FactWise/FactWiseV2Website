@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 /* ──────────────────────────────────────────────────────────────────────
    SECTION 3.4 — Automate Quote Generation. Win Every Time.
@@ -252,6 +253,7 @@ const QA_STYLE = `
 `;
 
 export default function Section34QuoteAIInsight({ isActive = true }: { isActive?: boolean }) {
+    const t = useLocalizedText();
     const [step, setStep] = useState<number>(0);
     const [isAuto, setIsAuto] = useState<boolean>(true);
     const [particles, setParticles] = useState<Array<{ id: number; startX: number; startY: number; endX: number; endY: number; color: string; delay: number }>>([]);
@@ -275,21 +277,21 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
     // Burst particles when generate is clicked
     useEffect(() => {
         if (step !== 3) return;
-        const bursts = [];
-        for (let i = 0; i < 12; i++) {
-            bursts.push({
-                id: Date.now() + i,
-                startX: 18 + (i % 3) * 2,
-                startY: 20 + (i % 3) * 18,
-                endX: 50 + (i % 4) * 6,
-                endY: 35 + (i % 4) * 8,
-                color: QA_SOURCES[i % 3].tone,
-                delay: i * 50,
-            });
-        }
-        setParticles(bursts);
+        const bursts = Array.from({ length: 12 }, (_, i) => ({
+          id: Date.now() + i,
+          startX: 18 + (i % 3) * 2,
+          startY: 20 + (i % 3) * 18,
+          endX: 50 + (i % 4) * 6,
+          endY: 35 + (i % 4) * 8,
+          color: QA_SOURCES[i % 3].tone,
+          delay: i * 50,
+        }));
+        const start = setTimeout(() => setParticles(bursts), 0);
         const cleanup = setTimeout(() => setParticles([]), 1400);
-        return () => clearTimeout(cleanup);
+        return () => {
+          clearTimeout(start);
+          clearTimeout(cleanup);
+        };
     }, [step]);
 
     const goManual = (menuP: number) => {
@@ -323,7 +325,7 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
     const total = subtotal + landed + markup;
 
     // Typed prompt
-    const promptFull = 'Where is my biggest expense?';
+    const promptFull = t('Where is my biggest expense?');
     const promptLen = askActive
         ? (typing ? Math.floor(promptFull.length * 0.6) : (step >= 8 ? promptFull.length : Math.floor(promptFull.length * 0.3)))
         : 0;
@@ -343,17 +345,17 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-                    Section 3.4 · Quote Generation
+                    {t('Section 3.4 · Quote Generation')}
                 </div>
                 <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
-                    Automate Quote Generation. <br />
-                    <span className="text-[#3666ff]">Built to Win.</span>
+                    {t('Automate Quote Generation.')} <br />
+                    <span className="text-[#3666ff]">{t('Built to Win.')}</span>
                 </h3>
                 <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Select the best bids — FactWise generates the customer quote in one click. Every line item priced, every landed cost calculated, every BOM rolled up automatically. No manual calculation, no margin errors.
+                    {t('Select the best bids — FactWise generates the customer quote in one click. Every line item priced, every landed cost calculated, every BOM rolled up automatically. No manual calculation, no margin errors.')}
                 </p>
                 <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Then ask FactWise AI anything about your quote — where the biggest expense lies, how costs shift across volumes, what to sharpen. Every insight you need to protect margin and send the quote first.
+                    {t('Then ask FactWise AI anything about your quote — where the biggest expense lies, how costs shift across volumes, what to sharpen. Every insight you need to protect margin and send the quote first.')}
                 </p>
 
                 <div className="flex flex-col gap-2 mt-8 text-left">
@@ -377,11 +379,11 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                                     <Check className="size-3.5" strokeWidth={3} />
                                 </div>
                                 <span className={`text-[13.5px] font-bold tracking-tight ${activeMenu === item.p ? 'text-[#3666ff]' : activeMenu > item.p ? 'text-slate-700' : 'text-slate-500'
-                                }`}>{item.title}</span>
+                                }`}>{t(item.title)}</span>
                             </div>
                             {activeMenu === item.p && (
                                 <span className="relative z-10 text-[9px] font-black text-emerald-600 bg-emerald-50/80 border border-emerald-100 px-2.5 py-1 rounded-full font-mono uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
-                                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />Active
+                                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />{t('Active')}
                                 </span>
                             )}
                         </div>
@@ -399,14 +401,14 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
             >
                 <div className="qa-root">
                     <div className="qa-chrome">
-                        <div className="qa-url">app.factwise.io / quote / build</div>
-                        <div className="qa-pill"><span className="d" />FW Insight · AI assist</div>
+                        <div className="qa-url">{t('app.factwise.io / quote / build')}</div>
+                        <div className="qa-pill"><span className="d" />{t('FW Insight · AI assist')}</div>
                     </div>
 
                     <div className={`qa-grid${step >= 3 ? ' l-hidden' : ''}`}>
                         {/* LEFT — sources */}
                         <div className="qa-col l">
-                            <div className="qa-h"><span className="n">01</span>Select best bids</div>
+                            <div className="qa-h"><span className="n">01</span>{t('Select best bids')}</div>
                             {QA_SOURCES.map((s, i) => {
                                 const on = (i === 0 && s1On) || (i === 1 && s2On) || (i === 2 && s3On);
                                 return (
@@ -423,17 +425,17 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                                             </div>
                                             <span className="lbl" style={on ? { color: s.tone } : undefined}>{s.label}</span>
                                         </div>
-                                        <div className="nm">{s.name}</div>
+                                        <div className="nm">{t(s.name)}</div>
                                         <div className="items">
                                             {s.items.map((it, j) => (
                                                 <span key={j} className="item"
                                                     style={on ? { background: `rgba(${s.rgb}, 0.1)`, color: s.tone } : undefined}>
-                                                    {it}
+                                                    {t(it)}
                                                 </span>
                                             ))}
                                         </div>
                                         <div className="sub">
-                                            <span className="l">Best bid · sub</span>
+                                            <span className="l">{t('Best bid · sub')}</span>
                                             <span className="v">₹{(s.sub / 1000).toFixed(0)}K</span>
                                         </div>
                                     </div>
@@ -441,7 +443,7 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                             })}
 
                             <div className={`qa-gen ${allPicked ? 'ready' : ''} ${genGlow ? 'glow' : ''} ${genPressed ? 'pressed' : ''}`}>
-                                <QAI.Wand s={12} /> Generate quote
+                                <QAI.Wand s={12} /> {t('Generate quote')}
                             </div>
                         </div>
 
@@ -451,10 +453,10 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                                 <div className="qa-doc-hd">
                                     <div className="ic"><QAI.File s={12} /></div>
                                     <div>
-                                        <div className="t">Customer quote</div>
-                                        <div className="id">QT-1109 · Acme Robotics · 200 units</div>
+                                        <div className="t">{t('Customer quote')}</div>
+                                        <div className="id">{t('QT-1109 · Acme Robotics · 200 units')}</div>
                                     </div>
-                                    <div className="mark">Auto-rolled</div>
+                                    <div className="mark">{t('Auto-rolled')}</div>
                                 </div>
 
                                 <div className="qa-rows">
@@ -464,7 +466,7 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                                             <div key={i} className={`qa-row ${showAllRows ? 'in' : ''} ${step === 4 ? 'pulse' : ''}`}
                                                 style={{ transitionDelay: `${0.1 + i * 0.09}s` }}>
                                                 <div className="bar" style={{ background: src.tone }} />
-                                                <span className="nm">{r.name}</span>
+                                                <span className="nm">{t(r.name)}</span>
                                                 <span className="qty">×{r.qty}</span>
                                                 <span className="px">₹{(r.qty * r.price).toLocaleString('en-IN')}</span>
                                             </div>
@@ -474,25 +476,25 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
 
                                 <div className="qa-tots">
                                     <div className="qa-tot-r">
-                                        <span className="l">Subtotal</span>
+                                        <span className="l">{t('Subtotal')}</span>
                                         <span className="v" style={{ opacity: totalsIn ? 1 : 0.3 }}>
                                             ₹{(totalsIn ? subtotal : 0).toLocaleString('en-IN')}
                                         </span>
                                     </div>
                                     <div className="qa-tot-r">
-                                        <span className="l">Landed cost · auto</span>
+                                        <span className="l">{t('Landed cost · auto')}</span>
                                         <span className="v" style={{ opacity: totalsIn ? 1 : 0.3 }}>
                                             +₹{(totalsIn ? landed : 0).toLocaleString('en-IN')}
                                         </span>
                                     </div>
                                     <div className="qa-tot-r">
-                                        <span className="l">Markup · 18%</span>
+                                        <span className="l">{t('Markup · 18%')}</span>
                                         <span className="v" style={{ opacity: totalsIn ? 1 : 0.3 }}>
                                             +₹{(totalsIn ? markup : 0).toLocaleString('en-IN')}
                                         </span>
                                     </div>
                                     <div className="qa-tot-r final">
-                                        <span className="l">Customer total</span>
+                                        <span className="l">{t('Customer total')}</span>
                                         <span className="v">₹{(totalsIn ? total : 0).toLocaleString('en-IN')}</span>
                                     </div>
                                 </div>
@@ -501,11 +503,11 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
 
                         {/* RIGHT — AI ask */}
                         <div className="qa-col r">
-                            <div className="qa-h"><span className="n">02</span>Ask AI · your quote</div>
+                            <div className="qa-h"><span className="n">02</span>{t('Ask AI · your quote')}</div>
                             <div className="qa-ai">
                                 <div className="qa-ai-hd">
                                     <div className="b"><QAI.Bot s={12} /></div>
-                                    <div className="t">FW Insight <span>· ask anything</span></div>
+                                    <div className="t">FW Insight <span>· {t('ask anything')}</span></div>
                                     <div className="badge">AI</div>
                                 </div>
 
@@ -519,17 +521,15 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                                     <div className="av"><QAI.Bot s={11} /></div>
                                     <div className="body">
                                         <div className="head">
-                                            <b>Electrical</b> is your top spend — pricing pressure here moves the quote most.
+                                            <b>{t('Electrical')}</b> {t('is your top spend')} — {t('pricing pressure here moves the quote most.')}
                                         </div>
                                         <div className="qa-chartRow">
                                             <svg className="qa-donut" viewBox="0 0 36 36">
                                                 {(() => {
-                                                    let acc = 0;
                                                     return QA_CATS.map((c, i) => {
                                                         const len = (c.pct / 100) * 100;
                                                         const dash = `${answerIn ? len : 0} ${100 - len + 0.001}`;
-                                                        const off = -acc;
-                                                        acc += len;
+                                                        const off = -QA_CATS.slice(0, i).reduce((sum, category) => sum + category.pct, 0);
                                                         return (
                                                             <circle key={i} cx="18" cy="18" r="15.9" fill="none"
                                                                 stroke={c.color} strokeWidth="4"
@@ -546,7 +546,7 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                                             <div className="qa-bars">
                                                 {QA_CATS.map((c, i) => (
                                                     <div key={i} className="qa-bar">
-                                                        <span className="nm">{c.name}</span>
+                                                        <span className="nm">{t(c.name)}</span>
                                                         <span className="track">
                                                             <span className="fill"
                                                                 style={{ width: answerIn ? `${c.pct * 2.4}%` : 0, background: c.color, transitionDelay: `${0.15 + i * 0.1}s` }} />
@@ -562,16 +562,16 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                                 <div className={`qa-insight ${insightIn ? 'in' : ''}`}>
                                     <QAI.Spark s={10} />
                                     <span>
-                                        <b>Tip:</b> at 1000 units, your unit cost drops <b>13%</b> — bid tighter on volume to win this RFQ.
+                                        <b>{t('Tip:')}</b> {t('at 1000 units, your unit cost drops')} <b>13%</b> — {t('bid tighter on volume to win this RFQ.')}
                                     </span>
                                 </div>
 
                                 <div className="qa-send-wrap">
                                     <span className="qa-stat">
-                                        Built in <strong>4m 22s</strong> · normally 1h+
+                                        {t('Built in')} <strong>4m 22s</strong> · {t('normally 1h+')}
                                     </span>
                                     <div className={`qa-send ${sendGlow ? 'glow' : ''} ${sendClick ? 'click' : ''}`}>
-                                        <QAI.Send s={10} /> Send
+                                        <QAI.Send s={10} /> {t('Send')}
                                     </div>
                                 </div>
                             </div>

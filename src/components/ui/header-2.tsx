@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { MenuToggleIcon } from '@/components/ui/menu-toggle-icon';
-import { ShimmerButton } from '@/components/ui/ShimmerButton';
 import { MagicButton } from '@/components/ui/MagicButton';
 import { useScroll } from '@/components/ui/use-scroll';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,17 +10,31 @@ import { ChevronDown } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { getPathLocale, localizePath, stripLocale } from '@/lib/i18n';
+import { localizeTerminology } from '@/lib/localized-terminology';
+import { messages } from '@/lib/messages';
+
+type NavLink = {
+	label: string;
+	href: string;
+	subLinks?: { label: string; href: string }[];
+};
 
 export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark' }) {
 	const pathname = usePathname();
+	const locale = getPathLocale(pathname);
+	const cleanPathname = stripLocale(pathname);
+	const textMap = messages[locale].textMap;
+	const t = (source: string) => localizeTerminology(textMap[source] ?? source, locale);
 	// Pages with white/light backgrounds need dark nav text from the start
-	const LIGHT_PAGES = ['/pricing', '/platform', '/demo', '/careers/jobs', '/privacy-policy', '/terms-of-service', '/cookie-policy', '/faq', '/documentation'];
-	const isLightPage = LIGHT_PAGES.some(p => pathname === p || pathname.startsWith(p + '/'));
+	const LIGHT_PAGES = ['/pricing', '/platform', '/demo', '/careers/jobs', '/privacy-policy', '/terms-of-service', '/dpdp-compliance', '/cookie-policy', '/faq', '/documentation'];
+	const isLightPage = LIGHT_PAGES.some(p => cleanPathname === p || cleanPathname.startsWith(p + '/'));
 	const theme = isLightPage ? 'light' : propTheme;
 	const [open, setOpen] = React.useState(false);
-	const [expandedMobileMenu, setExpandedMobileMenu] = React.useState<string | null>('Product');
+	const [expandedMobileMenu, setExpandedMobileMenu] = React.useState<string | null>(null);
 	const [mounted, setMounted] = React.useState(false);
-	const scrolled = useScroll(pathname === '/' ? () => (typeof window !== 'undefined' ? window.innerHeight : 800) : 20);
+	const scrolled = useScroll(cleanPathname === '/' ? () => (typeof window !== 'undefined' ? window.innerHeight : 800) : 20);
 
 	// Dropdown hover-intent: keeps the menu open as the cursor crosses the
 	// invisible gap between the trigger and the panel. Pure CSS group-hover
@@ -46,46 +59,47 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 	}, []);
 
 	React.useEffect(() => {
-		setMounted(true);
+		const frame = requestAnimationFrame(() => setMounted(true));
+		return () => cancelAnimationFrame(frame);
 	}, []);
 
-	const links = [
+	const links: NavLink[] = [
 		{
-			label: 'Home',
+			label: t('Home'),
 			href: '/',
 		},
 		{
-			label: 'Product',
-			href: '#',
+			label: t('Product'),
+			href: '/inquiry-to-quote',
 			subLinks: [
-				{ label: 'Inquiry to Quote', href: '/inquiry-to-quote' },
-				{ label: 'Requisitions to PO', href: '/requisitions-to-po' },
-				{ label: 'Invoice to Pay', href: '/invoice-to-pay' },
+				{ label: t('Inquiry to Quote'), href: '/inquiry-to-quote' },
+				{ label: t('Requisitions to PO'), href: '/requisitions-to-po' },
+				{ label: t('Invoice to Pay'), href: '/invoice-to-pay' },
 			]
 		},
 		{
-			label: 'Suppliers',
+			label: t('Suppliers'),
 			href: '/supplier',
 		},
 		{
-			label: 'Blog',
+			label: t('Blog'),
 			href: '/blog',
 		},
 		{
-			label: 'About Us',
+			label: t('About Us'),
 			href: '/about',
 		},
 		{
-			label: 'Careers',
+			label: t('Careers'),
 			href: '/careers',
 		},
-	];
+	].filter((link) => locale === 'en' || link.href !== '/blog');
 
-	const isLinkActive = (link: { href: string; subLinks?: { href: string }[] }) => {
-		if (link.href === '/') return pathname === '/';
-		if (pathname === link.href || pathname.startsWith(link.href + '/')) return true;
+	const isLinkActive = (link: NavLink) => {
+		if (link.href === '/') return cleanPathname === '/';
+		if (cleanPathname === link.href || cleanPathname.startsWith(link.href + '/')) return true;
 		if (link.subLinks) {
-			return link.subLinks.some(s => pathname === s.href || pathname.startsWith(s.href + '/'));
+			return link.subLinks.some(s => cleanPathname === s.href || cleanPathname.startsWith(s.href + '/'));
 		}
 		return false;
 	};
@@ -106,15 +120,13 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 	}, [open]);
 
 	if (
-		pathname === '/demo' || 
-		pathname === '/supplier-onboarding' || 
-		pathname?.startsWith('/supplier-onboarding') ||
-		pathname?.startsWith('/supplier onboarding')
+		cleanPathname === '/demo' || 
+		cleanPathname === '/supplier-onboarding' || 
+		cleanPathname?.startsWith('/supplier-onboarding') ||
+		cleanPathname?.startsWith('/supplier onboarding')
 	) {
 		return null;
 	}
-
-	const isLandingPage = pathname === '/';
 
 	return (
 		<header
@@ -140,7 +152,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 					},
 				)}
 			>
-				<Link href="/" className="flex items-center gap-3 cursor-pointer">
+				<Link href={localizePath("/", locale)} className="flex items-center gap-3 cursor-pointer">
 					<Image
 						src={(scrolled || open || !mounted || theme === 'light') ? "/logo.webp" : "/logowhite.webp"}
 						alt="FactWise Logo"
@@ -185,7 +197,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 								{link.subLinks ? (
 									<Link
 										className={buttonVariants({ variant: 'ghost', className: linkClass })}
-										href={link.href}
+										href={localizePath(link.href, locale)}
 										onFocus={() => openDropdown(i)}
 									>
 										{link.label}
@@ -195,14 +207,14 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 								) : (
 									<Link
 										className={buttonVariants({ variant: 'ghost', className: linkClass })}
-										href={link.href}
+										href={localizePath(link.href, locale)}
 									>
 										{link.label}
 										{underline}
 									</Link>
 								)}
 
-								{(link as any).subLinks && (
+								{link.subLinks && (
 									<div
 										className={cn(
 											'absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-200',
@@ -210,12 +222,12 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 										)}
 									>
 										<div className="w-64 bg-white border border-black/[0.08] rounded-2xl p-2 shadow-xl">
-											{(link as any).subLinks.map((sub: any, j: number) => {
-												const subActive = pathname === sub.href || pathname.startsWith(sub.href + '/');
+											{link.subLinks.map((sub, j) => {
+												const subActive = cleanPathname === sub.href || cleanPathname.startsWith(sub.href + '/');
 												return (
 													<Link
 														key={j}
-														href={sub.href}
+														href={localizePath(sub.href, locale)}
 														className={cn(
 															'block px-4 py-3 rounded-xl text-sm transition-colors',
 															subActive
@@ -251,7 +263,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 									href="https://apps.factwise.io/?showBackButton=true"
 									className={buttonVariants({ variant: 'ghost', className: loginClass })}
 								>
-									Login
+									{t('Login')}
 									<span
 										className={cn(
 											'pointer-events-none absolute bottom-[3px] left-3 right-3 h-[2px] rounded-full origin-center transition-transform duration-300 ease-out scale-x-0 group-hover:scale-x-100',
@@ -262,14 +274,27 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 							</div>
 						);
 					})()}
+					<div className={cn("w-px h-4 mx-1 transition-colors duration-300", {
+						"bg-white/20": !scrolled && !open && theme === 'dark',
+						"bg-black/10": scrolled || open || theme === 'light',
+					})} />
+					<div className="mx-1">
+						<LanguageSwitcher
+							triggerClassName={
+								!scrolled && !open && theme === 'dark'
+									? 'text-white/85 hover:text-white'
+									: 'text-black/60 hover:text-[#3666ff]'
+							}
+						/>
+					</div>
 					<MagicButton
-						label1="Request Demo"
-						label2="Join Us"
-						className="scale-[0.85] origin-right ml-2"
-						onClick={() => window.location.href = '/demo'}
+						label1={t('Request Demo')}
+						label2={t('Join Us')}
+						className="scale-[0.85] origin-right ml-3"
+						onClick={() => window.location.assign(localizePath('/demo', locale))}
 					/>
 				</div>
-				<Button size="icon" variant="ghost" aria-label="Toggle Navigation Menu" aria-expanded={open} onClick={() => setOpen(!open)} className={cn("md:hidden rounded-full border transition-colors duration-300", {
+				<Button size="icon" variant="ghost" aria-label={t('Toggle Navigation Menu')} aria-expanded={open} onClick={() => setOpen(!open)} className={cn("md:hidden rounded-full border transition-colors duration-300", {
 					// Glassy chip so the menu button stays clearly visible over the hero
 					// from the start (not just a bare white icon lost in the image).
 					"text-white bg-white/15 border-white/25 backdrop-blur-md hover:bg-white/25": !scrolled && !open && theme === 'dark',
@@ -311,7 +336,7 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 								) : (
 									<Link
 										className={cn('text-xl font-medium py-1.5 transition-colors active:scale-[0.98]', active ? 'text-[#3666ff] font-semibold' : 'text-slate-800 hover:text-[#3666ff]')}
-										href={link.href}
+										href={localizePath(link.href, locale)}
 										onClick={() => setOpen(false)}
 									>
 										{link.label}
@@ -327,12 +352,12 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 												className="overflow-hidden"
 											>
 												<div className="flex flex-col gap-2.5 ml-3 mb-3 mt-1 border-l-2 border-slate-200 pl-4">
-													{(link as any).subLinks.map((sub: any) => {
-														const subActive = pathname === sub.href || pathname.startsWith(sub.href + '/');
+													{link.subLinks.map((sub) => {
+														const subActive = cleanPathname === sub.href || cleanPathname.startsWith(sub.href + '/');
 														return (
 														<Link
 															key={sub.label}
-															href={sub.href}
+															href={localizePath(sub.href, locale)}
 															className={cn('text-base transition-colors active:scale-[0.98]', subActive ? 'text-[#3666ff] font-semibold' : 'text-slate-600 hover:text-[#3666ff]')}
 															onClick={() => setOpen(false)}
 														>
@@ -350,17 +375,20 @@ export function Header({ theme: propTheme = 'dark' }: { theme?: 'light' | 'dark'
 						})}
 					</div>
 					<div className="flex flex-col gap-4 pt-8 pb-10 border-t border-black/[0.07] mt-auto z-10 relative">
+						<div className="self-start">
+							<LanguageSwitcher triggerClassName="text-slate-800 hover:text-[#3666ff]" />
+						</div>
 						<button 
 							onClick={() => { window.location.href = 'https://apps.factwise.io/?showBackButton=true'; }} 
 							className="w-full h-14 text-lg font-medium text-slate-800 bg-white border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 active:scale-[0.98] transition-all"
 						>
-							Login
+							{t('Login')}
 						</button>
 						<button 
-							onClick={() => { window.location.href = '/demo'; }} 
+							onClick={() => { window.location.assign(localizePath('/demo', locale)); }} 
 							className="w-full h-14 text-lg font-bold text-white bg-[#3666ff] rounded-xl shadow-[0_0_20px_rgba(54,102,255,0.2)] hover:bg-[#3666ff]/90 hover:shadow-lg hover:shadow-[#3666ff]/30 active:scale-[0.98] transition-all"
 						>
-							Request Demo
+							{t('Request Demo')}
 						</button>
 					</div>
 				</div>

@@ -2,7 +2,6 @@
 
 import { useEffect, useLayoutEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { activeSmoother } from './SmoothScroll';
 
 const LENIS_ROUTES = ['/about', '/careers', '/inquiry-to-quote', '/requisitions-to-po', '/invoice-to-pay', '/platform', '/supplier'];
@@ -31,8 +30,9 @@ export default function ScrollToTop() {
   useLayoutEffect(() => {
     if (typeof window === 'undefined' || window.location.hash) return;
 
-    // Kill ALL lingering ScrollTriggers from the previous route.
-    ScrollTrigger.getAll().forEach(st => st.kill());
+    import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+      ScrollTrigger.clearScrollMemory();
+    });
 
     // On Lenis routes, aggressively clear transforms from scroll containers
     if (isLenisRoute) {
@@ -64,12 +64,20 @@ export default function ScrollToTop() {
   useEffect(() => {
     if (typeof window === 'undefined' || window.location.hash) return;
 
+    let cancelled = false;
+    let ScrollTrigger: typeof import('gsap/ScrollTrigger').ScrollTrigger | null = null;
+
+    import('gsap/ScrollTrigger').then((module) => {
+      if (cancelled) return;
+      ScrollTrigger = module.ScrollTrigger;
+    });
+
     const refreshAndScroll = () => {
       window.scrollTo(0, 0);
-      ScrollTrigger.refresh();
+      ScrollTrigger?.refresh();
     };
     const refreshOnly = () => {
-      ScrollTrigger.refresh();
+      ScrollTrigger?.refresh();
     };
 
     const raf = requestAnimationFrame(refreshAndScroll);
@@ -78,6 +86,7 @@ export default function ScrollToTop() {
     const t3 = setTimeout(refreshOnly, 1200);
 
     return () => {
+      cancelled = true;
       cancelAnimationFrame(raf);
       clearTimeout(t1);
       clearTimeout(t2);

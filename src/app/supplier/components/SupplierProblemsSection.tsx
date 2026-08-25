@@ -4,6 +4,7 @@ import * as React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Clock, AlertTriangle, CheckCircle2, FileText, Database, TrendingUp } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 /* ════════════════════════════════════════════
    WIDGET 01: RFQ OVERLOAD WIDGET
@@ -251,6 +252,7 @@ const problems: ProblemItem[] = [
 ];
 
 export default function SupplierProblemsSection() {
+  const t = useLocalizedText();
   const [hoveredCardId, setHoveredCardId] = React.useState<string | null>(null);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -306,7 +308,7 @@ export default function SupplierProblemsSection() {
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-pulse" />
-              Supplier Sourcing Challenges
+              {t('Supplier Sourcing Challenges')}
             </div>
 
             <h2
@@ -320,8 +322,8 @@ export default function SupplierProblemsSection() {
                 fontFamily: 'var(--font-display)',
               }}
             >
-              Why Most Suppliers <br />
-              <span className="text-[#3666ff]">Struggle to Respond on Time.</span>
+              {t('Why Most Suppliers')} <br />
+              <span className="text-[#3666ff]">{t('Struggle to Respond on Time.')}</span>
             </h2>
           </div>
         </div>
@@ -354,14 +356,14 @@ export default function SupplierProblemsSection() {
                   className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.015em] text-slate-800 leading-snug"
                   style={{ fontFamily: 'var(--font-display)' }}
                 >
-                  {prob.subtitle}
+                  {t(prob.subtitle)}
                 </h3>
 
                 <p
                   className="text-[12px] sm:text-[13px] text-slate-600 leading-relaxed font-normal"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
-                  {prob.description}
+                  {t(prob.description)}
                 </p>
               </div>
 

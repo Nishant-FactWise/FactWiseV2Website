@@ -30,6 +30,7 @@ import {
   Gauge,
   CheckCheck,
 } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 
 const STEPS = [
@@ -99,6 +100,7 @@ const F1_MENU = [
 ];
 
 function Feature1RespondYourWay({ isActive = true }: { isActive?: boolean }) {
+  const t = useLocalizedText();
   const [step, setStep] = useState<number>(0);
   const [isAuto, setIsAuto] = useState<boolean>(true);
 
@@ -137,23 +139,23 @@ function Feature1RespondYourWay({ isActive = true }: { isActive?: boolean }) {
           style={{ fontFamily: 'var(--font-inter)' }}
         >
           <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-          Feature 03 · Total Flexibility
+          {t('Feature 03 · Total Flexibility')}
         </div>
 
         <h3
           className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.16]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
-          Respond Your Way. <br />
-          <span className="text-[#3666ff]">Manual, Excel, or Platform — Your Choice.</span>
+          {t('Respond Your Way')} <br />
+          <span className="text-[#3666ff]">{t('Manual, Excel, or Platform — Your Choice.')}</span>
         </h3>
 
         <p className="text-slate-600 text-[14px] leading-[1.62] font-normal text-left" style={{ fontFamily: 'var(--font-inter)' }}>
-          Not every supplier works the same way. FactWise gives you the flexibility to respond however works best for your team. Log in and respond directly on the platform with full visibility of every RFQ, quote, and PO—or work offline in Excel, fill in your prices, and upload it back in seconds with zero manual reformatting required.
+          {t('Not every supplier works the same way. FactWise gives you the flexibility to respond however works best for your team. Log in and respond directly on the platform with full visibility of every RFQ, quote, and PO—or work offline in Excel, fill in your prices, and upload it back in seconds with zero manual reformatting required.')}
         </p>
 
         <div className="text-[13.5px] font-bold text-[#3666ff] tracking-tight pt-1">
-          Your workflow. Your way. Every time.
+          {t('Your workflow. Your way. Every time.')}
         </div>
 
         {/* 4-Step Progress Menu */}
@@ -186,12 +188,12 @@ function Feature1RespondYourWay({ isActive = true }: { isActive?: boolean }) {
                     activeMenu === item.p ? 'text-[#3666ff]' : activeMenu > item.p ? 'text-slate-700' : 'text-slate-500'
                   }`}
                 >
-                  {item.title}
+                  {t(item.title)}
                 </span>
               </div>
               {activeMenu === item.p && (
                 <span className="relative z-10 text-[8px] font-black text-emerald-600 bg-emerald-50/80 border border-emerald-100 px-2 py-0.5 rounded-full font-mono uppercase tracking-widest flex items-center gap-1 shadow-sm">
-                  <span className="size-1 rounded-full bg-emerald-500 animate-pulse" />Active
+                  <span className="size-1 rounded-full bg-emerald-500 animate-pulse" />{t('Active')}
                 </span>
               )}
             </div>
@@ -338,6 +340,7 @@ const F2_MENU = [
 ];
 
 function Feature2ConnectOnceAPI({ isActive = true }: { isActive?: boolean }) {
+  const t = useLocalizedText();
   const [step, setStep] = useState<number>(0);
   const [isAuto, setIsAuto] = useState<boolean>(true);
 
@@ -376,23 +379,23 @@ function Feature2ConnectOnceAPI({ isActive = true }: { isActive?: boolean }) {
           style={{ fontFamily: 'var(--font-inter)' }}
         >
           <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-          Feature 02 · API Automation
+          {t('Feature 02 · API Automation')}
         </div>
 
         <h3
           className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.16]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
-          Connect Once. Respond Automatically. <br />
-          <span className="text-[#3666ff]">Open APIs. Seamless Integration. Zero Manual Intervention.</span>
+          {t('Connect Once. Respond Automatically.')} <br />
+          <span className="text-[#3666ff]">{t('Open APIs. Seamless Integration. Zero Manual Intervention.')}</span>
         </h3>
 
         <p className="text-slate-600 text-[14px] leading-[1.62] font-normal text-left" style={{ fontFamily: 'var(--font-inter)' }}>
-          Why have your team manually enter pricing when your systems already have the answers? FactWise provides open APIs that give your ERP complete access to every RFQ, quote, and PO you&apos;ve been invited to—item details, quantities, deadlines, and requirements—all in one call. Your system pulls the data, applies your pricing logic, and responds back automatically with zero logins or manual entry.
+          {t("Why have your team manually enter pricing when your systems already have the answers? FactWise provides open APIs that give your ERP complete access to every RFQ, quote, and PO you've been invited to—item details, quantities, deadlines, and requirements—all in one call. Your system pulls the data, applies your pricing logic, and responds back automatically with zero logins or manual entry.")}
         </p>
 
         <div className="text-[13.5px] font-bold text-[#3666ff] tracking-tight pt-1">
-          Connect your system once. Never miss an RFQ, quote, or PO again.
+          {t('Connect your system once. Never miss an RFQ, quote, or PO again.')}
         </div>
 
         {/* 4-Step Progress Menu */}
@@ -425,12 +428,12 @@ function Feature2ConnectOnceAPI({ isActive = true }: { isActive?: boolean }) {
                     activeMenu === item.p ? 'text-[#3666ff]' : activeMenu > item.p ? 'text-slate-700' : 'text-slate-500'
                   }`}
                 >
-                  {item.title}
+                  {t(item.title)}
                 </span>
               </div>
               {activeMenu === item.p && (
                 <span className="relative z-10 text-[8px] font-black text-emerald-600 bg-emerald-50/80 border borderemerald-100 px-2 py-0.5 rounded-full font-mono uppercase tracking-widest flex items-center gap-1 shadow-sm">
-                  <span className="size-1 rounded-full bg-emerald-500 animate-pulse" />Active
+                  <span className="size-1 rounded-full bg-emerald-500 animate-pulse" />{t('Active')}
                 </span>
               )}
             </div>
@@ -559,6 +562,7 @@ const F3_MENU = [
 ];
 
 function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
+  const t = useLocalizedText();
   const [step, setStep] = useState<number>(0);
   const [isAuto, setIsAuto] = useState<boolean>(true);
 
@@ -597,23 +601,23 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
           style={{ fontFamily: 'var(--font-inter)' }}
         >
           <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
-          Feature 01 · AI Engine & Repository
+          {t('Feature 01 · AI Engine & Repository')}
         </div>
 
         <h3
           className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.16]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
-          Let FactWise Respond For You. <br />
-          <span className="text-[#3666ff]">AI-Powered Auto-Response. From Your Own Pricing Repository.</span>
+          {t('Let FactWise Respond For You.')} <br />
+          <span className="text-[#3666ff]">{t('AI-Powered Auto-Response. From Your Own Pricing Repository.')}</span>
         </h3>
 
         <p className="text-slate-600 text-[14px] leading-[1.62] font-normal text-left" style={{ fontFamily: 'var(--font-inter)' }}>
-          Store your pricing repository—contracts, POs, and custom MPN price lists—directly on FactWise. The moment an RFQ, quote request, or PO lands, FactWise AI automatically matches specifications, selects the best price, and responds instantly on your behalf with zero manual work required.
+          {t('Store your pricing repository—contracts, POs, and custom MPN price lists—directly on FactWise. The moment an RFQ, quote request, or PO lands, FactWise AI automatically matches specifications, selects the best price, and responds instantly on your behalf with zero manual work required.')}
         </p>
 
         <div className="text-[13.5px] font-bold text-[#3666ff] tracking-tight pt-1">
-          Store your pricing once. Win business automatically. Every time.
+          {t('Store your pricing once. Win business automatically. Every time.')}
         </div>
 
         {/* 4-Step Progress Menu */}
@@ -646,12 +650,12 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
                     activeMenu === item.p ? 'text-[#3666ff]' : activeMenu > item.p ? 'text-slate-700' : 'text-slate-500'
                   }`}
                 >
-                  {item.title}
+                  {t(item.title)}
                 </span>
               </div>
               {activeMenu === item.p && (
                 <span className="relative z-10 text-[8px] font-black text-emerald-600 bg-emerald-50/80 border border-emerald-100 px-2 py-0.5 rounded-full font-mono uppercase tracking-widest flex items-center gap-1 shadow-sm">
-                  <span className="size-1 rounded-full bg-emerald-500 animate-pulse" />Active
+                  <span className="size-1 rounded-full bg-emerald-500 animate-pulse" />{t('Active')}
                 </span>
               )}
             </div>
@@ -887,6 +891,7 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
    No GSAP pin-spacer, no scroll resets, works with any scroll wrapper.
 ══════════════════════════════════════════════════════════════════════ */
 export default function SupplierFeaturesFlow() {
+  const t = useLocalizedText();
   const [isDesktop, setIsDesktop] = useState(false);
   const [activePanel, setActivePanel] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -971,7 +976,7 @@ export default function SupplierFeaturesFlow() {
                 animation: 'supp-pulse 2s infinite',
               }}
             />
-            The FactWise Supplier Engine
+            {t('The FactWise Supplier Engine')}
           </div>
           <h2
             style={{
@@ -984,7 +989,7 @@ export default function SupplierFeaturesFlow() {
               fontFamily: 'var(--font-display)',
             }}
           >
-            How FactWise <span style={{ color: '#3666ff' }}>Powers Every Supplier.</span>
+            {t('How FactWise')} <span style={{ color: '#3666ff' }}>{t('Powers Every Supplier.')}</span>
           </h2>
           <p
             style={{
@@ -996,7 +1001,7 @@ export default function SupplierFeaturesFlow() {
               fontFamily: 'var(--font-inter)',
             }}
           >
-            From manual entry to Excel round-trips, Open APIs, and AI-powered pricing repositories — respond however works best for your team.
+            {t('From manual entry to Excel round-trips, Open APIs, and AI-powered pricing repositories — respond however works best for your team.')}
           </p>
         </div>
       </section>
@@ -1005,13 +1010,13 @@ export default function SupplierFeaturesFlow() {
       <div
         ref={wrapperRef}
         className="hidden lg:block"
-        style={{ height: `${TOTAL * 100}vh`, position: 'relative' }}
+        style={{ height: `${(TOTAL - 1) * 100}vh`, position: 'relative' }}
       >
         <div
           style={{
             position: 'sticky',
-            top: 'max(80px, calc(50vh - 340px))',
-            height: '680px',
+            top: 0,
+            height: '100vh',
             overflow: 'hidden',
             background: 'white',
           }}
@@ -1114,7 +1119,7 @@ export default function SupplierFeaturesFlow() {
                 marginLeft: 4,
               }}
             >
-              {STEPS[activePanel]?.num} · {STEPS[activePanel]?.short}
+              {STEPS[activePanel]?.num} · {t(STEPS[activePanel]?.short ?? '')}
             </span>
           </div>
 

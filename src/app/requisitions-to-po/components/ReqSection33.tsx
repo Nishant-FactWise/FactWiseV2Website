@@ -3,15 +3,17 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Play, Pause, Zap, Mail, RefreshCw, TrendingDown } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 const VENDORS_BIDS = [
-    { code:'A', name:'Vendor A', r1:'₹44.20', r2:'₹41.80', r3:'₹39.50', best:true  },
-    { code:'B', name:'Vendor B', r1:'₹45.80', r2:'₹43.20', r3:'₹41.00', best:false },
-    { code:'C', name:'Vendor C', r1:'₹47.10', r2:'₹44.50', r3:'₹43.20', best:false },
-    { code:'D', name:'Vendor D', r1:'₹48.20', r2:null,     r3:null,     best:false },
+    { code:'A', name:'Vendor A', r1:'44.20', r2:'41.80', r3:'39.50', best:true  },
+    { code:'B', name:'Vendor B', r1:'45.80', r2:'43.20', r3:'41.00', best:false },
+    { code:'C', name:'Vendor C', r1:'47.10', r2:'44.50', r3:'43.20', best:false },
+    { code:'D', name:'Vendor D', r1:'48.20', r2:null,     r3:null,     best:false },
 ];
 
 export default function ReqSection33({ isActive = true }: { isActive?: boolean }) {
+    const t = useLocalizedText();
     const [phase, setPhase] = useState(1);
     const [isAuto, setIsAuto] = useState(true);
 
@@ -259,7 +261,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                         <div style={{ flex:1, fontWeight:700, color:'#0b1322', fontSize:10 }}>{v.name}</div>
                                         <div style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:800, fontSize:11, color: v.best ? '#00b884' : '#0b1322' }}>{v.r1}</div>
                                         <div style={{ fontSize:8, fontWeight:800, padding:'3px 7px', borderRadius:4, background: bidN > i ? (v.best ? 'rgba(0,184,132,0.1)' : 'rgba(54,102,255,0.08)') : '#f1f5f9', color: bidN > i ? (v.best ? '#00b884' : '#3666ff') : '#94a3b8' }}>
-                                            {bidN > i ? (v.best ? '★ BEST' : 'SUBMITTED') : 'PENDING'}
+                                            {bidN > i ? (v.best ? '& BEST' : 'SUBMITTED') : 'PENDING'}
                                         </div>
                                     </div>
                                 ))}
@@ -309,7 +311,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                 </div>
                                 {reminderStep >= 3 && (
                                     <div style={{ padding:'9px 13px', background:'rgba(0,184,132,0.06)', border:'1px solid rgba(0,184,132,0.2)', borderRadius:10, fontSize:10, fontWeight:700, color:'#065f46', textAlign:'center' }}>
-                                        ✓ Your team sent 0 follow-up emails · FactWise handled it all
+                                         - {t('Your team sent 0 follow-up emails  FactWise handled it all')}
                                     </div>
                                 )}
                             </div>
@@ -331,7 +333,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                 </div>
 
                                 <div style={{ background:'white', border:'1px solid rgba(15,23,42,0.07)', borderRadius:10, padding:'10px 12px', fontSize:10, color:'#475569' }}>
-                                    <div style={{ fontSize:9, fontWeight:800, color:'#94a3b8', letterSpacing:'0.08em', textTransform:'uppercase', fontFamily:"'JetBrains Mono',monospace", marginBottom:6 }}>Criteria: Target ₹34.50 · 500+ pcs · Delivery &lt; 30d</div>
+                                    <div style={{ fontSize:9, fontWeight:800, color:'#94a3b8', letterSpacing:'0.08em', textTransform:'uppercase', fontFamily:"'JetBrains Mono',monospace", marginBottom:6 }}>Criteria: Target 34.50 · 500+ pcs · Delivery &lt; 30d</div>
                                     <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
                                         {['Price Target Met', 'Lead Time', 'Payment Terms', 'Quality Cert'].map(c => (
                                             <span key={c} style={{ fontSize:8.5, fontWeight:700, color:'#3666ff', background:'rgba(54,102,255,0.07)', border:'1px solid rgba(54,102,255,0.12)', padding:'3px 8px', borderRadius:4 }}>{c}</span>
@@ -356,7 +358,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                                 <td className="s33-negoCell">
                                                     {negoRound >= 3 && v.r3 && (
                                                         <span style={{ fontSize:8.5, fontWeight:800, color:'#00b884', background:'rgba(0,184,132,0.1)', borderRadius:4, padding:'2px 5px' }}>
-                                                            ↓{Math.round((1 - parseFloat(v.r3.replace('$','')) / parseFloat(v.r1.replace('$',''))) * 100)}%
+                                                             {Math.round((1 - parseFloat(v.r3.replace('$','')) / parseFloat(v.r1.replace('$',''))) * 100)}%
                                                         </span>
                                                     )}
                                                 </td>
@@ -368,7 +370,7 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                 {negoRound >= 3 && (
                                     <div style={{ padding:'8px 13px', background:'rgba(0,184,132,0.07)', border:'1px solid rgba(0,184,132,0.2)', borderRadius:9, fontSize:10, fontWeight:700, color:'#065f46', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                                         <span>✓ AI drove Vendor A to best price · 0 messages sent by your team</span>
-                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, fontWeight:800, color:'#00b884' }}>₹39.50 ↓10.6%</span>
+                                        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, fontWeight:800, color:'#00b884' }}>39.50  10.6%</span>
                                     </div>
                                 )}
                             </div>
@@ -383,9 +385,9 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                                 </div>
 
                                 {[
-                                    { side:'vendor', who:'Vendor A', text:'Best offer: ₹39.50/unit for 500 pcs. Lead time 25 days.', time:'2:14 PM', done: counterStep >= 1 },
-                                    { side:'buyer',  who:'You (FW Platform)',text:'Counter: ₹37.80/unit + 28-day delivery — final.', time:'2:18 PM', done: counterStep >= 2 },
-                                    { side:'vendor', who:'Vendor A', text:'Accepted. ₹37.80/unit · 500 pcs · PO ready to generate.', time:'2:31 PM', done: counterStep >= 3, accepted:true },
+                                    { side:'vendor', who:'Vendor A', text:'Best offer: 39.50/unit for 500 pcs. Lead time 25 days.', time:'2:14 PM', done: counterStep >= 1 },
+                                    { side:'buyer',  who:'You (FW Platform)',text:'Counter: 37.80/unit + 28-day delivery — final.', time:'2:18 PM', done: counterStep >= 2 },
+                                    { side:'vendor', who:'Vendor A', text:'Accepted. 37.80/unit · 500 pcs · PO ready to generate.', time:'2:31 PM', done: counterStep >= 3, accepted:true },
                                 ].map((msg, i) => (
                                     <div key={i} className={`s33-counterBubble ${msg.done ? 'in' : ''} ${msg.side === 'buyer' ? 'buyer' : 'vendor'}`} style={{ transitionDelay:`${i*0.1}s` }}>
                                         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:5 }}>
@@ -406,10 +408,10 @@ export default function ReqSection33({ isActive = true }: { isActive?: boolean }
                         <div className={`s33-cap ${phase > 0 ? 'on' : ''}`}>
                             <span className="cd" />
                             <span>
-                                {phase === 1 ? 'Every bid submitted directly on the platform. No emails to chase, no data to re-enter, no bids lost in inboxes.' :
-                                 phase === 2 ? 'Automated reminders fire on your schedule — no follow-ups needed from your team. Every vendor action logged in real time.' :
-                                 phase === 3 ? 'AI runs negotiation rounds against your custom criteria — driving every vendor to their best price without your team sending a single message.' :
-                                 'Your negotiation, your rules. Counter, push back, and close — every round tracked and visible.'}
+                                {phase === 1 ? t('Every bid submitted directly on the platform. No emails to chase, no data to re-enter, no bids lost in inboxes.') :
+                                 phase === 2 ? t('Automated reminders fire on your schedule  no follow-ups needed from your team. Every vendor action logged in real time.') :
+                                 phase === 3 ? t('AI runs negotiation rounds against your custom criteria  driving every vendor to their best price without your team sending a single message.') :
+                                 t('Your negotiation, your rules. Counter, push back, and close  every round tracked and visible.')}
                             </span>
                         </div>
                     </div>

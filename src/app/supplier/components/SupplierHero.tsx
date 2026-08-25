@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Sparkles, Check, FileSpreadsheet, Cpu } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
+import { getPathLocale, localizePath } from '@/lib/i18n';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 const SupplierModal = dynamic(() => import('@/components/ui/SupplierModal'), { ssr: false });
 
@@ -49,6 +52,7 @@ const IcClock = () => (
    SUPPLIER COMMAND CENTER DASHBOARD MOCKUP
 ════════════════════════════════════════════ */
 function SupplierDashboardMockup() {
+  const t = useLocalizedText();
   const mono = "'JetBrains Mono', monospace";
   return (
     <div
@@ -141,11 +145,11 @@ function SupplierDashboardMockup() {
                 }}
               />
             </div>
-            FactWise Supplier
+            {t('FactWise Supplier')}
           </div>
 
           <div style={{ fontSize: 8, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '4px 6px 3px', fontWeight: 600 }}>
-            Quoting Hub
+            {t('Quoting Hub')}
           </div>
           {[
             { ic: <IcGrid />, label: 'Active RFQs', active: true },
@@ -170,17 +174,17 @@ function SupplierDashboardMockup() {
               }}
             >
               <span style={{ color: active ? '#3666ff' : '#94a3b8', display: 'inline-flex' }}>{ic}</span>
-              {label}
+              {t(label)}
             </div>
           ))}
 
           <div style={{ fontSize: 8, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '8px 6px 3px', fontWeight: 600 }}>
-            Analytics
+            {t('Analytics')}
           </div>
           {[{ ic: <IcBar />, label: 'Win Rate KPI' }, { ic: <IcClock />, label: 'Quote Speed' }].map(({ ic, label }) => (
             <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '5px 7px', borderRadius: 5, fontSize: 10, color: '#64748b', marginBottom: 1 }}>
               <span style={{ color: '#94a3b8', display: 'inline-flex' }}>{ic}</span>
-              {label}
+              {t(label)}
             </div>
           ))}
         </div>
@@ -191,10 +195,10 @@ function SupplierDashboardMockup() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1D2E', letterSpacing: '-0.01em' }}>
-                RFQ-8842 · Riverline Engineering PCB Assembly
+                {t('RFQ-8842 · Riverline Engineering PCB Assembly')}
               </div>
               <div style={{ fontSize: 9, color: '#94a3b8', marginTop: 2 }}>
-                142 line items · Closes in 4d · Direct Platform Event
+                {t('142 line items · Closes in 4d · Direct Platform Event')}
               </div>
             </div>
             <div
@@ -212,7 +216,7 @@ function SupplierDashboardMockup() {
               }}
             >
               <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
-              Ready to Quote
+              {t('Ready to Quote')}
             </div>
           </div>
 
@@ -232,9 +236,9 @@ function SupplierDashboardMockup() {
                   padding: '7px 10px',
                 }}
               >
-                <div style={{ fontSize: 8.5, color: '#64748b', fontWeight: 500 }}>{k.l}</div>
+                <div style={{ fontSize: 8.5, color: '#64748b', fontWeight: 500 }}>{t(k.l)}</div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: k.c, fontFamily: mono, marginTop: 1 }}>{k.v}</div>
-                <div style={{ fontSize: 8, color: '#94a3b8', marginTop: 1 }}>{k.d}</div>
+                <div style={{ fontSize: 8, color: '#94a3b8', marginTop: 1 }}>{t(k.d)}</div>
               </div>
             ))}
           </div>
@@ -252,11 +256,11 @@ function SupplierDashboardMockup() {
                 color: '#64748b',
               }}
             >
-              <span>Line Item & MPN</span>
+              <span>{t('Line Item & MPN')}</span>
               <span style={{ textAlign: 'right' }}>MOQ</span>
-              <span style={{ textAlign: 'right' }}>Unit Rate</span>
-              <span style={{ textAlign: 'right' }}>Total (₹)</span>
-              <span style={{ textAlign: 'center' }}>Source</span>
+              <span style={{ textAlign: 'right' }}>{t('Unit Rate')}</span>
+              <span style={{ textAlign: 'right' }}>{t('Total (₹)')}</span>
+              <span style={{ textAlign: 'center' }}>{t('Source')}</span>
             </div>
             {[
               { name: '1. STM32F407VGT6 Microcontroller', moq: '500', rate: '₹420.00', total: '₹2,10,000', src: 'AI Repo', c: '#059669' },
@@ -293,7 +297,7 @@ function SupplierDashboardMockup() {
                       border: `1px solid ${row.c}30`,
                     }}
                   >
-                    {row.src}
+                    {t(row.src)}
                   </span>
                 </span>
               </div>
@@ -302,7 +306,7 @@ function SupplierDashboardMockup() {
 
           {/* Footer Action */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 2 }}>
-            <span style={{ fontSize: 9, color: '#64748b' }}>⚡ All 142 items priced · Ready for 1-Click Submission</span>
+            <span style={{ fontSize: 9, color: '#64748b' }}>⚡ {t('All 142 items priced · Ready for 1-Click Submission')}</span>
             <button
               style={{
                 background: '#3666ff',
@@ -319,7 +323,7 @@ function SupplierDashboardMockup() {
                 boxShadow: '0 2px 6px rgba(54,102,255,0.4)',
               }}
             >
-              Submit Winning Bid ➔
+              {t('Submit Winning Bid ➔')}
             </button>
           </div>
         </div>
@@ -373,6 +377,9 @@ function FloatCard({
 ════════════════════════════════════════════ */
 export default function SupplierHero() {
   const [modalOpen, setModalOpen] = useState(false);
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const t = useLocalizedText();
 
   return (
     <div
@@ -444,7 +451,7 @@ export default function SupplierHero() {
             }}
           >
             <Sparkles className="size-3.5 text-[#3666ff]" />
-            AI-POWERED SUPPLIER QUOTING
+            {t('AI-POWERED SUPPLIER QUOTING')}
           </div>
 
           <h1
@@ -457,7 +464,7 @@ export default function SupplierHero() {
               fontFamily: 'var(--font-display)',
             }}
           >
-            FactWise Works With Every Supplier.{' '}
+            {t('FactWise Works With Every Supplier.')}{' '}
             <span
               style={{
                 background: 'linear-gradient(135deg,#7ba6ff 0%,#4f8bff 50%,#2a6cff 100%)',
@@ -466,7 +473,7 @@ export default function SupplierHero() {
                 backgroundClip: 'text',
               }}
             >
-              Simply and Seamlessly.
+              {t('Simply and Seamlessly.')}
             </span>
           </h1>
 
@@ -481,12 +488,12 @@ export default function SupplierHero() {
               fontFamily: 'var(--font-inter)',
             }}
           >
-            Respond through the portal, Excel, or API — FactWise matches every line item against your pricing and gets your bid out before the deadline.
+            {t('Respond through the portal, Excel, or API — FactWise matches every line item against your pricing and gets your bid out before the deadline.')}
           </p>
 
           <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
             <Link
-              href="/supplier-onboarding"
+              href={localizePath('/supplier-onboarding', locale)}
               style={{
                 background: 'linear-gradient(135deg,#4f8bff,#2a6cff)',
                 color: 'white',
@@ -504,7 +511,7 @@ export default function SupplierHero() {
                 textDecoration: 'none',
               }}
             >
-              Get Started as Supplier
+              {t('Get Started as Supplier')}
               <span
                 style={{
                   width: 24,
@@ -533,22 +540,22 @@ export default function SupplierHero() {
                 transition: 'background 0.2s',
               }}
             >
-              Why Most Suppliers Struggle ➔
+              {t('Why Most Suppliers Struggle ➔')}
             </a>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginTop: 44, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <Check className="size-4 text-emerald-400 shrink-0" />
-              <span style={{ fontSize: 13, color: '#cbd5e1' }}>Zero Portal Friction</span>
+              <span style={{ fontSize: 13, color: '#cbd5e1' }}>{t('Zero Portal Friction')}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <FileSpreadsheet className="size-4 text-blue-400 shrink-0" />
-              <span style={{ fontSize: 13, color: '#cbd5e1' }}>Instant Excel Upload</span>
+              <span style={{ fontSize: 13, color: '#cbd5e1' }}>{t('Instant Excel Upload')}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <Cpu className="size-4 text-purple-400 shrink-0" />
-              <span style={{ fontSize: 13, color: '#cbd5e1' }}>AI Auto-Response</span>
+              <span style={{ fontSize: 13, color: '#cbd5e1' }}>{t('AI Auto-Response')}</span>
             </div>
           </div>
         </motion.div>
@@ -583,15 +590,15 @@ export default function SupplierHero() {
             <FloatCard delay={0.5} yAmt={12} dur={6} style={{ top: 30, left: -40, width: 255, padding: '12px 14px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: '#1A1D2E' }}>New RFQ Invite</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#1A1D2E' }}>{t('New RFQ Invite')}</div>
                   <div style={{ fontSize: 9, color: '#94a3b8', marginTop: 1 }}>Riverline Engineering · IQ-8842</div>
                 </div>
                 <span style={{ fontSize: 8.5, padding: '2px 6px', borderRadius: 100, background: '#dbeafe', color: '#1d4ed8', fontWeight: 700 }}>
-                  LIVE
+                  {t('LIVE')}
                 </span>
               </div>
               <div style={{ fontSize: 10, color: '#475569', background: '#f8fafc', padding: '6px 8px', borderRadius: 6, border: '1px solid #e2e8f0' }}>
-                📦 142 items · Target Deadline: 4d
+                📦 {t('142 items · Target Deadline: 4d')}
               </div>
             </FloatCard>
 
@@ -614,8 +621,8 @@ export default function SupplierHero() {
                   <FileSpreadsheet className="size-5" />
                 </div>
                 <div>
-                  <div style={{ fontSize: 11.5, fontWeight: 700, color: '#065f46' }}>Excel Upload Complete</div>
-                  <div style={{ fontSize: 9, color: '#64748b', marginTop: 1 }}>✓ 142 line items parsed in 0.8s</div>
+                  <div style={{ fontSize: 11.5, fontWeight: 700, color: '#065f46' }}>{t('Excel Upload Complete')}</div>
+                  <div style={{ fontSize: 9, color: '#64748b', marginTop: 1 }}>✓ {t('142 line items parsed in 0.8s')}</div>
                 </div>
               </div>
             </FloatCard>
@@ -624,17 +631,17 @@ export default function SupplierHero() {
             <FloatCard delay={0.9} yAmt={14} dur={7} style={{ top: 180, right: -10, width: 265, padding: '12px 14px', borderLeft: '4px solid #3666ff' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                 <span style={{ fontSize: 10, fontWeight: 800, color: '#3666ff', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  ✨ FactWise AI Engine
+                  ✨ {t('FactWise AI Engine')}
                 </span>
                 <span style={{ fontSize: 8, background: '#ecfdf5', color: '#059669', padding: '1.5px 6px', borderRadius: 4, fontWeight: 700 }}>
-                  Active
+                  {t('Active')}
                 </span>
               </div>
               <div style={{ fontSize: 11, fontWeight: 700, color: '#1A1D2E', lineHeight: 1.3 }}>
-                MPN-Wise Price List Matched
+                {t('MPN-Wise Price List Matched')}
               </div>
               <div style={{ fontSize: 9.5, color: '#64748b', marginTop: 2 }}>
-                Tiered volume break (MOQ 500) applied. Quote ready with 100% accuracy.
+                {t('Tiered volume break (MOQ 500) applied. Quote ready with 100% accuracy.')}
               </div>
             </FloatCard>
           </motion.div>

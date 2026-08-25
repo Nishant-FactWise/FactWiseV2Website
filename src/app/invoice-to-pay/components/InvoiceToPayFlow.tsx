@@ -8,6 +8,7 @@ import InvSection32 from './InvSection32';
 import InvSection33 from './InvSection33';
 import InvSection34 from './InvSection34';
 import InvSection35 from './InvSection35';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 const STEPS = [
     { num: '01', label: 'AI Invoice Processing', short: 'Invoice' },
@@ -24,6 +25,7 @@ const gradientBg =
     'white';
 
 export default function InvoiceToPayFlow() {
+    const t = useLocalizedText();
     const [isDesktop, setIsDesktop] = useState(false);
     const [activePanel, setActivePanel] = useState(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -78,7 +80,7 @@ export default function InvoiceToPayFlow() {
                         fontFamily: 'var(--font-inter)',
                     }}>
                         <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#3666ff', display: 'inline-block', animation: 'itpf-pulse 2s infinite' }} />
-                        The FactWise Invoice-to-Pay Engine
+                        {t('The FactWise Invoice-to-Pay Engine')}
                     </div>
                     <h2 style={{
                         fontSize: 'clamp(32px, 3.4vw, 52px)', fontWeight: 600,
@@ -86,10 +88,10 @@ export default function InvoiceToPayFlow() {
                         color: '#0D1117', margin: '0 0 16px',
                         fontFamily: 'var(--font-display)',
                     }}>
-                        How FactWise <span style={{ color: '#3666ff' }}>Automates Every Step.</span>
+                        {t('How FactWise')} <span style={{ color: '#3666ff' }}>{t('Automates Every Step.')}</span>
                     </h2>
                     <p style={{ fontSize: 17, lineHeight: 1.65, color: '#64748b', maxWidth: 640, margin: '0 auto', fontFamily: 'var(--font-inter)' }}>
-                        From the first invoice raised to the last rupee paid — verified at every step, automated at every turn.
+                        {t('From the first invoice raised to the last rupee paid — verified at every step, automated at every turn.')}
                     </p>
                 </div>
             </section>
@@ -98,9 +100,9 @@ export default function InvoiceToPayFlow() {
             <div
                 ref={wrapperRef}
                 className="hidden lg:block"
-                style={{ height: `${TOTAL * 100}vh`, position: 'relative' }}
+                style={{ height: `${(TOTAL - 1) * 100}vh`, position: 'relative' }}
             >
-                <div style={{ position: 'sticky', top: 'max(80px, calc(50vh - 340px))', height: '680px', overflow: 'hidden', background: 'white' }}>
+                <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: 'white' }}>
 
                     {/* Panel 0 — base, always behind */}
                     <div style={{ position: 'absolute', inset: 0, zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'white' }}>
@@ -173,12 +175,12 @@ export default function InvoiceToPayFlow() {
                             }} />
                         ))}
                         <span style={{ fontSize: 10, fontWeight: 700, color: '#3666ff', fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.06em', marginLeft: 4 }}>
-                            {STEPS[activePanel]?.num} · {STEPS[activePanel]?.short}
+                            {STEPS[activePanel]?.num} · {t(STEPS[activePanel]?.short ?? '')}
                         </span>
                     </div>
 
                     {/* Prev arrow */}
-                    <button onClick={navPrev} aria-label="Previous step" className="hidden lg:flex"
+                    <button onClick={navPrev} aria-label={t('Previous step')} className="hidden lg:flex"
                         style={{
                             position: 'absolute', left: 20, top: '50%', transform: 'translateY(-50%)',
                             zIndex: 100, width: 40, height: 40, borderRadius: '50%',
@@ -197,7 +199,7 @@ export default function InvoiceToPayFlow() {
                     </button>
 
                     {/* Next arrow */}
-                    <button onClick={navNext} aria-label="Next step" className="hidden lg:flex"
+                    <button onClick={navNext} aria-label={t('Next step')} className="hidden lg:flex"
                         style={{
                             position: 'absolute', right: 20, top: '50%', transform: 'translateY(-50%)',
                             zIndex: 100, width: 40, height: 40, borderRadius: '50%',

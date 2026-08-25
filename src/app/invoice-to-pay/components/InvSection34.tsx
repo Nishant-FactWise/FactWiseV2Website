@@ -120,7 +120,7 @@ export default function InvSection34({ isActive = true }: { isActive?: boolean }
                                                 <motion.div
                                                     initial={false}
                                                     animate={{
-                                                        backgroundColor: sel ? '#3666ff' : 'white',
+                                                        backgroundColor: sel ? '#3666ff' : '#ffffff',
                                                         borderColor: sel ? '#3666ff' : '#cbd5e1',
                                                     }}
                                                     style={{ width: 14, height: 14, borderRadius: 3, border: '2px solid', display: 'grid', placeItems: 'center', flexShrink: 0 }}

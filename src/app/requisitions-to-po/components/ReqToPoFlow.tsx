@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 import ReqSection31 from './ReqSection31';
 import ReqSection32 from './ReqSection32';
 import ReqSection33 from './ReqSection33';
@@ -24,11 +25,12 @@ const gradientBg =
     'white';
 
 export default function ReqToPoFlow() {
+    const t = useLocalizedText();
     const [isDesktop, setIsDesktop] = useState(false);
     const [activePanel, setActivePanel] = useState(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    /* ── desktop detection ── */
+    /* â”€â”€ desktop detection â”€â”€ */
     useEffect(() => {
         const mq = window.matchMedia('(min-width: 1024px)');
         const apply = () => setIsDesktop(mq.matches);
@@ -37,7 +39,7 @@ export default function ReqToPoFlow() {
         return () => mq.removeEventListener('change', apply);
     }, []);
 
-    /* ── Framer Motion scroll tracking ── */
+    /* â”€â”€ Framer Motion scroll tracking â”€â”€ */
     const { scrollYProgress } = useScroll({
         target: wrapperRef,
         offset: ['start start', 'end end'],
@@ -53,7 +55,7 @@ export default function ReqToPoFlow() {
     }
   });
 
-    /* ── arrow navigation ── */
+    /* â”€â”€ arrow navigation â”€â”€ */
     const navTo = useCallback((idx: number) => {
         if (!wrapperRef.current) return;
         const sectionTop = wrapperRef.current.getBoundingClientRect().top + window.scrollY;
@@ -66,7 +68,7 @@ export default function ReqToPoFlow() {
 
     return (
         <>
-            {/* ── HEADING (scrolls normally) ── */}
+            {/* â”€â”€ HEADING (scrolls normally) â”€â”€ */}
             <section style={{ background: 'white', padding: '80px 24px 60px', textAlign: 'center' }}>
                 <div style={{ maxWidth: 1240, margin: '0 auto' }}>
                     <div style={{
@@ -78,7 +80,7 @@ export default function ReqToPoFlow() {
                         fontFamily: 'var(--font-inter)',
                     }}>
                         <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#3666ff', display: 'inline-block', animation: 'rtpf-pulse 2s infinite' }} />
-                        The FactWise Req-to-PO Engine
+                        {t('The FactWise Req-to-PO Engine')}
                     </div>
                     <h2 style={{
                         fontSize: 'clamp(32px, 3.4vw, 52px)', fontWeight: 600,
@@ -86,30 +88,30 @@ export default function ReqToPoFlow() {
                         color: '#0D1117', margin: '0 0 16px',
                         fontFamily: 'var(--font-display)',
                     }}>
-                        How FactWise <span style={{ color: '#3666ff' }}>Automates Every Step.</span>
+                        {t('How FactWise')} <span style={{ color: '#3666ff' }}>{t('Automates Every Step.')}</span>
                     </h2>
                     <p style={{ fontSize: 17, lineHeight: 1.65, color: '#64748b', maxWidth: 620, margin: '0 auto', fontFamily: 'var(--font-inter)' }}>
-                        From the first requisition raised to the last PO issued — intelligent at every step, automated at every turn.
+                        {t('From the first requisition raised to the last PO issued â€” intelligent at every step, automated at every turn.')}
                     </p>
                 </div>
             </section>
 
-            {/* ── DESKTOP: tall wrapper gives scroll room; inner div is CSS sticky ── */}
+            {/* â”€â”€ DESKTOP: tall wrapper gives scroll room; inner div is CSS sticky â”€â”€ */}
             <div
                 ref={wrapperRef}
                 className="hidden lg:block"
-                style={{ height: `${TOTAL * 100}vh`, position: 'relative' }}
+                style={{ height: `${(TOTAL - 1) * 100}vh`, position: 'relative' }}
             >
-                <div style={{ position: 'sticky', top: 'max(80px, calc(50vh - 340px))', height: '680px', overflow: 'hidden', background: 'white' }}>
+                <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: 'white' }}>
 
-                    {/* Panel 0 — base, always behind */}
+                    {/* Panel 0 â€” base, always behind */}
                     <div style={{ position: 'absolute', inset: 0, zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'white' }}>
                         <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                             <ReqSection31 isActive={activePanel === 0} />
                         </div>
                     </div>
 
-                    {/* Panel 1 — slides in from right */}
+                    {/* Panel 1 â€” slides in from right */}
                     <motion.div 
                         initial={{ x: '100%' }}
                         animate={{ x: activePanel >= 1 ? '0%' : '100%' }}
@@ -121,7 +123,7 @@ export default function ReqToPoFlow() {
                         </div>
                     </motion.div>
 
-                    {/* Panel 2 — slides in from right */}
+                    {/* Panel 2 â€” slides in from right */}
                     <motion.div 
                         initial={{ x: '100%' }}
                         animate={{ x: activePanel >= 2 ? '0%' : '100%' }}
@@ -133,7 +135,7 @@ export default function ReqToPoFlow() {
                         </div>
                     </motion.div>
 
-                    {/* Panel 3 — slides in from right */}
+                    {/* Panel 3 â€” slides in from right */}
                     <motion.div 
                         initial={{ x: '100%' }}
                         animate={{ x: activePanel >= 3 ? '0%' : '100%' }}
@@ -145,7 +147,7 @@ export default function ReqToPoFlow() {
                         </div>
                     </motion.div>
 
-                    {/* Panel 4 — slides in from right */}
+                    {/* Panel 4 â€” slides in from right */}
                     <motion.div 
                         initial={{ x: '100%' }}
                         animate={{ x: activePanel >= 4 ? '0%' : '100%' }}
@@ -173,7 +175,7 @@ export default function ReqToPoFlow() {
                             }} />
                         ))}
                         <span style={{ fontSize: 10, fontWeight: 700, color: '#3666ff', fontFamily: "'JetBrains Mono',monospace", letterSpacing: '0.06em', marginLeft: 4 }}>
-                            {STEPS[activePanel]?.num} · {STEPS[activePanel]?.short}
+                            {STEPS[activePanel]?.num} · {t(STEPS[activePanel]?.short ?? "")}
                         </span>
                     </div>
 
@@ -216,7 +218,7 @@ export default function ReqToPoFlow() {
                 </div>
             </div>
 
-            {/* ── MOBILE: stacked vertically ── */}
+            {/* â”€â”€ MOBILE: stacked vertically â”€â”€ */}
             <div className="block lg:hidden bg-[#ffffff]">
                 <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection31 isActive /></div>
                 <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection32 isActive /></div>

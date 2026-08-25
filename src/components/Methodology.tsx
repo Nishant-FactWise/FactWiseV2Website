@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect, useMemo } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { CheckCircle2, BarChart3, Users, Scale, Calculator } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { useGSAP } from '@gsap/react';
+import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 // ── Lazy-load each animation — only the active one is ever in the bundle chunk
 const ScaleAnimation          = dynamic(() => import('./methodology-animations/ScaleAnimation'),          { ssr: false });
@@ -80,6 +81,8 @@ const pages = [
 ];
 
 export default function MethodologySection() {
+  const t = useLocalizedText();
+  const pathname = usePathname();
   const [currentPage, setCurrentPage] = useState(1);
   const containerRef    = useRef<HTMLDivElement>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
@@ -99,54 +102,77 @@ export default function MethodologySection() {
     return () => mq.removeEventListener('change', apply);
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [pathname]);
+
   // N panels share N-1 transitions. Snap points are spread evenly across the whole
   // [0,1] range (last panel lands at progress 1.0) so there is no dead scroll tail.
   const segments = pages.length - 1;
-  const snapPoints = pages.map((_, i) => i / segments); // e.g. [0, 1/3, 2/3, 1]
+  const snapPoints = useMemo(() => pages.map((_, i) => i / segments), [segments]); // e.g. [0, 1/3, 2/3, 1]
 
-  useGSAP(() => {
+  useLayoutEffect(() => {
     if (!isDesktop || !containerRef.current) return;
 
     let lastPage = 1;
+    let setupTimer: number | null = null;
+    const refreshTimers: number[] = [];
 
-    scrollTriggerRef.current = ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: "top top",
-      // ~0.85 viewport of scroll per transition (was 1.25vh per panel + a dead
-      // 1.25vh tail). Advancing to the next feature is now one short flick.
-      end: () => `+=${segments * 85}%`,
-      pin: true,
-      pinType: "transform",
-      // Small scrub only — nothing is continuously tied to scroll here (panels swap
-      // at discrete thresholds), so a large scrub is pure dead-time: you scroll, then
-      // ~1s later the panel moves. 0.3 keeps it smooth but responsive.
-      scrub: 0.3,
-      onUpdate: (self) => {
-        // Round progress to the nearest panel so the active panel and the snap
-        // target always agree — no lingering between snaps.
-        const page = Math.min(
-          pages.length,
-          Math.max(1, Math.round(self.progress * segments) + 1)
-        );
-        if (page !== lastPage) {
-          lastPage = page;
-          setCurrentPage(page);
-        }
-      },
-      snap: {
-        snapTo: snapPoints,
-        duration: { min: 0.2, max: 0.4 },
-        delay: 0.05,
-        ease: "power1.inOut",
-        directional: true,
-      },
-      fastScrollEnd: true,
-      preventOverlaps: true,
-      anticipatePin: 1,
-    });
+    setupTimer = window.setTimeout(() => {
+      if (!containerRef.current) return;
 
-    return () => { scrollTriggerRef.current?.kill(); };
-  }, { scope: containerRef, dependencies: [isDesktop] });
+      scrollTriggerRef.current?.kill();
+      scrollTriggerRef.current = ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top top",
+        // ~0.85 viewport of scroll per transition (was 1.25vh per panel + a dead
+        // 1.25vh tail). Advancing to the next feature is now one short flick.
+        end: () => `+=${segments * 85}%`,
+        pin: true,
+        // Small scrub only — nothing is continuously tied to scroll here (panels swap
+        // at discrete thresholds), so a large scrub is pure dead-time: you scroll, then
+        // ~1s later the panel moves. 0.3 keeps it smooth but responsive.
+        scrub: 0.3,
+        onUpdate: (self) => {
+          // Round progress to the nearest panel so the active panel and the snap
+          // target always agree — no lingering between snaps.
+          const page = Math.min(
+            pages.length,
+            Math.max(1, Math.round(self.progress * segments) + 1)
+          );
+          if (page !== lastPage) {
+            lastPage = page;
+            setCurrentPage(page);
+          }
+        },
+        snap: {
+          snapTo: snapPoints,
+          duration: { min: 0.2, max: 0.4 },
+          delay: 0.05,
+          ease: "power1.inOut",
+          directional: true,
+        },
+        fastScrollEnd: true,
+        preventOverlaps: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      });
+
+      ScrollTrigger.refresh();
+      refreshTimers.push(
+        ...[80, 350, 900, 1600].map((delay) =>
+          window.setTimeout(() => ScrollTrigger.refresh(), delay),
+        ),
+      );
+    }, 0);
+
+    return () => {
+      if (setupTimer !== null) window.clearTimeout(setupTimer);
+      refreshTimers.forEach((timer) => window.clearTimeout(timer));
+      scrollTriggerRef.current?.kill();
+      scrollTriggerRef.current = null;
+    };
+  }, [isDesktop, pathname, segments, snapPoints]);
 
   const handleDotClick = (index: number) => {
     const st = scrollTriggerRef.current;
@@ -167,11 +193,11 @@ export default function MethodologySection() {
           className="mx-auto max-w-3xl text-center flex flex-col items-center mb-6"
         >
           <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#4A6FFF] text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
-            HOW WE DO IT
+            {t('HOW WE DO IT')}
           </div>
           <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]">
-            Stop Adapting to Your Software.<br />
-            <span className="text-[#3666ff]"> It Should Adapt to You.</span>
+            {t('Stop Adapting to Your Software.')}<br />
+            <span className="text-[#3666ff]"> {t('It Should Adapt to You.')}</span>
           </h2>
         </motion.div>
       </div>
@@ -180,7 +206,7 @@ export default function MethodologySection() {
           Always mounted, just CSS-hidden below lg — never unmounted by React. While
           ScrollTrigger's pin is active it wraps this node in a pin-spacer (re-parenting
           it), so unmounting it from React throws "removeChild ... not a child of this
-          node". The pin is created/reverted by the useGSAP hook (gated on isDesktop). */}
+          node". The pin is created/reverted by the layout effect (gated on isDesktop). */}
       {/* backfaceVisibility+translate3d: gives this element its own stable
           compositing layer so the ScrollTrigger pin counter-transform and the
           ScrollSmoother parent transform share the same sub-pixel rounding
@@ -210,11 +236,11 @@ export default function MethodologySection() {
                 </div>
                 
                 <h3 className="text-3xl lg:text-4xl font-extrabold tracking-tight mb-5 leading-tight bg-gradient-to-r from-[#0b1322] to-[#3666ff] bg-clip-text text-transparent relative z-10">
-                  {page.title}
+                  {t(page.title)}
                 </h3>
                 
                 <p className="text-base lg:text-[17.5px] mb-8 leading-relaxed text-slate-600 max-w-xl relative z-10">
-                  {page.description}
+                  {t(page.description)}
                 </p>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
@@ -230,7 +256,7 @@ export default function MethodologySection() {
                         <CheckCircle2 className="w-3.5 h-3.5" />
                       </div>
                       <span className="text-sm font-medium leading-relaxed text-slate-700 group-hover:text-slate-900 transition-colors duration-300">
-                        {detail}
+                        {t(detail)}
                       </span>
                     </div>
                   ))}
@@ -340,6 +366,7 @@ function DesktopAnim({ Animation, mount }: { Animation: (typeof pages)[number]['
 }
 
 function MobileFeature({ page, idx }: { page: (typeof pages)[number]; idx: number }) {
+  const t = useLocalizedText();
   const ref = useRef<HTMLDivElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
   // Mount the (looping) animation only while the card is near the viewport, so four
@@ -368,10 +395,10 @@ function MobileFeature({ page, idx }: { page: (typeof pages)[number]; idx: numbe
           0{idx}
         </div>
         <h3 className="relative z-10 mb-4 bg-gradient-to-r from-[#0b1322] to-[#3666ff] bg-clip-text text-2xl font-extrabold leading-tight tracking-tight text-transparent sm:text-3xl">
-          {page.title}
+          {t(page.title)}
         </h3>
         <p className="relative z-10 mb-6 text-base leading-relaxed text-slate-600">
-          {page.description}
+          {t(page.description)}
         </p>
         <div className="relative z-10 grid grid-cols-1 gap-3">
           {page.details.map((detail, dIdx) => (
@@ -383,7 +410,7 @@ function MobileFeature({ page, idx }: { page: (typeof pages)[number]; idx: numbe
                 <CheckCircle2 className="h-3.5 w-3.5" />
               </div>
               <span className="text-sm font-medium leading-relaxed text-slate-700">
-                {detail}
+                {t(detail)}
               </span>
             </div>
           ))}

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calculator, Plus, Check, CheckCircle, X, GitBranch } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import { useLocalizedText } from "@/hooks/useLocalizedText";
 
 // ─── Vendor data ──────────────────────────────────────────────────────────────
 const VENDORS = [
@@ -109,6 +110,7 @@ function fieldDot(fieldKey: string): string {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 export default function CustomFormulaAnimation() {
+  const t = useLocalizedText();
   const [phase, setPhase]               = useState(0);
   const [caption, setCaption]           = useState("");
   // Committed tokens (fully typed) + optional in-progress partial
@@ -329,13 +331,13 @@ export default function CustomFormulaAnimation() {
               <Calculator className="w-3.5 h-3.5 text-white" />
             </div>
             <div>
-              <p className="text-[11px] font-bold text-slate-800 leading-none">Bid Analysis — Steel Pipes RFQ</p>
-              <p className="text-[8px] text-slate-400 mt-0.5">3 vendors · comparing total landed cost</p>
+              <p className="text-[11px] font-bold text-slate-800 leading-none">{t("Bid Analysis — Steel Pipes RFQ")}</p>
+              <p className="text-[8px] text-slate-400 mt-0.5">{t("3 vendors · comparing total landed cost")}</p>
             </div>
           </div>
           <button ref={addBtnRef}
             className="flex items-center gap-1 px-3 py-1.5 bg-linear-to-r from-blue-500 to-indigo-600 text-white text-[9px] font-bold rounded-lg shadow-md shadow-blue-500/20 shrink-0">
-            <Plus className="w-3 h-3" /> Create Formula
+            <Plus className="w-3 h-3" /> {t("Create Formula")}
           </button>
         </div>
 
@@ -389,21 +391,21 @@ export default function CustomFormulaAnimation() {
                         <motion.span key="trap"
                           initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }}
                           className="px-3 py-1 bg-amber-100 border border-amber-300 text-amber-700 text-[7px] font-black uppercase tracking-widest rounded-full whitespace-nowrap shadow-sm">
-                          Looks cheapest
+                          {t("Looks cheapest")}
                         </motion.span>
                       )}
                       {isWinner && (
                         <motion.span key="win"
                           initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
                           className="px-3 py-1 bg-emerald-500 text-white text-[7px] font-black uppercase tracking-widest rounded-full whitespace-nowrap shadow-lg shadow-emerald-500/40">
-                          ✓ True Best
+                          {t("✓ True Best")}
                         </motion.span>
                       )}
                       {isLoser && (
                         <motion.span key="bust"
                           initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
                           className="px-3 py-1 bg-red-500 text-white text-[7px] font-black uppercase tracking-widest rounded-full whitespace-nowrap shadow-lg shadow-red-500/40">
-                          Hidden costs
+                          {t("Hidden costs")}
                         </motion.span>
                       )}
                     </AnimatePresence>
@@ -427,7 +429,7 @@ export default function CustomFormulaAnimation() {
                     <span className="text-[28px] font-black text-slate-900 leading-none tracking-tight tabular-nums">
                       {v.code === "INR" ? Math.round(v.quote).toLocaleString("en-IN") : v.quote.toFixed(2)}
                     </span>
-                    <span className="text-[8px] text-slate-400 ml-1 font-medium">/ unit</span>
+                    <span className="text-[8px] text-slate-400 ml-1 font-medium">{t("/ unit")}</span>
                   </div>
 
                   {/* Breakdown rows */}
@@ -448,7 +450,7 @@ export default function CustomFormulaAnimation() {
                             >
                               <span className="flex items-center gap-1.5 text-[8px] text-slate-500 font-medium">
                                 <span className={cn("w-2 h-2 rounded-full shrink-0", field.dot)} />
-                                {field.label}
+                                {t(field.label)}
                               </span>
                               <span className="text-[8px] font-bold text-slate-700 font-mono tabular-nums">
                                 {fmtNative(v, key)}
@@ -471,7 +473,7 @@ export default function CustomFormulaAnimation() {
                           isWinner ? "border-emerald-300" : isLoser ? "border-red-200" : "border-slate-200"
                         )}
                       >
-                        <p className="text-[7px] font-bold uppercase tracking-[2px] text-slate-400 mb-0.5">True landed cost</p>
+                        <p className="text-[7px] font-bold uppercase tracking-[2px] text-slate-400 mb-0.5">{t("True landed cost")}</p>
                         <motion.p
                           initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
                           transition={{ type: "spring", stiffness: 280, delay: i * 0.1 + 0.08 }}
@@ -497,8 +499,8 @@ export default function CustomFormulaAnimation() {
                 className="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg">
                 <GitBranch className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                 <p className="text-[8px] text-amber-700 font-medium">
-                  <span className="font-bold">True Cost</span> unknown — quote hides duty, shipping & tax.{" "}
-                  <span className="font-bold">Build an IF/ELSE formula</span> to apply the right logic per vendor.
+                  <span className="font-bold">{t("True Cost")}</span> {t("unknown — quote hides duty, shipping & tax.")}{" "}
+                  <span className="font-bold">{t("Build an IF/ELSE formula")}</span> {t("to apply the right logic per vendor.")}
                 </p>
               </motion.div>
             )}
@@ -525,8 +527,8 @@ export default function CustomFormulaAnimation() {
                       <Calculator className="w-3.5 h-3.5 text-white" />
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold text-slate-800">Formula Builder · Total Landed Cost</p>
-                      <p className="text-[8px] text-slate-400">Click fields to add them to your formula</p>
+                      <p className="text-[11px] font-bold text-slate-800">{t("Formula Builder · Total Landed Cost")}</p>
+                      <p className="text-[8px] text-slate-400">{t("Click fields to add them to your formula")}</p>
                     </div>
                   </div>
                   <X className="w-4 h-4 text-slate-400" />
@@ -535,7 +537,7 @@ export default function CustomFormulaAnimation() {
                 <div className="px-5 py-4 space-y-3">
                   {/* Available field chips */}
                   <div>
-                    <p className="text-[7px] font-bold text-slate-400 uppercase tracking-widest mb-2">Available Fields</p>
+                    <p className="text-[7px] font-bold text-slate-400 uppercase tracking-widest mb-2">{t("Available Fields")}</p>
                     <div className="flex flex-wrap gap-2">
                       {FIELDS.map((f) => {
                         const added = addedFields.includes(f.key);
@@ -548,7 +550,7 @@ export default function CustomFormulaAnimation() {
                             )}
                           >
                             <span className={cn("w-2 h-2 rounded-full shrink-0", f.dot)} />
-                            {f.label}
+                            {t(f.label)}
                             {added && <Check className="w-3 h-3 ml-0.5" />}
                           </motion.div>
                         );
@@ -559,9 +561,9 @@ export default function CustomFormulaAnimation() {
                   {/* Formula expression bar */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-[7px] font-bold text-slate-400 uppercase tracking-widest">Formula Expression</p>
+                      <p className="text-[7px] font-bold text-slate-400 uppercase tracking-widest">{t("Formula Expression")}</p>
                       <span className="text-[7px] text-indigo-500 font-bold flex items-center gap-1">
-                        <GitBranch className="w-2.5 h-2.5" /> IF / ELSE logic
+                        <GitBranch className="w-2.5 h-2.5" /> {t("IF / ELSE logic")}
                       </span>
                     </div>
                     <div
@@ -588,7 +590,7 @@ export default function CustomFormulaAnimation() {
                                 )}
                               >
                                 <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", f.dot)} />
-                                {tok.text}
+                                {t(tok.text)}
                               </motion.span>
                             );
                           }
@@ -617,13 +619,13 @@ export default function CustomFormulaAnimation() {
                           {partialToken.kind === "field" && partialToken.fieldKey && (
                             <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", fieldDot(partialToken.fieldKey))} />
                           )}
-                          {partialText}
+                          {partialToken.kind === "field" ? t(partialText) : partialText}
                         </span>
                       )}
 
                       {/* Placeholder */}
                       {committedTokens.length === 0 && !partialText && (
-                        <span className="text-[10px] text-slate-300">Click expression bar to type…</span>
+                        <span className="text-[10px] text-slate-300">{t("Click expression bar to type…")}</span>
                       )}
 
                       {/* Blinking cursor */}
@@ -642,15 +644,15 @@ export default function CustomFormulaAnimation() {
                           transition={{ duration: 0.3 }}
                           className="mt-2 px-3 py-2 bg-indigo-50/60 border border-indigo-100 rounded-lg overflow-hidden"
                         >
-                          <p className="text-[7px] font-bold text-indigo-400 uppercase tracking-widest mb-1">Logic Preview</p>
+                          <p className="text-[7px] font-bold text-indigo-400 uppercase tracking-widest mb-1">{t("Logic Preview")}</p>
                           <div className="space-y-1">
                             <div className="flex items-start gap-2">
                               <span className="text-[7px] font-black text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded shrink-0">IF</span>
-                              <span className="text-[7.5px] text-slate-600 leading-tight">Duty &gt; 0 → (Unit Price + Shipping) × (1 + Duty%) + Tax</span>
+                              <span className="text-[7.5px] text-slate-600 leading-tight">{t("Duty > 0 → (Unit Price + Shipping) × (1 + Duty%) + Tax")}</span>
                             </div>
                             <div className="flex items-start gap-2">
                               <span className="text-[7px] font-black text-emerald-600 bg-emerald-100 px-1.5 py-0.5 rounded shrink-0">ELSE</span>
-                              <span className="text-[7.5px] text-slate-600 leading-tight">Unit Price + Shipping + Tax</span>
+                              <span className="text-[7.5px] text-slate-600 leading-tight">{t("Unit Price + Shipping + Tax")}</span>
                             </div>
                           </div>
                         </motion.div>
@@ -661,7 +663,7 @@ export default function CustomFormulaAnimation() {
 
                 {/* Footer */}
                 <div className="flex items-center justify-between px-5 py-3 border-t border-slate-100 bg-slate-50/60">
-                  <p className="text-[8px] text-slate-400">{addedFields.length} of {FIELDS.length} fields added</p>
+                  <p className="text-[8px] text-slate-400">{addedFields.length} {t("of")} {FIELDS.length} {t("fields added")}</p>
                   <button ref={saveBtnRef}
                     className={cn(
                       "flex items-center gap-1.5 px-4 py-1.5 text-[10px] font-bold rounded-xl transition-all",
@@ -669,7 +671,7 @@ export default function CustomFormulaAnimation() {
                         ? "bg-linear-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25"
                         : "bg-slate-200 text-slate-400 cursor-not-allowed"
                     )}>
-                    Apply to All Vendors <Check className="w-3.5 h-3.5" />
+                    {t("Apply to All Vendors")} <Check className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </motion.div>
@@ -688,8 +690,8 @@ export default function CustomFormulaAnimation() {
                 <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
               </div>
               <div>
-                <p className="text-[10px] font-bold text-slate-800">{VENDORS[winner].name} is the true best deal</p>
-                <p className="text-[7px] text-slate-500">IF/ELSE formula applied · auto-normalized to ₹</p>
+                <p className="text-[10px] font-bold text-slate-800">{VENDORS[winner].name} {t("is the true best deal")}</p>
+                <p className="text-[7px] text-slate-500">{t("IF/ELSE formula applied · auto-normalized to ₹")}</p>
               </div>
             </motion.div>
           )}
@@ -710,7 +712,7 @@ export default function CustomFormulaAnimation() {
             className="shrink-0 w-2 h-2 rounded-full animate-pulse"
             style={{ background: "#0891b2", boxShadow: "0 0 8px rgba(8,145,178,0.5)" }}
           />
-          <p className="text-[12px] font-semibold leading-relaxed tracking-wide m-0">{caption}</p>
+          <p className="text-[12px] font-semibold leading-relaxed tracking-wide m-0">{t(caption)}</p>
         </div>
 
       </div>{/* end dashboard shell */}

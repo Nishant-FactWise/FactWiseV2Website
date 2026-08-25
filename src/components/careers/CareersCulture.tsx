@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users2, Lightbulb, TrendingUp } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { getPathLocale } from '@/lib/i18n';
+import { messages } from '@/lib/messages';
 
 const PILLARS = [
   {
@@ -32,6 +35,10 @@ const PILLARS = [
 ];
 
 export const CareersCulture = () => {
+  const pathname = usePathname();
+  const locale = getPathLocale(pathname);
+  const t = (source: string) => messages[locale].textMap[source] ?? source;
+
   // Responsive grid columns: 1 on mobile, 2 on tablet, 3 on desktop.
   // Inline styles can't use Tailwind breakpoints, so track viewport via matchMedia
   // (same pattern as StaggerTestimonials).
@@ -76,7 +83,7 @@ export const CareersCulture = () => {
               fontFamily: 'var(--font-inter)',
             }}
           >
-            Our Culture
+            {t("Our Culture")}
           </motion.div>
 
           <motion.h2
@@ -91,9 +98,9 @@ export const CareersCulture = () => {
               fontFamily: 'var(--font-display)',
             }}
           >
-            Built on{' '}
+            {t("Built on")}{' '}
             <span style={{ color: '#3666ff', fontStyle: 'italic', fontWeight: 500 }}>
-              Shared Principles
+              {t("Shared Principles")}
             </span>
           </motion.h2>
         </div>
@@ -171,14 +178,14 @@ export const CareersCulture = () => {
                 marginBottom: 10, letterSpacing: '-0.02em',
                 fontFamily: 'var(--font-display)',
               }}>
-                {pillar.title}
+                {t(pillar.title)}
               </h3>
 
               <p style={{
                 fontSize: 14.5, lineHeight: 1.65, color: '#64748b',
                 margin: 0, fontFamily: 'var(--font-inter)',
               }}>
-                {pillar.desc}
+                {t(pillar.desc)}
               </p>
             </motion.div>
           ))}
