@@ -6,6 +6,7 @@ import { Users2, Lightbulb, TrendingUp } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { getPathLocale } from '@/lib/i18n';
 import { messages } from '@/lib/messages';
+import { withoutLongDashes } from '@/lib/display-text';
 
 const PILLARS = [
   {
@@ -37,7 +38,7 @@ const PILLARS = [
 export const CareersCulture = () => {
   const pathname = usePathname();
   const locale = getPathLocale(pathname);
-  const t = (source: string) => messages[locale].textMap[source] ?? source;
+  const t = (source: string) => withoutLongDashes(messages[locale].textMap[source] ?? source);
 
   // Responsive grid columns: 1 on mobile, 2 on tablet, 3 on desktop.
   // Inline styles can't use Tailwind breakpoints, so track viewport via matchMedia
@@ -56,12 +57,7 @@ export const CareersCulture = () => {
   }, []);
 
   return (
-    <section style={{
-      padding: '80px 24px',
-      background: 'white',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
+    <section className="relative overflow-hidden bg-white px-5 py-16 sm:px-6 sm:py-20">
       {/* Ambient background blobs */}
       <div style={{ position: 'absolute', bottom: -80, left: -80, width: 360, height: 360, borderRadius: '50%', background: 'rgba(54,102,255,0.04)', filter: 'blur(80px)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', top: -80, right: -80, width: 360, height: 360, borderRadius: '50%', background: 'rgba(54,102,255,0.04)', filter: 'blur(80px)', pointerEvents: 'none' }} />
@@ -69,7 +65,7 @@ export const CareersCulture = () => {
       <div style={{ maxWidth: 1040, margin: '0 auto' }}>
 
         {/* ── Heading ── */}
-        <div style={{ textAlign: 'center', marginBottom: 56 }}>
+        <div className="mb-10 text-center sm:mb-14">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -92,7 +88,7 @@ export const CareersCulture = () => {
             viewport={{ once: false }}
             transition={{ delay: 0.1 }}
             style={{
-              fontSize: 'clamp(30px, 3.2vw, 46px)', fontWeight: 600,
+              fontSize: 'clamp(30px, 8vw, 46px)', fontWeight: 600,
               lineHeight: 1.1, letterSpacing: '-0.035em',
               color: '#0D1117', margin: 0,
               fontFamily: 'var(--font-display)',
@@ -119,12 +115,12 @@ export const CareersCulture = () => {
               viewport={{ once: false }}
               transition={{ delay: index * 0.13, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -14, scale: 1.025 }}
+              className="p-6 sm:p-7 lg:p-9"
               style={{
                 position: 'relative',
                 background: 'white',
                 border: '1px solid rgba(54,102,255,0.1)',
                 borderRadius: 20,
-                padding: '36px 28px',
                 overflow: 'hidden',
                 cursor: 'default',
                 boxShadow: '0 2px 6px rgba(0,0,0,0.04), 0 6px 28px rgba(54,102,255,0.07), 0 0 0 1px rgba(54,102,255,0.04)',
@@ -183,7 +179,7 @@ export const CareersCulture = () => {
 
               <p style={{
                 fontSize: 14.5, lineHeight: 1.65, color: '#64748b',
-                margin: 0, fontFamily: 'var(--font-inter)',
+                margin: 0, fontFamily: 'var(--font-inter)', textAlign: 'justify',
               }}>
                 {t(pillar.desc)}
               </p>

@@ -5,7 +5,6 @@ import { motion, useInView } from 'framer-motion';
 import { CheckCircle2, BarChart3, Users, Scale, Calculator } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import dynamic from 'next/dynamic';
-import { usePathname } from 'next/navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
@@ -82,7 +81,6 @@ const pages = [
 
 export default function MethodologySection() {
   const t = useLocalizedText();
-  const pathname = usePathname();
   const [currentPage, setCurrentPage] = useState(1);
   const containerRef    = useRef<HTMLDivElement>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
@@ -101,10 +99,6 @@ export default function MethodologySection() {
     mq.addEventListener('change', apply);
     return () => mq.removeEventListener('change', apply);
   }, []);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [pathname]);
 
   // N panels share N-1 transitions. Snap points are spread evenly across the whole
   // [0,1] range (last panel lands at progress 1.0) so there is no dead scroll tail.
@@ -172,7 +166,7 @@ export default function MethodologySection() {
       scrollTriggerRef.current?.kill();
       scrollTriggerRef.current = null;
     };
-  }, [isDesktop, pathname, segments, snapPoints]);
+  }, [isDesktop, segments, snapPoints]);
 
   const handleDotClick = (index: number) => {
     const st = scrollTriggerRef.current;
@@ -184,18 +178,18 @@ export default function MethodologySection() {
   return (
     <section className="bg-white relative" id="how-it-works">
       {/* Static header */}
-      <div className="max-w-7xl mx-auto px-8 lg:px-24 pt-20 pb-16">
+      <div className="mx-auto max-w-7xl px-5 pb-8 pt-12 sm:px-8 sm:pb-10 sm:pt-16 lg:px-24 lg:pb-16 lg:pt-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mx-auto max-w-3xl text-center flex flex-col items-center mb-6"
+          className="mx-auto flex max-w-3xl flex-col items-center text-center lg:mb-6"
         >
-          <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#4A6FFF] text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
+          <div className="mb-5 inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#4A6FFF] sm:mb-6">
             {t('HOW WE DO IT')}
           </div>
-          <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]">
+          <h2 className="text-[28px] font-bold leading-[1.12] tracking-tight text-[#1A1D2E] sm:text-3xl md:text-5xl">
             {t('Stop Adapting to Your Software.')}<br />
             <span className="text-[#3666ff]"> {t('It Should Adapt to You.')}</span>
           </h2>
@@ -315,7 +309,7 @@ export default function MethodologySection() {
           animation are visible for every feature — the pinned split-screen above
           overlaps its two halves on narrow screens and hides one of them. Always
           mounted, CSS-hidden at lg+. */}
-      <div className="flex flex-col gap-5 px-4 pb-16 sm:px-6 lg:hidden">
+      <div className="flex flex-col gap-6 px-3 pb-12 sm:px-6 sm:pb-16 lg:hidden">
         {pages.map((page, i) => (
           <MobileFeature key={page.id} page={page} idx={i + 1} />
         ))}
@@ -387,29 +381,29 @@ function MobileFeature({ page, idx }: { page: (typeof pages)[number]; idx: numbe
   return (
     <div
       ref={ref}
-      className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm"
+      className="overflow-hidden rounded-[20px] border border-slate-100 bg-white shadow-sm sm:rounded-3xl"
     >
       {/* Copy */}
-      <div className="relative p-6 sm:p-8">
-        <div className="pointer-events-none absolute right-5 top-4 select-none font-mono text-6xl font-black tracking-tighter text-slate-500/[0.05]">
+      <div className="relative px-5 pb-5 pt-6 sm:p-8">
+        <div className="pointer-events-none absolute right-4 top-3 select-none font-mono text-5xl font-black tracking-tighter text-slate-500/[0.05] sm:right-5 sm:top-4 sm:text-6xl">
           0{idx}
         </div>
-        <h3 className="relative z-10 mb-4 bg-gradient-to-r from-[#0b1322] to-[#3666ff] bg-clip-text text-2xl font-extrabold leading-tight tracking-tight text-transparent sm:text-3xl">
+        <h3 className="relative z-10 mb-3 bg-gradient-to-r from-[#0b1322] to-[#3666ff] bg-clip-text text-[23px] font-extrabold leading-[1.2] tracking-tight text-transparent sm:mb-4 sm:text-3xl">
           {t(page.title)}
         </h3>
-        <p className="relative z-10 mb-6 text-base leading-relaxed text-slate-600">
+        <p className="relative z-10 mb-5 text-justify text-[15px] leading-[1.7] text-slate-600 sm:mb-6 sm:text-left sm:text-base sm:leading-relaxed">
           {t(page.description)}
         </p>
-        <div className="relative z-10 grid grid-cols-1 gap-3">
+        <div className="relative z-10 grid grid-cols-1 gap-2.5 sm:gap-3">
           {page.details.map((detail, dIdx) => (
             <div
               key={dIdx}
-              className="flex items-start gap-3 rounded-xl border border-blue-50/60 bg-[#F8FAFF] p-3.5"
+              className="flex items-start gap-2.5 rounded-xl border border-blue-50/60 bg-[#F8FAFF] p-3 sm:gap-3 sm:p-3.5"
             >
               <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
                 <CheckCircle2 className="h-3.5 w-3.5" />
               </div>
-              <span className="text-sm font-medium leading-relaxed text-slate-700">
+              <span className="text-[13px] font-medium leading-[1.55] text-slate-700 sm:text-sm sm:leading-relaxed">
                 {t(detail)}
               </span>
             </div>

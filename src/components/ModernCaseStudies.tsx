@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Clock, TrendingUp, Zap, BarChart3, ShieldCheck } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Clock, Zap } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import ScrollReveal from "./ui/ScrollReveal";
 
@@ -93,6 +93,47 @@ const CATEGORIES = ['All', 'Manufacturing', 'Automotive Components', 'MRO', 'Che
 
 export default function ModernCaseStudies() {
   const [activeTab, setActiveTab] = useState('All');
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateScrollControls = useCallback(() => {
+    const tabs = tabsRef.current;
+    if (!tabs) return;
+
+    setCanScrollLeft(tabs.scrollLeft > 8);
+    setCanScrollRight(tabs.scrollLeft + tabs.clientWidth < tabs.scrollWidth - 8);
+  }, []);
+
+  useEffect(() => {
+    updateScrollControls();
+    const tabs = tabsRef.current;
+    const resizeObserver = new ResizeObserver(updateScrollControls);
+    if (tabs) resizeObserver.observe(tabs);
+    window.addEventListener('resize', updateScrollControls);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateScrollControls);
+    };
+  }, [updateScrollControls]);
+
+  const scrollTabs = (direction: 'left' | 'right') => {
+    const tabs = tabsRef.current;
+    if (!tabs) return;
+
+    const buttons = Array.from(tabs.querySelectorAll<HTMLButtonElement>('[data-industry-tab]'));
+    const buttonPositions = buttons.map((button) => button.offsetLeft - tabs.offsetLeft);
+    const currentScroll = tabs.scrollLeft;
+    const target = direction === 'right'
+      ? buttonPositions.find((left) => left > currentScroll + 8)
+      : [...buttonPositions].reverse().find((left) => left < currentScroll - 8);
+
+    tabs.scrollTo({
+      left: target ?? (direction === 'right' ? tabs.scrollWidth : 0),
+      behavior: 'smooth',
+    });
+  };
 
   const filteredStudies = activeTab === 'All'
     ? CASE_STUDIES
@@ -131,13 +172,35 @@ export default function ModernCaseStudies() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12">
           {/* Filters — horizontally scrollable on mobile, wrap on desktop */}
           <ScrollReveal delay={0.2} className="w-full md:w-auto">
-            <div className="flex gap-2 flex-nowrap overflow-x-auto md:flex-wrap md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {CATEGORIES.map((cat, i) => (
+            <div className="grid grid-cols-[36px_minmax(0,1fr)_36px] items-center gap-1 md:block">
+              <div className="flex h-full items-center justify-start bg-gradient-to-r from-white via-white to-white/70 md:hidden">
+                <button
+                  type="button"
+                  onClick={() => scrollTabs('left')}
+                  aria-label="Scroll industry filters to the left"
+                  aria-hidden={!canScrollLeft}
+                  tabIndex={canScrollLeft ? 0 : -1}
+                  className={cn(
+                    "flex size-8 items-center justify-center rounded-full border border-blue-100 bg-white text-[#3666ff] shadow-[0_4px_14px_rgba(54,102,255,0.16)] transition-all duration-200 active:scale-95",
+                    canScrollLeft ? "opacity-100" : "pointer-events-none opacity-0",
+                  )}
+                >
+                  <ChevronLeft className="size-[18px]" strokeWidth={2.4} />
+                </button>
+              </div>
+
+              <div
+                ref={tabsRef}
+                onScroll={updateScrollControls}
+                className="flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth md:flex-wrap md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              >
+              {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
+                  data-industry-tab
                   onClick={() => setActiveTab(cat)}
                   className={cn(
-                    "shrink-0 whitespace-nowrap px-5 py-2.5 rounded-xl text-[11px] font-semibold transition-all border tracking-widest uppercase",
+                    "snap-start shrink-0 whitespace-nowrap px-5 py-2.5 rounded-xl text-[11px] font-semibold transition-all border tracking-widest uppercase",
                     activeTab === cat
                       ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-600/20"
                       : "bg-white border-slate-100 text-slate-400 hover:border-blue-200 hover:text-blue-600"
@@ -146,7 +209,24 @@ export default function ModernCaseStudies() {
                 >
                   {cat}
                 </button>
-              ))}
+                ))}
+              </div>
+
+              <div className="flex h-full items-center justify-end bg-gradient-to-l from-white via-white to-white/70 md:hidden">
+                <button
+                  type="button"
+                  onClick={() => scrollTabs('right')}
+                  aria-label="Scroll industry filters to the right"
+                  aria-hidden={!canScrollRight}
+                  tabIndex={canScrollRight ? 0 : -1}
+                  className={cn(
+                    "flex size-8 items-center justify-center rounded-full border border-blue-100 bg-white text-[#3666ff] shadow-[0_4px_14px_rgba(54,102,255,0.16)] transition-all duration-200 active:scale-95",
+                    canScrollRight ? "opacity-100" : "pointer-events-none opacity-0",
+                  )}
+                >
+                  <ChevronRight className="size-[18px]" strokeWidth={2.4} />
+                </button>
+              </div>
             </div>
           </ScrollReveal>
 
@@ -158,8 +238,6 @@ export default function ModernCaseStudies() {
             {filteredStudies.map((study, index) => {
               const isOnly = filteredStudies.length === 1;
               const isLarge = (index % 4 === 0 || index % 4 === 3) && filteredStudies.length > 1;
-              const isVertical = (index % 4 === 1 || index % 4 === 2) && filteredStudies.length > 1;
- 
               return (
                 <motion.div
                   key={study.id}

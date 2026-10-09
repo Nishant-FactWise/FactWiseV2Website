@@ -55,7 +55,7 @@ function SupplierDashboardMockup() {
   const t = useLocalizedText();
   const mono = "'JetBrains Mono', monospace";
   return (
-    <div
+    <div className="supplier-hero"
       style={{
         width: '100%',
         height: '100%',
@@ -420,7 +420,7 @@ export default function SupplierHero() {
       />
 
       <div
-        className="grid grid-cols-1 xl:grid-cols-[1fr_1.25fr] gap-8 items-center"
+        className="supplier-hero-grid grid grid-cols-1 xl:grid-cols-[1fr_1.25fr] gap-8 items-center"
         style={{
           maxWidth: 1440,
           margin: '0 auto',
@@ -431,8 +431,8 @@ export default function SupplierHero() {
         }}
       >
         {/* Left Column */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} style={{ maxWidth: 620 }}>
-          <div
+        <motion.div className="supplier-hero-copy" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} style={{ maxWidth: 620 }}>
+          <div className="supplier-hero-eyebrow"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -454,7 +454,7 @@ export default function SupplierHero() {
             {t('AI-POWERED SUPPLIER QUOTING')}
           </div>
 
-          <h1
+          <h1 className="supplier-hero-title"
             style={{
               fontSize: 'clamp(32px, 3.2vw, 52px)',
               fontWeight: 600,
@@ -477,7 +477,7 @@ export default function SupplierHero() {
             </span>
           </h1>
 
-          <p
+          <p className="supplier-hero-subtitle"
             style={{
               fontSize: 18,
               lineHeight: 1.65,
@@ -491,8 +491,9 @@ export default function SupplierHero() {
             {t('Respond through the portal, Excel, or API — FactWise matches every line item against your pricing and gets your bid out before the deadline.')}
           </p>
 
-          <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="supplier-hero-actions" style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
             <Link
+              className="supplier-hero-primary"
               href={localizePath('/supplier-onboarding', locale)}
               style={{
                 background: 'linear-gradient(135deg,#4f8bff,#2a6cff)',
@@ -511,7 +512,8 @@ export default function SupplierHero() {
                 textDecoration: 'none',
               }}
             >
-              {t('Get Started as Supplier')}
+              <span className="supplier-label-desktop">{t('Get Started as Supplier')}</span>
+              <span className="supplier-label-mobile">{t('Get Started')}</span>
               <span
                 style={{
                   width: 24,
@@ -526,7 +528,7 @@ export default function SupplierHero() {
               </span>
             </Link>
 
-            <a
+            <a className="supplier-hero-secondary"
               href="#supplier-problems"
               style={{
                 padding: '12px 20px',
@@ -540,11 +542,12 @@ export default function SupplierHero() {
                 transition: 'background 0.2s',
               }}
             >
-              {t('Why Most Suppliers Struggle ➔')}
+              <span className="supplier-label-desktop">{t('Why Most Suppliers Struggle ➔')}</span>
+              <span className="supplier-label-mobile">{t('See Challenges')} <span aria-hidden>↓</span></span>
             </a>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginTop: 44, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="supplier-hero-proof" style={{ display: 'flex', alignItems: 'center', gap: 24, marginTop: 44, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <Check className="size-4 text-emerald-400 shrink-0" />
               <span style={{ fontSize: 13, color: '#cbd5e1' }}>{t('Zero Portal Friction')}</span>

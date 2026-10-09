@@ -52,7 +52,7 @@ export default function InvSection32({ isActive = true }: { isActive?: boolean }
     ];
 
     return (
-        <div id="inv-section-3-2" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
+        <div id="inv-section-3-2" className="inv-flow-section grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{
                 __html: `
             @keyframes inv-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
@@ -69,7 +69,7 @@ export default function InvSection32({ isActive = true }: { isActive?: boolean }
                 className="lg:col-span-6 order-2 lg:order-1 relative"
             >
                 <div
-                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.28),0_15px_40px_-10px_rgba(54,102,255,0.2)] overflow-hidden flex flex-col justify-between select-none"
+                    className="inv-animation-card relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.28),0_15px_40px_-10px_rgba(54,102,255,0.2)] overflow-hidden flex flex-col justify-between select-none"
                     style={{ height: 549, minHeight: 549, maxHeight: 549 }}
                 >
                     <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
@@ -368,21 +368,21 @@ export default function InvSection32({ isActive = true }: { isActive?: boolean }
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 order-1 lg:order-2 space-y-6 text-left"
+                className="inv-flow-copy lg:col-span-6 order-1 lg:order-2 space-y-6 text-left"
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-pulse" />
                     Step 02 · Goods Receipt
                 </div>
-                <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="inv-feature-title text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     Track Every Delivery.<br />
                     <span className="text-[#3666ff]">Record Every Discrepancy.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Create goods receipts against any invoice or PO — recording quantities, flagging damaged goods, and capturing every discrepancy at the line item level in real time. FactWise's AI cross-checks every GR against the original invoice and PO automatically. Nothing assumed. Everything verified.
+                <p className="inv-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                    Create goods receipts against any invoice or PO — recording quantities, flagging damaged goods, and capturing every discrepancy at the line item level in real time. FactWise&apos;s AI cross-checks every GR against the original invoice and PO automatically. Nothing assumed. Everything verified.
                 </p>
 
-                <div className="flex flex-col gap-2 mt-8 text-left">
+                <div className="inv-feature-steps flex flex-col gap-2 mt-8 text-left">
                     {steps.map((item) => (
                         <div
                             key={item.p}

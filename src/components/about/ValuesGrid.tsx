@@ -6,6 +6,7 @@ import { Heart, Star, Zap, Users } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { getPathLocale } from '@/lib/i18n';
 import { messages } from '@/lib/messages';
+import { withoutLongDashes } from '@/lib/display-text';
 
 const VALUES = [
   {
@@ -15,7 +16,7 @@ const VALUES = [
     tag: "Principle 01",
     // Double-pulse like a real heartbeat
     iconAnimate: { scale: [1, 1.28, 1, 1.15, 1] },
-    iconTransition: { duration: 1.8, repeat: Infinity, ease: 'easeInOut', times: [0, 0.2, 0.45, 0.6, 1] },
+    iconTransition: { duration: 1.8, repeat: Infinity, ease: 'easeInOut' as const, times: [0, 0.2, 0.45, 0.6, 1] },
   },
   {
     title: "Strive for excellence.",
@@ -24,7 +25,7 @@ const VALUES = [
     tag: "Principle 02",
     // Gentle spin-and-snap twinkle
     iconAnimate: { rotate: [0, 18, -14, 10, -6, 0], scale: [1, 1.12, 1.05, 1.1, 1.02, 1] },
-    iconTransition: { duration: 2.6, repeat: Infinity, ease: 'easeInOut' },
+    iconTransition: { duration: 2.6, repeat: Infinity, ease: 'easeInOut' as const },
   },
   {
     title: "Never settle.",
@@ -33,7 +34,7 @@ const VALUES = [
     tag: "Principle 03",
     // Fast vertical bounce + flash
     iconAnimate: { y: [0, -7, 0, -4, 0], scale: [1, 1.08, 1, 1.04, 1] },
-    iconTransition: { duration: 1.3, repeat: Infinity, ease: 'easeInOut' },
+    iconTransition: { duration: 1.3, repeat: Infinity, ease: 'easeInOut' as const },
   },
   {
     title: "Always think win–win.",
@@ -42,17 +43,17 @@ const VALUES = [
     tag: "Principle 04",
     // Slow breathing expand
     iconAnimate: { scale: [1, 1.14, 1], rotate: [0, 4, -4, 0] },
-    iconTransition: { duration: 2.8, repeat: Infinity, ease: 'easeInOut' },
+    iconTransition: { duration: 2.8, repeat: Infinity, ease: 'easeInOut' as const },
   },
 ];
 
 export const ValuesGrid = () => {
   const pathname = usePathname();
   const locale = getPathLocale(pathname);
-  const t = (source: string) => messages[locale].textMap[source] ?? source;
+  const t = (source: string) => withoutLongDashes(messages[locale].textMap[source] ?? source);
 
   return (
-    <section className="py-20 md:py-32 px-6 md:px-14 bg-white relative">
+    <section className="relative bg-white px-5 py-16 sm:px-6 sm:py-20 md:px-14 md:py-32">
       <div className="max-w-7xl mx-auto relative z-10">
 
         {/* Badge */}
@@ -73,7 +74,7 @@ export const ValuesGrid = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.05] tracking-tighter mb-12"
+            className="mb-9 text-[30px] font-bold leading-[1.08] tracking-tighter text-slate-900 sm:text-4xl md:mb-12 md:text-5xl"
           >
             {t("The Values")} <span className="font-instrument italic font-medium text-[#3666ff]">{t("That Ship")}</span> {t("With Every Line Of Code.")}
           </motion.h2>
@@ -88,7 +89,7 @@ export const ValuesGrid = () => {
               viewport={{ once: false }}
               transition={{ delay: index * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -14, scale: 1.02 }}
-              className="group relative bg-white border border-slate-100 rounded-[28px] md:rounded-[32px] p-6 md:p-8 min-h-[300px] md:min-h-[380px] flex flex-col justify-between overflow-hidden"
+              className="group relative flex min-h-[260px] flex-col justify-between overflow-hidden rounded-[24px] border border-slate-100 bg-white p-6 md:min-h-[380px] md:rounded-[32px] md:p-8"
               style={{
                 boxShadow:
                   '0 2px 6px rgba(0,0,0,0.04), 0 6px 24px rgba(54,102,255,0.07), 0 0 0 1px rgba(54,102,255,0.05)',
@@ -124,8 +125,8 @@ export const ValuesGrid = () => {
                   style={{ background: 'linear-gradient(135deg, #3666ff 0%, #6690ff 100%)' }}
                 >
                   <motion.div
-                    animate={value.iconAnimate as any}
-                    transition={value.iconTransition as any}
+                    animate={value.iconAnimate}
+                    transition={value.iconTransition}
                     className="text-white"
                   >
                     <value.icon className="size-6 md:size-7" strokeWidth={2} />
@@ -135,7 +136,7 @@ export const ValuesGrid = () => {
                 <h3 className="text-xl md:text-2xl font-bold text-slate-900 mt-6 md:mt-10 mb-3 md:mb-4 tracking-tight leading-snug">
                   {t(value.title)}
                 </h3>
-                <p className="text-slate-500 text-sm md:text-base leading-relaxed">
+                <p className="text-justify text-sm leading-relaxed text-slate-500 md:text-base">
                   {t(value.desc)}
                 </p>
               </div>

@@ -249,6 +249,40 @@ const SN_STYLE = `
   letter-spacing: 0.05em; display: flex; align-items: center; gap: 5px;
   opacity: 0; transform: scale(0.92); transition: opacity .35s, transform .35s; }
 .sn-foot .stamp.in { opacity: 1; transform: scale(1); }
+
+@media (max-width: 639px) {
+  .sn-root { height: 620px; border-radius: 18px; box-shadow: 0 14px 38px rgba(15,23,42,0.1); }
+  .sn-chrome { min-height: 52px; gap: 7px; padding: 8px 10px; }
+  .sn-url { min-width: 0; max-width: 150px; padding: 4px 7px; overflow: hidden; font-size: 8.5px; white-space: nowrap; text-overflow: ellipsis; }
+  .sn-pill { max-width: 132px; padding: 4px 7px; font-size: 7.5px; line-height: 1.25; letter-spacing: 0.08em; text-align: center; }
+  .sn-grid { position: relative; display: block; overflow: hidden; }
+  .sn-grid > .sn-left,
+  .sn-grid > .sn-right {
+    position: absolute; inset: 0; min-width: 0; padding: 10px;
+    border: 0; opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateX(12px); transition: opacity .35s ease, transform .35s ease, visibility .35s;
+  }
+  .sn-grid.show-setup > .sn-left,
+  .sn-grid.show-negotiation > .sn-right {
+    opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(0);
+  }
+  .sn-left { gap: 7px; overflow: hidden; }
+  .sn-right { gap: 8px; overflow: hidden; }
+  .sn-card { padding: 8px 9px; }
+  .sn-card-hd { margin-bottom: 5px; }
+  .sn-tiles { gap: 5px; }
+  .sn-tile { min-width: 0; padding: 6px; }
+  .sn-tile .k { font-size: 7.5px; }
+  .sn-tile .v { font-size: 11px; }
+  .sn-tile .s { font-size: 7.5px; }
+  .sn-vlist { gap: 4px; }
+  .sn-vrow { min-width: 0; padding: 4px 6px; }
+  .sn-stage { padding: 10px; }
+  .sn-msg .bub { max-width: 88%; font-size: 9px; }
+  .sn-foot { min-height: 38px; padding: 7px 10px; }
+  .sn-foot .seal { padding: 3px 7px; font-size: 8.5px; }
+  .sn-foot .stamp { padding: 4px 7px; font-size: 8px; }
+}
 `;
 
 /* ============ COMPONENT ============ */
@@ -260,11 +294,13 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
     // Inject styles once
     useEffect(() => {
         if (typeof document === 'undefined') return;
-        if (document.getElementById('sn-style-v1')) return;
-        const el = document.createElement('style');
-        el.id = 'sn-style-v1';
+        document.getElementById('sn-style-v1')?.remove();
+        const styleId = 'sn-style-v2';
+        const existing = document.getElementById(styleId) as HTMLStyleElement | null;
+        const el = existing ?? document.createElement('style');
+        el.id = styleId;
         el.textContent = SN_STYLE;
-        document.head.appendChild(el);
+        if (!existing) document.head.appendChild(el);
     }, []);
 
     // Auto-cycle through cursor steps when active + auto
@@ -302,49 +338,49 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
     const activeMenu = stepToMenu(step);
 
     return (
-        <div id="quote-section-3-2" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
+        <div id="quote-section-3-2" className="grid min-w-0 items-center gap-12 scroll-mt-24 lg:grid-cols-12 lg:gap-20">
             {/* LEFT: text + step list */}
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 space-y-6 text-left"
+                className="iq-flow-copy min-w-0 space-y-6 text-left lg:col-span-6"
             >
                 <div
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4"
+                    className="iq-section-eyebrow inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4"
                     style={{ fontFamily: 'var(--font-inter)' }}
                 >
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
                     {t('Section 3.2 · Intelligent Sourcing')}
                 </div>
                 <h3
-                    className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]"
+                    className="iq-feature-title text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]"
                     style={{ fontFamily: 'var(--font-display)' }}
                 >
                     {t('Source in Minutes.')} <br />
                     <span className="text-[#3666ff]">{t('Negotiate Using AI.')}</span>
                 </h3>
                 <p
-                    className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify"
+                    className="iq-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify"
                     style={{ fontFamily: 'var(--font-inter)' }}
                 >
                     {t('FactWise auto-selects vendors from manufacturer tags and part history, pre-fills target prices, and flags warnings before you send. Category templates get your event live in minutes — and vendors respond directly on the platform.')}
                 </p>
                 <p
-                    className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify"
+                    className="iq-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify"
                     style={{ fontFamily: 'var(--font-inter)' }}
                 >
                     {t("When it's time to negotiate, FactWise's AI drives every vendor to their best price against your criteria — or take control yourself. Every counter-offer tracked, every round visible. Better prices, every time.")}
                 </p>
 
-                <div className="flex flex-col gap-2 mt-8 text-left">
+                <div className="iq-feature-steps mt-8 flex min-w-0 flex-col gap-2 text-left">
                     {STEPS_MENU.map((item) => (
                         <div
                             key={item.p}
                             onClick={() => goManual(item.p)}
                             className={`relative flex items-center justify-between w-full rounded-2xl py-3.5 px-4 transition-all duration-400 group cursor-pointer overflow-hidden ${activeMenu === item.p
-                                ? 'bg-white border border-[#3666ff]/80 shadow-[0_8px_30px_rgba(54,102,255,0.12)] scale-[1.02] z-10'
+                                ? 'bg-white border border-[#3666ff]/80 shadow-[0_8px_30px_rgba(54,102,255,0.12)] sm:scale-[1.02] z-10'
                                 : 'bg-transparent border border-transparent hover:bg-white/60 opacity-80 hover:opacity-100'
                             }`}
                         >
@@ -377,7 +413,7 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ type: 'spring', stiffness: 75, damping: 14 }}
-                className="lg:col-span-6 order-2 lg:order-2 relative"
+                className="iq-flow-animation relative order-2 min-w-0 lg:order-2 lg:col-span-6"
             >
                 <div className="sn-root">
                     <div className="sn-chrome">
@@ -385,7 +421,7 @@ export default function Section32SourceAINegotiate({ isActive = true }: { isActi
                         <div className="sn-pill"><span className="d" />{t('FW Autobot · AI Negotiating')}</div>
                     </div>
 
-                    <div className="sn-grid">
+                    <div className={`sn-grid ${channelCut ? 'show-negotiation' : 'show-setup'}`}>
                         {/* LEFT — event setup */}
                         <div className="sn-left">
                             {/* Category dropdown */}

@@ -46,7 +46,7 @@ const companies = [
   },
   {
     name: "Bridgepointe",
-    logo: "/bridgepointe.png",
+    logo: "/Bridgepointe.png",
     url: "#"
   },
   {

@@ -102,7 +102,7 @@ export default function ReqSection34({ isActive = true }: { isActive?: boolean }
     ];
 
     return (
-        <div id="req-section-3-4" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
+        <div id="req-section-3-4" className="req-flow-section grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{ __html: `
             .s34-stage { flex:1; background:#fbfcfe; border:1px solid rgba(15,23,42,0.06); border-radius:16px; padding:18px; position:relative; overflow:hidden; min-height:400px; }
             .s34-scene { position:absolute; top:18px; left:18px; right:18px; bottom:84px; opacity:0; transition:opacity .4s ease; pointer-events:none; overflow:hidden; }
@@ -154,7 +154,7 @@ export default function ReqSection34({ isActive = true }: { isActive?: boolean }
                 className="lg:col-span-6 order-2 lg:order-1 relative"
             >
                 <div
-                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.28),0_15px_40px_-10px_rgba(54,102,255,0.2)] overflow-hidden flex flex-col justify-between select-none min-h-[510px] lg:h-[510px] w-full"
+                    className="req-animation-card relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.28),0_15px_40px_-10px_rgba(54,102,255,0.2)] overflow-hidden flex flex-col justify-between select-none min-h-[510px] lg:h-[510px] w-full"
                 >
                     <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -368,21 +368,21 @@ export default function ReqSection34({ isActive = true }: { isActive?: boolean }
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 order-1 lg:order-2 space-y-6 text-left"
+                className="req-flow-copy lg:col-span-6 order-1 lg:order-2 space-y-6 text-left"
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-pulse" />
                     Bid Analysis
                 </div>
-                <h3 className="text-[28px] md:text-[36px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="req-feature-title text-[28px] md:text-[36px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     See True Landed Cost.<br />
                     <span className="text-[#3666ff]">Award with Confidence.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="req-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     FactWise applies your custom landed-cost formulas across every bid — duties, freight, insurance, and packaging factored in and normalized to your currency. See competitive, non-competitive, and excluded bids at a glance — line-by-line or all-vendors — while Recommended Analytics highlights the best bid per item, so every award is backed by intelligence, not instinct.
                 </p>
 
-                <div className="flex flex-col gap-2 mt-8 mb-8 text-left">
+                <div className="req-feature-steps flex flex-col gap-2 mt-8 mb-8 text-left">
                     {steps.map((item) => (
                         <div
                             key={item.p}

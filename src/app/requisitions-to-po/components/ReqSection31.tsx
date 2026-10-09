@@ -5,6 +5,14 @@ import { motion } from 'framer-motion';
 import { Check, Play, Pause, Upload, FileText, GitBranch } from 'lucide-react';
 import { useLocalizedText } from '@/hooks/useLocalizedText';
 
+const FORM_FIELDS = [
+    { label: 'ITEM DESCRIPTION', value: 'Hydraulic Cylinder Seal Kit - DN80' },
+    { label: 'QUANTITY REQUIRED', value: '200 units' },
+    { label: 'DEPARTMENT', value: 'Engineering · Project Alpha' },
+    { label: 'REQUIRED BY', value: 'Jun 15, 2026' },
+    { label: 'ESTIMATED VALUE', value: '~8,400' },
+];
+
 export default function ReqSection31({ isActive = true }: { isActive?: boolean }) {
     const t = useLocalizedText();
     const [phase, setPhase] = useState(1);
@@ -42,6 +50,11 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                 setPhase(1);
                 for (let i = 1; i <= 5; i++) {
                     if (cancel) return;
+                    setTypedValues(prev => {
+                        const next = [...prev];
+                        next[i - 1] = '';
+                        return next;
+                    });
                     setFormStep(i);
                     await sleep(i === 4 ? 800 : 550);
                 }
@@ -87,15 +100,10 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
     React.useEffect(() => {
         if (formStep === 0) return;
         const fieldIndex = formStep - 1;
-        if (fieldIndex < 0 || fieldIndex >= formFields.length) return;
+        if (fieldIndex < 0 || fieldIndex >= FORM_FIELDS.length) return;
 
-        const target = formFields[fieldIndex].value;
+        const target = FORM_FIELDS[fieldIndex].value;
         let charIndex = 0;
-        setTypedValues(prev => {
-            const next = [...prev];
-            next[fieldIndex] = '';
-            return next;
-        });
 
         const interval = setInterval(() => {
             charIndex++;
@@ -114,7 +122,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
         setIsAuto(false);
         setPhase(p);
         resetAll();
-        if (p === 1) { setFormStep(5); setTypedValues(formFields.map(f => f.value)); }
+        if (p === 1) { setFormStep(5); setTypedValues(FORM_FIELDS.map(f => f.value)); }
         if (p === 2) { setUploadState('done'); setFileItems(3); }
         if (p === 3) { setApprovalStep(3); }
     };
@@ -125,14 +133,6 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
         { p: 3, title: 'Automated Approval Hierarchy' },
     ];
 
-    const formFields = [
-        { label: 'ITEM DESCRIPTION', value: 'Hydraulic Cylinder Seal Kit — DN80' },
-        { label: 'QUANTITY REQUIRED', value: '200 units' },
-        { label: 'DEPARTMENT', value: 'Engineering · Project Alpha' },
-        { label: 'REQUIRED BY', value: 'Jun 15, 2026' },
-        { label: 'ESTIMATED VALUE', value: '~8,400' },
-    ];
-
     const approvers = [
         { name: 'Arjun Mehta',   role: 'REQUESTER · ENGINEERING',       color: '#64748b', code: 'AM' },
         { name: 'Priya Sharma',  role: 'DEPT MANAGER · ENGINEERING',    color: '#3b82f6', code: 'PS' },
@@ -140,7 +140,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
     ];
 
     return (
-        <div id="req-section-3-1" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
+        <div id="req-section-3-1" className="req-flow-section grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{ __html: `
             .s31-stage {
               flex: 1;
@@ -399,21 +399,21 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 order-1 lg:order-1 space-y-6 text-left"
+                className="req-flow-copy lg:col-span-6 order-1 lg:order-1 space-y-6 text-left"
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
                     Requisition Management
                 </div>
-                <h3 className="text-[28px] md:text-[36px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="req-feature-title text-[28px] md:text-[36px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     Streamline Every Requisition.<br />
                     <span className="text-[#3666ff]">Every Approval Tracked.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="req-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     Replace requisition chaos with customizable templates — or connect your ERP via API to pull requisitions automatically. Upload any file format and FactWise AI autofills every detail, then routes each request through your approval hierarchy so the right people approve the right requests, every time.
                 </p>
 
-                <div className="flex flex-col gap-2 mt-8 text-left">
+                <div className="req-feature-steps flex flex-col gap-2 mt-8 text-left">
                     {steps.map((item) => (
                         <div
                             key={item.p}
@@ -456,7 +456,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                 className="lg:col-span-6 order-2 lg:order-2 relative"
             >
                 <div
-                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none min-h-[510px] lg:h-[510px] w-full"
+                    className="req-animation-card relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none min-h-[510px] lg:h-[510px] w-full"
                 >
                     {/* Top bar */}
                     <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
@@ -494,7 +494,7 @@ export default function ReqSection31({ isActive = true }: { isActive?: boolean }
                                     <div className="fh-badge">ENGINEERING · CAPEX</div>
                                 </div>
 
-                                {formFields.map((f, i) => (
+                                {FORM_FIELDS.map((f, i) => (
                                     <div key={f.label} className={`s31-field ${i === 0 ? 's31-field--wide' : ''} ${formStep > i ? 'in' : ''}`} style={{ transitionDelay: `${i * 0.05}s` }}>
                                         <div className="fl">{f.label}</div>
                                         <div className="fv">

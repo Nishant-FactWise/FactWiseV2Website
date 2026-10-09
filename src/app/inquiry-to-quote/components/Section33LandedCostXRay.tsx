@@ -224,6 +224,43 @@ const LC_STYLE = `
   font-weight: 800; color: #0b1322; margin-top: 1px; }
 .lc-kpi .v.good { color: #047857; }
 .lc-kpi .v.bad  { color: #b91c1c; }
+
+@media (max-width: 639px) {
+  .lc-root { height: 560px; border-radius: 18px; box-shadow: 0 14px 38px rgba(15,23,42,0.1); }
+  .lc-chrome { min-height: 52px; gap: 7px; padding: 8px 10px; }
+  .lc-url { min-width: 0; max-width: 132px; padding: 4px 7px; overflow: hidden; font-size: 8px; white-space: nowrap; text-overflow: ellipsis; }
+  .lc-toggleWrap { min-width: 0; }
+  .lc-toggle { gap: 5px; padding: 4px 7px; font-size: 8.5px; line-height: 1.25; text-align: center; }
+  .lc-main { position: relative; display: block; padding: 10px; overflow: hidden; }
+  .lc-main > .lc-grid-wrap,
+  .lc-main > .lc-rail {
+    position: absolute; inset: 10px; min-width: 0;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateX(12px); transition: opacity .35s ease, transform .35s ease, visibility .35s;
+  }
+  .lc-main.show-comparison > .lc-grid-wrap,
+  .lc-main.show-insight > .lc-rail {
+    opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(0);
+  }
+  .lc-grid-wrap { padding: 9px; }
+  .lc-tbl { grid-template-columns: 72px repeat(3, minmax(0, 1fr)); gap: 3px; }
+  .lc-vhead { min-width: 0; padding: 5px; }
+  .lc-vhead .av { width: 15px; height: 15px; }
+  .lc-vhead .info .n { font-size: 8px; }
+  .lc-vhead .info .fx { font-size: 6.5px; }
+  .lc-icell { min-width: 0; padding: 5px; font-size: 8.5px; }
+  .lc-cell .num { right: 4px; font-size: 7.5px; }
+  .lc-cell .num .delta { display: none; }
+  .lc-tot { min-width: 0; padding: 6px 5px; }
+  .lc-tot .l { font-size: 6.5px; }
+  .lc-tot .v { font-size: 9px; }
+  .lc-tot .d { font-size: 6.5px; }
+  .lc-pin, .lc-trophy { display: none; }
+  .lc-legend { gap: 5px 8px; }
+  .lc-legend .it { font-size: 7px; }
+  .lc-rail { justify-content: center; gap: 10px; }
+  .lc-card { padding: 12px; }
+}
 `;
 
 export default function Section33LandedCostXRay({ isActive = true }: { isActive?: boolean }) {
@@ -233,11 +270,13 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
 
     useEffect(() => {
         if (typeof document === 'undefined') return;
-        if (document.getElementById('lc-style-v1')) return;
-        const el = document.createElement('style');
-        el.id = 'lc-style-v1';
+        document.getElementById('lc-style-v1')?.remove();
+        const styleId = 'lc-style-v2';
+        const existing = document.getElementById(styleId) as HTMLStyleElement | null;
+        const el = existing ?? document.createElement('style');
+        el.id = styleId;
         el.textContent = LC_STYLE;
-        document.head.appendChild(el);
+        if (!existing) document.head.appendChild(el);
     }, []);
 
     useEffect(() => {
@@ -288,34 +327,34 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
     const activeMenu = stepToMenu(step);
 
     return (
-        <div id="quote-section-3-3" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
+        <div id="quote-section-3-3" className="grid min-w-0 items-center gap-12 scroll-mt-24 lg:grid-cols-12 lg:gap-20">
             {/* LEFT */}
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 space-y-6 text-left"
+                className="iq-flow-copy min-w-0 space-y-6 text-left lg:col-span-6"
             >
-                <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
+                <div className="iq-section-eyebrow inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
                     {t('Section 3.3 · Landed Cost Analytics')}
                 </div>
-                <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="iq-feature-title text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     {t('Know your True Landed Cost.')} <br />
                     <span className="text-[#3666ff]">{t('Before you Quote.')}</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="iq-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     {t('FactWise automatically applies your custom landed cost formulas across every bid — normalizing currencies and factoring in duties, freight, insurance, and packaging. Drill into vendor performance at a glance — competitive, non-competitive, and excluded bids per supplier. FactWise Recommended Analytics surfaces the best bid per item based on your own criteria — so when you quote your customer, every number is backed by true cost, not guesswork.')}
                 </p>
 
-                <div className="flex flex-col gap-2 mt-8 text-left">
+                <div className="iq-feature-steps mt-8 flex min-w-0 flex-col gap-2 text-left">
                     {STEPS_MENU.map((item) => (
                         <div
                             key={item.p}
                             onClick={() => goManual(item.p)}
                             className={`relative flex items-center justify-between w-full rounded-2xl py-3.5 px-4 transition-all duration-400 group cursor-pointer overflow-hidden ${activeMenu === item.p
-                                ? 'bg-white border border-[#3666ff]/80 shadow-[0_8px_30px_rgba(54,102,255,0.12)] scale-[1.02] z-10'
+                                ? 'bg-white border border-[#3666ff]/80 shadow-[0_8px_30px_rgba(54,102,255,0.12)] sm:scale-[1.02] z-10'
                                 : 'bg-transparent border border-transparent hover:bg-white/60 opacity-80 hover:opacity-100'
                             }`}
                         >
@@ -348,7 +387,7 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ type: 'spring', stiffness: 75, damping: 14 }}
-                className="lg:col-span-6 order-2 lg:order-2 relative"
+                className="iq-flow-animation relative order-2 min-w-0 lg:order-2 lg:col-span-6"
             >
                 <div className="lc-root">
                     <div className="lc-chrome">
@@ -362,7 +401,7 @@ export default function Section33LandedCostXRay({ isActive = true }: { isActive?
                         </div>
                     </div>
 
-                    <div className="lc-main">
+                    <div className={`lc-main ${winnerOn ? 'show-insight' : 'show-comparison'}`}>
                         <div className="lc-grid-wrap">
                             <div className="lc-grid-hd">
                                 <LCI.Scan s={11} />

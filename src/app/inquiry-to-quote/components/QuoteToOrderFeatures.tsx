@@ -17,59 +17,58 @@ import {
 } from "@/components/ui/animated-icons";
 import { useLocalizedText } from "@/hooks/useLocalizedText";
 
-/* â”€â”€â”€ Feature data â”€â”€â”€ */
+/* Feature data */
 const features = [
   {
     icon: AnimatedBotIcon,
     title: "AI-Powered BOM Structuring.",
     description:
-      "Upload any BOM in any format â€” FactWise's AI cleans, structures, and fills every gap automatically. No reformatting. No manual entry.",
+      "Upload any BOM in any format. FactWise's AI cleans, structures, and fills every gap automatically. No reformatting. No manual entry.",
     href: "#",
   },
   {
     icon: AnimatedTrendingUpIcon,
     title: "Line-Item Cost Intelligence",
     description:
-      "Before a single RFQ goes out, see distributor prices, past PO rates, historical quotes, and contract prices at every line item â€” so every target price is grounded in real data.",
+      "Before a single RFQ goes out, see distributor prices, past PO rates, historical quotes, and contract prices at every line item, so every target price is grounded in real data.",
     href: "#",
   },
   {
     icon: AnimatedZapIcon,
     title: "Cut Quoting Time by 50%.",
     description:
-      "From customer inquiry to winning quote â€” in days, not weeks. Every step automated, every bottleneck eliminated.",
+      "From customer inquiry to winning quote in days, not weeks. Every step automated, every bottleneck eliminated.",
     href: "#",
   },
   {
     icon: AnimatedSearchCheckIcon,
     title: "Smart Warnings.",
     description:
-      "FactWise flags high target rates, duplicate items across events, and contract mismatches â€” automatically â€” so every decision is made with complete context, not discovered after the damage is done.",
+      "FactWise automatically flags high target rates, duplicate items across events, and contract mismatches, so every decision is made with complete context, not discovered after the damage is done.",
     href: "#",
   },
   {
     icon: AnimatedBrainCircuitIcon,
     title: "AI Powered Analytics.",
     description:
-      "AI-powered analytics agents surface the insights that matter â€” best bids, hidden costs, margin risks â€” so every award decision is backed by intelligence, not instinct.",
+      "AI-powered analytics agents surface the insights that matter: best bids, hidden costs, and margin risks. Every award decision is backed by intelligence, not instinct.",
     href: "#",
   },
   {
     icon: AnimatedLightbulbIcon,
     title: "Formula Driven Quoting.",
     description:
-      "Build your own landed cost formula once â€” FactWise applies it automatically across every vendor, every bid, and every customer quote. Always accurate. Always yours.",
+      "Build your own landed cost formula once. FactWise applies it automatically across every vendor, every bid, and every customer quote. Always accurate. Always yours.",
     href: "#",
     comingSoon: false,
   },
 ];
 
-/* â”€â”€â”€ Single card with mouse-tracking glow & micro-interactions â”€â”€â”€ */
+/* Single card with mouse-tracking glow and micro-interactions */
 function FeatureCard({
   icon: Icon,
   title,
   description,
-  href,
   comingSoon,
   index,
 }: {
@@ -124,7 +123,7 @@ function FeatureCard({
         delay: index * 0.08,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="group relative flex flex-col bg-white p-8 lg:p-9 overflow-hidden isolate rounded-2xl border border-slate-200/70 shadow-[0_4px_24px_-14px_rgba(15,23,42,0.12)] transition-colors duration-300"
+      className="iq-feature-card group relative flex flex-col bg-white p-8 lg:p-9 overflow-hidden isolate rounded-2xl border border-slate-200/70 shadow-[0_4px_24px_-14px_rgba(15,23,42,0.12)] transition-colors duration-300"
       style={
         index % 2 === 1
           ? {
@@ -134,7 +133,7 @@ function FeatureCard({
           : undefined
       }
     >
-      {/* Animated border glow â€” sits on the card edge using a mask */}
+      {/* Animated border glow sits on the card edge using a mask */}
       <motion.div
         aria-hidden
         className="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -157,20 +156,20 @@ function FeatureCard({
         style={{ background: glowBackground }}
       />
 
-      {/* Top accent line â€” sweeps in on hover */}
+      {/* Top accent line sweeps in on hover */}
       <div
         aria-hidden
         className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#3666ff] to-transparent origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-[600ms] ease-out"
       />
 
       {/* Top row: numbered prefix + icon */}
-      <div className="relative z-10 mb-7 flex items-start justify-between">
+      <div className="iq-feature-card-top relative z-10 mb-7 flex items-start justify-between">
         <motion.div
           whileHover={{ scale: 1.05, rotate: -4 }}
           transition={{ type: "spring", stiffness: 400, damping: 15 }}
           className="relative"
         >
-          <div className="relative inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/60 text-[#3666ff] ring-1 ring-blue-100 group-hover:ring-[#3666ff]/30 transition-all duration-300 overflow-hidden">
+          <div className="iq-feature-card-icon relative inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/60 text-[#3666ff] ring-1 ring-blue-100 group-hover:ring-[#3666ff]/30 transition-all duration-300 overflow-hidden">
             {/* Sweep highlight on hover */}
             <span
               aria-hidden
@@ -195,14 +194,14 @@ function FeatureCard({
 
       {/* Title */}
       <h3
-        className="relative z-10 text-[17px] font-semibold text-[#0D1117] mb-3 leading-snug tracking-[-0.01em]"
+        className="iq-feature-card-title relative z-10 text-[17px] font-semibold text-[#0D1117] mb-3 leading-snug tracking-[-0.01em]"
         style={{ fontFamily: "var(--font-display)" }}
       >
         {t(title)}
       </h3>
 
       <p
-        className="relative z-10 text-sm text-slate-500 leading-relaxed flex-1 group-hover:text-slate-600 transition-colors duration-300"
+        className="iq-feature-card-copy relative z-10 text-sm text-slate-500 leading-relaxed flex-1 group-hover:text-slate-600 transition-colors duration-300"
         style={{ fontFamily: "var(--font-inter)" }}
       >
         {t(description)}
@@ -224,11 +223,11 @@ function FeatureCard({
   );
 }
 
-/* â”€â”€â”€ Main section â”€â”€â”€ */
+/* Main section */
 export default function QuoteToOrderFeatures() {
   const t = useLocalizedText();
   return (
-    <section className="relative w-full bg-white pt-8 pb-28 overflow-hidden">
+    <section className="iq-features-section relative w-full bg-white pt-8 pb-28 overflow-hidden">
       {/* Decorative dot-grid background */}
       <div
         aria-hidden
@@ -245,13 +244,13 @@ export default function QuoteToOrderFeatures() {
       />
 
       {/* Header */}
-      <div className="relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 mb-16">
+      <div className="iq-features-header relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 mb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-8"
+          className="iq-features-heading-row flex flex-col md:flex-row md:items-end md:justify-between gap-8"
         >
           <div>
             <motion.div
@@ -259,7 +258,7 @@ export default function QuoteToOrderFeatures() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.05 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-6 shadow-[0_1px_2px_rgba(54,102,255,0.08)]"
+              className="iq-features-eyebrow inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-6 shadow-[0_1px_2px_rgba(54,102,255,0.08)]"
             >
               <span className="relative flex size-1.5">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-[#3666ff] opacity-75 animate-ping" />
@@ -269,7 +268,7 @@ export default function QuoteToOrderFeatures() {
             </motion.div>
 
             <h2
-              className="text-[36px] md:text-[48px] font-semibold text-[#0D1117] mb-5 tracking-[-0.03em] leading-[1.1] max-w-2xl"
+              className="iq-features-title text-[36px] md:text-[48px] font-semibold text-[#0D1117] mb-5 tracking-[-0.03em] leading-[1.1] max-w-2xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
               {t("Powerful Features.")}{" "}
@@ -279,7 +278,7 @@ export default function QuoteToOrderFeatures() {
             </h2>
 
             <p
-              className="text-[17px] md:text-[18px] text-slate-400 max-w-2xl leading-[1.65] font-normal"
+              className="iq-features-subtitle text-[17px] md:text-[18px] text-slate-400 max-w-2xl leading-[1.65] font-normal"
               style={{ fontFamily: "var(--font-inter)" }}
             >
               {t("Every tool your team needs to move faster and decide smarter — built into the flow, not bolted on.")}
@@ -313,14 +312,14 @@ export default function QuoteToOrderFeatures() {
         </motion.div>
       </div>
 
-      {/* Grid â€” bordered cards with shared borders */}
-      <div className="relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6">
+      {/* Grid of bordered cards with shared borders */}
+      <div className="iq-features-grid-wrap relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="relative grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="iq-features-grid relative grid grid-cols-1 md:grid-cols-3 gap-6"
         >
           {features.map((f, i) => (
             <FeatureCard key={f.title} {...f} index={i} />

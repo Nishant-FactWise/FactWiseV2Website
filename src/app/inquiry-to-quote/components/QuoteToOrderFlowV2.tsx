@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
+import { useRef, useState, useCallback } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLocalizedText } from '@/hooks/useLocalizedText';
 
@@ -25,19 +25,10 @@ const gradientBg =
 
 export default function QuoteToOrderFlowV2() {
     const t = useLocalizedText();
-    const [isDesktop, setIsDesktop] = useState(false);
     const [activePanel, setActivePanel] = useState(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     /* ── desktop detection ── */
-    useEffect(() => {
-        const mq = window.matchMedia('(min-width: 1024px)');
-        const apply = () => setIsDesktop(mq.matches);
-        apply();
-        mq.addEventListener('change', apply);
-        return () => mq.removeEventListener('change', apply);
-    }, []);
-
     /* ── Framer Motion scroll tracking ── */
     const { scrollYProgress } = useScroll({
         target: wrapperRef,
@@ -68,9 +59,9 @@ export default function QuoteToOrderFlowV2() {
     return (
         <>
             {/* ── HEADING (scrolls normally) ── */}
-            <section style={{ background: 'white', padding: '80px 24px 60px', textAlign: 'center' }}>
+            <section className="iq-flow-intro" style={{ background: 'white', padding: '80px 24px 60px', textAlign: 'center' }}>
                 <div style={{ maxWidth: 1240, margin: '0 auto' }}>
-                    <div style={{
+                    <div className="iq-flow-eyebrow" style={{
                         display: 'inline-flex', alignItems: 'center', gap: 6,
                         padding: '5px 14px', borderRadius: 100,
                         background: 'rgba(54,102,255,0.06)', border: '1px solid rgba(54,102,255,0.15)',
@@ -81,7 +72,7 @@ export default function QuoteToOrderFlowV2() {
                         <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#3666ff', display: 'inline-block', animation: 'qtof-pulse 2s infinite' }} />
                         {t('The FactWise Inquiry to Quote Engine')}
                     </div>
-                    <h2 style={{
+                    <h2 className="iq-flow-title" style={{
                         fontSize: 'clamp(32px, 3.4vw, 52px)', fontWeight: 600,
                         lineHeight: 1.1, letterSpacing: '-0.035em',
                         color: '#0D1117', margin: '0 0 16px',
@@ -89,7 +80,7 @@ export default function QuoteToOrderFlowV2() {
                     }}>
                         {t('How FactWise Automates')} <span style={{ color: '#3666ff' }}>{t('Every Step')}</span>
                     </h2>
-                    <p style={{ fontSize: 17, lineHeight: 1.65, color: '#64748b', maxWidth: 640, margin: '0 auto', fontFamily: 'var(--font-inter)' }}>
+                    <p className="iq-flow-subtitle" style={{ fontSize: 17, lineHeight: 1.65, color: '#64748b', maxWidth: 640, margin: '0 auto', fontFamily: 'var(--font-inter)' }}>
                         {t('From the first BOM line to the final customer quote — intelligent at every step, automated at every turn.')}
                     </p>
                 </div>
@@ -206,11 +197,11 @@ export default function QuoteToOrderFlowV2() {
             </div>
 
             {/* ── MOBILE: stacked vertically ── */}
-            <div className="block lg:hidden bg-white">
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><BomCostSection /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section32SourceAINegotiate isActive /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section33LandedCostXRay isActive /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section34QuoteAIInsight isActive /></div>
+            <div className="iq-flow-mobile block bg-white lg:hidden">
+                <div className="iq-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><BomCostSection /></div>
+                <div className="iq-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section32SourceAINegotiate isActive /></div>
+                <div className="iq-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section33LandedCostXRay isActive /></div>
+                <div className="iq-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><Section34QuoteAIInsight isActive /></div>
             </div>
 
             <style>{`@keyframes qtof-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }`}</style>

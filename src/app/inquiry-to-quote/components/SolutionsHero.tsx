@@ -3,10 +3,10 @@
 import * as React from "react"
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, ShieldCheck } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useLocalizedText } from '@/hooks/useLocalizedText'
 
-/* â”€â”€ tiny inline SVG icons used inside the dashboard only â”€â”€ */
+/* Tiny inline SVG icons used inside the dashboard only */
 const IcGrid  = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
 const IcBox   = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
 const IcLayers= () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
@@ -15,9 +15,9 @@ const IcBar   = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none
 const IcClock = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
 const IcWave  = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ------------------------------------------------------------
    WHITE DASHBOARD MOCKUP
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+------------------------------------------------------------- */
 function WhiteDashboard() {
   const mono = "'JetBrains Mono', monospace"
   return (
@@ -104,8 +104,8 @@ function WhiteDashboard() {
           {/* Header */}
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
             <div>
-              <div style={{fontSize:13,fontWeight:700,color:'#1A1D2E',letterSpacing:'-0.01em'}}>BOM-4781 Â· Hydraulic Assembly</div>
-              <div style={{fontSize:9,color:'#94a3b8',marginTop:2}}>Multi-level Â· 247 line items Â· Rev 3.2</div>
+              <div style={{fontSize:13,fontWeight:700,color:'#1A1D2E',letterSpacing:'-0.01em'}}>BOM-4781 · Hydraulic Assembly</div>
+              <div style={{fontSize:9,color:'#94a3b8',marginTop:2}}>Multi-level · 247 line items · Rev 3.2</div>
             </div>
             <div style={{
               display:'inline-flex',alignItems:'center',gap:4,
@@ -121,9 +121,9 @@ function WhiteDashboard() {
           {/* KPIs */}
           <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
             {[
-              {label:'Target Cost',    value:'â‚¹48,210', delta:'â†“ 4.2% vs last rev'},
-              {label:'Best Bid',       value:'â‚¹45,890', delta:'â†“ â‚¹2,320 saved'},
-              {label:'Margin Forecast',value:'28.4%',   delta:'â†‘ 3.1 pts'},
+              {label:'Target Cost',    value:'₹48,210', delta:'↓ 4.2% vs last rev'},
+              {label:'Best Bid',       value:'₹45,890', delta:'↓ ₹2,320 saved'},
+              {label:'Margin Forecast',value:'28.4%',   delta:'↑ 3.1 pts'},
             ].map(k=>(
               <div key={k.label} style={{
                 background:'white',border:'1px solid #f1f5f9',
@@ -155,10 +155,10 @@ function WhiteDashboard() {
               <div>Component</div><div>Part ID</div><div>Qty</div><div>Unit Cost</div><div>Trend</div>
             </div>
             {[
-              {name:'Hydraulic cylinder',  id:'HC-2048-B',qty:12,price:'â‚¹284.20',bars:[50,70,60,85,75]},
-              {name:'Piston seal kit',     id:'PSK-114-A',qty:24,price:'â‚¹42.80', bars:[80,65,70,55,50]},
-              {name:'Pressure regulator', id:'PR-509-T', qty:6, price:'â‚¹176.50',bars:[45,60,75,70,90]},
-              {name:'Stainless flange',   id:'SF-302-X', qty:18,price:'â‚¹89.10', bars:[60,55,50,45,40]},
+              {name:'Hydraulic cylinder',  id:'HC-2048-B',qty:12,price:'₹284.20',bars:[50,70,60,85,75]},
+              {name:'Piston seal kit',     id:'PSK-114-A',qty:24,price:'₹42.80', bars:[80,65,70,55,50]},
+              {name:'Pressure regulator', id:'PR-509-T', qty:6, price:'₹176.50',bars:[45,60,75,70,90]},
+              {name:'Stainless flange',   id:'SF-302-X', qty:18,price:'₹89.10', bars:[60,55,50,45,40]},
             ].map((r,i)=>(
               <div key={r.id} style={{
                 display:'grid',gridTemplateColumns:'1.5fr 1fr 0.5fr 0.8fr 0.5fr',
@@ -183,9 +183,9 @@ function WhiteDashboard() {
   )
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   FLOATING CARDS â€” white themed, same positions as HTML original
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ------------------------------------------------------------
+   FLOATING CARDS: white theme, matching the original positions
+------------------------------------------------------------- */
 function FloatCard({ style, delay=0, yAmt=12, dur=6, children }: {
   style?: React.CSSProperties; delay?: number; yAmt?: number; dur?: number; children: React.ReactNode
 }) {
@@ -212,24 +212,15 @@ function FloatCard({ style, delay=0, yAmt=12, dur=6, children }: {
   )
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ------------------------------------------------------------
    MAIN HERO
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+------------------------------------------------------------- */
 export default function SolutionsHero() {
   const t = useLocalizedText()
   const mono = "'JetBrains Mono', monospace"
-  const [isDesktop, setIsDesktop] = React.useState(false)
-
-  React.useEffect(() => {
-    setIsDesktop(window.innerWidth >= 1280)
-    const handleResize = () => setIsDesktop(window.innerWidth >= 1280)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
   return (
     <>
-    <section className="fw-hero-section" style={{ position:'relative', width:'100%', minHeight:'100vh', overflow:'hidden', background:'#020617', color:'white' }}>
+    <section className="fw-hero-section iq-hero-section" style={{ position:'relative', width:'100%', minHeight:'100vh', overflow:'hidden', background:'#020617', color:'white' }}>
       {/* Background glows */}
       <div style={{ position:'absolute', inset:0, overflow:'hidden', pointerEvents:'none' }}>
         <div style={{ position:'absolute', top:'-10%', right:'-10%', width:'60%', height:'60%', borderRadius:'50%', background:'rgba(59,130,246,0.1)', filter:'blur(120px)' }}/>
@@ -253,13 +244,14 @@ export default function SolutionsHero() {
         transform: 'translateY(3%)',
       }}>
 
-        {/* â”€â”€ LEFT COLUMN â”€â”€ */}
+        {/* Left column */}
         <motion.div
           initial={{ opacity:0, y:20 }}
           animate={{ opacity:1, y:0 }}
+          className="iq-hero-copy"
           style={{ maxWidth:600 }}
         >
-          <h1 style={{
+          <h1 className="iq-hero-title" style={{
             fontSize:'clamp(30px, 2.8vw, 46px)', fontWeight:600,
             lineHeight:1.1, letterSpacing:'-0.035em', marginBottom:24,
             fontFamily:'var(--font-display)',
@@ -275,7 +267,7 @@ export default function SolutionsHero() {
           </h1>
 
           {/* Subhead */}
-          <p style={{
+          <p className="iq-hero-subtitle" style={{
             fontSize:18, lineHeight:1.65, color:'#8899b8', fontWeight:400,
             marginBottom:40, maxWidth:520, fontFamily:'var(--font-inter)',
           }}>
@@ -283,9 +275,10 @@ export default function SolutionsHero() {
           </p>
 
           {/* CTAs */}
-          <div style={{ display:'flex', gap:14, alignItems:'center', marginBottom:48 }}>
+          <div className="iq-hero-actions" style={{ display:'flex', gap:14, alignItems:'center', marginBottom:48 }}>
             <Link
               href="/demo"
+              className="iq-hero-cta"
               style={{
                 background:'linear-gradient(135deg,#4f8bff,#2a6cff)', color:'white', border:'none',
                 padding:'14px 24px 14px 28px', borderRadius:100, fontSize:15, fontWeight:600,
@@ -306,8 +299,7 @@ export default function SolutionsHero() {
           </div>
         </motion.div>
 
-        {/* â”€â”€ RIGHT COLUMN: Dashboard + floating cards â”€â”€ */}
-        {isDesktop && (
+        {/* Right column: dashboard and floating cards */}
         <motion.div
           initial={{ opacity:0, y:20 }}
           animate={{ opacity:1, y:0 }}
@@ -330,11 +322,11 @@ export default function SolutionsHero() {
             <WhiteDashboard />
           </div>
 
-          {/* Float card 1 â€” RFQ Bids (top-left) */}
+          {/* Floating card 1: RFQ bids (top-left) */}
           <FloatCard delay={0.5} yAmt={12} dur={6} style={{ top:40, left:-45, width:248, padding:'10px 14px' }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:6 }}>
               <div>
-                <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>RFQ-9821 Â· Bids in</div>
+                <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>RFQ-9821 · Bids in</div>
                 <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>5 of 7 vendors responded</div>
               </div>
               <div style={{
@@ -344,10 +336,10 @@ export default function SolutionsHero() {
               }}><IcLayers/></div>
             </div>
             {[
-              {name:'Vendor A', price:'â‚¹45,890', win:true},
-              {name:'Vendor B', price:'â‚¹46,420'},
-              {name:'Vendor C', price:'â‚¹47,180'},
-              {name:'Vendor D', price:'â‚¹49,210', dim:true},
+              {name:'Vendor A', price:'₹45,890', win:true},
+              {name:'Vendor B', price:'₹46,420'},
+              {name:'Vendor C', price:'₹47,180'},
+              {name:'Vendor D', price:'₹49,210', dim:true},
             ].map((v,i)=>(
               <div key={v.name} style={{
                 display:'flex', justifyContent:'space-between', alignItems:'center',
@@ -370,12 +362,12 @@ export default function SolutionsHero() {
             ))}
           </FloatCard>
 
-          {/* Float card 2 â€” Auto-negotiation (bottom-left) */}
+          {/* Floating card 2: auto-negotiation (bottom-left) */}
           <FloatCard delay={1.2} yAmt={10} dur={7} style={{ bottom:120, left:20, width:228 }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
               <div>
                 <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>Auto-negotiation</div>
-                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Round 3 of 4 Â· running</div>
+                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Round 3 of 4 · running</div>
               </div>
               <div style={{
                 width:24, height:24, borderRadius:6,
@@ -391,22 +383,22 @@ export default function SolutionsHero() {
             </div>
             <div style={{ display:'flex', justifyContent:'space-between', fontSize:9, color:'#94a3b8' }}>
               <span>Vendors driven to best price</span>
-              <span style={{ color:'#10b981', fontWeight:700, fontFamily:mono }}>âˆ’8.7%</span>
+              <span style={{ color:'#10b981', fontWeight:700, fontFamily:mono }}>−8.7%</span>
             </div>
           </FloatCard>
 
-          {/* Float card 3 â€” Quote ready (right side) */}
+          {/* Floating card 3: quote ready (right side) */}
           <FloatCard delay={2.4} yAmt={14} dur={8} style={{ top:270, right:-40, width:268 }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:4 }}>
               <div>
                 <div style={{ fontSize:11, fontWeight:700, color:'#1A1D2E' }}>Quote ready</div>
-                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Q-2049 Â· Generated in 1 click</div>
+                <div style={{ fontSize:9, color:'#94a3b8', marginTop:2 }}>Q-2049 · Generated in 1 click</div>
               </div>
               <span style={{
                 padding:'2px 8px', borderRadius:5, fontSize:9, fontWeight:700,
                 background:'rgba(0,184,132,0.08)', color:'#10b981',
                 border:'1px solid rgba(0,184,132,0.2)',
-              }}>âœ“ Sent</span>
+              }}>✓ Sent</span>
             </div>
             <div style={{ fontSize:24, fontWeight:700, letterSpacing:'-0.025em', fontFamily:mono, color:'#1A1D2E', margin:'7px 0 2px' }}>
               <span style={{ fontSize:13, color:'#94a3b8' }}>$</span>58,470
@@ -414,9 +406,9 @@ export default function SolutionsHero() {
             <div style={{ fontSize:9, color:'#94a3b8', marginBottom:10 }}>Customer: Riverline Engineering</div>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, paddingTop:10, borderTop:'1px solid #f1f5f9' }}>
               {[
-                {label:'Landed cost', value:'â‚¹45,890'},
+                {label:'Landed cost', value:'₹45,890'},
                 {label:'Markup',      value:'27.4%'},
-                {label:'Margin',      value:'â‚¹12,580', green:true},
+                {label:'Margin',      value:'₹12,580', green:true},
                 {label:'Turnaround',  value:'2h 14m'},
               ].map(q=>(
                 <div key={q.label}>
@@ -427,7 +419,6 @@ export default function SolutionsHero() {
             </div>
           </FloatCard>
         </motion.div>
-        )}
       </div>
 
       <style>{`@keyframes fw-pulse{0%,100%{opacity:1}50%{opacity:0.35}}`}</style>

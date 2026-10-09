@@ -110,7 +110,7 @@ function CapabilityCard({
         delay: index * 0.08,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="group relative flex flex-col bg-white p-8 lg:p-9 overflow-hidden isolate rounded-2xl border border-slate-200/70 shadow-[0_4px_24px_-14px_rgba(15,23,42,0.12)] transition-colors duration-300"
+      className="supplier-capability-card group relative flex flex-col bg-white p-8 lg:p-9 overflow-hidden isolate rounded-2xl border border-slate-200/70 shadow-[0_4px_24px_-14px_rgba(15,23,42,0.12)] transition-colors duration-300"
       style={
         index % 2 === 1
           ? {
@@ -193,7 +193,7 @@ function CapabilityCard({
 /* ─── Main section capability grid ─── */
 export default function SupplierCapabilities() {
   return (
-    <section className="relative w-full bg-white py-24 overflow-hidden border-t border-slate-100">
+    <section className="supplier-capabilities relative w-full bg-white py-24 overflow-hidden border-t border-slate-100">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.45]"
@@ -208,13 +208,13 @@ export default function SupplierCapabilities() {
         }}
       />
 
-      <div className="relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 mb-16">
+      <div className="supplier-capabilities-header relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 mb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-8"
+          className="supplier-capabilities-heading-row flex flex-col md:flex-row md:items-end md:justify-between gap-8"
         >
           <div>
             <motion.div
@@ -222,7 +222,7 @@ export default function SupplierCapabilities() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.05 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-6 shadow-[0_1px_2px_rgba(54,102,255,0.08)]"
+              className="supplier-capabilities-eyebrow inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-6 shadow-[0_1px_2px_rgba(54,102,255,0.08)]"
             >
               <span className="relative flex size-1.5">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-[#3666ff] opacity-75 animate-ping" />
@@ -232,7 +232,7 @@ export default function SupplierCapabilities() {
             </motion.div>
 
             <h2
-              className="text-[36px] md:text-[48px] font-semibold text-[#0D1117] mb-5 tracking-[-0.03em] leading-[1.1] max-w-2xl"
+              className="supplier-capabilities-title text-[36px] md:text-[48px] font-semibold text-[#0D1117] mb-5 tracking-[-0.03em] leading-[1.1] max-w-2xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Powerful Features.{" "}
@@ -242,7 +242,7 @@ export default function SupplierCapabilities() {
             </h2>
 
             <p
-              className="text-[17px] md:text-[18px] text-slate-400 max-w-2xl leading-[1.65] font-normal"
+              className="supplier-capabilities-subtitle text-[17px] md:text-[18px] text-slate-400 max-w-2xl leading-[1.65] font-normal"
               style={{ fontFamily: "var(--font-inter)" }}
             >
               Every tool your team needs to move faster and decide smarter —
@@ -276,13 +276,13 @@ export default function SupplierCapabilities() {
         </motion.div>
       </div>
 
-      <div className="relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6">
+      <div className="supplier-capabilities-grid-wrap relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="relative grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="supplier-capabilities-grid relative grid grid-cols-1 md:grid-cols-3 gap-6"
         >
           {capabilities.map((c, i) => (
             <CapabilityCard key={c.title} {...c} index={i} />

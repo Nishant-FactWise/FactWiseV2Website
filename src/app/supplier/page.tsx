@@ -41,7 +41,7 @@ export default function SupplierPage() {
   const mainRef = React.useRef<HTMLElement | null>(null);
 
   return (
-    <main ref={mainRef} className="min-h-screen bg-white">
+    <main ref={mainRef} className="supplier-page min-h-screen bg-white">
       <ScopedLocaleText rootRef={mainRef} />
       <SupplierHero />
       <SupplierStatsBar />
@@ -51,6 +51,7 @@ export default function SupplierPage() {
         features={supplierBenefits}
         title="Benefits of joining FactWise"
         autoPlayInterval={5000}
+        className="supplier-benefits"
       />
       <SupplierCapabilities />
       <FlickeringFooter />

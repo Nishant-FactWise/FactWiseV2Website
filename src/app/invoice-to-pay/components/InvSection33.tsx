@@ -46,7 +46,7 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
     const passed = phase >= 4 ? 280 : phase >= 3 ? 282 : phase >= 2 ? 288 : 300;
 
     return (
-        <div id="inv-section-3-3" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
+        <div id="inv-section-3-3" className="inv-flow-section grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
             <style dangerouslySetInnerHTML={{
                 __html: `
             @keyframes inv-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
@@ -59,21 +59,21 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 space-y-6 text-left"
+                className="inv-flow-copy lg:col-span-6 space-y-6 text-left"
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
                     Step 03 · Quality Control
                 </div>
-                <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="inv-feature-title text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     Quality Checks On Platform.<br />
                     <span className="text-[#3666ff]">Nothing Slips Through.</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
-                    Primary, secondary, and production-line checks — all on the platform, against any invoice or goods receipt, with full attachment support. FactWise's AI flags discrepancies between QC outcomes and the goods receipt automatically. Rejected items are tracked, actioned, and never paid for.
+                <p className="inv-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                    Primary, secondary, and production-line checks — all on the platform, against any invoice or goods receipt, with full attachment support. FactWise&apos;s AI flags discrepancies between QC outcomes and the goods receipt automatically. Rejected items are tracked, actioned, and never paid for.
                 </p>
 
-                <div className="flex flex-col gap-2 mt-8 text-left">
+                <div className="inv-feature-steps flex flex-col gap-2 mt-8 text-left">
                     {steps.map((item) => (
                         <div
                             key={item.p}
@@ -114,7 +114,7 @@ export default function InvSection33({ isActive = true }: { isActive?: boolean }
                 className="lg:col-span-6 relative"
             >
                  <div
-                    className="relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none h-auto lg:h-[549px] lg:min-h-[549px] lg:max-h-[549px]"
+                    className="inv-animation-card relative rounded-3xl bg-white border border-slate-200/80 p-3.5 shadow-[0_30px_80px_-15px_rgba(15,23,42,0.22),0_15px_40px_-10px_rgba(54,102,255,0.15)] overflow-hidden flex flex-col justify-between select-none h-auto lg:h-[549px] lg:min-h-[549px] lg:max-h-[549px]"
                 >
                     {/* Top bar */}
                     <div className="pb-3 border-b border-slate-100 flex items-center justify-between">

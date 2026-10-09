@@ -30,7 +30,7 @@ export default function ReqToPoFlow() {
     const [activePanel, setActivePanel] = useState(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    /* â”€â”€ desktop detection â”€â”€ */
+    /* Desktop detection */
     useEffect(() => {
         const mq = window.matchMedia('(min-width: 1024px)');
         const apply = () => setIsDesktop(mq.matches);
@@ -39,7 +39,7 @@ export default function ReqToPoFlow() {
         return () => mq.removeEventListener('change', apply);
     }, []);
 
-    /* â”€â”€ Framer Motion scroll tracking â”€â”€ */
+    /* Framer Motion scroll tracking */
     const { scrollYProgress } = useScroll({
         target: wrapperRef,
         offset: ['start start', 'end end'],
@@ -55,7 +55,7 @@ export default function ReqToPoFlow() {
     }
   });
 
-    /* â”€â”€ arrow navigation â”€â”€ */
+    /* Arrow navigation */
     const navTo = useCallback((idx: number) => {
         if (!wrapperRef.current) return;
         const sectionTop = wrapperRef.current.getBoundingClientRect().top + window.scrollY;
@@ -68,10 +68,10 @@ export default function ReqToPoFlow() {
 
     return (
         <>
-            {/* â”€â”€ HEADING (scrolls normally) â”€â”€ */}
-            <section style={{ background: 'white', padding: '80px 24px 60px', textAlign: 'center' }}>
+            {/* Heading scrolls normally */}
+            <section className="req-flow-intro" style={{ background: 'white', padding: '80px 24px 60px', textAlign: 'center' }}>
                 <div style={{ maxWidth: 1240, margin: '0 auto' }}>
-                    <div style={{
+                    <div className="req-flow-eyebrow" style={{
                         display: 'inline-flex', alignItems: 'center', gap: 6,
                         padding: '5px 14px', borderRadius: 100,
                         background: 'rgba(54,102,255,0.06)', border: '1px solid rgba(54,102,255,0.15)',
@@ -82,7 +82,7 @@ export default function ReqToPoFlow() {
                         <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#3666ff', display: 'inline-block', animation: 'rtpf-pulse 2s infinite' }} />
                         {t('The FactWise Req-to-PO Engine')}
                     </div>
-                    <h2 style={{
+                    <h2 className="req-flow-title" style={{
                         fontSize: 'clamp(32px, 3.4vw, 52px)', fontWeight: 600,
                         lineHeight: 1.1, letterSpacing: '-0.035em',
                         color: '#0D1117', margin: '0 0 16px',
@@ -90,13 +90,13 @@ export default function ReqToPoFlow() {
                     }}>
                         {t('How FactWise')} <span style={{ color: '#3666ff' }}>{t('Automates Every Step.')}</span>
                     </h2>
-                    <p style={{ fontSize: 17, lineHeight: 1.65, color: '#64748b', maxWidth: 620, margin: '0 auto', fontFamily: 'var(--font-inter)' }}>
-                        {t('From the first requisition raised to the last PO issued â€” intelligent at every step, automated at every turn.')}
+                    <p className="req-flow-subtitle" style={{ fontSize: 17, lineHeight: 1.65, color: '#64748b', maxWidth: 620, margin: '0 auto', fontFamily: 'var(--font-inter)' }}>
+                        {t('From the first requisition raised to the last PO issued — intelligent at every step, automated at every turn.')}
                     </p>
                 </div>
             </section>
 
-            {/* â”€â”€ DESKTOP: tall wrapper gives scroll room; inner div is CSS sticky â”€â”€ */}
+            {/* Desktop: tall wrapper provides scroll room; the inner div is sticky */}
             <div
                 ref={wrapperRef}
                 className="hidden lg:block"
@@ -104,14 +104,14 @@ export default function ReqToPoFlow() {
             >
                 <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: 'white' }}>
 
-                    {/* Panel 0 â€” base, always behind */}
+                    {/* Panel 0: base panel, always behind */}
                     <div style={{ position: 'absolute', inset: 0, zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'white' }}>
                         <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '0 24px' }}>
                             <ReqSection31 isActive={activePanel === 0} />
                         </div>
                     </div>
 
-                    {/* Panel 1 â€” slides in from right */}
+                    {/* Panel 1: slides in from the right */}
                     <motion.div 
                         initial={{ x: '100%' }}
                         animate={{ x: activePanel >= 1 ? '0%' : '100%' }}
@@ -123,7 +123,7 @@ export default function ReqToPoFlow() {
                         </div>
                     </motion.div>
 
-                    {/* Panel 2 â€” slides in from right */}
+                    {/* Panel 2: slides in from the right */}
                     <motion.div 
                         initial={{ x: '100%' }}
                         animate={{ x: activePanel >= 2 ? '0%' : '100%' }}
@@ -135,7 +135,7 @@ export default function ReqToPoFlow() {
                         </div>
                     </motion.div>
 
-                    {/* Panel 3 â€” slides in from right */}
+                    {/* Panel 3: slides in from the right */}
                     <motion.div 
                         initial={{ x: '100%' }}
                         animate={{ x: activePanel >= 3 ? '0%' : '100%' }}
@@ -147,7 +147,7 @@ export default function ReqToPoFlow() {
                         </div>
                     </motion.div>
 
-                    {/* Panel 4 â€” slides in from right */}
+                    {/* Panel 4: slides in from the right */}
                     <motion.div 
                         initial={{ x: '100%' }}
                         animate={{ x: activePanel >= 4 ? '0%' : '100%' }}
@@ -218,13 +218,13 @@ export default function ReqToPoFlow() {
                 </div>
             </div>
 
-            {/* â”€â”€ MOBILE: stacked vertically â”€â”€ */}
-            <div className="block lg:hidden bg-[#ffffff]">
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection31 isActive /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection32 isActive /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection33 isActive /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection34 isActive /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection35 isActive /></div>
+            {/* Mobile: stacked vertically */}
+            <div className="req-flow-mobile block lg:hidden bg-[#ffffff]">
+                <div className="req-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection31 isActive /></div>
+                <div className="req-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection32 isActive /></div>
+                <div className="req-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection33 isActive /></div>
+                <div className="req-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection34 isActive /></div>
+                <div className="req-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><ReqSection35 isActive /></div>
             </div>
 
             <style>{`@keyframes rtpf-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }`}</style>

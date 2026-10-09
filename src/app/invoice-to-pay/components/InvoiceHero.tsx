@@ -176,10 +176,10 @@ export default function InvoiceHero() {
       }}>
 
         {/* LEFT COLUMN */}
-        <div style={{ maxWidth:600 }}>
+        <div className="inv-hero-copy" style={{ maxWidth:600 }}>
 
           {/* Heading */}
-          <h1 style={{
+          <h1 className="inv-hero-title" style={{
             fontSize:'clamp(30px, 2.8vw, 46px)', fontWeight:600,
             lineHeight:1.15, letterSpacing:'-0.035em', marginBottom:24,
             fontFamily:'var(--font-display)',
@@ -194,7 +194,7 @@ export default function InvoiceHero() {
           </h1>
 
           {/* Subtext */}
-          <p
+          <p className="inv-hero-subtitle"
             style={{
               fontSize:18, lineHeight:1.65, color:'#8899b8', fontWeight:400,
               marginBottom:40, maxWidth:520, fontFamily:'var(--font-inter)',
@@ -204,8 +204,8 @@ export default function InvoiceHero() {
           </p>
 
           {/* CTA Buttons */}
-          <div style={{ display:'flex', gap:14, alignItems:'center', marginBottom:48 }}>
-            <Link
+          <div className="inv-hero-actions" style={{ display:'flex', gap:14, alignItems:'center', marginBottom:48 }}>
+            <Link className="inv-hero-cta"
               href={localizePath('/demo', locale)}
               style={{
                 background:'linear-gradient(135deg,#4f8bff,#2a6cff)', color:'white', border:'none',

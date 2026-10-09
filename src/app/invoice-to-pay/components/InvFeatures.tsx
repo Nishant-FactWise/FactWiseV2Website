@@ -121,7 +121,7 @@ function FeatureCard({
         delay: index * 0.08,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="group relative flex flex-col bg-white p-8 lg:p-9 overflow-hidden isolate rounded-2xl border border-slate-200/70 shadow-[0_4px_24px_-14px_rgba(15,23,42,0.12)] transition-colors duration-300"
+      className="inv-feature-card group relative flex flex-col bg-white p-8 lg:p-9 overflow-hidden isolate rounded-2xl border border-slate-200/70 shadow-[0_4px_24px_-14px_rgba(15,23,42,0.12)] transition-colors duration-300"
       style={
         index % 2 === 1
           ? {
@@ -223,7 +223,7 @@ export default function InvFeatures() {
   const t = useLocalizedText();
 
   return (
-    <section className="relative w-full bg-white pt-8 pb-28 overflow-hidden">
+    <section className="inv-features-section relative w-full bg-white pt-8 pb-28 overflow-hidden">
       {/* Decorative dot-grid background */}
       <div
         aria-hidden
@@ -240,13 +240,13 @@ export default function InvFeatures() {
       />
 
       {/* Header */}
-      <div className="relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 mb-16">
+      <div className="inv-features-header relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 mb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-8"
+          className="inv-features-heading-row flex flex-col md:flex-row md:items-end md:justify-between gap-8"
         >
           <div>
             <motion.div
@@ -254,7 +254,7 @@ export default function InvFeatures() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.05 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-6 shadow-[0_1px_2px_rgba(54,102,255,0.08)]"
+              className="inv-features-eyebrow inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-6 shadow-[0_1px_2px_rgba(54,102,255,0.08)]"
             >
               <span className="relative flex size-1.5">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-[#3666ff] opacity-75 animate-ping" />
@@ -264,7 +264,7 @@ export default function InvFeatures() {
             </motion.div>
 
             <h2
-              className="text-[36px] md:text-[48px] font-semibold text-[#0D1117] mb-5 tracking-[-0.03em] leading-[1.1] max-w-2xl"
+              className="inv-features-title text-[36px] md:text-[48px] font-semibold text-[#0D1117] mb-5 tracking-[-0.03em] leading-[1.1] max-w-2xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
               {t('Powerful Features.')}{" "}
@@ -274,7 +274,7 @@ export default function InvFeatures() {
             </h2>
 
             <p
-              className="text-[17px] md:text-[18px] text-slate-400 max-w-2xl leading-[1.65] font-normal"
+              className="inv-features-subtitle text-[17px] md:text-[18px] text-slate-400 max-w-2xl leading-[1.65] font-normal"
               style={{ fontFamily: "var(--font-inter)" }}
             >
               {t('Every tool your team needs to process invoices faster and pay smarter — built into the flow, not bolted on.')}
@@ -309,13 +309,13 @@ export default function InvFeatures() {
       </div>
 
       {/* Grid */}
-      <div className="relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6">
+      <div className="inv-features-grid-wrap relative mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="relative grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="inv-features-grid relative grid grid-cols-1 md:grid-cols-3 gap-6"
         >
           {features.map((f, i) => (
             <FeatureCard key={f.title} {...f} index={i} />

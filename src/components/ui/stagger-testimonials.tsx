@@ -19,6 +19,7 @@ interface TestimonialCardProps {
   testimonial: TestimonialItem;
   handleMove: (steps: number) => void;
   cardSize: number;
+  compact: boolean;
 }
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({
@@ -26,6 +27,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   testimonial,
   handleMove,
   cardSize,
+  compact,
 }) => {
   const isCenter = position === 0;
 
@@ -41,12 +43,12 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       style={{
         width: cardSize,
         height: cardSize,
-        padding: '28px 28px 24px',
-        clipPath: `polygon(40px 0%, calc(100% - 40px) 0%, 100% 40px, 100% 100%, calc(100% - 40px) 100%, 40px 100%, 0 100%, 0 0)`,
+        padding: compact ? '22px 20px 20px' : '28px 28px 24px',
+        clipPath: `polygon(${compact ? 28 : 40}px 0%, calc(100% - ${compact ? 28 : 40}px) 0%, 100% ${compact ? 28 : 40}px, 100% 100%, calc(100% - ${compact ? 28 : 40}px) 100%, ${compact ? 28 : 40}px 100%, 0 100%, 0 0)`,
         transform: `
           translate(-50%, -50%)
           translateX(${(cardSize / 1.5) * position}px)
-          translateY(${isCenter ? -65 : position % 2 ? 15 : -15}px)
+          translateY(${isCenter ? (compact ? -38 : -65) : position % 2 ? 15 : -15}px)
           rotate(${isCenter ? 0 : position % 2 ? 2.5 : -2.5}deg)
         `,
         boxShadow: isCenter
@@ -82,7 +84,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       {/* Quote — grows to fill space, clamps overflow */}
       <p
         className={cn(
-          'flex-1 overflow-hidden text-[13px] leading-relaxed',
+          'flex-1 overflow-hidden text-justify text-[13px] leading-relaxed',
           isCenter ? 'text-white' : 'text-slate-700'
         )}
         style={{
@@ -93,7 +95,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           overflow: 'hidden',
         }}
       >
-        "{testimonial.testimonial}"
+        &ldquo;{testimonial.testimonial}&rdquo;
       </p>
 
       {/* Author — always at bottom, never overlaps */}
@@ -123,6 +125,7 @@ interface StaggerTestimonialsProps {
 
 export const StaggerTestimonials: React.FC<StaggerTestimonialsProps> = ({ testimonials }) => {
   const [cardSize, setCardSize] = useState(340);
+  const [compact, setCompact] = useState(false);
   const [list, setList] = useState(testimonials);
 
   const handleMove = (steps: number) => {
@@ -145,7 +148,9 @@ export const StaggerTestimonials: React.FC<StaggerTestimonialsProps> = ({ testim
 
   useEffect(() => {
     const updateSize = () => {
-      setCardSize(window.matchMedia('(min-width: 640px)').matches ? 340 : 280);
+      const isCompact = !window.matchMedia('(min-width: 640px)').matches;
+      setCompact(isCompact);
+      setCardSize(isCompact ? Math.min(280, window.innerWidth - 56) : 340);
     };
     updateSize();
     window.addEventListener('resize', updateSize);
@@ -153,7 +158,7 @@ export const StaggerTestimonials: React.FC<StaggerTestimonialsProps> = ({ testim
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden" style={{ height: 560 }}>
+    <div className="relative w-full overflow-hidden" style={{ height: compact ? cardSize + 150 : 560 }}>
       {list.map((item, index) => {
         const position =
           list.length % 2
@@ -166,6 +171,7 @@ export const StaggerTestimonials: React.FC<StaggerTestimonialsProps> = ({ testim
             handleMove={handleMove}
             position={position}
             cardSize={cardSize}
+            compact={compact}
           />
         );
       })}

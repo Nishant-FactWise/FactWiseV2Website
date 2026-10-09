@@ -33,7 +33,7 @@ const stats = [
 
 export default function SupplierStatsBar() {
   return (
-    <div
+    <div className="supplier-stats"
       style={{
         background: '#ffffff',
         borderBottom: '1px solid #e8edf3',
@@ -42,7 +42,7 @@ export default function SupplierStatsBar() {
       }}
     >
       {/* Rainbow top accent line */}
-      <div
+      <div className="supplier-stats-inner"
         style={{
           position: 'absolute',
           top: 0,
@@ -62,7 +62,7 @@ export default function SupplierStatsBar() {
         }}
       >
         <div
-          className="grid grid-cols-1 md:grid-cols-3"
+          className="supplier-stats-grid grid grid-cols-1 md:grid-cols-3"
           style={{ gap: 0 }}
         >
           {stats.map((stat, i) => {
@@ -80,10 +80,10 @@ export default function SupplierStatsBar() {
                   padding: '28px 32px',
                   position: 'relative',
                 }}
-                className={i !== stats.length - 1 ? 'border-b md:border-b-0 md:border-r border-[#e8edf3]' : ''}
+                className={`supplier-stat-item ${i !== stats.length - 1 ? 'border-b md:border-b-0 md:border-r border-[#e8edf3]' : ''}`}
               >
                 {/* Icon bubble */}
-                <div
+                <div className="supplier-stat-icon"
                   style={{
                     width: 44,
                     height: 44,
@@ -99,8 +99,8 @@ export default function SupplierStatsBar() {
                 </div>
 
                 {/* Text */}
-                <div>
-                  <div
+                <div className="supplier-stat-copy">
+                  <div className="supplier-stat-value"
                     style={{
                       fontSize: 'clamp(20px, 2vw, 28px)',
                       fontWeight: 800,
@@ -112,7 +112,7 @@ export default function SupplierStatsBar() {
                   >
                     {stat.value}
                   </div>
-                  <div
+                  <div className="supplier-stat-label"
                     style={{
                       fontSize: 13,
                       color: '#64748b',

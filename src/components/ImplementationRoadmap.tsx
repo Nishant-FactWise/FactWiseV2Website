@@ -276,7 +276,6 @@ const CARDS = [
   {
     id: "ops", phase: "Phase 02", timeline: "MONTHS 3–6",
     accent: "#00b884", accentBg: "rgba(0,184,132,0.07)", accentBorder: "rgba(0,184,132,0.22)", cardBg: "#f0faf6",
-    popular: true,
     title: "Replace Manual Work. Gain Speed.",
     desc: "RFQs take hours instead of days. Approvals are automated, letting your team focus on decisions that matter.",
     features: ["Autonomous procurement approvals","Real-time supply chain visibility","Advanced vendor performance tracking"],
@@ -301,18 +300,18 @@ function PhaseCard({ card, index }: { card: typeof CARDS[0]; index: number }) {
       initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.65, delay: index * 0.13, ease: [0.23,1,0.32,1] }}
-      className="group relative flex flex-col rounded-[20px] overflow-hidden"
+      className="group relative flex min-h-[400px] flex-col overflow-hidden rounded-[18px] sm:min-h-0 sm:rounded-[20px]"
       style={{
         background: "white",
-        border: (card as { popular?: boolean }).popular ? `1.5px solid ${card.accent}` : "1px solid rgba(0,0,0,0.07)",
+        border: "1px solid rgba(0,0,0,0.07)",
         boxShadow: "0 4px 6px -1px rgba(0,0,0,0.07), 0 12px 40px -8px rgba(0,0,0,0.10)",
       }}
-      whileHover={{ y: -6, scale: 1.013, boxShadow: "0 8px 24px rgba(0,0,0,0.08), 0 24px 64px rgba(0,0,0,0.10)",
+      whileHover={{ y: -6, scale: 1.013, borderColor: card.accent, boxShadow: "0 8px 24px rgba(0,0,0,0.08), 0 24px 64px rgba(0,0,0,0.10)",
         transition: { duration: 0.35, ease: [0.23,1,0.32,1] } }}>
 
       {/* Mini animation panel */}
-      <div className="mx-4 mt-4 rounded-[12px] overflow-hidden"
-        style={{ height: 200, background: "#f8fafc", border: `1px solid ${card.accentBorder}` }}>
+      <div className="mx-3 mt-3 h-[184px] overflow-hidden rounded-[12px] sm:mx-4 sm:mt-4 sm:h-[200px]"
+        style={{ background: "#f8fafc", border: `1px solid ${card.accentBorder}` }}>
         <card.Visual />
       </div>
 
@@ -325,9 +324,9 @@ function PhaseCard({ card, index }: { card: typeof CARDS[0]; index: number }) {
       </div>
 
       {/* Text */}
-      <div className="px-5 pt-3 pb-5 flex flex-col gap-3 flex-1">
-        <h3 className="text-[18px] font-bold text-[#1A1D2E] leading-[1.25] tracking-[-0.2px]">{card.title}</h3>
-        <p className="text-[13px] text-slate-500 leading-[1.6] font-light">{card.desc}</p>
+      <div className="flex flex-1 flex-col gap-3 px-5 pb-6 pt-4 sm:pb-5 sm:pt-3">
+        <h3 className="text-[18px] font-bold leading-[1.25] tracking-[-0.2px] text-[#1A1D2E] sm:text-[19px]">{card.title}</h3>
+        <p className="text-justify text-[13px] font-light leading-[1.6] text-slate-500 sm:text-left sm:text-[13.5px]">{card.desc}</p>
         <div className="flex flex-col gap-2 mt-1">
           {card.features.map(f => (
             <div key={f} className="flex items-center gap-2 text-[12.5px] text-slate-600">
@@ -383,33 +382,33 @@ function FlowStrip() {
 /* ─── Main export ────────────────────────────────────────────────────────────── */
 export default function ImplementationRoadmap() {
   return (
-    <section id="roadmap" className="relative py-12 px-4 md:px-10" style={{ scrollMarginTop: "100px" }}>
-      <div className="relative overflow-hidden rounded-[24px] py-20 md:py-28">
+    <section id="roadmap" className="relative px-3 py-8 sm:px-5 sm:py-10 md:px-10 md:py-12" style={{ scrollMarginTop: "100px" }}>
+      <div className="relative overflow-hidden rounded-[20px] py-14 sm:rounded-[24px] sm:py-20 md:py-28">
         <div className="absolute inset-0 hero-gradient" />
         <div className="absolute inset-0 noise opacity-40 pointer-events-none mix-blend-overlay" />
         <div className="absolute -right-32 -bottom-32 w-[700px] h-[700px] rounded-full pointer-events-none opacity-40"
           style={{ background: "radial-gradient(circle, rgba(54,102,255,0.22) 0%, rgba(54,102,255,0.08) 35%, transparent 70%)" }}/>
 
-        <div className="mx-auto max-w-6xl px-6 relative z-10">
-          <div className="max-w-3xl mx-auto text-center mb-14">
+        <div className="relative z-10 mx-auto max-w-6xl px-3 sm:px-6">
+          <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-14">
             <ScrollReveal delay={0.1}>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#3666ff] sm:mb-6">
                 <Rocket className="w-3 h-3" /><span>Implementation Journey</span>
               </div>
             </ScrollReveal>
             <ScrollReveal>
-              <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-4 leading-[1.1]">
+              <h2 className="mb-4 text-[28px] font-bold leading-[1.12] tracking-tight text-[#1A1D2E] sm:text-3xl md:text-5xl">
                 From Sign-Up to Savings.{" "}<span className="italic text-[#3666ff]">Faster Than You Think.</span>
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={0.3}>
-              <p className="text-base md:text-lg text-slate-500 font-light max-w-xl mx-auto leading-relaxed">
+              <p className="mx-auto max-w-xl text-justify text-[15px] font-light leading-[1.65] text-slate-500 sm:text-center sm:text-base md:text-lg">
                 You&apos;re live in weeks, efficient in months, and saving within the year.
               </p>
             </ScrollReveal>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
             {CARDS.map((card, i) => <PhaseCard key={card.id} card={card} index={i} />)}
           </div>
 

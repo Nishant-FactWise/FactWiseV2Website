@@ -294,24 +294,24 @@ export default function SupplierProblemsSection() {
   };
 
   return (
-    <section id="supplier-problems" className="py-20 md:py-24 bg-white relative overflow-hidden border-y border-slate-100 text-[#1A1D2E]">
+    <section id="supplier-problems" className="supplier-problems py-20 md:py-24 bg-white relative overflow-hidden border-y border-slate-100 text-[#1A1D2E]">
       {/* Ambient background blur */}
       <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-blue-50/40 rounded-full blur-[100px] pointer-events-none -z-10" />
       <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-indigo-50/30 rounded-full blur-[100px] pointer-events-none -z-10" />
 
-      <div className="mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 relative z-10">
+      <div className="supplier-problems-inner mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 relative z-10">
         {/* Header row with arrows */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-          <div className="text-center md:text-left max-w-3xl mx-auto md:mx-0">
+          <div className="supplier-problems-heading text-center md:text-left max-w-3xl mx-auto md:mx-0">
             <div
-              className="inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50/50 px-4 py-1.5 text-[11px] font-semibold text-[#3666ff] uppercase tracking-[0.12em] mb-6"
+              className="supplier-problems-eyebrow inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50/50 px-4 py-1.5 text-[11px] font-semibold text-[#3666ff] uppercase tracking-[0.12em] mb-6"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-pulse" />
               {t('Supplier Sourcing Challenges')}
             </div>
 
-            <h2
+            <h2 className="supplier-problems-title"
               style={{
                 fontSize: 'clamp(26px, 3.5vw, 48px)',
                 fontWeight: 600,
@@ -331,7 +331,7 @@ export default function SupplierProblemsSection() {
         {/* Compact, Light-Themed horizontal visual card carousel */}
         <div
           ref={scrollContainerRef}
-          className="w-full flex overflow-x-auto justify-start md:justify-center xl:justify-center gap-6 pb-8 pt-2 px-1 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative"
+          className="supplier-problems-track w-full flex overflow-x-auto justify-start md:justify-center xl:justify-center gap-6 pb-8 pt-2 px-1 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative"
         >
           {problems.map((prob, idx) => (
             <motion.div
@@ -347,7 +347,7 @@ export default function SupplierProblemsSection() {
               onMouseEnter={() => setHoveredCardId(prob.id)}
               onMouseLeave={() => setHoveredCardId(null)}
               className={cn(
-                'group relative rounded-3xl bg-white border border-slate-200/60 p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:border-[#3666ff]/20 overflow-hidden w-[280px] min-w-[280px] sm:w-auto sm:min-w-[290px] xl:min-w-[310px] max-w-[325px] flex-shrink-0 snap-start h-[420px] sm:h-[470px] shadow-[0_12px_36px_-10px_rgba(15,23,42,0.12),_0_0_20px_rgba(54,102,255,0.05)] hover:shadow-[0_20px_50px_-12px_rgba(54,102,255,0.18)]'
+                'supplier-problem-card group relative rounded-3xl bg-white border border-slate-200/60 p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:border-[#3666ff]/20 overflow-hidden w-[280px] min-w-[280px] sm:w-auto sm:min-w-[290px] xl:min-w-[310px] max-w-[325px] flex-shrink-0 snap-start h-[420px] sm:h-[470px] shadow-[0_12px_36px_-10px_rgba(15,23,42,0.12),_0_0_20px_rgba(54,102,255,0.05)] hover:shadow-[0_20px_50px_-12px_rgba(54,102,255,0.18)]'
               )}
             >
               {/* Card Content Top Section */}

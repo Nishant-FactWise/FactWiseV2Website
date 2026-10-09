@@ -11,6 +11,7 @@ import {
   type HygraphPost,
 } from "@/lib/blog/hygraph";
 import { RichText } from "@/lib/blog/RichText";
+import { withoutLongDashes } from "@/lib/display-text";
 
 export const revalidate = 86400;
 export const dynamicParams = true;
@@ -31,8 +32,8 @@ export async function generateMetadata(
   const post = await getPostDetails(slug).catch(() => null);
   if (!post) return { title: "Post not found" };
   const seo = post.seos?.[0];
-  const title = seo?.title ?? post.title;
-  const description = seo?.description || post.excerpt || post.title;
+  const title = withoutLongDashes(seo?.title ?? post.title);
+  const description = withoutLongDashes(seo?.description || post.excerpt || post.title);
   const url = `https://factwise.io/blog/post/${post.slug}`;
   const image = post.featuredPicture?.secure_url ?? post.featuredPicture?.url ?? post.featuredImage?.url;
   return {
@@ -162,7 +163,7 @@ export default async function BlogPostPage(
 
   return (
     <main
-      className="min-h-screen bg-white"
+      className="min-h-screen bg-white [&_p]:text-justify"
       style={{ fontFamily: "var(--font-inter), sans-serif" }}
     >
       <script
@@ -179,7 +180,7 @@ export default async function BlogPostPage(
       />
 
       {/* Hero — full viewport image with gradient overlay and text near bottom */}
-      <section className="relative w-screen h-screen overflow-hidden bg-slate-950">
+      <section className="relative h-[100svh] min-h-[620px] w-full overflow-hidden bg-slate-950 sm:min-h-[680px]">
         {heroImage && (
           <Image
             src={heroImage}
@@ -201,12 +202,12 @@ export default async function BlogPostPage(
         {/* Back link — top-left */}
         <Link
           href="/blog"
-          className="absolute top-28 left-6 md:left-10 z-20 inline-flex items-center gap-1 text-white/80 text-xs font-semibold uppercase tracking-[0.2em] hover:text-white transition-colors"
+          className="absolute left-5 top-24 z-20 inline-flex min-h-11 items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/80 transition-colors hover:text-white sm:left-6 sm:top-28 sm:text-xs sm:tracking-[0.2em] md:left-10"
         >
           <ChevronLeft size={14} /> Back to Blog
         </Link>
         {/* Title block — centered near bottom */}
-        <div className="absolute inset-x-0 bottom-[8vh] z-10 flex justify-center px-6">
+        <div className="absolute inset-x-0 bottom-[6svh] z-10 flex justify-center px-5 sm:bottom-[8vh] sm:px-6">
           <div className="max-w-3xl text-center text-white">
             {post.categories?.[0] && (
               <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
@@ -214,12 +215,11 @@ export default async function BlogPostPage(
               </div>
             )}
             <h1
-              className="font-light tracking-tight leading-[1.15] mb-5"
-              style={{ fontSize: "clamp(28px, 4vw, 44px)" }}
+              className="mb-5 break-words text-[clamp(1.75rem,8vw,2.75rem)] font-light leading-[1.12] tracking-tight"
             >
-              {post.title}
+              {withoutLongDashes(post.title)}
             </h1>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-white/80 text-sm">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-white/80 sm:text-sm">
               {post.author?.name && <span>By {post.author.name}</span>}
               <span className="inline-flex items-center gap-1.5">
                 <Calendar size={13} /> {formatDate(post.lastUpdated)}
@@ -235,7 +235,7 @@ export default async function BlogPostPage(
       </section>
 
       {/* Article */}
-      <article className="max-w-3xl mx-auto px-6 py-16">
+      <article className="mx-auto max-w-3xl overflow-hidden px-5 py-12 sm:px-6 sm:py-16">
         {/* Author */}
         {post.author && (
           <div className="flex items-center gap-4 mb-10">
@@ -262,8 +262,8 @@ export default async function BlogPostPage(
         )}
 
         {/* Excerpt */}
-        <p className="text-lg text-slate-600 leading-relaxed border-y border-slate-200 py-6 mb-10">
-          {post.excerpt}
+        <p className="mb-10 border-y border-slate-200 py-6 text-justify text-base leading-7 text-slate-600 sm:text-lg sm:leading-relaxed">
+          {withoutLongDashes(post.excerpt)}
         </p>
 
         {/* Body */}
@@ -277,7 +277,7 @@ export default async function BlogPostPage(
             <h3 className="text-xl font-bold text-slate-900 mb-3">
               About the Author
             </h3>
-            <p className="text-slate-600 leading-relaxed">{post.author.bio}</p>
+            <p className="text-justify leading-relaxed text-slate-600">{withoutLongDashes(post.author.bio)}</p>
           </div>
         )}
       </article>
@@ -313,10 +313,10 @@ export default async function BlogPostPage(
                   </div>
                   <div className="p-5">
                     <h3 className="text-sm font-bold text-slate-900 leading-snug line-clamp-2 group-hover:underline">
-                      {p.title}
+                      {withoutLongDashes(p.title)}
                     </h3>
-                    <p className="mt-2 text-xs text-slate-500 line-clamp-2">
-                      {p.excerpt}
+                    <p className="mt-2 line-clamp-2 text-justify text-xs text-slate-500">
+                      {withoutLongDashes(p.excerpt)}
                     </p>
                   </div>
                 </Link>

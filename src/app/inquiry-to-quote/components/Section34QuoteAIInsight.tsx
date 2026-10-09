@@ -250,6 +250,31 @@ const QA_STYLE = `
   50% { transform: scale(1.06); box-shadow: 0 12px 24px -4px rgba(54,102,255,0.75); }
 }
 .qa-send.click { transform: scale(0.92); }
+
+@media (max-width: 639px) {
+  .qa-root { height: 560px; border-radius: 18px; box-shadow: 0 14px 38px rgba(15,23,42,0.1); }
+  .qa-chrome { min-height: 52px; gap: 7px; padding: 8px 10px; }
+  .qa-url { min-width: 0; max-width: 146px; padding: 4px 7px; overflow: hidden; font-size: 8px; white-space: nowrap; text-overflow: ellipsis; }
+  .qa-pill { max-width: 130px; padding: 4px 7px; font-size: 7.5px; line-height: 1.25; letter-spacing: 0.08em; text-align: center; }
+  .qa-grid,
+  .qa-grid.l-hidden { position: relative; display: block; }
+  .qa-grid > .qa-col {
+    position: absolute; inset: 0; min-width: 0; padding: 10px !important;
+    border: 0; opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateX(12px); transition: opacity .35s ease, transform .35s ease, visibility .35s;
+  }
+  .qa-grid.show-sources > .qa-col.l,
+  .qa-grid.show-quote > .qa-col.quote,
+  .qa-grid.show-ai > .qa-col.r {
+    opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(0);
+  }
+  .qa-grid.l-hidden .qa-col.l { padding: 10px !important; }
+  .qa-src { padding: 7px 9px; }
+  .qa-doc, .qa-ai { padding: 11px; }
+  .qa-row { padding: 4px 5px; }
+  .qa-answer .body .head { font-size: 10px; }
+  .qa-bar { grid-template-columns: 58px 1fr 27px; }
+}
 `;
 
 export default function Section34QuoteAIInsight({ isActive = true }: { isActive?: boolean }) {
@@ -260,11 +285,13 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
 
     useEffect(() => {
         if (typeof document === 'undefined') return;
-        if (document.getElementById('qa-style-v1')) return;
-        const el = document.createElement('style');
-        el.id = 'qa-style-v1';
+        document.getElementById('qa-style-v1')?.remove();
+        const styleId = 'qa-style-v2';
+        const existing = document.getElementById(styleId) as HTMLStyleElement | null;
+        const el = existing ?? document.createElement('style');
+        el.id = styleId;
         el.textContent = QA_STYLE;
-        document.head.appendChild(el);
+        if (!existing) document.head.appendChild(el);
     }, []);
 
     useEffect(() => {
@@ -334,37 +361,37 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
     const activeMenu = stepToMenu(step);
 
     return (
-        <div id="quote-section-3-4" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
+        <div id="quote-section-3-4" className="grid min-w-0 items-center gap-12 scroll-mt-24 lg:grid-cols-12 lg:gap-20">
             {/* LEFT */}
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 space-y-6 text-left"
+                className="iq-flow-copy min-w-0 space-y-6 text-left lg:col-span-6"
             >
-                <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
+                <div className="iq-section-eyebrow inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
                     {t('Section 3.4 · Quote Generation')}
                 </div>
-                <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="iq-feature-title text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     {t('Automate Quote Generation.')} <br />
                     <span className="text-[#3666ff]">{t('Built to Win.')}</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="iq-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     {t('Select the best bids — FactWise generates the customer quote in one click. Every line item priced, every landed cost calculated, every BOM rolled up automatically. No manual calculation, no margin errors.')}
                 </p>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="iq-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     {t('Then ask FactWise AI anything about your quote — where the biggest expense lies, how costs shift across volumes, what to sharpen. Every insight you need to protect margin and send the quote first.')}
                 </p>
 
-                <div className="flex flex-col gap-2 mt-8 text-left">
+                <div className="iq-feature-steps mt-8 flex min-w-0 flex-col gap-2 text-left">
                     {STEPS_MENU.map((item) => (
                         <div
                             key={item.p}
                             onClick={() => goManual(item.p)}
                             className={`relative flex items-center justify-between w-full rounded-2xl py-3.5 px-4 transition-all duration-400 group cursor-pointer overflow-hidden ${activeMenu === item.p
-                                ? 'bg-white border border-[#3666ff]/80 shadow-[0_8px_30px_rgba(54,102,255,0.12)] scale-[1.02] z-10'
+                                ? 'bg-white border border-[#3666ff]/80 shadow-[0_8px_30px_rgba(54,102,255,0.12)] sm:scale-[1.02] z-10'
                                 : 'bg-transparent border border-transparent hover:bg-white/60 opacity-80 hover:opacity-100'
                             }`}
                         >
@@ -397,7 +424,7 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ type: 'spring', stiffness: 75, damping: 14 }}
-                className="lg:col-span-6 order-2 lg:order-2 relative"
+                className="iq-flow-animation relative order-2 min-w-0 lg:order-2 lg:col-span-6"
             >
                 <div className="qa-root">
                     <div className="qa-chrome">
@@ -405,7 +432,7 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                         <div className="qa-pill"><span className="d" />{t('FW Insight · AI assist')}</div>
                     </div>
 
-                    <div className={`qa-grid${step >= 3 ? ' l-hidden' : ''}`}>
+                    <div className={`qa-grid${step >= 3 ? ' l-hidden' : ''} ${step <= 2 ? 'show-sources' : step <= 5 ? 'show-quote' : 'show-ai'}`}>
                         {/* LEFT — sources */}
                         <div className="qa-col l">
                             <div className="qa-h"><span className="n">01</span>{t('Select best bids')}</div>
@@ -448,7 +475,7 @@ export default function Section34QuoteAIInsight({ isActive = true }: { isActive?
                         </div>
 
                         {/* CENTRE — doc */}
-                        <div className="qa-col" style={{ padding: '11px' }}>
+                        <div className="qa-col quote" style={{ padding: '11px' }}>
                             <div className="qa-doc">
                                 <div className="qa-doc-hd">
                                     <div className="ic"><QAI.File s={12} /></div>

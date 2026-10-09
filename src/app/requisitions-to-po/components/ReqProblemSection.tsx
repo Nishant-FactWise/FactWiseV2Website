@@ -28,7 +28,7 @@ function ReqChaosWidget({ isHovered }: { isHovered: boolean }) {
       <div className="space-y-1.5 my-1.5 text-[8.5px]">
         {[
           { from:'Rajesh (Ops)',    msg:'Need 200 safety gloves ASAP — call me',  channel:'x Call',  color:'text-orange-500' },
-          { from:'Priya (Eng)',     msg:'Req for control valves — see email below', channel:'0️ Email', color:'text-blue-500'   },
+          { from:'Priya (Eng)',     msg:'Req for control valves — see email below', channel:'Email', color:'text-blue-500'   },
           { from:'Suresh (Maint)', msg:'WhatsApp: spare seals needed urgently!!',  channel:'x Chat',  color:'text-green-600'  },
         ].map(item => (
           <div key={item.from} className="flex items-start gap-2 bg-white p-1.5 rounded border border-slate-100 shadow-3xs">
@@ -152,14 +152,14 @@ function EmailRFQWidget({ isHovered }: { isHovered: boolean }) {
       <div className="space-y-1.5 my-2">
         <div className="bg-white p-1.5 rounded border border-slate-100 shadow-3xs text-[8.5px]">
           <div className="flex justify-between text-slate-400 font-bold mb-0.5">
-            <span>0️ To: Fluid Controls Ltd</span>
+            <span>To: Fluid Controls Ltd</span>
             <span>5 days ago</span>
           </div>
           <p className="text-slate-600 truncate leading-tight font-medium"><Text value="Please quote best price for 50 DN50 control valves..." /></p>
         </div>
         <div className="bg-white p-1.5 rounded border border-slate-100 shadow-3xs text-[8.5px]">
           <div className="flex justify-between text-slate-400 font-bold mb-0.5">
-            <span>0️ To: Fluid Controls Ltd</span>
+            <span>To: Fluid Controls Ltd</span>
             <span className="text-red-500 font-bold flex items-center gap-0.5">⏰ Overdue</span>
           </div>
           <p className="text-slate-600 truncate leading-tight font-medium"><Text value="Reminder: bid closing tomorrow  please respond urgently..." /></p>
@@ -194,7 +194,7 @@ function EmailRFQWidget({ isHovered }: { isHovered: boolean }) {
           </div>
           <div className="bg-slate-50 border border-slate-200/60 px-2 py-1 rounded flex items-center justify-between text-emerald-600 font-bold shadow-3xs">
             <span>Best bid:</span>
-            <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded animate-pulse">0️ 11,240 · Locked</span>
+            <span className="text-[8.5px] bg-emerald-50 border border-emerald-200 px-1.5 rounded animate-pulse">$11,240 · Locked</span>
           </div>
         </div>
       </motion.div>
@@ -387,23 +387,22 @@ export default function ReqProblemSection() {
   }
 
   return (
-    <section className="py-16 md:py-20 bg-white relative overflow-hidden border-y border-slate-100 text-[#1A1D2E]">
+    <section className="req-problems py-16 md:py-20 bg-white relative overflow-hidden border-y border-slate-100 text-[#1A1D2E]">
       <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-blue-50/40 rounded-full blur-[100px] pointer-events-none -z-10" />
       <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-indigo-50/30 rounded-full blur-[100px] pointer-events-none -z-10" />
 
-      <div className="mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 relative z-10">
+      <div className="req-problems-inner mx-auto max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] px-6 relative z-10">
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="text-center md:text-left max-w-3xl mx-auto md:mx-0">
-            <div
-              className="inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50/50 px-4 py-1.5 text-[11px] font-semibold text-[#3666ff] uppercase tracking-[0.12em] mb-6"
+          <div className="req-problems-heading text-center md:text-left max-w-3xl mx-auto md:mx-0">
+            <div className="req-problems-eyebrow inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50/50 px-4 py-1.5 text-[11px] font-semibold text-[#3666ff] uppercase tracking-[0.12em] mb-6"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-pulse" />
               {t('Procurement Vulnerabilities')}
             </div>
 
-            <h2
+            <h2 className="req-problems-title"
               style={{
                 fontSize: 'clamp(32px, 3.4vw, 52px)',
                 fontWeight: 600,
@@ -439,7 +438,7 @@ export default function ReqProblemSection() {
 
         <div
           ref={scrollContainerRef}
-          className="flex overflow-x-auto gap-4 sm:gap-6 pb-8 pt-2 px-6 xl:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="req-problems-track flex overflow-x-auto gap-4 sm:gap-6 pb-8 pt-2 px-6 xl:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {localizedProblems.map((prob, idx) => (
             <motion.div
@@ -452,7 +451,7 @@ export default function ReqProblemSection() {
               onMouseEnter={() => setHoveredCardId(prob.id)}
               onMouseLeave={() => setHoveredCardId(null)}
               className={cn(
-                'group relative rounded-3xl bg-white border border-slate-200/60 p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:border-[#3666ff]/20 cursor-pointer overflow-hidden w-[280px] min-w-[280px] sm:w-auto sm:min-w-[290px] xl:min-w-[310px] max-w-[325px] flex-shrink-0 snap-start h-[420px] sm:h-[470px] shadow-[0_12px_36px_-10px_rgba(15,23,42,0.12),_0_0_20px_rgba(54,102,255,0.05)] hover:shadow-[0_20px_50px_-12px_rgba(54,102,255,0.18)]'
+                'req-problem-card group relative rounded-3xl bg-white border border-slate-200/60 p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:border-[#3666ff]/20 cursor-pointer overflow-hidden w-[280px] min-w-[280px] sm:w-auto sm:min-w-[290px] xl:min-w-[310px] max-w-[325px] flex-shrink-0 snap-start h-[420px] sm:h-[470px] shadow-[0_12px_36px_-10px_rgba(15,23,42,0.12),_0_0_20px_rgba(54,102,255,0.05)] hover:shadow-[0_20px_50px_-12px_rgba(54,102,255,0.18)]'
               )}
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" style={{ background: 'radial-gradient(circle at top right, rgba(54, 102, 255, 0.02), transparent 70%)' }} />

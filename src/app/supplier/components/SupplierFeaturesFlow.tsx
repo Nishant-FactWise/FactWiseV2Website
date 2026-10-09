@@ -125,14 +125,14 @@ function Feature1RespondYourWay({ isActive = true }: { isActive?: boolean }) {
   const isSubmitted = step >= 8;
 
   return (
-    <div className="grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+    <div className="supplier-flow-section grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
       {/* LEFT COLUMN: Exact Wording + Progress Menu */}
       <motion.div
         initial={{ opacity: 0, x: -16 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="lg:col-span-6 space-y-3.5 text-left"
+        className="supplier-flow-copy lg:col-span-6 space-y-3.5 text-left"
       >
         <div
           className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[10.5px] font-semibold uppercase tracking-[0.12em]"
@@ -142,24 +142,23 @@ function Feature1RespondYourWay({ isActive = true }: { isActive?: boolean }) {
           {t('Feature 03 · Total Flexibility')}
         </div>
 
-        <h3
-          className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.16]"
+        <h3 className="supplier-flow-feature-title text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.16]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {t('Respond Your Way')} <br />
           <span className="text-[#3666ff]">{t('Manual, Excel, or Platform — Your Choice.')}</span>
         </h3>
 
-        <p className="text-slate-600 text-[14px] leading-[1.62] font-normal text-left" style={{ fontFamily: 'var(--font-inter)' }}>
+        <p className="supplier-flow-description text-slate-600 text-[14px] leading-[1.62] font-normal text-left" style={{ fontFamily: 'var(--font-inter)' }}>
           {t('Not every supplier works the same way. FactWise gives you the flexibility to respond however works best for your team. Log in and respond directly on the platform with full visibility of every RFQ, quote, and PO—or work offline in Excel, fill in your prices, and upload it back in seconds with zero manual reformatting required.')}
         </p>
 
-        <div className="text-[13.5px] font-bold text-[#3666ff] tracking-tight pt-1">
+        <div className="supplier-flow-emphasis text-[13.5px] font-bold text-[#3666ff] tracking-tight pt-1">
           {t('Your workflow. Your way. Every time.')}
         </div>
 
         {/* 4-Step Progress Menu */}
-        <div className="flex flex-col gap-1.5 pt-1 text-left">
+        <div className="supplier-flow-steps flex flex-col gap-1.5 pt-1 text-left">
           {F1_MENU.map((item) => (
             <div
               key={item.p}
@@ -365,14 +364,14 @@ function Feature2ConnectOnceAPI({ isActive = true }: { isActive?: boolean }) {
   const showRespond = step >= 7;
 
   return (
-    <div className="grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+    <div className="supplier-flow-section grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
       {/* LEFT COLUMN: Exact Wording + Progress Menu */}
       <motion.div
         initial={{ opacity: 0, x: -16 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="lg:col-span-6 space-y-3.5 text-left"
+        className="supplier-flow-copy lg:col-span-6 space-y-3.5 text-left"
       >
         <div
           className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[10.5px] font-semibold uppercase tracking-[0.12em]"
@@ -382,24 +381,23 @@ function Feature2ConnectOnceAPI({ isActive = true }: { isActive?: boolean }) {
           {t('Feature 02 · API Automation')}
         </div>
 
-        <h3
-          className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.16]"
+        <h3 className="supplier-flow-feature-title text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.16]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {t('Connect Once. Respond Automatically.')} <br />
           <span className="text-[#3666ff]">{t('Open APIs. Seamless Integration. Zero Manual Intervention.')}</span>
         </h3>
 
-        <p className="text-slate-600 text-[14px] leading-[1.62] font-normal text-left" style={{ fontFamily: 'var(--font-inter)' }}>
+        <p className="supplier-flow-description text-slate-600 text-[14px] leading-[1.62] font-normal text-left" style={{ fontFamily: 'var(--font-inter)' }}>
           {t("Why have your team manually enter pricing when your systems already have the answers? FactWise provides open APIs that give your ERP complete access to every RFQ, quote, and PO you've been invited to—item details, quantities, deadlines, and requirements—all in one call. Your system pulls the data, applies your pricing logic, and responds back automatically with zero logins or manual entry.")}
         </p>
 
-        <div className="text-[13.5px] font-bold text-[#3666ff] tracking-tight pt-1">
+        <div className="supplier-flow-emphasis text-[13.5px] font-bold text-[#3666ff] tracking-tight pt-1">
           {t('Connect your system once. Never miss an RFQ, quote, or PO again.')}
         </div>
 
         {/* 4-Step Progress Menu */}
-        <div className="flex flex-col gap-1.5 pt-1 text-left">
+        <div className="supplier-flow-steps flex flex-col gap-1.5 pt-1 text-left">
           {F2_MENU.map((item) => (
             <div
               key={item.p}
@@ -587,14 +585,14 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
   const showAutomation = step >= 7;
 
   return (
-    <div className="grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+    <div className="supplier-flow-section grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
       {/* LEFT COLUMN: Flowchart Progress Menu */}
       <motion.div
         initial={{ opacity: 0, x: -16 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="lg:col-span-6 space-y-3.5 text-left"
+        className="supplier-flow-copy lg:col-span-6 space-y-3.5 text-left"
       >
         <div
           className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[10.5px] font-semibold uppercase tracking-[0.12em]"
@@ -604,24 +602,23 @@ function Feature3AIAutoResponse({ isActive = true }: { isActive?: boolean }) {
           {t('Feature 01 · AI Engine & Repository')}
         </div>
 
-        <h3
-          className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.16]"
+        <h3 className="supplier-flow-feature-title text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.16]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {t('Let FactWise Respond For You.')} <br />
           <span className="text-[#3666ff]">{t('AI-Powered Auto-Response. From Your Own Pricing Repository.')}</span>
         </h3>
 
-        <p className="text-slate-600 text-[14px] leading-[1.62] font-normal text-left" style={{ fontFamily: 'var(--font-inter)' }}>
+        <p className="supplier-flow-description text-slate-600 text-[14px] leading-[1.62] font-normal text-left" style={{ fontFamily: 'var(--font-inter)' }}>
           {t('Store your pricing repository—contracts, POs, and custom MPN price lists—directly on FactWise. The moment an RFQ, quote request, or PO lands, FactWise AI automatically matches specifications, selects the best price, and responds instantly on your behalf with zero manual work required.')}
         </p>
 
-        <div className="text-[13.5px] font-bold text-[#3666ff] tracking-tight pt-1">
+        <div className="supplier-flow-emphasis text-[13.5px] font-bold text-[#3666ff] tracking-tight pt-1">
           {t('Store your pricing once. Win business automatically. Every time.')}
         </div>
 
         {/* 4-Step Progress Menu */}
-        <div className="flex flex-col gap-1.5 pt-1 text-left">
+        <div className="supplier-flow-steps flex flex-col gap-1.5 pt-1 text-left">
           {F3_MENU.map((item) => (
             <div
               key={item.p}
@@ -946,9 +943,9 @@ export default function SupplierFeaturesFlow() {
   return (
     <>
       {/* ── HEADING (scrolls normally) ── */}
-      <section style={{ background: 'white', padding: '80px 24px 60px', textAlign: 'center' }}>
+      <section className="supplier-flow-intro" style={{ background: 'white', padding: '80px 24px 60px', textAlign: 'center' }}>
         <div style={{ maxWidth: 1240, margin: '0 auto' }}>
-          <div
+          <div className="supplier-flow-eyebrow"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -978,7 +975,7 @@ export default function SupplierFeaturesFlow() {
             />
             {t('The FactWise Supplier Engine')}
           </div>
-          <h2
+          <h2 className="supplier-flow-title"
             style={{
               fontSize: 'clamp(32px, 3.4vw, 52px)',
               fontWeight: 600,
@@ -991,7 +988,7 @@ export default function SupplierFeaturesFlow() {
           >
             {t('How FactWise')} <span style={{ color: '#3666ff' }}>{t('Powers Every Supplier.')}</span>
           </h2>
-          <p
+          <p className="supplier-flow-subtitle"
             style={{
               fontSize: 17,
               lineHeight: 1.65,
@@ -1202,14 +1199,14 @@ export default function SupplierFeaturesFlow() {
       </div>
 
       {/* ── MOBILE: stacked vertically ── */}
-      <div className="block lg:hidden bg-white">
-        <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}>
+      <div className="supplier-flow-mobile block lg:hidden bg-white">
+        <div className="supplier-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}>
           <Feature3AIAutoResponse isActive />
         </div>
-        <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}>
+        <div className="supplier-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}>
           <Feature2ConnectOnceAPI isActive />
         </div>
-        <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}>
+        <div className="supplier-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}>
           <Feature1RespondYourWay isActive />
         </div>
       </div>

@@ -31,32 +31,32 @@ export default function BomCostSection() {
     const isBomStepDone = (n: number) => bomPhase > n;
 
     return (
-        <div id="section-3-1" className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center scroll-mt-24">
+        <div id="section-3-1" className="iq-bom-section grid min-w-0 items-center gap-12 scroll-mt-24 lg:grid-cols-12 lg:gap-20">
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 space-y-6 text-left"
+                className="iq-flow-copy min-w-0 space-y-6 text-left lg:col-span-6"
             >
                 <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                     <span className="h-1.5 w-1.5 rounded-full bg-[#3666ff] animate-ping" />
                     {t('BOM & Cost Intelligence')}
                 </div>
-                <h3 className="text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
+                <h3 className="iq-feature-title text-[24px] md:text-[30px] font-semibold text-[#0D1117] tracking-[-0.025em] leading-[1.18]" style={{ fontFamily: 'var(--font-display)' }}>
                     {t('AI-Driven BOM Intelligence.')}
 
  <br />
                     <span className="text-[#3666ff]">{t('Every Part. Every Cost.')}</span>
                 </h3>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="iq-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     {t('Build complex multi-level BOMs with alternates in a single import. FactWise surfaces accurate line-item costs — distributor, past PO, quote, and contract prices — before any RFQ goes out.')}
                 </p>
-                <p className="text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="iq-feature-copy text-slate-500 text-[15px] leading-[1.65] font-normal text-justify" style={{ fontFamily: 'var(--font-inter)' }}>
                     {t('Every revision is tracked automatically. Compare versions side by side and ask AI any question about cost changes or sourcing insights — no spreadsheet digging.')}
                 </p>
 
-                <div className="flex flex-col gap-2 mt-8 text-left">
+                <div className="iq-feature-steps mt-8 flex min-w-0 flex-col gap-2 text-left">
                     {[
                         { step: 1, title: 'Multi-Level BOM Import' },
                         { step: 2, title: 'Alternates on Every Line' },
@@ -68,7 +68,7 @@ export default function BomCostSection() {
                             onClick={() => setBomManual(item.step)}
                             className={`relative flex items-center justify-between w-full rounded-2xl py-3.5 px-4 transition-all duration-400 group cursor-pointer overflow-hidden ${
                                 isBomStepActive(item.step)
-                                    ? 'bg-white border border-[#3666ff]/80 shadow-[0_8px_30px_rgba(54,102,255,0.12)] scale-[1.02] z-10'
+                                    ? 'bg-white border border-[#3666ff]/80 shadow-[0_8px_30px_rgba(54,102,255,0.12)] sm:scale-[1.02] z-10'
                                     : 'bg-transparent border border-transparent hover:bg-white/60 opacity-80 hover:opacity-100'
                             }`}
                         >
@@ -109,9 +109,9 @@ export default function BomCostSection() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-6 relative flex items-center justify-center self-stretch"
+                className="iq-flow-animation relative flex min-w-0 items-center justify-center self-stretch lg:col-span-6"
             >
-                <div className="w-full">
+                <div className="min-w-0 w-full">
                     <BomCostAnimation
                         speed={1}
                         isAuto={isBomAuto}

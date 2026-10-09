@@ -5,7 +5,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
-import { activeSmoother } from '@/components/ui/SmoothScroll'; // adjust path
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -52,6 +51,7 @@ export default function ScrollReveal({
     }
 
     let split: SplitText | null = null;
+    let observer: IntersectionObserver | null = null;
 
     const run = () => {
       let targets: Element[] | HTMLCollection;
@@ -84,16 +84,33 @@ export default function ScrollReveal({
       const threshold = parseFloat(start.split(' ')[1] ?? '85') / 100;
       const alreadyVisible = rect.top < window.innerHeight * threshold;
 
+      const reveal = () => gsap.to(targets, {
+        y: 0,
+        opacity: 1,
+        duration,
+        delay,
+        stagger,
+        ease: 'power3.out',
+        clearProps: 'transform,will-change',
+      });
+
       if (alreadyVisible) {
-        gsap.to(targets, {
-          y: 0,
-          opacity: 1,
-          duration,
-          delay,
-          stagger,
-          ease: 'power3.out',
-          clearProps: 'transform,will-change',
-        });
+        reveal();
+        return;
+      }
+
+      // Native observation avoids stale ScrollTrigger positions after mobile
+      // viewport resizing and reveals content on the first downward pass.
+      if (window.matchMedia('(max-width: 1023px)').matches) {
+        observer = new IntersectionObserver(
+          ([entry]) => {
+            if (!entry.isIntersecting) return;
+            reveal();
+            observer?.disconnect();
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.01 },
+        );
+        observer.observe(el);
         return;
       }
 
@@ -137,6 +154,7 @@ export default function ScrollReveal({
     }
 
     return () => {
+      observer?.disconnect();
       split?.revert();
     };
   }, { scope: containerRef, dependencies: [type, once] });

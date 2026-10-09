@@ -12,7 +12,7 @@ export default function RequisitionsToPoPage() {
   const mainRef = React.useRef<HTMLElement | null>(null);
 
   return (
-    <main ref={mainRef} className="min-h-screen bg-white">
+    <main ref={mainRef} className="req-page min-h-screen bg-white">
       <ScopedLocaleText rootRef={mainRef} />
       <ReqHero />
       <ReqProblemSection />

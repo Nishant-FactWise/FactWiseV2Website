@@ -349,6 +349,62 @@ const BOM_STYLE = `
 @keyframes bom-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
 @keyframes bom-prog { 0% { transform: translateX(-130%); } 100% { transform: translateX(230%); } }
 @keyframes bom-bar { to { transform: scaleX(1); } }
+
+@media (max-width: 639px) {
+  .bom-shell {
+    width: 100%; height: 500px; min-height: 500px; max-height: 500px;
+    min-width: 0; padding: 11px; border-radius: 18px;
+    box-shadow: 0 14px 38px rgba(15,23,42,0.1);
+  }
+  .bom-top { min-width: 0; padding: 0 1px 10px; gap: 8px; }
+  .bom-top .left { gap: 6px; overflow: hidden; }
+  .bom-top .brand { font-size: 12px; }
+  .bom-top .sep { display: none; }
+  .bom-top .crumb { font-size: 10px; }
+  .bom-top .pill { gap: 5px; padding: 3px 7px; }
+  .bom-top .pill .lbl { font-size: 7.5px; letter-spacing: 0.06em; }
+  .bom-stage { margin-top: 10px; border-radius: 13px; }
+  .bom-stageHead { min-height: 53px; padding: 10px 11px; gap: 8px; }
+  .bom-stageHead .L { min-width: 0; gap: 8px; }
+  .bom-stageHead .pn { flex-shrink: 0; padding: 3px 6px; font-size: 8px; }
+  .bom-stageHead .tt { font-size: 11px; line-height: 1.25; }
+  .bom-stageHead .R { max-width: 68px; font-size: 8px; line-height: 1.35; text-align: right; }
+  .bom-scene { inset: 53px 9px 96px; }
+  .bom-stage > .bom-scene[style] { inset: 53px 7px 96px !important; }
+  .bom-stage > .bom-scene[style] > .bs-graph { top: 30px; height: calc(100% - 30px); }
+  .bom-stage > .bom-scene[style] > div:first-child { min-height: 24px; margin-bottom: 0 !important; }
+  .s1-wrap { gap: 12px; padding: 9px; }
+  .s1-drop { max-width: none; gap: 11px; padding: 16px 13px; border-radius: 13px; }
+  .s1-file { width: 62px; height: 76px; }
+  .s1-title { font-size: 14px; }
+  .s1-sub { max-width: 250px; font-size: 11px; line-height: 1.5; }
+  .s1-progress { width: min(220px, 88%); }
+  .bom-narrative { left: 9px; right: 9px; bottom: 9px; gap: 9px; padding: 10px 11px; }
+  .bom-narrative .ntext { font-size: 10px; line-height: 1.48; }
+  .bom-foot-ctl { gap: 7px; padding-top: 9px; margin-top: 7px; }
+  .bom-foot-ctl .L { min-width: 0; gap: 5px; }
+  .bom-foot-ctl .Lt { overflow: hidden; font-size: 8.5px; line-height: 1.25; white-space: nowrap; text-overflow: ellipsis; }
+  .bom-foot-ctl .R { max-width: 62px; font-size: 7.5px; line-height: 1.2; text-align: right; }
+  .s3-wrap { gap: 9px; padding: 10px 4px 75px; }
+  .s3-part { padding: 9px; }
+  .s3-part .pico { width: 30px; height: 30px; }
+  .s3-part .pn { font-size: 12px; }
+  .s3-part .pm { font-size: 8px; }
+  .s3-part .R { font-size: 8px; }
+  .s3-part .R b { font-size: 11px; }
+  .s3-grid { gap: 7px; }
+  .s3-card { padding: 8px; }
+  .s3-card .src { font-size: 7.5px; letter-spacing: 0.05em; }
+  .s3-card .val { font-size: 17px; }
+  .s3-card .sub { font-size: 8px; }
+  .bs-node { min-width: 64px; padding: 4px 5px; }
+  .bs-node.l0 { min-width: 100px; }
+  .bs-node[data-node-id='g21'], .bs-node[data-node-id='s31'] { left: 13% !important; }
+  .bs-node[data-node-id='s33'] { left: 87% !important; }
+  .bs-node .nsku, .bs-node .nqty { font-size: 7px; }
+  .bs-node .nname { font-size: 8.5px; }
+  .bs-node .nfoot { font-size: 7px; }
+}
 `;
 
 /* ============================================================
@@ -368,13 +424,13 @@ export default function BomCostAnimation({
   /* Inject stylesheet once */
   useEffect(() => {
     if (typeof document === 'undefined') return;
-    const VERSION = 'bom-v2';
-    if (document.getElementById(VERSION)) return;
-    ['bom-anim-style', 'bom-v1'].forEach(id => document.getElementById(id)?.remove());
-    const s = document.createElement('style');
+    const VERSION = 'bom-v3';
+    ['bom-anim-style', 'bom-v1', 'bom-v2'].forEach(id => document.getElementById(id)?.remove());
+    const existing = document.getElementById(VERSION) as HTMLStyleElement | null;
+    const s = existing ?? document.createElement('style');
     s.id = VERSION;
     s.textContent = BOM_STYLE;
-    document.head.appendChild(s);
+    if (!existing) document.head.appendChild(s);
   }, []);
 
   /* ---------- State ---------- */
@@ -658,7 +714,7 @@ export default function BomCostAnimation({
                 + (n.focus ? ' focus' : '')
                 + (shown ? ' in' : '');
               return (
-                <div key={n.id} className={cls} style={{ left: n.x + '%', top: n.y + '%' }}>
+                <div key={n.id} data-node-id={n.id} className={cls} style={{ left: n.x + '%', top: n.y + '%' }}>
                   <div className="nhead">
                     <span className="nsku">{n.sku}</span>
                     <span className="nqty">×{n.qty}</span>

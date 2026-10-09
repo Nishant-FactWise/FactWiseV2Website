@@ -1,10 +1,11 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { Search, ChevronRight, ChevronDown } from "lucide-react";
 import { ShimmerButton } from "@/components/ui/ShimmerButton";
 import { CATEGORIES, ALL_POSTS, type Post, type Cat } from "./data";
 import { motion } from "framer-motion";
+import { withoutLongDashes } from "@/lib/display-text";
 
 const BASE = "/blog/post/";
 
@@ -83,11 +84,6 @@ const CAT_COVERS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=75",
   ],
 };
-
-function getCover(catSlug: string, idx: number) {
-  const arr = CAT_COVERS[catSlug] ?? CAT_COVERS["best-practices"];
-  return arr[idx % arr.length];
-}
 
 /* ─── Per-slug unique images (topic-relevant) ────────────────────── */
 const SLUG_IMG: Record<string, string> = {
@@ -213,14 +209,7 @@ const SLUG_IMG: Record<string, string> = {
   "history-evolution-procurement":                       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=75",
 };
 
-const FALLBACK_IMGS = [
-  "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=75",
-  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=75",
-  "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=75",
-  "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=75",
-  "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&q=75",
-  "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=600&q=75",
-];
+const FALLBACK_IMGS = Object.values(CAT_COVERS).flat();
 
 function getImg(slug: string, idx: number) {
   return SLUG_IMG[slug] ?? FALLBACK_IMGS[idx % FALLBACK_IMGS.length];
@@ -296,7 +285,7 @@ function ImageCard({ post, imgIdx }: { post: Post; imgIdx: number }) {
             fontSize: 10, fontWeight: 700, letterSpacing: "0.1em",
             textTransform: "uppercase", color: "#3666ff",
           }}>
-            {post.category}
+            {withoutLongDashes(post.category)}
           </span>
 
           {/* Title — underlined on hover like reference */}
@@ -307,7 +296,7 @@ function ImageCard({ post, imgIdx }: { post: Post; imgIdx: number }) {
             lineHeight: 1.4,
             color: "#0b1322",
             letterSpacing: "-0.01em",
-            textDecoration: hov ? "underline" : "none",
+            textDecorationLine: hov ? "underline" : "none",
             textDecorationColor: "#0b1322",
             textUnderlineOffset: 3,
             display: "-webkit-box",
@@ -315,7 +304,7 @@ function ImageCard({ post, imgIdx }: { post: Post; imgIdx: number }) {
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
           }}>
-            {post.title}
+            {withoutLongDashes(post.title)}
           </h4>
 
           {/* Excerpt */}
@@ -329,8 +318,9 @@ function ImageCard({ post, imgIdx }: { post: Post; imgIdx: number }) {
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
             flex: 1,
+            textAlign: "justify",
           }}>
-            {post.excerpt}
+            {withoutLongDashes(post.excerpt)}
           </p>
 
           {/* Read more */}
@@ -365,7 +355,7 @@ function SidebarRow({ post, imgIdx }: { post: Post; imgIdx: number }) {
           fontSize: 13, fontWeight: 700, color: "#0b1322", lineHeight: 1.4,
           display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
         }}>
-          {post.title}
+          {withoutLongDashes(post.title)}
         </div>
       </div>
     </a>
@@ -378,7 +368,7 @@ function CategoryBlock({ cat }: { cat: Cat }) {
   const gridPosts = expanded ? cat.posts : cat.posts.slice(0, 6);
 
   return (
-    <div style={{ marginBottom: 72 }}>
+    <div className="mb-14 md:mb-[72px]">
       {/* two-column layout — 1 col on mobile/tablet, 1fr+280px on desktop */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10 items-start">
 
@@ -389,11 +379,11 @@ function CategoryBlock({ cat }: { cat: Cat }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, minWidth: 0 }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
-              <h2 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#0b1322", letterSpacing: "-0.02em" }}>
-                {cat.label}
+            <div style={{ display: "flex", alignItems: "center", gap: 0, minWidth: 0, width: "100%" }}>
+              <h2 className="break-words text-xl sm:text-[22px]" style={{ margin: 0, fontWeight: 800, color: "#0b1322", letterSpacing: "-0.02em" }}>
+                {withoutLongDashes(cat.label)}
               </h2>
               <div style={{ flex: 1, height: 1, background: "rgba(15,23,42,0.1)", marginLeft: 16, minWidth: 40 }} />
             </div>
@@ -456,7 +446,7 @@ function CategoryBlock({ cat }: { cat: Cat }) {
               fontSize: 12.5, fontWeight: 700, color: "#3666ff", textDecoration: "none",
             }}
           >
-            View all {cat.label} <ChevronRight size={14} />
+            View all {withoutLongDashes(cat.label)} <ChevronRight size={14} />
           </a>
         </div>
       </div>
@@ -470,7 +460,6 @@ export default function BlogClientShell({
 }: {
   initialCategories: typeof CATEGORIES;
 }) {
-  const [query, setQuery]   = useState("");
   const [submitted, setSubmitted] = useState("");
   const [selectedCat, setSelectedCat] = useState<string>("all");
 
@@ -496,25 +485,27 @@ export default function BlogClientShell({
     );
   }, [submitted]);
 
-  function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    setSubmitted(query);
-  }
+  useEffect(() => {
+    const handleBlogSearch = (event: Event) => {
+      const nextQuery = (event as CustomEvent<string>).detail ?? "";
+      setSelectedCat("all");
+      setSubmitted(nextQuery);
+    };
+    window.addEventListener("factwise-blog-search", handleBlogSearch);
+    return () => window.removeEventListener("factwise-blog-search", handleBlogSearch);
+  }, []);
 
   return (
     <>
       {/* ── Sticky Category Filter Bar ── */}
-      <div style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
+      <div className="sticky top-[72px] z-40" style={{
         background: "rgba(255,255,255,0.92)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
         borderBottom: "1px solid rgba(15,23,42,0.08)",
         boxShadow: "0 2px 16px -4px rgba(0,0,0,0.06)",
       }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+        <div className="mx-auto max-w-[1200px] px-5 sm:px-6">
           <div style={{
             display: "flex",
             gap: "8px",
@@ -550,10 +541,10 @@ export default function BlogClientShell({
                   className="cat-pill"
                   onClick={() => {
                     setSelectedCat(c.slug);
-                    setQuery("");
                     setSubmitted("");
                   }}
                   whileTap={{ scale: 0.95 }}
+                  aria-pressed={isActive}
                   style={{
                     padding: "7px 18px",
                     fontSize: "12.5px",
@@ -596,18 +587,18 @@ export default function BlogClientShell({
       </div>
 
       {/* ── Content ── */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 24px 80px" }}>
+      <div className="mx-auto max-w-[1200px] px-5 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-12">
 
         {/* Search results */}
         {results !== null ? (
           <div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
-              <h2 style={{ margin: 0, fontSize: 20, fontWeight: 800, color: "#0b1322" }}>
+            <div className="mb-7 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+              <h2 className="break-words text-lg sm:text-xl" style={{ margin: 0, fontWeight: 800, color: "#0b1322" }}>
                 {results.length} result{results.length !== 1 ? "s" : ""} for &ldquo;{submitted}&rdquo;
               </h2>
               <ShimmerButton
                 variant="secondary"
-                onClick={() => { setQuery(""); setSubmitted(""); }}
+                onClick={() => setSubmitted("")}
                 className="h-9 px-4 text-[12.5px]"
               >
                 Clear
@@ -615,7 +606,7 @@ export default function BlogClientShell({
             </div>
 
             {results.length > 0 ? (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 18 }}>
+              <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
                 {results.map((p, i) => {
                   return <ImageCard key={p.slug} post={p} imgIdx={i} />;
                 })}
@@ -638,12 +629,14 @@ export default function BlogClientShell({
 }
 
 /* ─── Search hero — extracted as client component ─────────────────── */
-export function BlogSearchHero({ onSearch }: { onSearch: (q: string) => void }) {
+export function BlogSearchHero() {
   const [query, setQuery] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    onSearch(query);
+    if (query.trim().length < 2) return;
+    window.dispatchEvent(new CustomEvent("factwise-blog-search", { detail: query }));
+    document.getElementById("blog-content")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return (
@@ -652,6 +645,7 @@ export function BlogSearchHero({ onSearch }: { onSearch: (q: string) => void }) 
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 0.8 }}
       onSubmit={handleSubmit}
+      className="w-full"
       style={{
         display: "flex", maxWidth: 520, margin: "0 auto",
         border: "1px solid rgba(255,255,255,0.18)", borderRadius: 10,
@@ -672,12 +666,13 @@ export function BlogSearchHero({ onSearch }: { onSearch: (q: string) => void }) 
           fontSize: 14, color: "#fff", padding: "13px 0",
           background: "transparent",
         }}
-        className="placeholder:text-white/50"
+        className="min-w-0 placeholder:text-white/50"
+        aria-label="Search blog articles"
       />
       <ShimmerButton
         type="submit"
         variant="primary"
-        className="rounded-none rounded-r-[10px] h-auto py-3 px-6 text-[14px]"
+        className="h-auto shrink-0 rounded-none rounded-r-[10px] px-4 py-3 text-[13px] sm:px-6 sm:text-[14px]"
       >
         Find Now
       </ShimmerButton>

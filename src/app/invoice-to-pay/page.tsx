@@ -12,7 +12,7 @@ export default function InvoiceToPayPage() {
   const mainRef = React.useRef<HTMLElement | null>(null);
 
   return (
-    <main ref={mainRef} className="min-h-screen bg-white">
+    <main ref={mainRef} className="inv-page min-h-screen bg-white">
       <ScopedLocaleText rootRef={mainRef} />
       <InvoiceHero />
       <InvoiceProblemSection />

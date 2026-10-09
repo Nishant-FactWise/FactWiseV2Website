@@ -145,14 +145,15 @@ function FloatCard({ style, delay=0, yAmt=12, dur=6, children }: {
 export default function ReqHero() {
   const t = useLocalizedText()
   const mono = "'JetBrains Mono', monospace"
-  const [isDesktop, setIsDesktop] = React.useState(false)
-
-  React.useEffect(() => {
-    setIsDesktop(window.innerWidth >= 1280)
-    const handleResize = () => setIsDesktop(window.innerWidth >= 1280)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const isDesktop = React.useSyncExternalStore(
+    React.useCallback((onChange) => {
+      const mediaQuery = window.matchMedia('(min-width: 1280px)')
+      mediaQuery.addEventListener('change', onChange)
+      return () => mediaQuery.removeEventListener('change', onChange)
+    }, []),
+    () => window.matchMedia('(min-width: 1280px)').matches,
+    () => false,
+  )
 
   return (
     <>
@@ -179,10 +180,10 @@ export default function ReqHero() {
       }}>
 
         {/* LEFT COLUMN */}
-        <div style={{ maxWidth:600 }}>
+        <div className="req-hero-copy" style={{ maxWidth:600 }}>
 
           {/* Heading */}
-          <h1 style={{
+          <h1 className="req-hero-title" style={{
             fontSize: 'clamp(31px, 2.9vw, 47px)', fontWeight: 600,
             lineHeight: 1.15, letterSpacing: '-0.035em', marginBottom: 24,
             fontFamily: 'var(--font-display)',
@@ -197,7 +198,7 @@ export default function ReqHero() {
           </h1>
 
           {/* Subtext */}
-          <p
+          <p className="req-hero-subtitle"
             style={{
               fontSize: 'clamp(17.3px, 1.25vw, 18px)', lineHeight: 1.65, color: '#8899b8', fontWeight: 400,
               marginBottom: 40, maxWidth: 520, fontFamily: 'var(--font-inter)',
@@ -207,9 +208,10 @@ export default function ReqHero() {
           </p>
 
           {/* CTA Buttons */}
-          <div style={{ display:'flex', gap:14, alignItems:'center', marginBottom:48 }}>
+          <div className="req-hero-actions" style={{ display:'flex', gap:14, alignItems:'center', marginBottom:48 }}>
             <Link
               href="/demo"
+              className="req-hero-cta"
               style={{
                 background:'linear-gradient(135deg,#4f8bff,#2a6cff)', color:'white', border:'none',
                 padding:'14px 24px 14px 28px', borderRadius:100, fontSize:15, fontWeight:600,

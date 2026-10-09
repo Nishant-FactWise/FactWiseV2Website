@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     title: "Careers at FactWise | Mumbai Jobs",
     description:
-      "Open roles at FactWise, Mumbai — engineering, product, and GTM. Help build the operating system for modern manufacturing.",
+      "Open roles at FactWise, Mumbai for engineering, product, and GTM. Help build the operating system for modern manufacturing.",
   },
   alternates: { canonical: "https://factwise.io/careers" },
 };
@@ -34,7 +34,7 @@ const jobPostingSchema = {
   "@type": "WebPage",
   "@id": "https://factwise.io/careers",
   url: "https://factwise.io/careers",
-  name: "Careers at FactWise — Jobs in Mumbai",
+  name: "Careers at FactWise | Jobs in Mumbai",
   description:
     "FactWise is hiring in Mumbai, India. Open roles in software engineering, product management, and go-to-market for its AI-powered source-to-pay manufacturing platform.",
   publisher: { "@id": "https://factwise.io/#organization" },

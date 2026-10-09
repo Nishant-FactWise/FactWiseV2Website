@@ -69,9 +69,9 @@ export default function InvoiceToPayFlow() {
     return (
         <>
             {/* ── HEADING (scrolls normally) ── */}
-            <section style={{ background: 'white', padding: '80px 24px 60px', textAlign: 'center' }}>
+            <section className="inv-flow-intro" style={{ background: 'white', padding: '80px 24px 60px', textAlign: 'center' }}>
                 <div style={{ maxWidth: 1240, margin: '0 auto' }}>
-                    <div style={{
+                    <div className="inv-flow-eyebrow" style={{
                         display: 'inline-flex', alignItems: 'center', gap: 6,
                         padding: '5px 14px', borderRadius: 100,
                         background: 'rgba(54,102,255,0.06)', border: '1px solid rgba(54,102,255,0.15)',
@@ -82,7 +82,7 @@ export default function InvoiceToPayFlow() {
                         <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#3666ff', display: 'inline-block', animation: 'itpf-pulse 2s infinite' }} />
                         {t('The FactWise Invoice-to-Pay Engine')}
                     </div>
-                    <h2 style={{
+                    <h2 className="inv-flow-title" style={{
                         fontSize: 'clamp(32px, 3.4vw, 52px)', fontWeight: 600,
                         lineHeight: 1.1, letterSpacing: '-0.035em',
                         color: '#0D1117', margin: '0 0 16px',
@@ -90,7 +90,7 @@ export default function InvoiceToPayFlow() {
                     }}>
                         {t('How FactWise')} <span style={{ color: '#3666ff' }}>{t('Automates Every Step.')}</span>
                     </h2>
-                    <p style={{ fontSize: 17, lineHeight: 1.65, color: '#64748b', maxWidth: 640, margin: '0 auto', fontFamily: 'var(--font-inter)' }}>
+                    <p className="inv-flow-subtitle" style={{ fontSize: 17, lineHeight: 1.65, color: '#64748b', maxWidth: 640, margin: '0 auto', fontFamily: 'var(--font-inter)' }}>
                         {t('From the first invoice raised to the last rupee paid — verified at every step, automated at every turn.')}
                     </p>
                 </div>
@@ -219,12 +219,12 @@ export default function InvoiceToPayFlow() {
             </div>
 
             {/* ── MOBILE: stacked vertically ── */}
-            <div className="block lg:hidden bg-[#ffffff]">
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection31 isActive /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection32 isActive /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection33 isActive /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection34 isActive /></div>
-                <div style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection35 isActive /></div>
+            <div className="inv-flow-mobile block lg:hidden bg-[#ffffff]">
+                <div className="inv-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection31 isActive /></div>
+                <div className="inv-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection32 isActive /></div>
+                <div className="inv-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection33 isActive /></div>
+                <div className="inv-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection34 isActive /></div>
+                <div className="inv-flow-mobile-panel" style={{ width: '100%', maxWidth: 1360, margin: '0 auto', padding: '28px 24px' }}><InvSection35 isActive /></div>
             </div>
 
             <style>{`@keyframes itpf-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }`}</style>

@@ -21,7 +21,7 @@ const BENEFITS = [
   },
   {
     title: "Top-of-market pay + equity",
-    desc: "Competitive cash compensation and meaningful equity — everyone is an owner.",
+    desc: "Competitive cash compensation and meaningful equity. Everyone is an owner.",
     icon: TrendingUp,
   },
   {
@@ -36,7 +36,7 @@ const BENEFITS = [
   },
   {
     title: "₹1,500 learning stipend",
-    desc: "Books, courses, conferences — your call. Use it to get sharper at what you love.",
+    desc: "Books, courses, and conferences. Use the stipend to get sharper at what you love.",
     icon: BookOpen,
   },
   {
@@ -51,7 +51,7 @@ const BENEFITS = [
   },
   {
     title: "Quarterly company retreats",
-    desc: "Build relationships in person. Hike, ship, eat, repeat — somewhere new each time.",
+    desc: "Build relationships in person. Hike, ship, eat, and repeat somewhere new each time.",
     icon: Stethoscope,
   }
 ];
@@ -98,7 +98,7 @@ export const CareersBenefits = () => {
                 <h4 className="text-xl font-bold text-slate-900 leading-tight">
                   {benefit.title}
                 </h4>
-                <p className="text-slate-500 text-sm leading-relaxed">
+                <p className="text-justify text-sm leading-relaxed text-slate-500">
                   {benefit.desc}
                 </p>
               </div>

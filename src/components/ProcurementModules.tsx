@@ -1,11 +1,8 @@
 ﻿"use client";
 
 import React from "react";
-import { Check, ArrowRight, ShieldCheck, ZapIcon, BarChart3 } from "lucide-react";
+import { ArrowRight, ShieldCheck, ZapIcon, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import { usePathname, useRouter } from "next/navigation";
 import { useLocalizedText } from "@/hooks/useLocalizedText";
 import { getPathLocale, localizePath } from "@/lib/i18n";
@@ -14,7 +11,7 @@ const modules = [
   {
     tag: "QUOTE AUTOMATION",
     title: "Inquiry to Quote",
-    description: "From BOM to customer quote in record time â€” intelligent sourcing, automated negotiations, and true landed-cost analytics.",
+    description: "From BOM to customer quote in record time with intelligent sourcing, automated negotiations, and true landed-cost analytics.",
     imageUrl: "/images/quote-order.png",
     features: [
       "BOM & cost intelligence",
@@ -27,7 +24,7 @@ const modules = [
   {
     tag: "SOURCING AUTOMATION",
     title: "Requisition to PO",
-    description: "Raise, approve, source, and issue purchase orders in one seamless flow â€” without the back and forth.",
+    description: "Raise, approve, source, and issue purchase orders in one seamless flow without the back and forth.",
     imageUrl: "/images/req-po.png",
     features: [
       "Combine requisitions for bulk pricing",
@@ -40,12 +37,12 @@ const modules = [
   {
     tag: "INVOICE AUTOMATION",
     title: "Invoice to Pay",
-    description: "Every invoice validated against PO, GR, QC, and contract terms â€” so you always pay the right amount.",
+    description: "Every invoice is validated against PO, GR, QC, and contract terms, so you always pay the right amount.",
     imageUrl: "/images/invoice-pay.png",
     features: [
       "AI-powered invoice generation",
       "Flexible GR, QC & payment sequencing",
-      "Always pay the right amount â€” automatically",
+      "Always pay the right amount automatically",
     ],
     href: "/invoice-to-pay",
     icon: ZapIcon
@@ -82,15 +79,13 @@ const CARDS_STYLE = `
   }
 
   @media (max-width: 1100px) {
-    .fw-cards-grid { grid-template-columns: repeat(2, 340px); }
-  }
-  @media (max-width: 740px) {
-    .fw-cards-grid { grid-template-columns: 1fr; max-width: 350px; margin: 0 auto; }
+    .fw-cards-grid { grid-template-columns: repeat(2, minmax(0, 340px)); }
   }
 
   /* Card */
   .fw-card {
     background: #FFFFFF;
+    min-height: 510px;
     border-radius: var(--radius);
     border: 1px solid rgba(0,0,0,0.06);
     box-shadow: var(--shadow-card);
@@ -111,7 +106,17 @@ const CARDS_STYLE = `
   }
 
   .fw-card.featured {
+    border: 1.5px solid var(--blue-600);
+    background: linear-gradient(180deg, #f5f8ff 0%, #ffffff 30%);
+    box-shadow: 0 14px 38px rgba(54, 102, 255, 0.16), 0 4px 12px rgba(15, 23, 42, 0.06);
+    overflow: visible;
+    transform: scale(1.025);
+  }
+
+  .fw-card.featured:hover {
     border-color: var(--blue-600);
+    transform: translateY(-8px) scale(1.035);
+    box-shadow: 0 20px 48px rgba(54, 102, 255, 0.22), 0 8px 20px rgba(15, 23, 42, 0.08);
   }
 
 
@@ -126,6 +131,12 @@ const CARDS_STYLE = `
   .fw-card:hover .fw-card-bar { height: 6px; }
 
   .fw-card-blue  .fw-card-bar { background: linear-gradient(90deg, var(--blue-400), var(--blue-600)); }
+
+  .fw-card.featured .fw-card-bar,
+  .fw-card.featured:hover .fw-card-bar {
+    height: 4px;
+    background: transparent;
+  }
 
   /* Card header */
   .fw-card-header {
@@ -155,20 +166,22 @@ const CARDS_STYLE = `
   .fw-badge-blue  { background: var(--blue-50);  color: var(--blue-800); }
 
   .fw-popular-pill {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 3;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
     font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: var(--blue-50);
-    color: var(--blue-600);
-    border: 1px solid var(--blue-100);
-    animation: fwPulse 2.8s ease-in-out infinite;
-  }
-
-  @keyframes fwPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(54, 102, 255, 0.18); }
-    50%       { box-shadow: 0 0 0 5px rgba(54, 102, 255, 0); }
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: var(--blue-600);
+    color: #ffffff;
+    border: 4px solid #ffffff;
+    box-shadow: 0 7px 18px rgba(54, 102, 255, 0.28);
   }
 
   /* Icon */
@@ -300,12 +313,38 @@ const CARDS_STYLE = `
     box-shadow: 0 4px 16px rgba(54, 102, 255, 0.18);
   }
 
+  .fw-card.featured .fw-card-btn {
+    background: var(--blue-600);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(54, 102, 255, 0.2);
+  }
+
+  .fw-card.featured .fw-card-btn:hover {
+    background: #2f5bea;
+    box-shadow: 0 10px 24px rgba(54, 102, 255, 0.28);
+  }
+
   .fw-btn-arrow {
     display: inline-flex;
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .fw-card-btn:hover .fw-btn-arrow { transform: translate(3px, -3px); }
+
+  @media (max-width: 740px) {
+    .fw-cards-grid { grid-template-columns: minmax(0, 1fr); max-width: 380px; gap: 32px; margin: 0 auto; }
+    .fw-card { min-height: 440px; border-radius: 18px; }
+    .fw-card-header { padding: 22px 22px 0; }
+    .fw-card-meta { margin-bottom: 14px; }
+    .fw-card-icon { width: 40px; height: 40px; margin-bottom: 12px; }
+    .fw-card-title { font-size: 21px !important; margin-bottom: 8px !important; }
+    .fw-card-desc { font-size: 13px !important; line-height: 1.6 !important; padding-bottom: 16px !important; text-align: justify; text-justify: inter-word; }
+    .fw-card-divider { margin: 0 22px; }
+    .fw-card-features { padding: 18px 22px 22px; gap: 10px; }
+    .fw-card-footer { padding: 14px 22px 22px; }
+    .fw-card.featured,
+    .fw-card.featured:hover { transform: none; }
+  }
 `;
 
 function Card({ module, index }: { module: typeof modules[0], index: number }) {
@@ -324,17 +363,18 @@ function Card({ module, index }: { module: typeof modules[0], index: number }) {
     iconStroke: "#3666ff",
   };
   const isFeatured = index === 1;
+  const moduleHref = localizePath(module.href, locale);
 
   return (
     <div
       className={`fw-card fw-card-${t.colorKey} ${isFeatured ? "featured" : ""}`}
-      onClick={() => router.push(localizePath(module.href, locale))}
+      onClick={() => router.push(moduleHref)}
     >
+      {isFeatured && <span className="fw-popular-pill">{translate("Most popular")}</span>}
       <div className="fw-card-bar"></div>
       <div className="fw-card-header">
         <div className="fw-card-meta">
           <span className={`fw-card-badge ${t.badgeClass}`}>{translate(module.tag)}</span>
-          {isFeatured && <span className="fw-popular-pill">{translate('⚡ Most popular')}</span>}
         </div>
         <div className={`fw-card-icon ${t.iconClass}`}>
           <module.icon className="w-5 h-5" style={{ color: t.iconStroke }} />
@@ -357,8 +397,22 @@ function Card({ module, index }: { module: typeof modules[0], index: number }) {
         ))}
       </div>
 
-      {/* "Explore solution" CTA hidden until per-module destinations are
-          wired â€” the button previously did nothing on click. */}
+      <div className="fw-card-footer">
+        <button
+          type="button"
+          className={`fw-card-btn ${t.btnClass}`}
+          aria-label={`${translate("Explore solution")}: ${translate(module.title)}`}
+          onClick={(event) => {
+            event.stopPropagation();
+            router.push(moduleHref);
+          }}
+        >
+          {translate("Explore solution")}
+          <span className="fw-btn-arrow">
+            <ArrowRight size={14} />
+          </span>
+        </button>
+      </div>
     </div>
   );
 }
@@ -368,23 +422,23 @@ import ScrollReveal from "./ui/ScrollReveal";
 export default function ProcurementModules() {
   const translate = useLocalizedText();
   return (
-    <section className="py-20 relative bg-white overflow-hidden factwise-cards-section">
+    <section id="procurement-modules" className="relative overflow-hidden bg-white py-14 sm:py-16 lg:py-20 factwise-cards-section">
       <style dangerouslySetInnerHTML={{ __html: CARDS_STYLE }} />
-      <div className="max-w-7xl px-6 mx-auto relative z-10">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mx-auto max-w-3xl text-center mb-12"
+          className="mx-auto mb-10 max-w-3xl text-center sm:mb-12"
         >
-          <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#4A6FFF] text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
+          <div className="mb-5 inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#4A6FFF] sm:mb-6">
             {translate('Platform Modules')}
           </div>
-          <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]">
+          <h2 className="mb-4 text-[28px] font-bold leading-[1.12] tracking-tight text-[#1A1D2E] sm:text-3xl md:mb-6 md:text-5xl">
             {translate('Smarter ')}<span className="text-[#3666ff]">{translate('Manufacturing')}</span> {translate('Starts Here')}
           </h2>
-          <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto font-medium">
+          <p className="mx-auto max-w-2xl text-justify text-[15px] font-medium leading-[1.65] text-slate-500 sm:text-center sm:text-base md:text-lg">
             {translate('Scalable, enterprise-ready modules designed to automate every workflow manufacturers depend on — from first inquiry to final payment.')}
           </p>
         </motion.div>

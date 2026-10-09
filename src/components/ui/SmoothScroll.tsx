@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useLayoutEffect, type ReactNode } from 'react';
+import { useRef, useEffect, useLayoutEffect, useState, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 
 const LENIS_ROUTES = ['/about', '/careers', '/inquiry-to-quote', '/requisitions-to-po', '/invoice-to-pay', '/platform', '/supplier'];
@@ -47,6 +47,15 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const usesLenis = isLenisRoute(pathname);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => setPrefersReducedMotion(query.matches);
+    updatePreference();
+    query.addEventListener('change', updatePreference);
+    return () => query.removeEventListener('change', updatePreference);
+  }, []);
 
   /*
    * useLayoutEffect fires synchronously BEFORE the browser paints.
@@ -66,12 +75,25 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let cancelled = false;
+    const prefersNativeScroll =
+      window.matchMedia('(max-width: 1023px)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      prefersReducedMotion;
 
     if (typeof window !== 'undefined') {
       window.history.scrollRestoration = 'manual';
     }
 
-    if (usesLenis) return;
+    // Transform-based smoothing can leave viewport measurements stale when a
+    // mobile browser's address bar resizes or responsive sections expand.
+    if (usesLenis || prefersNativeScroll) {
+      if (activeSmoother) {
+        try { activeSmoother.kill(); } catch { /* already dead */ }
+        activeSmoother = null;
+      }
+      purgeGSAPStyles();
+      return;
+    }
 
     Promise.all([
       import('gsap'),
@@ -106,13 +128,13 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       }
       purgeGSAPStyles();
     };
-  }, [pathname, usesLenis]);
+  }, [pathname, usesLenis, prefersReducedMotion]);
 
   return (
     <div 
       id="smooth-wrapper" 
       ref={wrapperRef} 
-      style={usesLenis ? { width: '100%' } : { overflow: 'hidden', width: '100%' }}
+      style={usesLenis || prefersReducedMotion ? { width: '100%' } : { overflow: 'hidden', width: '100%' }}
     >
       {/* Do NOT add willChange:'transform' here. GSAP ScrollSmoother manages its
           own GPU-layer lifecycle internally. A static willChange hint permanently

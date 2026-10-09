@@ -6,14 +6,15 @@ import { Check } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { getPathLocale } from '@/lib/i18n';
 import { messages } from '@/lib/messages';
+import { withoutLongDashes } from '@/lib/display-text';
 
 export const StorySection = () => {
   const pathname = usePathname();
   const locale = getPathLocale(pathname);
-  const t = (source: string) => messages[locale].textMap[source] ?? source;
+  const t = (source: string) => withoutLongDashes(messages[locale].textMap[source] ?? source);
 
   return (
-    <section className="py-16 md:py-24 px-6 md:px-14 bg-white overflow-hidden">
+    <section className="overflow-hidden bg-white px-5 py-14 sm:px-6 sm:py-16 md:px-14 md:py-24">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-12 gap-10 md:gap-16 xl:gap-24 items-center">
           
@@ -26,7 +27,7 @@ export const StorySection = () => {
             className="md:col-span-5"
           >
             <div 
-              className="relative mx-auto w-full min-w-[280px] sm:min-w-[320px] max-w-[448px] rounded-[40px] md:rounded-[48px] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl group"
+              className="group relative mx-auto w-full max-w-[448px] overflow-hidden rounded-[28px] bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl sm:rounded-[40px] md:rounded-[48px]"
               style={{ aspectRatio: '4/5' }}
             >
               {/* Base Image Layer */}
@@ -109,11 +110,11 @@ export const StorySection = () => {
               </div>
             </div>
             
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.1] tracking-tighter mb-8 md:mb-10">
+            <h2 className="mb-6 text-[30px] font-bold leading-[1.1] tracking-tighter text-slate-900 sm:text-4xl md:mb-10 md:text-5xl">
               {t("A Platform Built For The")} <span className="text-[#3666ff] font-instrument italic font-medium">{t("Complexity")}</span> {t("Of Real Procurement.")}
             </h2>
             
-            <div className="space-y-6 md:space-y-8 text-slate-600 text-justify text-base md:text-lg leading-relaxed max-w-xl">
+            <div className="max-w-xl space-y-5 text-justify text-[15px] leading-7 text-slate-600 md:space-y-8 md:text-lg">
               <p>
                 {t("FactWise was founded by procurement and engineering veterans who watched enterprise buyers wrestle with disconnected tools, slow approvals, and supplier data scattered across spreadsheets.")}
               </p>
@@ -127,7 +128,7 @@ export const StorySection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
-              className="mt-10 md:mt-12 flex flex-wrap gap-6 md:gap-8 items-center pt-8 border-t border-slate-100"
+              className="mt-8 flex flex-col items-start gap-4 border-t border-slate-100 pt-7 sm:flex-row sm:flex-wrap sm:gap-6 md:mt-12 md:gap-8 md:pt-8"
             >
               <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm font-bold text-slate-900 uppercase tracking-widest">
                 <div className="w-2 h-2 rounded-full bg-[#3666ff]" />

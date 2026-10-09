@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { JSX } from "react";
 import type { RichTextNode } from "./hygraph";
+import { withoutLongDashes } from "@/lib/display-text";
 
 function normalizeHref(href: string | undefined): string {
   if (!href) return "";
@@ -58,7 +59,7 @@ function renderNodes(nodes: RichTextNode[] | undefined, keyPrefix = "n"): JSX.El
 
 function renderNode(node: RichTextNode, key: string): JSX.Element {
   if (node.text !== undefined) {
-    let el: JSX.Element = <>{node.text}</>;
+    let el: JSX.Element = <>{withoutLongDashes(node.text)}</>;
     if (node.bold) el = <strong>{el}</strong>;
     if (node.italic) el = <em>{el}</em>;
     if (node.underline) el = <u>{el}</u>;
@@ -71,25 +72,25 @@ function renderNode(node: RichTextNode, key: string): JSX.Element {
   switch (node.type) {
     case "paragraph":
       return (
-        <p key={key} className="text-[1.05rem] leading-[1.85] text-slate-700 mb-6">
+        <p key={key} className="mb-5 break-words text-justify text-[15px] leading-7 text-slate-700 sm:mb-6 sm:text-[1.05rem] sm:leading-[1.85]">
           {children}
         </p>
       );
     case "heading-one":
       return (
-        <h1 key={key} className="text-3xl font-bold text-slate-900 mt-10 mb-4">
+        <h1 key={key} className="mt-9 mb-4 break-words text-2xl font-bold leading-tight text-slate-900 sm:mt-10 sm:text-3xl">
           {children}
         </h1>
       );
     case "heading-two":
       return (
-        <h2 key={key} className="text-2xl font-bold text-slate-900 mt-10 mb-4">
+        <h2 key={key} className="mt-9 mb-4 break-words text-xl font-bold leading-tight text-slate-900 sm:mt-10 sm:text-2xl">
           {children}
         </h2>
       );
     case "heading-three":
       return (
-        <h3 key={key} className="text-xl font-bold text-slate-900 mt-8 mb-3">
+        <h3 key={key} className="mt-8 mb-3 break-words text-lg font-bold leading-snug text-slate-900 sm:text-xl">
           {children}
         </h3>
       );
@@ -101,13 +102,13 @@ function renderNode(node: RichTextNode, key: string): JSX.Element {
       );
     case "bulleted-list":
       return (
-        <ul key={key} className="list-disc pl-6 mb-6 space-y-2 text-[1.05rem] text-slate-700">
+        <ul key={key} className="mb-6 list-disc space-y-2 pl-5 text-[15px] leading-7 text-slate-700 sm:pl-6 sm:text-[1.05rem]">
           {children}
         </ul>
       );
     case "numbered-list":
       return (
-        <ol key={key} className="list-decimal pl-6 mb-6 space-y-2 text-[1.05rem] text-slate-700">
+        <ol key={key} className="mb-6 list-decimal space-y-2 pl-5 text-[15px] leading-7 text-slate-700 sm:pl-6 sm:text-[1.05rem]">
           {children}
         </ol>
       );
@@ -133,7 +134,7 @@ function renderNode(node: RichTextNode, key: string): JSX.Element {
           href={normalizedHref}
           target={node.openInNewTab || isExternal ? "_blank" : undefined}
           rel={node.openInNewTab || isExternal ? "noopener noreferrer" : undefined}
-          className="text-blue-600 underline underline-offset-2 hover:text-blue-800"
+          className="break-words text-blue-600 underline underline-offset-2 hover:text-blue-800"
         >
           {children}
         </a>
@@ -156,9 +157,11 @@ function renderNode(node: RichTextNode, key: string): JSX.Element {
       );
     case "table":
       return (
-        <table key={key} className="border-collapse border border-slate-300 my-6 w-full">
-          {children}
-        </table>
+        <div key={key} className="my-6 w-full overflow-x-auto rounded-lg border border-slate-200">
+          <table className="w-full min-w-[560px] border-collapse border-0">
+            {children}
+          </table>
+        </div>
       );
     case "table_head":
       return <thead key={key}>{children}</thead>;

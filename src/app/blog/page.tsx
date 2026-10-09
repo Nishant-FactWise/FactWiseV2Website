@@ -2,8 +2,9 @@
 // and search engines without JavaScript execution.
 // Interactive parts (search, category filter, expand/collapse) live in BlogClientShell.tsx.
 import { CATEGORIES, ALL_POSTS } from "./data";
-import BlogClientShell from "./BlogClientShell";
+import BlogClientShell, { BlogSearchHero } from "./BlogClientShell";
 import { FlickeringFooter } from '@/components/ClientOnlySections';
+import { withoutLongDashes } from '@/lib/display-text';
 
 // ── CollectionPage schema for AI crawlers ─────────────────────────────────────
 const collectionPageSchema = {
@@ -13,14 +14,14 @@ const collectionPageSchema = {
   url: "https://factwise.io/blog",
   name: "FactWise Procurement & Manufacturing Blog",
   description:
-    "Expert insights on procurement automation, source-to-pay best practices, manufacturing operations, vendor management, RFQ strategies, and supply chain optimization — from the FactWise team.",
+    "Expert insights on procurement automation, source-to-pay best practices, manufacturing operations, vendor management, RFQ strategies, and supply chain optimization from the FactWise team.",
   publisher: { "@id": "https://factwise.io/#organization" },
   inLanguage: "en-US",
   // Surface the first 10 posts as hasPart — gives AI crawlers a structured article list
   hasPart: ALL_POSTS.slice(0, 10).map(post => ({
     "@type": "Article",
-    headline: post.title,
-    description: post.excerpt,
+    headline: withoutLongDashes(post.title),
+    description: withoutLongDashes(post.excerpt),
     url: `https://factwise.io/blog/post/${post.slug}`,
     author: { "@id": "https://factwise.io/#organization" },
   })),
@@ -47,7 +48,7 @@ const breadcrumbSchema = {
 
 export default function BlogPage() {
   return (
-    <main style={{ minHeight: "100vh", background: "#fff", fontFamily: "var(--font-inter), sans-serif" }}>
+    <main className="[&_p]:text-justify" style={{ minHeight: "100vh", background: "#fff", fontFamily: "var(--font-inter), sans-serif" }}>
 
       {/* CollectionPage schema — feeds AI crawlers with structured article list */}
       <script
@@ -62,7 +63,7 @@ export default function BlogPage() {
       />
 
       {/* ── Hero ── Server-rendered so crawlers see the heading and description */}
-      <section className="relative flex flex-col items-center justify-center overflow-hidden bg-slate-950 px-6 pt-40 pb-24 text-center">
+      <section className="relative flex min-h-[72svh] flex-col items-center justify-center overflow-hidden bg-slate-950 px-5 pb-16 pt-32 text-center sm:px-6 sm:pb-20 sm:pt-36 md:pb-24 md:pt-40">
         {/* Background Image & Overlay */}
         <div className="absolute inset-0 z-0">
           <img
@@ -76,54 +77,16 @@ export default function BlogPage() {
         <div className="relative z-10 w-full max-w-2xl mx-auto">
           {/* h1 is server-rendered — crawlers see this immediately */}
           <h1
-            className="text-white font-bold tracking-tighter leading-[1.05] mb-6 speakable"
-            style={{ fontSize: "clamp(34px, 5.5vw, 60px)" }}
+            className="speakable mb-5 break-words text-[clamp(2rem,9vw,3.75rem)] font-bold leading-[1.08] tracking-tighter text-white sm:mb-6"
           >
             Procurement &amp; Manufacturing Insights
           </h1>
 
-          <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-xl mx-auto mb-10 font-light speakable">
-            Procurement strategies, industry trends, and expert guidance — everything you need to build a world-class sourcing operation.
+          <p className="speakable mx-auto mb-8 max-w-xl text-justify text-[15px] font-light leading-7 text-white/75 sm:mb-10 sm:text-base md:text-lg">
+            Procurement strategies, industry trends, and expert guidance. Everything you need to build a world-class sourcing operation.
           </p>
 
-          {/* Search bar — rendered server-side as a static form for crawlers,
-              enhanced client-side via BlogClientShell */}
-          <form
-            action="/blog"
-            method="get"
-            style={{
-              display: "flex", maxWidth: 520, margin: "0 auto",
-              border: "1px solid rgba(255,255,255,0.18)", borderRadius: 10,
-              overflow: "hidden", boxShadow: "0 8px 32px -8px rgba(0,0,0,0.5)",
-              background: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)",
-            }}
-          >
-            <div style={{ padding: "0 14px", display: "flex", alignItems: "center" }}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </div>
-            <input
-              type="text"
-              name="q"
-              placeholder="Search articles…"
-              style={{
-                flex: 1, border: "none", outline: "none",
-                fontSize: 14, color: "#fff", padding: "13px 0",
-                background: "transparent",
-              }}
-              className="placeholder:text-white/50"
-            />
-            <button
-              type="submit"
-              style={{
-                background: "linear-gradient(135deg, #3666ff 0%, #5b8aff 100%)",
-                color: "#fff", border: "none", padding: "0 24px",
-                fontSize: 14, fontWeight: 600, cursor: "pointer",
-                borderRadius: "0 10px 10px 0",
-              }}
-            >
-              Search
-            </button>
-          </form>
+          <BlogSearchHero />
         </div>
       </section>
 
@@ -136,14 +99,14 @@ export default function BlogPage() {
           {CATEGORIES.map(cat => (
             <section key={cat.slug} style={{ marginBottom: 64 }}>
               <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0b1322", marginBottom: 24 }}>
-                {cat.label}
+                {withoutLongDashes(cat.label)}
               </h2>
               <ul style={{ listStyle: "none", padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20 }}>
                 {cat.posts.slice(0, 6).map(post => (
                   <li key={post.slug}>
                     <a href={`/blog/post/${post.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
-                      <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0b1322", marginBottom: 6 }}>{post.title}</h3>
-                      <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.6 }}>{post.excerpt}</p>
+                      <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0b1322", marginBottom: 6 }}>{withoutLongDashes(post.title)}</h3>
+                      <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.6, textAlign: "justify" }}>{withoutLongDashes(post.excerpt)}</p>
                     </a>
                   </li>
                 ))}
@@ -154,7 +117,9 @@ export default function BlogPage() {
       </noscript>
 
       {/* ── Client shell — handles interactive filtering/search for JS visitors ── */}
-      <BlogClientShell initialCategories={CATEGORIES} />
+      <div id="blog-content">
+        <BlogClientShell initialCategories={CATEGORIES} />
+      </div>
 
       <FlickeringFooter />
     </main>

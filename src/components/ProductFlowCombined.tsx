@@ -221,10 +221,6 @@ export default function ProductFlowCombined() {
   const [drawLine, setDrawLine] = useState(-1);
   const epochRef = useRef(0);
 
-  useEffect(() => {
-    setRevealedMax(m => Math.max(m, revealed));
-  }, [revealed]);
-
   const flow = FLOWS[flowIdx];
   const steps = flow.runs[runIdx];
   const n = steps.length;
@@ -263,7 +259,7 @@ export default function ProductFlowCombined() {
     }, delay);
 
     return () => clearTimeout(t);
-  }, [revealed, drawLine, n, isLastRun]);
+  }, [revealed, drawLine, n, isLastRun, steps]);
 
   const selectFlow = (idx: number) => {
     epochRef.current++;
@@ -302,15 +298,15 @@ export default function ProductFlowCombined() {
   // arrows between steps (see .pfc-mobile-steps in ProductFlowCombined.css).
   return (
     <div id="product-flow-combined" className="pfc-responsive-pad" style={{ position: 'relative', scrollMarginTop: '100px' }}>
-      <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '24px', backgroundImage: "url('/TexturedGradient.webp')", backgroundSize: 'cover', backgroundPosition: 'center', padding: '80px 0' }}>
+      <div className="pfc-surface" style={{ backgroundImage: "url('/TexturedGradient.webp')" }}>
         <div style={{ position: 'absolute', right: '-100px', bottom: '-100px', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(54, 102, 255, 0.15) 0%, transparent 70%)', pointerEvents: 'none', willChange: 'transform' }} />
         <div className="noise" style={{ position: 'absolute', inset: 0, opacity: 0.12, pointerEvents: 'none' }} />
 
-        <div style={{ position: 'relative', zIndex: 10, maxWidth: '1440px', margin: '0 auto', padding: '0 24px' }}>
+        <div className="pfc-inner">
           {/* Heading (productflow) */}
-          <div style={{ textAlign: 'center', marginBottom: '48px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div className="pfc-intro">
             <ScrollReveal delay={0.1}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', padding: '6px 16px', borderRadius: '99px', background: '#eff6ff', border: '1px solid #dbeafe', color: '#3666ff', fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '24px' }}>
+              <div className="pfc-eyebrow">
                 {t('AI-Powered Workflows')}
               </div>
             </ScrollReveal>
@@ -320,7 +316,7 @@ export default function ProductFlowCombined() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]"
+              className="pfc-heading-title text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]"
             >
               {t('Automate Every Way You Procure. ')}<br />
               <span style={{ color: '#3666ff' }}>{t('One Platform.')}</span>
@@ -331,7 +327,7 @@ export default function ProductFlowCombined() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              style={{ color: '#64748b', maxWidth: '720px', fontSize: '18px', lineHeight: 1.6, fontWeight: 500, margin: 0 }}
+              className="pfc-heading-copy"
             >
               {t('Every manufacturer procures differently — some start with a customer RFQ, some with a requisition, some with a vendor invoice. FactWise handles all three, end to end.')}
             </motion.p>
@@ -417,7 +413,9 @@ export default function ProductFlowCombined() {
                         onAnimationComplete={() => {
                           if (epochRef.current === animEpoch) {
                             setDrawLine(-1);
-                            setRevealed(p => p + 1);
+                            const nextRevealed = revealed + 1;
+                            setRevealed(nextRevealed);
+                            setRevealedMax(p => Math.max(p, nextRevealed));
                           }
                         }}
                       />

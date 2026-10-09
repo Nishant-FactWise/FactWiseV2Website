@@ -5,16 +5,17 @@ import { motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { getPathLocale } from '@/lib/i18n';
 import { messages } from '@/lib/messages';
+import { withoutLongDashes } from '@/lib/display-text';
 
 export const FounderSection = () => {
   const pathname = usePathname();
   const locale = getPathLocale(pathname);
-  const t = (source: string) => messages[locale].textMap[source] ?? source;
+  const t = (source: string) => withoutLongDashes(messages[locale].textMap[source] ?? source);
 
   return (
-    <section className="py-8 px-6 md:px-14 bg-white">
+    <section className="bg-white px-4 py-6 sm:px-6 sm:py-8 md:px-14">
       <div
-        className="relative overflow-hidden rounded-[24px] py-14 px-6 md:py-20 md:px-20"
+        className="relative overflow-hidden rounded-[20px] px-5 py-10 sm:rounded-[24px] sm:px-6 sm:py-14 md:px-20 md:py-20"
         style={{ backgroundImage: "url('/TexturedGradient.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         {/* Subtle Glow Overlay */}
@@ -44,7 +45,7 @@ export const FounderSection = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: false }}
-                className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 leading-[1.1] tracking-tighter mb-8 overflow-hidden py-1"
+                className="mb-6 overflow-hidden py-1 text-[30px] font-bold leading-[1.1] tracking-tighter text-slate-900 sm:text-4xl md:mb-8 md:text-5xl"
               >
                 {t("A Word From ").split("").map((char, index) => (
                   <motion.span
@@ -88,15 +89,15 @@ export const FounderSection = () => {
                 </span>
               </motion.h2>
 
-              <div className="space-y-5 text-slate-500 text-justify text-base md:text-lg leading-relaxed max-w-2xl">
+              <div className="max-w-2xl space-y-5 text-justify text-[15px] leading-7 text-slate-500 md:text-lg">
                 <p>
                   {t("When I started this journey, my vision was simple. I wanted to create something that brings value, fosters connection, and makes a meaningful impact. Every step we've taken has been guided by a passion for innovation and a commitment to putting people first.")}
                 </p>
                 <p>
                   {t("This is not just a brand. It is a community, a space where ideas grow, challenges are met with creativity, and every voice matters. None of this would be possible without your support, trust, and belief in what we stand for.")}
                 </p>
-                <div className="mt-10 p-6 border-l-2 border-[#3666ff] bg-blue-50/30 rounded-r-2xl max-w-2xl">
-                  <p className="font-semibold text-slate-900 italic font-instrument text-xl leading-relaxed">
+                <div className="mt-8 max-w-2xl rounded-r-2xl border-l-2 border-[#3666ff] bg-blue-50/30 p-4 sm:p-6 md:mt-10">
+                  <p className="font-instrument text-justify text-lg font-semibold leading-relaxed text-slate-900 italic sm:text-xl">
                     {t("\"Together, we are building something truly special, and I can't wait to see what the future holds.\"")}
                   </p>
                 </div>
@@ -109,10 +110,10 @@ export const FounderSection = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: false }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="md:col-span-5 flex justify-center"
+              className="flex justify-center pb-7 md:col-span-5 md:pb-0"
             >
-              <div className="relative w-full max-w-[280px]">
-                <div className="aspect-[4/5] rounded-[40px] overflow-hidden shadow-2xl relative z-10 border-4 border-white/30">
+              <div className="relative w-full max-w-[260px] sm:max-w-[280px]">
+                <div className="relative z-10 aspect-[4/5] overflow-hidden rounded-[28px] border-4 border-white/30 shadow-2xl sm:rounded-[40px]">
                   <img
                     src="/founder-hero.png"
                     alt={t("Stawan Kamani - Founder of FactWise")}
@@ -126,7 +127,7 @@ export const FounderSection = () => {
                   whileInView={{ y: 0, opacity: 1 }}
                   viewport={{ once: false }}
                   transition={{ delay: 0.5, duration: 0.8 }}
-                  className="absolute -bottom-8 right-0 md:-bottom-10 md:-right-16 z-20 bg-gradient-to-br from-white to-blue-50 p-5 md:p-6 rounded-[28px] md:rounded-[32px] shadow-2xl border border-blue-100 min-w-[180px] md:min-w-[220px]"
+                  className="absolute -bottom-6 right-2 z-20 min-w-[170px] rounded-[22px] border border-blue-100 bg-gradient-to-br from-white to-blue-50 p-4 shadow-2xl sm:right-0 sm:min-w-[180px] sm:rounded-[28px] sm:p-5 md:-bottom-10 md:-right-16 md:min-w-[220px] md:rounded-[32px] md:p-6"
                 >
                   <div className="flex flex-col gap-1">
                     <div className="text-lg font-bold text-slate-900 tracking-tight">Stawan Kamani</div>

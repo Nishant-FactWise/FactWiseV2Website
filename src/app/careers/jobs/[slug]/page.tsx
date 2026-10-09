@@ -9,6 +9,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { FlickeringFooter } from '@/components/ui/flickering-footer';
+import { withoutLongDashes } from '@/lib/display-text';
 import {
   JOBS,
   COMPANY_DESC,
@@ -30,8 +31,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const job = getJobBySlug(slug);
   if (!job) return { title: 'Job not found' };
 
-  const title = `${job.title} — Careers at FactWise`;
-  const description = `${job.title} (${job.employmentType}) at FactWise, ${job.location}. ${job.desc}`;
+  const title = `${job.title} | Careers at FactWise`;
+  const description = withoutLongDashes(`${job.title} (${job.employmentType}) at FactWise, ${job.location}. ${job.desc}`);
 
   return {
     title,
@@ -69,9 +70,9 @@ export default async function JobDetailPage({ params }: { params: Params }) {
   const steps = job.recruitmentSteps ?? RECRUITMENT_STEPS;
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white [&_p]:text-justify">
       {/* Hero */}
-      <section className="pt-28 md:pt-32 pb-12 md:pb-16 px-6 md:px-14 bg-gradient-to-b from-slate-50 to-white border-b border-slate-200">
+      <section className="border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white px-5 pb-10 pt-28 sm:px-6 sm:pb-12 md:px-14 md:pb-16 md:pt-32">
         <div className="max-w-4xl mx-auto">
           <Link
             href="/careers#openings"
@@ -81,20 +82,20 @@ export default async function JobDetailPage({ params }: { params: Params }) {
             All open roles
           </Link>
 
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tighter text-slate-900 mb-4">
-            {job.title}
+          <h1 className="mb-4 break-words text-[30px] font-bold leading-[1.1] tracking-tighter text-slate-900 sm:text-4xl md:text-6xl">
+            {withoutLongDashes(job.title)}
           </h1>
 
           <p className="text-base md:text-lg text-slate-600 max-w-2xl leading-relaxed mb-6">
-            {job.desc}
+            {withoutLongDashes(job.desc)}
           </p>
 
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-500">
             <span className="inline-flex items-center gap-1.5">
-              <MapPin className="size-4" /> {job.location}
+              <MapPin className="size-4" /> {withoutLongDashes(job.location)}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Briefcase className="size-4" /> {job.employmentType}
+              <Briefcase className="size-4" /> {withoutLongDashes(job.employmentType)}
             </span>
           </div>
 
@@ -111,19 +112,19 @@ export default async function JobDetailPage({ params }: { params: Params }) {
       </section>
 
       {/* Body */}
-      <section className="py-16 px-6 md:px-14">
+      <section className="px-5 py-12 sm:px-6 sm:py-16 md:px-14">
         <div className="max-w-4xl mx-auto">
           <Section label="About the role">
-            <p className="text-base text-slate-700 leading-relaxed">{job.about}</p>
+            <p className="text-justify text-base leading-relaxed text-slate-700">{withoutLongDashes(job.about)}</p>
           </Section>
 
           <Section label="Company Description">
             {COMPANY_DESC.split('\n\n').map((para, i) => (
               <p
                 key={i}
-                className="text-base text-slate-600 leading-relaxed mb-3 last:mb-0"
+                className="mb-3 text-justify text-base leading-relaxed text-slate-600 last:mb-0"
               >
-                {para}
+                {withoutLongDashes(para)}
               </p>
             ))}
           </Section>
@@ -133,7 +134,7 @@ export default async function JobDetailPage({ params }: { params: Params }) {
               {job.responsibilities.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <CheckCircle2 className="size-4 text-[#3666ff] mt-1 flex-shrink-0" />
-                  <span className="text-[15px] text-slate-700 leading-relaxed">{item}</span>
+                  <span className="text-justify text-[15px] leading-relaxed text-slate-700">{withoutLongDashes(item)}</span>
                 </li>
               ))}
             </ul>
@@ -147,7 +148,7 @@ export default async function JobDetailPage({ params }: { params: Params }) {
               {job.mustHaves.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#3666ff] mt-2 flex-shrink-0" />
-                  <span className="text-[15px] text-slate-700 leading-relaxed">{item}</span>
+                  <span className="text-justify text-[15px] leading-relaxed text-slate-700">{withoutLongDashes(item)}</span>
                 </li>
               ))}
             </ul>
@@ -159,7 +160,7 @@ export default async function JobDetailPage({ params }: { params: Params }) {
               {job.niceToHaves.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-slate-300 mt-2 flex-shrink-0" />
-                  <span className="text-[15px] text-slate-600 leading-relaxed">{item}</span>
+                  <span className="text-justify text-[15px] leading-relaxed text-slate-600">{withoutLongDashes(item)}</span>
                 </li>
               ))}
             </ul>
@@ -172,31 +173,31 @@ export default async function JobDetailPage({ params }: { params: Params }) {
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4f8bff] to-[#2a6cff] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
                     {i + 1}
                   </div>
-                  <span className="text-[15px] text-slate-700">{step}</span>
+                  <span className="text-justify text-[15px] text-slate-700">{withoutLongDashes(step)}</span>
                 </div>
               ))}
             </div>
           </Section>
 
           <Section label="Compensation">
-            <p className="text-base text-slate-600 leading-relaxed">{COMPENSATION}</p>
+            <p className="text-justify text-base leading-relaxed text-slate-600">{withoutLongDashes(COMPENSATION)}</p>
           </Section>
 
           {/* Bottom CTA */}
-          <div className="mt-16 p-8 md:p-10 rounded-3xl bg-slate-950 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="relative z-10">
+          <div className="relative mt-12 flex flex-col items-stretch justify-between gap-6 overflow-hidden rounded-3xl bg-slate-950 p-6 text-white sm:mt-16 sm:p-8 md:flex-row md:items-center md:p-10">
+            <div className="relative z-10 text-left">
               <h3 className="text-2xl md:text-3xl font-bold mb-2 tracking-tight">
                 Ready to apply?
               </h3>
-              <p className="text-slate-400">
-                Opens our Google application form — takes ~3 minutes.
+              <p className="text-justify text-slate-400">
+                Opens our Google application form. It takes about 3 minutes.
               </p>
             </div>
             <a
               href={job.applyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="relative z-10 px-7 py-3.5 bg-white text-slate-950 rounded-full font-bold hover:bg-[#3666ff] hover:text-white transition-colors flex items-center gap-3"
+              className="relative z-10 flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-white px-6 py-3 text-sm font-bold text-slate-950 transition-colors hover:bg-[#3666ff] hover:text-white sm:w-auto sm:px-7 sm:py-3.5 sm:text-base"
             >
               I&apos;m Interested
               <ExternalLink className="size-4" />

@@ -2,13 +2,12 @@
 
 import { motion } from 'framer-motion';
 import { ArrowRight, MessageSquare, Trophy, CheckCircle2, RefreshCcw } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import { GLOBAL_LAYOUT } from './LayoutConfig';
 import ScrollReveal from './ui/ScrollReveal';
 import { useLocalizedText } from '@/hooks/useLocalizedText';
 
 
-/* â”€â”€â”€ Card 1: Severe Value Loss (Price Erosion Graph) â”€â”€â”€ */
+/* Card 1: Severe Value Loss (Price Erosion Graph) */
 const SevereValueLossAnimation = () => {
   const points = [
     { x: 75, y: 195, label: 'Quote', val: '100' },
@@ -137,7 +136,7 @@ const SevereValueLossAnimation = () => {
   );
 };
 
-/* â”€â”€â”€ Card 2: Operational Inefficiency (Yellow) â”€â”€â”€ */
+/* Card 2: Operational Inefficiency (Yellow) */
 const InefficiencyAnimation = () => {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
@@ -256,7 +255,7 @@ const InefficiencyAnimation = () => {
   );
 };
 
-/* â”€â”€â”€ Card 3: Zero Visibility (Spotlight Concept) â”€â”€â”€ */
+/* Card 3: Zero Visibility (Spotlight Concept) */
 const ZeroVisibilityAnimation = () => {
   const nodes = [
     { x: 70, y: 75, label: 'ERP', type: 'db' },
@@ -356,7 +355,7 @@ const PROBLEMS = [
   {
     Animation: InefficiencyAnimation,
     title: "Drowning in manual work.",
-    description: "Emails, follow-ups, and spreadsheets waste valuable hours. FactWise automates your entire cycle â€” from onboarding and customer quotes to requisitions, approvals, and payments.",
+    description: "Emails, follow-ups, and spreadsheets waste valuable hours. FactWise automates your entire cycle, from onboarding and customer quotes to requisitions, approvals, and payments.",
     accent: "#f59e0b",
     label: "Productivity Gap"
   },
@@ -371,7 +370,6 @@ const PROBLEMS = [
 
 export default function ProblemSection() {
   const t = useLocalizedText();
-  const [mounted, setMounted] = useState(false);
   const problems = PROBLEMS.map((problem) => ({
     ...problem,
     title: t(problem.title),
@@ -379,21 +377,17 @@ export default function ProblemSection() {
     label: t(problem.label),
   }));
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   // Render the entire layout during server pre-rendering to allow full indexability by SEO/AEO bots.
   // Dynamic client-side animations will mount automatically once hydrated.
 
   return (
     <section
       id="problem"
-      className="relative py-12 px-4 md:px-10"
+      className="relative px-3 py-8 sm:px-5 sm:py-10 md:px-10 md:py-12"
       style={{ scrollMarginTop: '100px' }}
     >
       <div 
-        className="relative overflow-hidden rounded-[24px] py-24"
+        className="relative overflow-hidden rounded-[20px] py-14 sm:rounded-[24px] sm:py-20 lg:py-24"
         style={{ backgroundColor: '#ebf1fa' }}
       >
         {/* Blue Glow on Right - Optimized */}
@@ -408,31 +402,34 @@ export default function ProblemSection() {
         <div className="absolute inset-0 noise" />
 
         {/* Content */}
-        <div className="relative z-10" style={{ ...GLOBAL_LAYOUT.containerStyle, paddingLeft: '24px', paddingRight: '24px' }}>
+        <div
+          className="relative z-10 px-3 sm:px-6"
+          style={{ ...GLOBAL_LAYOUT.containerStyle }}
+        >
 
-          <div className="mx-auto max-w-3xl text-center flex flex-col items-center mb-16">
+          <div className="mx-auto mb-10 flex max-w-3xl flex-col items-center text-center sm:mb-14 lg:mb-16">
             <ScrollReveal delay={0.2}>
-              <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#3666ff] text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
+              <div className="mb-5 inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#3666ff] sm:mb-7 lg:mb-8">
                 {t('The Problem')}
               </div>
             </ScrollReveal>
             
             <ScrollReveal>
-              <h2 className="text-3xl font-bold tracking-tight md:text-5xl text-[#1A1D2E] mb-6 leading-[1.1]">
+              <h2 className="mb-4 text-[28px] font-bold leading-[1.12] tracking-tight text-[#1A1D2E] sm:text-3xl md:mb-6 md:text-5xl">
                 {t('Your procurement is costing you ')}<span className="text-[#3666ff]">{t('money, time, and control.')}</span>
               </h2>
             </ScrollReveal>
 
             <ScrollReveal type="split-words" delay={0.3} stagger={0.01}>
-              <p className="text-base md:text-lg text-slate-500 max-w-2xl font-medium">
+              <p className="max-w-2xl text-justify text-[15px] font-medium leading-6 text-slate-500 sm:text-center sm:text-base md:text-lg">
                 {t('Hidden overspend, manual bottlenecks, and zero visibility — three problems quietly draining your business every day.')}
               </p>
             </ScrollReveal>
           </div>
 
 
-          {/* Problems Grid â€” 3-across on tablet/desktop, single column on phones */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Problems grid: three across on tablet/desktop, one column on phones */}
+          <div className="grid grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-3">
             {problems.map((prob, idx) => (
               <motion.div
                 key={idx}
@@ -440,12 +437,12 @@ export default function ProblemSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ delay: idx * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative w-full h-[480px] lg:h-[400px] bg-white border border-[#E2E5F0] rounded-[20px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
+                className="group relative grid w-full grid-rows-[minmax(220px,44vw)_auto] overflow-hidden rounded-[20px] border border-[#E2E5F0] bg-white shadow-sm transition-all duration-500 hover:shadow-xl sm:grid-rows-[280px_auto] lg:block lg:h-[400px]"
               >
-                {/* Visual Area â€” half height on mobile (card always open); full height
+                {/* Visual area: half height on mobile (card always open); full height
                     on desktop, shrinking to half on hover. */}
-                <div className="relative w-full h-1/2 lg:h-full transition-all duration-500 lg:group-hover:h-1/2 bg-white flex items-center justify-center">
-                  {/* Initial Title Overlay (Bottom, Grey) â€” desktop-only; on mobile the
+                <div className="relative flex h-full w-full items-center justify-center bg-white transition-all duration-500 lg:h-full lg:group-hover:h-1/2">
+                  {/* Initial title overlay (bottom, grey): desktop-only; on mobile the
                       open content below already shows the title. */}
                   <div className="absolute bottom-8 left-8 transition-all duration-500 opacity-0 lg:opacity-100 lg:group-hover:opacity-0 lg:group-hover:translate-y-4">
                     <h3 style={{
@@ -463,9 +460,9 @@ export default function ProblemSection() {
                   <prob.Animation />
                 </div>
 
-                {/* Content Area â€” open by default on mobile; on desktop it stays hidden
+                {/* Content area: open by default on mobile; on desktop it stays hidden
                     below and slides up on hover. */}
-                <div className="absolute left-0 w-full h-1/2 px-8 transition-all duration-500 flex flex-col justify-center bg-white/95 backdrop-blur-sm opacity-100 top-1/2 lg:opacity-0 lg:top-full lg:group-hover:opacity-100 lg:group-hover:top-1/2">
+                <div className="relative flex min-h-[230px] w-full flex-col justify-center bg-white/95 px-5 py-6 backdrop-blur-sm transition-all duration-500 sm:min-h-[220px] sm:px-8 sm:py-7 lg:absolute lg:left-0 lg:top-full lg:h-1/2 lg:min-h-0 lg:py-0 lg:opacity-0 lg:group-hover:top-1/2 lg:group-hover:opacity-100">
                   <div style={{
                     display: 'flex',
                     alignItems: 'center',
